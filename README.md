@@ -1,6 +1,9 @@
-# ing-sw-2022-Rigamonti-Rogora-Sarbu
+# Prova Finale di Ingegneria del Software - AA 2021-2022
+![Eriantys](resources/eriantys.jpg)
+
+Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/).
 
 ## Componenti del gruppo
-- Rigamonti Alberto
-- Rogora Matteo
-- [Sarbu Razvan Irinel](https://github.com/irinel-sarbu)
+- [_**Rigamonti Alberto**_](https://github.com/Alberto1Rigamonti)
+- [_**Rogora Matteo**_]()
+- [_**Sarbu Razvan Irinel**_](https://github.com/irinel-sarbu)
