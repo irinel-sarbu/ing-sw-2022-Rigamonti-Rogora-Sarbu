@@ -79,10 +79,10 @@ def gitWebHook():
         res += message + "\n"
 
         if len(modified) > 0:
-            res += "\n✅ Modified:\n" + listToString(modified) + "\n"
+            res += "✅ Modified:\n" + listToString(modified) + "\n"
 
         if len(removed) > 0:
-            res += "\n❌ Removed:\n" + listToString(removed) + "\n"
+            res += "❌ Removed:\n" + listToString(removed) + "\n"
 
         logger.info("New commit...")
         logger.debug("Commit info:\n" + res)

@@ -24,7 +24,7 @@ I suggest you use [ngrok](https://ngrok.com/) if you want to use the bot locally
 
 To start an ngrok instance use:
 ```bash
-ngrok http 80
+ngrok http 8080
 ```
 Copy the http link and use it as the webhook_url.
 
