@@ -1,0 +1,18 @@
+version: "3.7"
+
+volumes:
+  bot-volume:
+
+services:
+  bot:
+    build:
+      context: .
+
+    ports:
+      - 8080:5000
+
+    env_file:
+      - bot.env
+
+    volumes:
+      - bot-volume
