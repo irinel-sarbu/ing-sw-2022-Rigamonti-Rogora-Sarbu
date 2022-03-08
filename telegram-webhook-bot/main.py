@@ -77,10 +77,10 @@ def gitWebHook():
         url = commit["url"]
 
         res += "🆕 *New [COMMIT](" + url + ") by " + committer + "*\n"
-        res += message + "\n"
+        res += message + "\n \n"
 
         if len(added) > 0:
-            res += "➕ Modified:\n" + listToString(added) + "\n"
+            res += "➕ Added:\n" + listToString(added) + "\n"
 
         if len(modified) > 0:
             res += "➗ Modified:\n" + listToString(modified) + "\n"
