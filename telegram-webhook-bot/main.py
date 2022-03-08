@@ -71,18 +71,22 @@ def gitWebHook():
 
         committer = commit["author"]["name"]
         message = "`" + commit["message"].replace(".", "\.") + "`"
+        added = commit["added"]
         modified = commit["modified"]
         removed = commit["removed"]
         url = commit["url"]
 
-        res += "🆙 *New [COMMIT](" + url + ") by " + committer + "*\n"
+        res += "🆕 *New [COMMIT](" + url + ") by " + committer + "*\n"
         res += message + "\n"
 
+        if len(added) > 0:
+            res += "➕ Modified:\n" + listToString(added) + "\n"
+
         if len(modified) > 0:
-            res += "✅ Modified:\n" + listToString(modified) + "\n"
+            res += "➗ Modified:\n" + listToString(modified) + "\n"
 
         if len(removed) > 0:
-            res += "❌ Removed:\n" + listToString(removed) + "\n"
+            res += "✖️ Removed:\n" + listToString(removed) + "\n"
 
         logger.info("New commit...")
         logger.debug("Commit info:\n" + res)
