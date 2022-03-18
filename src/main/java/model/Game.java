@@ -2,7 +2,6 @@ package model;
 
 import model.board.Bag;
 import model.board.IslandGroup;
-import model.board.SchoolBoard;
 import model.player.Team;
 
 import java.util.List;
@@ -10,14 +9,12 @@ import java.util.List;
 public class Game {
     private Game gameInstance = null;
 
-    private SchoolBoard schoolBoard;
-    private Bag bag;
-    private List<IslandGroup> islandGroups;
+    private Bag bag = null;
+    private List<IslandGroup> islandGroups = null;
 
-    private List<Team> teams;
+    private List<Team> teams = null;
 
     private Game() {
-
     }
 
     public Game getInstance() {
