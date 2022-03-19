@@ -2,18 +2,16 @@ package model.board;
 
 import util.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Bag {
     private final List<Student> studentList;
 
     public Bag(int num) {
-        this.studentList = new ArrayList<>();
 
-        for (int y = 0; y < num; y++)
+        this.studentList = new ArrayList<>();
+        /*for (int y = 0; y < num; y++)
             studentList.add(new Student(Color.YELLOW));
 
         for (int b = 0; b < num; b++)
@@ -26,7 +24,10 @@ public class Bag {
             studentList.add(new Student(Color.RED));
 
         for (int p = 0; p < num; p++)
-            studentList.add(new Student(Color.PINK));
+            studentList.add(new Student(Color.PINK));*/
+        for(Color color : Color.values()){                                                                              // TODO: vedere se sta cosa funziona
+            studentList.addAll(Collections.nCopies(num, new Student(color)));
+        }
     }
 
     public Bag(int yellow, int blue, int green, int red, int pink) {
