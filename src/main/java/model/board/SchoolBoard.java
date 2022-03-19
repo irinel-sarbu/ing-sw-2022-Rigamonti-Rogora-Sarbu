@@ -89,11 +89,11 @@ public class SchoolBoard {
         return towers;
     }
 
-    public void addTower(Tower tower) throws TowerFullException {
+    public void addTower(Tower tower) throws TowersFullException {
         boolean success = true;
-        if (towers.size() >= maxTowersSize) throw new TowerFullException();
+        if (towers.size() >= maxTowersSize) throw new TowersFullException();
         success = towers.add(tower);
-        if (!success) throw new TowerFullException();
+        if (!success) throw new TowersFullException();
     }
 
     public void removeTower() throws TowersIsEmptyException {
