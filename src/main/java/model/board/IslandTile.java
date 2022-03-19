@@ -13,13 +13,13 @@ public class IslandTile {
     private TowerColor towerColor;
     private Integer islandID;
 
-    public IslandTile(int islandID){
+    public IslandTile(int islandID) {
         students = new ArrayList<>();
         towerColor = null;
         this.islandID = islandID;
     }
 
-    public int getIslandID(){
+    public int getIslandID() {
         return islandID;
     }
 
@@ -31,19 +31,19 @@ public class IslandTile {
         return towerColor;
     }
 
-    public void addStudent(Color color){
+    public void addStudent(Color color) {
         students.add(new Student(color));
     }
 
-    public int getStudentsNumber(Color color){
-        return (int) students.stream()                                                                                  // TODO: controlla se serve un Optional
-                .filter( s -> s.getColor().equals(color))
+    public int getStudentsNumber(Color color) {
+        return (int) students.stream() // TODO: controlla se serve un Optional
+                .filter(s -> s.getColor().equals(color))
                 .count();
     }
 
-    public Color getMostNumerous(){
-        return students.stream()                                                                                        // TODO: devo imparare la prog. func.
-                .filter( x -> x != null)
+    public Color getMostNumerous() {
+        return students.stream() // TODO: devo imparare la prog. func.
+                .filter(x -> x != null)
                 .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
                 .entrySet().stream().max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey).orElse(null);

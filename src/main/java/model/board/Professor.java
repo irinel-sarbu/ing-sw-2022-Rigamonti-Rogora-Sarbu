@@ -2,7 +2,7 @@ package model.board;
 
 import util.Color;
 
-public class Professor{
+public class Professor {
     private final Color color;
 
     public Professor(Color color) {

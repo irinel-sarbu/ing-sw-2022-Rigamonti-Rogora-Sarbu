@@ -34,14 +34,15 @@ public class SchoolBoard {
 
     public void removeFromEntrance(int position) throws StudentNotFoundException {
         boolean success = true;
-        success = entrance.remove(position)!=null;
-        if (!success) throw new StudentNotFoundException();
+        success = entrance.remove(position) != null;
+        if (!success)
+            throw new StudentNotFoundException();
     }
 
-    public void addToDiningRoom(Student student) throws DiningRoomFullException{
+    public void addToDiningRoom(Student student) throws DiningRoomFullException {
         diningRoom[student.getColor().getValue()] += 1;
 
-        if (diningRoom[student.getColor().getValue()]>10) {
+        if (diningRoom[student.getColor().getValue()] > 10) {
             diningRoom[student.getColor().getValue()] -= 1;
             throw new DiningRoomFullException();
         }

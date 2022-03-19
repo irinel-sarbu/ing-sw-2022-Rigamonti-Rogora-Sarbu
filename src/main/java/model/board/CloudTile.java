@@ -24,7 +24,7 @@ public class CloudTile {
         return studentList;
     }
 
-    public void removeStudents(){
+    public void removeStudents() {
         studentList.clear();
     }
 }
