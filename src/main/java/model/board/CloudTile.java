@@ -8,12 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class CloudTile {
-    private final List<Student> studentList, clonelist;
+    private final List<Student> studentList;
     private int maxSize;
 
     public CloudTile(int num) {
         this.studentList = new ArrayList<>();
-        this.clonelist = new ArrayList<>();
         this.maxSize = num;
     }
 
