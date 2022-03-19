@@ -5,6 +5,8 @@ import java.util.*;
 import exceptions.DiningRoomFullException;
 import exceptions.EntranceFullException;
 import exceptions.StudentNotFoundException;
+import exceptions.DiningRoomEmptyException;
+import util.Color;
 
 public class SchoolBoard {
     private final List<Student> entrance;
@@ -15,6 +17,7 @@ public class SchoolBoard {
     public SchoolBoard() {
         this.entrance = new ArrayList<>();
         this.diningRoom = new int[5];
+        for (int i = 0; i < 5; i++) diningRoom[i] = 0;
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }
@@ -48,4 +51,22 @@ public class SchoolBoard {
         }
     }
 
+
+    public void removeFromDiningRoom(Color color) throws DiningRoomEmptyException {
+        diningRoom[color.getValue()] -= 1;
+
+        if (diningRoom[color.getValue()] < 0) {
+            diningRoom[color.getValue()] += 1;
+            throw new DiningRoomEmptyException();
+        }
+
+    }
+
+    public int getStudentsOfColor(Color color) {
+        return diningRoom[color.getValue()];
+    }
+
+    public List<Professor> getProfessors() {
+        return professors;
+    }
 }

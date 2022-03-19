@@ -1,3 +1,8 @@
+import model.board.Assistant;
+import util.Wizard;
+
+import java.util.List;
+
 public class Client {
     static public void main(String[] args) {
         boolean cliEnabled = false;
@@ -14,7 +19,7 @@ public class Client {
                 case "--cli", "-c" -> cliEnabled = true;
             }
         }
-
+        List<Assistant> deck = Assistant.getWizardDeck(Wizard.WIZARD_1);
         if (cliEnabled) {
             // Start game using terminal
         } else {
