@@ -22,9 +22,9 @@ public class Monk extends Character {
         this.students.add(student);
     }
 
-    public void remove (int position) throws EmptyStudentListException, StudentNotFoundException {
-        if (position>this.students.size() || position<0) throw new StudentNotFoundException();
-        if (this.students.size()==0) throw new EmptyStudentListException();
+    public void remove(int position) throws EmptyStudentListException, StudentNotFoundException {
+        if (position > this.students.size() || position < 0) throw new StudentNotFoundException();
+        if (this.students.size() == 0) throw new EmptyStudentListException();
         this.students.remove(position);
     }
 
