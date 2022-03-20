@@ -1,7 +1,5 @@
 package model.expert;
 
-import javax.xml.stream.events.Characters;
-
 import util.*;
 
 public abstract class Character {
