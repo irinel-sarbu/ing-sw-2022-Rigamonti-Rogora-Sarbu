@@ -15,21 +15,21 @@ public class IslandGroup {
     private final List<IslandTile> islands;
 
     public IslandGroup() {
-        islands = new ArrayList<>();
-        islands.add(new IslandTile());
+        this.islands = new ArrayList<>();
+        this.islands.add(new IslandTile());
     }
 
-    public IslandGroup(IslandGroup islandGroup) {
-        islands = new ArrayList<>();
-        islands.addAll(islandGroup.islands);
+    private IslandGroup(IslandGroup islandGroup) {
+        this.islands = new ArrayList<>();
+        this.islands.addAll(islandGroup.islands);
     }
 
     public List<Integer> getIslandTilesID() {
-        return islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
+        return this.islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
     }
 
     public int getSize() {
-        return islands.size();
+        return this.islands.size();
     }
 
     public void setTowersColor(TowerColor towerColor) throws NullTowerColorException {
