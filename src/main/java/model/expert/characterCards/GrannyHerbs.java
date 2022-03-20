@@ -15,13 +15,13 @@ public class GrannyHerbs extends Character {
 
     public GrannyHerbs() {
         super(2, CharacterName.GRANNY_HERBS);
-        noEntryTileList = new ArrayList<>();
-        noEntryTileList = new ArrayList<>(Collections.nCopies(4, new NoEntryTile()));
+        this.noEntryTileList = new ArrayList<>();
+        this.noEntryTileList = new ArrayList<>(Collections.nCopies(4, new NoEntryTile()));
     }
 
-    public void removeNoEntry() throws EmptyNoEntryListException {
-        if (noEntryTileList.size() == 0) throw new EmptyNoEntryListException();
-        noEntryTileList.remove(0);
+    public NoEntryTile removeNoEntry() throws EmptyNoEntryListException {
+        if (this.noEntryTileList.size() == 0) throw new EmptyNoEntryListException();
+        return this.noEntryTileList.remove(0);
     }
 
     public int getRemainingNoEntry() {
@@ -29,6 +29,6 @@ public class GrannyHerbs extends Character {
     }
 
     public void addNoEntry() {
-        noEntryTileList.add(new NoEntryTile());
+        this.noEntryTileList.add(new NoEntryTile());
     }
 }
