@@ -13,19 +13,30 @@ import java.util.stream.Collectors;
 
 public class IslandGroup {
     private final List<IslandTile> islands;
+    private boolean noEntry;
 
     public IslandGroup() {
         this.islands = new ArrayList<>();
+        this.noEntry = false;
         this.islands.add(new IslandTile());
     }
 
     private IslandGroup(IslandGroup islandGroup) {
         this.islands = new ArrayList<>();
+        this.noEntry = false;
         this.islands.addAll(islandGroup.islands);
     }
 
     public List<Integer> getIslandTilesID() {
         return this.islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
+    }
+
+    public void toggleNoEntry() {
+        this.noEntry = !this.noEntry;
+    }
+
+    public boolean getNoEntry() {
+        return this.noEntry;
     }
 
     public int getSize() {
