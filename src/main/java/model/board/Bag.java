@@ -27,7 +27,7 @@ public class Bag {
          * for (int p = 0; p < num; p++)
          * studentList.add(new Student(Color.PINK));
          */
-        for (Color color : Color.values()) { // TODO: vedere se sta cosa funziona
+        for (Color color : Color.values()) {
             studentList.addAll(Collections.nCopies(num, new Student(color)));
         }
     }
