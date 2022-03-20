@@ -1,4 +1,11 @@
 package model.expert.characterCards;
 
-public class Monk {
+import model.expert.Character;
+import util.CharacterName;
+
+public class Monk extends Character {
+
+    public Monk() {
+        super(1, CharacterName.MONK);
+    }
 }

@@ -1,4 +1,11 @@
 package model.expert.characterCards;
 
-public class MushroomFanatic {
+import model.expert.Character;
+import util.CharacterName;
+
+public class MushroomFanatic extends Character {
+
+    public MushroomFanatic() {
+        super(3, CharacterName.MUSHROOM_FANATIC);
+    }
 }
