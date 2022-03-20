@@ -1,4 +1,4 @@
-package model.player;
+package exceptions;
 
 public class MaxPlayersException extends Exception {
 
