@@ -5,12 +5,7 @@ import util.CharacterName;
 
 public class Farmer extends Character {
 
-    public Farmer(int cost, CharacterName character) {
-        super(cost, character);
-    }
-
-    @Override
-    public void useEffect() {
-
+    public Farmer() {
+        super(2, CharacterName.FARMER);
     }
 }
