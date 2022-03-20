@@ -6,7 +6,7 @@ import exceptions.*;
 import util.Color;
 
 public class SchoolBoard {
-    private final int maxProfessorsSize = 5;
+    private final int maxProfessorsSize = Color.values().length;
     private final int maxEntranceSize = 10;
     private final int maxDiningSize = 10;
     private final int maxTowersSize = 10;
@@ -17,8 +17,8 @@ public class SchoolBoard {
 
     public SchoolBoard() {
         this.entrance = new ArrayList<>();
-        this.diningRoom = new int[5];
-        for (int i = 0; i < 5; i++) diningRoom[i] = 0;
+        this.diningRoom = new int[Color.values().length];
+        for (int i = 0; i < diningRoom.length; i++) diningRoom[i] = 0;
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }
