@@ -15,6 +15,10 @@ public abstract class Character {
 
     public abstract void useEffect();
 
+    public void effectUsed(){
+        this.effectIsUsed = true;
+    }
+
     public void resetEffect() {
         this.effectIsUsed = false;
     }
