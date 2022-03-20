@@ -83,4 +83,16 @@ public class Assistant {
 
         return deck;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public int getMovements() {
+        return movements;
+    }
 }
