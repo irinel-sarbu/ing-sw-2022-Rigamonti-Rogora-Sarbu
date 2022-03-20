@@ -1,17 +1,11 @@
 package view;
 
-import java.util.Observable;
-import java.util.Observer;
+import events.EventListener;
+import events.EventSender;
+import java.util.logging.Logger;
 
-public abstract class View extends Observable implements Runnable, Observer {
+public abstract class View extends EventSender implements EventListener {
+    protected final Logger LOGGER = Logger.getLogger(View.class.getName());
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
-
-    @Override
-    public void run() {
-
-    }
+    public abstract void run();
 }

@@ -1,12 +1,14 @@
 package controller;
 
+import events.*;
+import events.types.SimpleMessageEvent;
 import model.Game;
 import view.View;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.logging.Logger;
 
-public class GameController implements Observer {
+public class GameController implements EventListener {
+    private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
     private final Game model;
     private final View view;
@@ -17,7 +19,15 @@ public class GameController implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void onEvent(Event event) {
+        EventDispatcher dispatcher = new EventDispatcher(event);
 
+        dispatcher.dispatch(EventType.SIMPLE_MESSAGE, (Event e) -> (onSimpleMessage((SimpleMessageEvent) e)));
     }
+
+    private boolean onSimpleMessage(SimpleMessageEvent event) {
+        LOGGER.info("New message: " + event.getMessage());
+        return true;
+    }
+
 }

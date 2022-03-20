@@ -1,5 +1,8 @@
 package model;
 
+import events.Event;
+import events.EventListener;
+import events.EventSender;
 import model.board.Bag;
 import model.board.IslandGroup;
 import exceptions.MaxPlayersException;
@@ -8,10 +11,9 @@ import exceptions.PlayerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.logging.Logger;
 
-public class Game extends Observable {
+public class Game extends EventSender implements EventListener {
     Logger logger = Logger.getLogger(Game.class.getName());
 
     public static final int MAX_PLAYERS = 3;
@@ -30,6 +32,11 @@ public class Game extends Observable {
         if (gameInstance == null)
             gameInstance = new Game();
         return gameInstance;
+    }
+
+    @Override
+    public void onEvent(Event event) {
+
     }
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {

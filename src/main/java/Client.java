@@ -19,9 +19,7 @@ public class Client {
                     System.out.println("\tcli  | c\t\tStarts game in terminal.");
                     run = false;
                 }
-                case "--cli", "-c" -> {
-                    cliEnabled = true;
-                }
+                case "--cli", "-c" -> cliEnabled = true;
             }
         }
 
@@ -29,8 +27,8 @@ public class Client {
             Game model = Game.getInstance();
             View view = cliEnabled ? new CliView() : new GuiView();
             GameController controller = new GameController(model, view);
-            view.addObserver(controller);
-            model.addObserver(view);
+            view.registerListener(controller);
+            model.registerListener(view);
             view.run();
         }
     }
