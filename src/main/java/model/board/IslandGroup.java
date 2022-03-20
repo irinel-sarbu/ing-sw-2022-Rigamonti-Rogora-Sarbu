@@ -17,14 +17,14 @@ public class IslandGroup {
 
     public IslandGroup() {
         this.islands = new ArrayList<>();
-        this.noEntry = false;
         this.islands.add(new IslandTile());
+        this.noEntry = false;
     }
 
     private IslandGroup(IslandGroup islandGroup) {
         this.islands = new ArrayList<>();
-        this.noEntry = false;
         this.islands.addAll(islandGroup.islands);
+        this.noEntry = false;
     }
 
     public List<Integer> getIslandTilesID() {
@@ -45,21 +45,17 @@ public class IslandGroup {
 
     public void setTowersColor(TowerColor towerColor) throws NullTowerColorException {
         if (towerColor == null) throw new NullTowerColorException();
-        for (int i = 0; i < this.getSize(); i++) {
-            islands.get(i).setTowerColor(towerColor);
-        }
+        this.islands.forEach(island -> island.setTowerColor(towerColor));
     }
 
     public TowerColor getTowersColor() {
-        return islands.get(0).getTowerColor();
+        return this.islands.get(0).getTowerColor();
     }
 
     public int getStudentsNumber(Color color) {
-        int total = 0;
-        for (IslandTile island : islands) {
-            total += island.getStudentsNumber(color);
-        }
-        return total;
+        return this.islands.stream()
+                .map(island -> island.getStudentsNumber(color))
+                .reduce(Integer::sum).orElse(0);
     }
 
     public IslandGroup join(IslandGroup other) throws IllegalIslandGroupJoinException, NullIslandGroupException {

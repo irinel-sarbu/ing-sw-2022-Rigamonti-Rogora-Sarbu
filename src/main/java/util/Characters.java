@@ -7,7 +7,7 @@ public enum Characters {
     MUSHROOM_FANATIC(3),
     JESTER(4),
     THIEF(5),
-    MINISTREL(6),
+    MINSTREL(6),
     MONK(7),
     GRANNY_HERBS(8),
     POSTMAN(9),

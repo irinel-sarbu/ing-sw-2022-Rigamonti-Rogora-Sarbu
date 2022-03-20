@@ -3,7 +3,7 @@ package model.board;
 import util.TowerColor;
 
 public class Tower {
-    TowerColor color;
+    private final TowerColor color;
 
     public Tower(TowerColor color) {
         this.color = color;

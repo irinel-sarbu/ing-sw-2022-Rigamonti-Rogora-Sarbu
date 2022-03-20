@@ -8,13 +8,13 @@ import util.Color;
 
 public class IslandTile implements Comparable<IslandTile> {
     private List<Student> students;
-    private TowerColor towerColor;
+    private Tower tower;
     private Integer islandID;
     private static int count = 0;
 
     public IslandTile() {
         students = new ArrayList<>();
-        towerColor = null;
+        tower = null;
         this.islandID = count;
         count++;
     }
@@ -24,11 +24,11 @@ public class IslandTile implements Comparable<IslandTile> {
     }
 
     public void setTowerColor(TowerColor towerColor) {
-        this.towerColor = towerColor;
+        this.tower = new Tower(towerColor);
     }
 
     public TowerColor getTowerColor() {
-        return towerColor;
+        return tower.getColor();
     }
 
     public void addStudent(Color color) {
