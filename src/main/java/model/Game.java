@@ -2,9 +2,9 @@ package model;
 
 import model.board.Bag;
 import model.board.IslandGroup;
-import model.player.MaxPlayersException;
+import exceptions.MaxPlayersException;
 import model.player.Player;
-import model.player.PlayerNotFoundException;
+import exceptions.PlayerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
