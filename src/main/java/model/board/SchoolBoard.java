@@ -18,7 +18,7 @@ public class SchoolBoard {
     public SchoolBoard() {
         this.entrance = new ArrayList<>();
         this.diningRoom = new int[Color.values().length];
-        for (int i = 0; i < diningRoom.length; i++) diningRoom[i] = 0;
+        Arrays.fill(diningRoom, 0);
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }

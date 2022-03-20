@@ -19,13 +19,13 @@ public class IslandGroup {
         islands.add(new IslandTile());
     }
 
-    public List<Integer> getIslandTilesID() {
-        return islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
-    }
-
     public IslandGroup(IslandGroup islandGroup) {
         islands = new ArrayList<>();
         islands.addAll(islandGroup.islands);
+    }
+
+    public List<Integer> getIslandTilesID() {
+        return islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
     }
 
     public int getSize() {
