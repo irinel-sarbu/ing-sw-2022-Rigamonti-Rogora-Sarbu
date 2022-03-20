@@ -1,6 +1,6 @@
 package util;
 
-public enum Characters {
+public enum CharacterName {
     HERALD(0),
     KNIGHT(1),
     CENTAUR(2),
@@ -16,7 +16,7 @@ public enum Characters {
 
     private int value;
 
-    Characters(int value) {
+    CharacterName(int value) {
         this.value = value;
     }
 
