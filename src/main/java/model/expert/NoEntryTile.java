@@ -3,7 +3,7 @@ package model.expert;
 public class NoEntryTile {
     private int position; //-1 when not on a tile
 
-    public NoEntryTile(){
+    public NoEntryTile() {
         this.position = -1;
     }
 
