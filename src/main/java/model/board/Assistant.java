@@ -47,8 +47,7 @@ public class Assistant {
             // parse XML file
             DocumentBuilder db = dbf.newDocumentBuilder();
 
-            Document doc = db.parse(
-                    new File("src/main/resources/assistants.xml"));
+            Document doc = db.parse(new File("src/main/resources/assistants.xml"));
 
             // get <assistant>
             NodeList list = doc.getElementsByTagName("assistant");

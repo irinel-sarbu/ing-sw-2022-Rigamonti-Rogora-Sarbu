@@ -19,7 +19,7 @@ public class Client {
                 case "--cli", "-c" -> cliEnabled = true;
             }
         }
-        List<Assistant> deck = Assistant.getWizardDeck(Wizard.WIZARD_1);
+
         if (cliEnabled) {
             // Start game using terminal
         } else {

@@ -6,10 +6,10 @@ import exceptions.*;
 import util.Color;
 
 public class SchoolBoard {
-    private final int maxProfessorsSize = Color.values().length;
-    private final int maxEntranceSize = 10;
-    private final int maxDiningSize = 10;
-    private final int maxTowersSize = 10;
+    private final static int maxProfessorsSize = 5;
+    private final static int maxEntranceSize = 10;
+    private final static int maxDiningSize = 10;
+    private final static int maxTowersSize = 10;
     private final List<Student> entrance;
     private int[] diningRoom; // yellow = 0, blue = 1, green = 2, red = 3, pink = 4;
     private final List<Professor> professors;
@@ -17,8 +17,7 @@ public class SchoolBoard {
 
     public SchoolBoard() {
         this.entrance = new ArrayList<>();
-        this.diningRoom = new int[Color.values().length];
-        Arrays.fill(diningRoom, 0);
+        this.diningRoom = new int[5];
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }
@@ -28,18 +27,14 @@ public class SchoolBoard {
     }
 
     public void addToEntrance(Student... students) throws EntranceFullException {
-        boolean success = true;
         for (Student student : students) {
             if (entrance.size() >= maxEntranceSize) throw new EntranceFullException();
-            success = entrance.add(student);
-            if (!success) throw new EntranceFullException();
+            entrance.add(student);
         }
     }
 
     public void removeFromEntrance(int position) throws StudentNotFoundException {
-        boolean success = true;
-        if (entrance.size() == 0) throw new StudentNotFoundException();
-        success = entrance.remove(position) != null;
+        boolean success = entrance.remove(position) != null;
         if (!success) throw new StudentNotFoundException();
     }
 
@@ -72,15 +67,12 @@ public class SchoolBoard {
     }
 
     public void addProfessor(Professor professor) throws ProfessorFullException {
-        boolean success = true;
         if (professors.size() >= maxProfessorsSize) throw new ProfessorFullException();
-        success = professors.add(professor);
-        if (!success) throw new ProfessorFullException();
+        professors.add(professor);
     }
 
     public void removeProfessor(Professor professor) throws ProfessorNotFoundException {
         boolean success = true;
-        if (professors.size() == 0) throw new ProfessorNotFoundException();
         success = professors.remove(professor);
         if (!success) throw new ProfessorNotFoundException();
     }
@@ -90,17 +82,12 @@ public class SchoolBoard {
     }
 
     public void addTower(Tower tower) throws TowersFullException {
-        boolean success = true;
         if (towers.size() >= maxTowersSize) throw new TowersFullException();
-        success = towers.add(tower);
-        if (!success) throw new TowersFullException();
+        towers.add(tower);
     }
 
     public void removeTower() throws TowersIsEmptyException {
-        boolean success = true;
-        if (towers.size() == 0) throw new TowersIsEmptyException();
-        success = towers.remove(0) != null;
+        boolean success = towers.remove(0) != null;
         if (!success) throw new TowersIsEmptyException();
     }
-
 }
