@@ -1,4 +1,16 @@
 package model.expert.characterCards;
 
-public class Farmer {
+import model.expert.Character;
+import util.CharacterName;
+
+public class Farmer extends Character {
+
+    public Farmer(int cost, CharacterName character) {
+        super(cost, character);
+    }
+
+    @Override
+    public void useEffect() {
+
+    }
 }

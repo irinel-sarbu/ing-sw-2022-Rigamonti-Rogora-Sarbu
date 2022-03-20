@@ -13,8 +13,7 @@ public abstract class Character {
         resetEffect();
     }
 
-    public void useEffect() {
-    }
+    public abstract void useEffect();
 
     public void resetEffect() {
         this.effectIsUsed = false;
