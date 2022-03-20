@@ -17,8 +17,6 @@ public abstract class Character {               // TODO: observer per characterC
         this.effectIsUsed = true;
     }
 
-    ;
-
     public void resetEffect() {
         this.effectIsUsed = false;
     }
