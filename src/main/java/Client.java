@@ -1,10 +1,12 @@
-import model.board.Assistant;
-import util.Wizard;
-
-import java.util.List;
+import controller.GameController;
+import model.Game;
+import view.View;
+import view.cli.CliView;
+import view.gui.GuiView;
 
 public class Client {
     static public void main(String[] args) {
+        boolean run = true;
         boolean cliEnabled = false;
 
         for (String arg : args) {
@@ -15,15 +17,21 @@ public class Client {
                     System.out.println("Options:");
                     System.out.println("\thelp | h\t\tShows this menu.");
                     System.out.println("\tcli  | c\t\tStarts game in terminal.");
+                    run = false;
                 }
-                case "--cli", "-c" -> cliEnabled = true;
+                case "--cli", "-c" -> {
+                    cliEnabled = true;
+                }
             }
         }
 
-        if (cliEnabled) {
-            // Start game using terminal
-        } else {
-            // Start game using ui
+        if (run) {
+            Game model = Game.getInstance();
+            View view = cliEnabled ? new CliView() : new GuiView();
+            GameController controller = new GameController(model, view);
+            view.addObserver(controller);
+            model.addObserver(view);
+            view.run();
         }
     }
 }

@@ -1,8 +1,8 @@
 package model.player;
 
 import exceptions.AssistantNotInDeckException;
-import exceptions.InvalidTransactionException;
 import exceptions.NotEnoughCoinsException;
+import model.board.Assistant;
 import model.board.SchoolBoard;
 import util.Wizard;
 
@@ -12,17 +12,15 @@ import java.util.Stack;
 
 public class Player {
     private final String name;
-    private SchoolBoard schoolBoard;
-    private Wizard assistantCardBack;
-    private List<Assistant> assistantDeck;
-    private Stack<Assistant> foldDeck;
+    private final SchoolBoard schoolBoard;
+    private final List<Assistant> assistantDeck;
+    private final Stack<Assistant> foldDeck;
     private int coins;
 
-    public Player(String name, Wizard assistantCardBack) {
+    public Player(String name, Wizard wizard) {
         this.name = name;
         this.schoolBoard = new SchoolBoard();
-        this.assistantCardBack = assistantCardBack;
-        this.assistantDeck = new ArrayList<>();
+        this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldDeck = new Stack<>();
         this.coins = 0;
     }

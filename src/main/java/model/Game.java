@@ -8,13 +8,14 @@ import exceptions.PlayerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.logging.Logger;
 
-public class Game {
+public class Game extends Observable {
     Logger logger = Logger.getLogger(Game.class.getName());
 
     public static final int MAX_PLAYERS = 3;
-    private Game gameInstance = null;
+    private static Game gameInstance = null;
 
     private final Bag bag;
     private List<IslandGroup> islandGroups;
@@ -25,7 +26,7 @@ public class Game {
         this.players = new ArrayList<>();
     }
 
-    public Game getInstance() {
+    public static Game getInstance() {
         if (gameInstance == null)
             gameInstance = new Game();
         return gameInstance;
