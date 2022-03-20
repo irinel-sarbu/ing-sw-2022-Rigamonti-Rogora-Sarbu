@@ -16,7 +16,7 @@ public class IslandTile implements Comparable<IslandTile> {
         students = new ArrayList<>();
         towerColor = null;
         this.islandID = count;
-        count ++;
+        count++;
     }
 
     public int getIslandID() {
@@ -49,7 +49,7 @@ public class IslandTile implements Comparable<IslandTile> {
                 .map(Map.Entry::getKey).orElse(null);
     }
 
-    public int compareTo ( IslandTile other){
+    public int compareTo(IslandTile other) {
         return Integer.compare(this.getIslandID(), other.getIslandID());
     }
 }

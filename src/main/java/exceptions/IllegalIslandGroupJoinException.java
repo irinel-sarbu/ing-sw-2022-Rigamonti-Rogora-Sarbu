@@ -1,6 +1,6 @@
 package exceptions;
 
-public class IllegalIslandGroupJoinException extends Exception{
+public class IllegalIslandGroupJoinException extends Exception {
     public IllegalIslandGroupJoinException() {
         super();
     }

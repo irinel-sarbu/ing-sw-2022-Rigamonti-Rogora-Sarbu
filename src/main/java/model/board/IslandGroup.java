@@ -14,27 +14,27 @@ import java.util.stream.Collectors;
 public class IslandGroup {
     private final List<IslandTile> islands;
 
-    public IslandGroup(){
+    public IslandGroup() {
         islands = new ArrayList<>();
         islands.add(new IslandTile());
     }
 
-    public List<Integer> getIslandTilesID(){
+    public List<Integer> getIslandTilesID() {
         return islands.stream().map(IslandTile::getIslandID).collect(Collectors.toList());
     }
 
-    public IslandGroup(IslandGroup islandGroup){
+    public IslandGroup(IslandGroup islandGroup) {
         islands = new ArrayList<>();
         islands.addAll(islandGroup.islands);
     }
 
-    public int getSize(){
+    public int getSize() {
         return islands.size();
     }
 
     public void setTowersColor(TowerColor towerColor) throws NullTowerColorException {
         if (towerColor == null) throw new NullTowerColorException();
-        for(int i = 0; i<this.getSize(); i++){
+        for (int i = 0; i < this.getSize(); i++) {
             islands.get(i).setTowerColor(towerColor);
         }
     }
@@ -43,9 +43,9 @@ public class IslandGroup {
         return islands.get(0).getTowerColor();
     }
 
-    public int getStudentsNumber(Color color){
+    public int getStudentsNumber(Color color) {
         int total = 0;
-        for(IslandTile island : islands){
+        for (IslandTile island : islands) {
             total += island.getStudentsNumber(color);
         }
         return total;
@@ -53,7 +53,7 @@ public class IslandGroup {
 
     public IslandGroup join(IslandGroup other) throws IllegalIslandGroupJoinException, NullIslandGroupException {
         if (other == null) throw new NullIslandGroupException();
-        if (! this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
+        if (!this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
 
         IslandGroup newIslandGroup = new IslandGroup(this);
         newIslandGroup.islands.addAll(other.islands);
