@@ -8,7 +8,7 @@ public class EventDispatcher {
     }
 
     public void dispatch(EventType eventType, EventHandler handler) {
-        if(event.handled && event.getType() != eventType)
+        if(event.handled || event.getType() != eventType)
             return;
 
         event.handled = handler.handle(event);
