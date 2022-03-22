@@ -1,33 +1,33 @@
 package util;
 
 public enum CharacterName {
-    HERALD(0, "Herald"),
-    KNIGHT(1, "Knight"),
-    CENTAUR(2, "Centaur"),
-    MUSHROOM_FANATIC(3, "Mushroom fanatic"),
-    JESTER(4, "Jester"),
-    THIEF(5, "Thief"),
-    MINSTREL(6, "Minstrel"),
-    MONK(7, "Monk"),
-    GRANNY_HERBS(8, "Granny herbs"),
-    POSTMAN(9, "Postman"),
-    PRINCESS(10, "Princess"),
-    FARMER(11, "Farmer");
+    HERALD          (3,"Herald"),
+    KNIGHT          (2,"Knight"),
+    CENTAUR         (3,"Centaur"),
+    MUSHROOM_FANATIC(3,"Mushroom fanatic"),
+    JESTER          (1,"Jester"),
+    THIEF           (3,"Thief"),
+    MINSTREL        (1,"Minstrel"),
+    MONK            (1,"Monk"),
+    GRANNY_HERBS    (2,"Granny herbs"),
+    POSTMAN         (1,"Postman"),
+    PRINCESS        (2,"Princess"),
+    FARMER          (2,"Farmer");
 
-    private int value;
-    private String name;
+    private final int baseCost;
+    private final String name;
 
-    CharacterName(int value, String name) {
-        this.value = value;
+    CharacterName(int baseCost, String name) {
+        this.baseCost = baseCost;
         this.name = name;
     }
 
-    public int getValue() {
-        return value;
-    }
+    public int getBaseCost(){ return baseCost; }
+
+    public String getName(){ return name; }
 
     @Override
     public String toString() {
-        return this.name;
+        return name;
     }
 }

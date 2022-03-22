@@ -55,7 +55,7 @@ public class Player {
         this.coins += coins;
     }
 
-    public void removeCoin(int coins) throws NotEnoughCoinsException {
+    public void removeCoins(int coins) throws NotEnoughCoinsException {
         if (coins <= 0) return;
         if (coins > this.coins) throw new NotEnoughCoinsException();
         this.coins -= coins;
