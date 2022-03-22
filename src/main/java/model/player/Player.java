@@ -29,7 +29,7 @@ public class Player {
         foldDeck.push(assistantCard);
     }
 
-    public Assistant getTopFoldDeck() {
+    public Assistant peekFoldDeck() {
         return foldDeck.peek();
     }
 
@@ -40,6 +40,11 @@ public class Player {
     public void removeCard(Assistant assistantCard) throws AssistantNotInDeckException {
         if (!assistantDeck.contains(assistantCard)) throw new AssistantNotInDeckException();
         assistantDeck.remove(assistantCard);
+    }
+
+    public void removeCard(int assistantCardID) throws AssistantNotInDeckException {
+        if(assistantCardID >= assistantDeck.size()) throw new AssistantNotInDeckException();
+        assistantDeck.remove(assistantCardID);
     }
 
     public SchoolBoard getSchoolBoard() {
