@@ -3,7 +3,7 @@ package util.unused.characterCards;
 import exceptions.EmptyNoEntryListException;
 import model.expert.Character;
 import model.expert.NoEntryTile;
-import util.CharacterName;
+import util.CharacterType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ public class GrannyHerbs extends Character {
     List<NoEntryTile> noEntryTileList;
 
     public GrannyHerbs() {
-        super(2, CharacterName.GRANNY_HERBS);
+        super(2, CharacterType.GRANNY_HERBS);
         this.noEntryTileList = new ArrayList<>();
         this.noEntryTileList = new ArrayList<>(Collections.nCopies(4, new NoEntryTile()));
     }

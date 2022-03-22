@@ -1,11 +1,11 @@
 package util.unused.characterCards;
 
 import model.expert.Character;
-import util.CharacterName;
+import util.CharacterType;
 
 public class Farmer extends Character {
 
     public Farmer() {
-        super(2, CharacterName.FARMER);
+        super(2, CharacterType.FARMER);
     }
 }

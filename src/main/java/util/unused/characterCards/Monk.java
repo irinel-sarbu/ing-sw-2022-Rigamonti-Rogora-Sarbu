@@ -5,7 +5,7 @@ import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
 import model.expert.Character;
-import util.CharacterName;
+import util.CharacterType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Monk extends Character {
     private final List<Student> students;
 
     public Monk() {
-        super(1, CharacterName.MONK);
+        super(1, CharacterType.MONK);
         this.students = new ArrayList<>();
     }
 

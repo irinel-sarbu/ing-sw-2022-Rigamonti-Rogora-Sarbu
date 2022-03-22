@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public enum CharacterName {
+public enum CharacterType {
     HERALD(3, "Herald"),
     KNIGHT(2, "Knight"),
     CENTAUR(3, "Centaur"),
@@ -20,9 +20,9 @@ public enum CharacterName {
 
     private final int baseCost;
     private final String name;
-    private final List<CharacterName> extractedCharacters;
+    private final List<CharacterType> extractedCharacters;
 
-    CharacterName(int baseCost, String name) {
+    CharacterType(int baseCost, String name) {
         this.baseCost = baseCost;
         this.name = name;
         this.extractedCharacters = new ArrayList<>();
@@ -36,8 +36,8 @@ public enum CharacterName {
         return name;
     }
 
-    public CharacterName getRandomCharacter() {
-        CharacterName extracted = null;
+    public CharacterType getRandomCharacter() {
+        CharacterType extracted = null;
         Random random = new Random();
 
         while(!extractedCharacters.contains(extracted))

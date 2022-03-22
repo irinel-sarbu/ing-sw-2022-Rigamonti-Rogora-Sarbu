@@ -1,12 +1,12 @@
 package util.unused.characterCards;
 
 import model.expert.Character;
-import util.CharacterName;
+import util.CharacterType;
 
 public class Thief extends Character {
 
     public Thief() {
-        super(3, CharacterName.THIEF);
+        super(3, CharacterType.THIEF);
     }
 
 }

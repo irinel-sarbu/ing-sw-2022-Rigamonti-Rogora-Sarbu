@@ -4,22 +4,22 @@ import util.*;
 
 public class Character {
     private int cost;
-    private CharacterName character;
+    private CharacterType character;
     private boolean effectIsUsed;
 
-    public Character(CharacterName character){
+    public Character(CharacterType character){
         this.cost= character.getBaseCost();
         this.character=character;
         resetEffect();
     }
 
-    public Character(int cost, CharacterName character) {
+    public Character(int cost, CharacterType character) {
         this.cost = cost;
         this.character = character;
         resetEffect();
     }
 
-    public CharacterName getCharacter() {
+    public CharacterType getCharacter() {
         return character;
     }
 

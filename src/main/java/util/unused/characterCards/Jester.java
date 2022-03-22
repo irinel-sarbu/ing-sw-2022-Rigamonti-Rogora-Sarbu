@@ -4,7 +4,7 @@ import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
 import model.expert.Character;
-import util.CharacterName;
+import util.CharacterType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Jester extends Character {
     List<Student> studentList;
 
     public Jester() {
-        super(1, CharacterName.JESTER);
+        super(1, CharacterType.JESTER);
         this.studentList = new ArrayList<>();
     }
 
