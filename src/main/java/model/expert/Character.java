@@ -7,10 +7,20 @@ public class Character {
     private CharacterName character;
     private boolean effectIsUsed;
 
+    public Character(CharacterName character){
+        this.cost= character.getBaseCost();
+        this.character=character;
+        resetEffect();
+    }
+
     public Character(int cost, CharacterName character) {
         this.cost = cost;
         this.character = character;
         resetEffect();
+    }
+
+    public CharacterName getCharacter() {
+        return character;
     }
 
     public void useEffect() {
