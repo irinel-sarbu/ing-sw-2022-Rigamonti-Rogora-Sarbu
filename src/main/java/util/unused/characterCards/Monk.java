@@ -1,4 +1,4 @@
-package model.expert.characterCards;
+package util.unused.characterCards;
 
 
 import exceptions.EmptyStudentListException;
