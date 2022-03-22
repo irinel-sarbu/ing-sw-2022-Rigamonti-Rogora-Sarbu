@@ -2,7 +2,7 @@ package model.expert;
 
 import util.*;
 
-public abstract class Character {               // TODO: observer per characterCards effects
+public class Character {
     private int cost;
     private CharacterName character;
     private boolean effectIsUsed;
@@ -19,5 +19,17 @@ public abstract class Character {               // TODO: observer per characterC
 
     public void resetEffect() {
         this.effectIsUsed = false;
+    }
+
+    public boolean getEffect() {
+        return effectIsUsed;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
