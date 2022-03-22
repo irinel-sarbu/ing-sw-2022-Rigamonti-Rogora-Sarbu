@@ -4,7 +4,7 @@ import view.View;
 import view.cli.CliView;
 import view.gui.GuiView;
 
-public class Client {
+public class App {
     static public void main(String[] args) {
         boolean run = true;
         boolean cliEnabled = false;
