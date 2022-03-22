@@ -12,4 +12,9 @@ public class Professor {
     public Color getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return color.toString() + " Prof.";
+    }
 }

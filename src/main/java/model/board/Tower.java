@@ -12,4 +12,9 @@ public class Tower {
     public TowerColor getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return color.toString();
+    }
 }

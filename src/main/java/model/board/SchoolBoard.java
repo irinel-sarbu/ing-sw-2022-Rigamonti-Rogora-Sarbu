@@ -1,6 +1,8 @@
 package model.board;
 
+import java.awt.color.ColorSpace;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import exceptions.*;
 import util.Color;
@@ -12,7 +14,7 @@ public class SchoolBoard {
     private final static int maxTowersSize = 10;
     private final List<Student> entrance;
     private int[] diningRoom; // yellow = 0, blue = 1, green = 2, red = 3, pink = 4;
-    private final List<Professor> professors;
+    private final List<Professor> professors;                                                                           // TODO: change Professor implementation to allow for .contains(Color color) method
     private final List<Tower> towers;
 
     public SchoolBoard() {
@@ -33,7 +35,7 @@ public class SchoolBoard {
         }
     }
 
-    public void removeFromEntrance(int position) throws StudentNotFoundException {
+    public void removeFromEntrance(int position) throws StudentNotFoundException {                                   // TODO: return Student object to easily move it
         boolean success = entrance.remove(position) != null;
         if (!success) throw new StudentNotFoundException();
     }
@@ -72,7 +74,7 @@ public class SchoolBoard {
     }
 
     public void removeProfessor(Professor professor) throws ProfessorNotFoundException {
-        boolean success = true;
+        boolean success;
         success = professors.remove(professor);
         if (!success) throw new ProfessorNotFoundException();
     }
@@ -89,5 +91,23 @@ public class SchoolBoard {
     public void removeTower() throws TowersIsEmptyException {
         boolean success = towers.remove(0) != null;
         if (!success) throw new TowersIsEmptyException();
+    }
+
+    @Override
+    public String toString() {
+        String entranceString = entrance.stream()
+                .map(Student::toString)
+                .collect(Collectors.joining(" ", "[", "]"));
+        String towerString = String.valueOf(towers.size());
+        StringBuilder diningRoomString = new StringBuilder();
+        for (Color color : Color.values()) {
+            char[] colorStudents = new char[maxDiningSize];
+            Arrays.fill(colorStudents, '-');
+            for (int i = 2; i < maxDiningSize; i += 3) colorStudents[i] = 'o';
+            for (int i = 0; i < diningRoom[color.getValue()]; i++) colorStudents[i] = color.toString().charAt(0);
+            String colorProfessor = "\n "; // + professors.contains(color) ? "X" : " ";             // TODO: after changing Professor implementation uncomment
+            diningRoomString.append("\n\t").append(new String(colorStudents));
+        }
+        return "Towers:" + towerString + " students:" + entranceString + diningRoomString;
     }
 }

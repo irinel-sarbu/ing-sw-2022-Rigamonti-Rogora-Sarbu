@@ -52,4 +52,16 @@ public class IslandTile implements Comparable<IslandTile> {
     public int compareTo(IslandTile other) {
         return Integer.compare(this.getIslandID(), other.getIslandID());
     }
+
+    @Override
+    public String toString() {
+        String stringID = String.format("%2s", islandID.toString());
+        String stringContent = students.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
+                .entrySet().stream()
+                .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
+                .collect(Collectors.joining(" ", "[", "]"));
+        return "Island" + stringID + stringContent + (tower != null ? tower.toString() : "X");
+    }
 }

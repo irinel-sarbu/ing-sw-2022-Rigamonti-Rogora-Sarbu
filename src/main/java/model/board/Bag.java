@@ -63,4 +63,9 @@ public class Bag {
         shuffle();
         return studentList.remove(0);
     }
+
+    @Override
+    public String toString() {
+        return "Bag: " + studentList.size() + " students remaining";
+    }
 }

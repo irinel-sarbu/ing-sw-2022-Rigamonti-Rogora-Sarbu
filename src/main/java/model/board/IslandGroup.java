@@ -12,16 +12,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class IslandGroup {
+    private int islandGroupID;
     private final List<IslandTile> islands;
     private boolean noEntry;
 
-    public IslandGroup() {
+    public IslandGroup(int islandGroupID) {
+        this.islandGroupID = islandGroupID;
         this.islands = new ArrayList<>();
         this.islands.add(new IslandTile());
         this.noEntry = false;
     }
 
     private IslandGroup(IslandGroup islandGroup) {
+        this.islandGroupID = islandGroup.islandGroupID;
         this.islands = new ArrayList<>();
         this.islands.addAll(islandGroup.islands);
         this.noEntry = false;
@@ -69,4 +72,13 @@ public class IslandGroup {
         return newIslandGroup;
     }
 
+    @Override
+    public String toString() {
+        String header = "IslandGroup " + String.format("%2s", islandGroupID);
+        StringBuilder body = new StringBuilder();
+        for (IslandTile islandTile : islands) {
+            body.append("\n\t").append(islandTile);
+        }
+        return header + body;
+    }
 }
