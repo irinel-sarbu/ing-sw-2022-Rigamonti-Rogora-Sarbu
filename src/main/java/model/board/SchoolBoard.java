@@ -108,11 +108,27 @@ public class SchoolBoard {
         return false;
     }
 
+    public static String allToString(List<SchoolBoard> boards) {
+        List<String[]> allBoards = boards.stream()
+                .map(SchoolBoard::toString)
+                .map(bs -> bs.split("\n"))
+                .collect(Collectors.toList());
+        StringBuilder boardsString = new StringBuilder();
+
+        for (int i = 0; i < allBoards.get(0).length; i++) {
+            for (String[] allBoard : allBoards) {
+                boardsString.append(String.format("%-32s", allBoard[i]));
+            }
+            boardsString.append("\n");
+        }
+        return new String(boardsString);
+    }
+
     @Override
     public String toString() {
         String entranceString = entrance.stream()
                 .map(Student::toString)
-                .collect(Collectors.joining(" ", "[", "]"));
+                .collect(Collectors.joining("", "[", "]"));
         String towerString = String.valueOf(towers.size());
         StringBuilder diningRoomString = new StringBuilder();
         for (Color color : Color.values()) {
@@ -120,9 +136,9 @@ public class SchoolBoard {
             Arrays.fill(colorStudents, '-');
             for (int i = 2; i < maxDiningSize; i += 3) colorStudents[i] = 'o';
             for (int i = 0; i < diningRoom[color.getValue()]; i++) colorStudents[i] = color.toString().charAt(0);
-            String colorProfessor = (this.hasProfessor(color) ? " X " : "   ");
-            diningRoomString.append("\n\t").append(new String(colorStudents)).append(colorProfessor);
+            String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
+            diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
-        return "SchoolBoard " + ID + " entrance:" + entranceString + diningRoomString + " Towers:" + towerString;
+        return "SchoolBoard " + ID + " entr:" + entranceString + diningRoomString + " Towers:" + towerString;
     }
 }
