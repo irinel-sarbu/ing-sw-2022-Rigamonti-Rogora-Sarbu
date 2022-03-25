@@ -50,6 +50,10 @@ public class Bag {
             studentList.add(new Student(Color.PINK));
     }
 
+    public int getRemainingStudents() {
+        return studentList.size();
+    }
+
     private void shuffle() {
         Collections.shuffle(studentList);
     }

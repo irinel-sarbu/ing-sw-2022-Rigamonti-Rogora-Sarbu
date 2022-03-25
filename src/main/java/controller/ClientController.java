@@ -1,19 +1,20 @@
 package controller;
 
 import events.*;
+import events.types.ServerInformationInsertedEvent;
 import events.types.SimpleMessageEvent;
 import model.GameModel;
 import view.View;
 
 import java.util.logging.Logger;
 
-public class GameController implements EventListener {
+public class ClientController implements EventListener {
     private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
     private final GameModel model;
     private final View view;
 
-    public GameController(GameModel gameModel, View view) {
+    public ClientController(GameModel gameModel, View view) {
         this.model = gameModel;
         this.view = view;
     }
@@ -28,5 +29,4 @@ public class GameController implements EventListener {
         LOGGER.info("New message: " + event.getMessage());
         return true;
     }
-
 }

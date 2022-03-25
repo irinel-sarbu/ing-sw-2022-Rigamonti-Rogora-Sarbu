@@ -31,22 +31,14 @@ public class IslandTile implements Comparable<IslandTile> {
         return tower.getColor();
     }
 
-    public void addStudent(Color color) {
-        students.add(new Student(color));
+    public void addStudent(Student student) {
+        students.add(student);
     }
 
     public int getStudentsNumber(Color color) {
         return (int) students.stream()
                 .filter(s -> s.getColor().equals(color))
                 .count();
-    }
-
-    public Color getMostNumerous() {
-        return students.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
-                .entrySet().stream().max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).orElse(null);
     }
 
     public int compareTo(IslandTile other) {

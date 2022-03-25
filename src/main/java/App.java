@@ -1,5 +1,5 @@
-import controller.GameController;
-import model.Game;
+import controller.ClientController;
+import model.GameModel;
 import view.View;
 import view.cli.CliView;
 import view.gui.GuiView;
@@ -24,12 +24,13 @@ public class App {
         }
 
         if (run) {
-            Game model = Game.getInstance();
+            GameModel model = new GameModel();
             View view = cliEnabled ? new CliView() : new GuiView();
-            GameController controller = new GameController(model, view);
+            ClientController controller = new ClientController(model, view);
             view.registerListener(controller);
             model.registerListener(view);
             view.run();
+
         }
     }
 }

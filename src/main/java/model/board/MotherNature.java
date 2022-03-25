@@ -1,10 +1,13 @@
 package model.board;
 
+import java.util.Random;
+
 public class MotherNature {
     private int position;
 
     public MotherNature() {
-        this.position = 0;
+        Random rng = new Random();
+        this.position = rng.nextInt(12);
     }
 
     public int getPosition() {

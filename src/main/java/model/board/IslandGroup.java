@@ -1,6 +1,7 @@
 package model.board;
 
 import exceptions.IllegalIslandGroupJoinException;
+import exceptions.IslandNotFoundException;
 import exceptions.NullIslandGroupException;
 import exceptions.NullTowerColorException;
 import util.Color;
@@ -28,6 +29,19 @@ public class IslandGroup {
         this.islands = new ArrayList<>();
         this.islands.addAll(islandGroup.islands);
         this.noEntry = false;
+    }
+
+    public IslandTile getIslandTileByID(int id) {
+        for (IslandTile island : islands) {
+            if (island.getIslandID() == id)
+                return island;
+        }
+
+        throw new IslandNotFoundException("Island with id " + id + " not found!");
+    }
+
+    public int getIslandGroupID() {
+        return islandGroupID;
     }
 
     public List<Integer> getIslandTilesID() {
