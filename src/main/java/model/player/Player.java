@@ -1,11 +1,9 @@
 package model.player;
 
 import exceptions.AssistantNotInDeckException;
-import exceptions.NotEnoughCoinsException;
 import model.board.Assistant;
 import model.board.SchoolBoard;
 import util.Wizard;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;

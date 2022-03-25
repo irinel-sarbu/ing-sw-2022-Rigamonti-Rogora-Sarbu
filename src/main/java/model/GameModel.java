@@ -1,6 +1,7 @@
 package model;
 
 import events.EventSender;
+import exceptions.EmptyStudentListException;
 import model.board.Bag;
 import model.board.CloudTile;
 import model.board.IslandGroup;
@@ -81,7 +82,12 @@ public class GameModel extends EventSender {
         for (IslandGroup islandGroup : islandGroups) {
             int islandGroupPos = islandGroup.getIslandGroupID();
             if (islandGroupPos != motherNaturePos && islandGroupPos != ((motherNaturePos + 6) % 12)) {
-                Student student = initialBag.pull();
+                Student student = null;
+                try {
+                    student = initialBag.pull();
+                } catch (EmptyStudentListException e) {
+                    logger.warning("Pulling from initial bag. Something went wrong...");
+                }
                 islandGroup.getIslandTileByID(0).addStudent(student);
             }
             System.out.println(islandGroup);
@@ -89,18 +95,25 @@ public class GameModel extends EventSender {
     }
 
     private void moveFromBagToEntrance(Player player) {
-        for(int i = 0; i < 7; i++) 
+        for (int i = 0; i < 7; i++)
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
                 logger.warning("Setting up entrance. Something went wrong...");
+            } catch (EmptyStudentListException e) {
+                logger.warning("Pulling from initial bag. Something went wrong...");
             }
     }
 
     public void moveFromBagToCloudTile(CloudTile cloudTile) {
         int num = players.size() + 1;
-        for(int i = 0; i < num; i++)
-            cloudTile.put(bag.pull());
+        for (int i = 0; i < num; i++) {
+            try {
+                cloudTile.put(bag.pull());
+            } catch (EmptyStudentListException e) {
+                logger.warning("Pulling from initial bag. Something went wrong...");
+            }
+        }
     }
 
     public void moveFromCloudTileToEntrance(CloudTile cloudTile, Player player) {

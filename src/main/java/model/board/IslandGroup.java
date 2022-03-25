@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class IslandGroup {
-    private int islandGroupID;
+    private final int islandGroupID;
     private final List<IslandTile> islands;
     private boolean noEntry;
 

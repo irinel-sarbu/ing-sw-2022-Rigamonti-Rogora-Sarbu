@@ -1,31 +1,16 @@
 package model.board;
 
+import exceptions.EmptyStudentListException;
 import util.Color;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Bag {
     private final List<Student> studentList;
 
     public Bag(int num) {
-
         this.studentList = new ArrayList<>();
-        /*
-         * for (int y = 0; y < num; y++)
-         * studentList.add(new Student(Color.YELLOW));
-         *
-         * for (int b = 0; b < num; b++)
-         * studentList.add(new Student(Color.BLUE));
-         *
-         * for (int g = 0; g < num; g++)
-         * studentList.add(new Student(Color.GREEN));
-         *
-         * for (int r = 0; r < num; r++)
-         * studentList.add(new Student(Color.RED));
-         *
-         * for (int p = 0; p < num; p++)
-         * studentList.add(new Student(Color.PINK));
-         */
         for (Color color : Color.values()) {
             studentList.addAll(Collections.nCopies(num, new Student(color)));
         }
@@ -63,13 +48,24 @@ public class Bag {
         shuffle();
     }
 
-    public Student pull() {
+    public Student pull() throws EmptyStudentListException {
+        if (studentList.size() == 0) throw new EmptyStudentListException();
         shuffle();
         return studentList.remove(0);
     }
 
+    public String toString(boolean printContent) {
+        String stringContent = printContent ? studentList.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
+                .entrySet().stream()
+                .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
+                .collect(Collectors.joining(" ", "\n\t[", "]")) : "";
+        return "Bag: " + studentList.size() + " students remaining" + stringContent;
+    }
+
     @Override
     public String toString() {
-        return "Bag: " + studentList.size() + " students remaining";
+        return toString(false);
     }
 }

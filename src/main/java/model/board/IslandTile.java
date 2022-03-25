@@ -41,6 +41,14 @@ public class IslandTile implements Comparable<IslandTile> {
                 .count();
     }
 
+    public Color getMostNumerous() {
+        return students.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
+                .entrySet().stream().max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey).orElse(null);
+    }
+
     public int compareTo(IslandTile other) {
         return Integer.compare(this.getIslandID(), other.getIslandID());
     }
