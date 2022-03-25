@@ -1,7 +1,6 @@
 package controller;
 
 import events.*;
-import events.types.ServerInformationInsertedEvent;
 import events.types.SimpleMessageEvent;
 import model.GameModel;
 import view.View;
