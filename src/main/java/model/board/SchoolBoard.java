@@ -1,6 +1,5 @@
 package model.board;
 
-import java.awt.color.ColorSpace;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,15 +16,14 @@ public class SchoolBoard {
     private final static int maxDiningSize = 10;
     private final int ID;
     private final List<Student> entrance;                                                                               // TODO: check if List must be final or not
-    private final Stack<Student>[] diningRoom;
+    private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
 
     public SchoolBoard(int ID) {
         this.ID = ID;
         this.coins = 0;
         this.entrance = new ArrayList<>();
-        this.diningRoom = new Stack[Color.values().length];
-        for (int i = 0; i < maxProfessorsSize; i++) diningRoom[i] = new Stack<>();
+        this.diningRoom = new ArrayList<Stack<Student>>(Color.values().length);
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }
@@ -52,24 +50,24 @@ public class SchoolBoard {
     }
 
     public void addToDiningRoom(Student student) throws DiningRoomFullException {
-        if (diningRoom[student.getColor().getValue()].size() + 1 > maxDiningSize) {
+        if (diningRoom.get(student.getColor().getValue()).size() + 1 > maxDiningSize) {
             throw new DiningRoomFullException();
         }
-        diningRoom[student.getColor().getValue()].push(student);
-        if ((diningRoom[student.getColor().getValue()].size() % 3) == 0) {
+        diningRoom.get(student.getColor().getValue()).push(student);
+        if ((diningRoom.get(student.getColor().getValue()).size() % 3) == 0) {
             addCoin();
         }
     }
 
     public Student removeFromDiningRoom(Color color) throws DiningRoomEmptyException {
-        if (diningRoom[color.getValue()].size() == 0) {
+        if (diningRoom.get(color.getValue()).size() == 0) {
             throw new DiningRoomEmptyException();
         }
-        return diningRoom[color.getValue()].pop();
+        return diningRoom.get(color.getValue()).pop();
     }
 
     public int getStudentsOfColor(Color color) {
-        return diningRoom[color.getValue()].size();
+        return diningRoom.get(color.getValue()).size();
     }
 
     public List<Professor> getProfessors() {
@@ -153,7 +151,7 @@ public class SchoolBoard {
             char[] colorStudents = new char[maxDiningSize];
             Arrays.fill(colorStudents, '-');
             for (int i = 2; i < maxDiningSize; i += 3) colorStudents[i] = 'o';
-            for (int i = 0; i < diningRoom[color.getValue()].size(); i++) colorStudents[i] = color.toString().charAt(0);
+            for (int i = 0; i < diningRoom.get(color.getValue()).size(); i++) colorStudents[i] = color.toString().charAt(0);
             String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
