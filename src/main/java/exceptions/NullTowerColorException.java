@@ -1,7 +1,7 @@
 package exceptions;
 
 public class NullTowerColorException extends Exception {
-    public NullTowerColorException() {
+    public NullTowerColorException() {                                                                                  // TODO: may be obsolete
         super();
     }
 

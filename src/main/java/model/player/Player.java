@@ -15,14 +15,12 @@ public class Player {
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
     private final Stack<Assistant> foldDeck;
-    private int coins;
 
     public Player(String name, Wizard wizard) {
         this.name = name;
         this.schoolBoard = new SchoolBoard();
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldDeck = new Stack<>();
-        this.coins = 0;
     }
 
     public void pushFoldDeck(Assistant assistantCard) {
@@ -48,22 +46,7 @@ public class Player {
     }
 
     public SchoolBoard getSchoolBoard() {
-        return this.schoolBoard;
-    }
-
-    public int getCoins() {
-        return coins;
-    }
-
-    public void addCoins(int coins) {
-        if (coins <= 0) return;
-        this.coins += coins;
-    }
-
-    public void removeCoins(int coins) throws NotEnoughCoinsException {
-        if (coins <= 0) return;
-        if (coins > this.coins) throw new NotEnoughCoinsException();
-        this.coins -= coins;
+        return schoolBoard;
     }
 
     public String getName() {

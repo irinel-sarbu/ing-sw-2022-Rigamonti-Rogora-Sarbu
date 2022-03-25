@@ -9,6 +9,7 @@ import util.Color;
 
 public class SchoolBoard {
     private static int count = 0;
+    private int coins;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;
     private final static int maxEntranceSize = 10;
@@ -21,6 +22,7 @@ public class SchoolBoard {
 
     public SchoolBoard(int ID) {
         this.ID = ID;
+        this.coins = 0;
         this.entrance = new ArrayList<>();
         this.diningRoom = new int[Color.values().length];
         this.professors = new ArrayList<>();
@@ -54,6 +56,10 @@ public class SchoolBoard {
         if (diningRoom[student.getColor().getValue()] > maxDiningSize) {
             diningRoom[student.getColor().getValue()] -= 1;
             throw new DiningRoomFullException();
+        } else {
+            if ((diningRoom[student.getColor().getValue()] % 3) == 0) {
+                addCoin();
+            }
         }
     }
 
@@ -124,6 +130,24 @@ public class SchoolBoard {
         return new String(boardsString);
     }
 
+    private void addCoin() {
+        coins += 1;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void removeCoins(int coins) throws NotEnoughCoinsException {
+        if (coins <= 0) return;
+        if (coins > this.coins) throw new NotEnoughCoinsException();
+        this.coins -= coins;
+    }
+
     @Override
     public String toString() {
         String entranceString = entrance.stream()
@@ -139,6 +163,8 @@ public class SchoolBoard {
             String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
-        return "SchoolBoard " + ID + " entr:" + entranceString + diningRoomString + " Towers:" + towerString;
+        return "SchoolBoard " + ID + " entr:" + entranceString + diningRoomString +
+                " Coins: " + coins +
+                "\n    " + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
     }
 }
