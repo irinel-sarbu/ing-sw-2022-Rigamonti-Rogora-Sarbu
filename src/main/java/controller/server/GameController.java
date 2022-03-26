@@ -43,9 +43,10 @@ public class GameController implements EventListener {
         return codeGenerated;
     }
 
-    public void addGame(int numOfPlayers, GameMode gameMode){
+    public String addGame(int numOfPlayers, GameMode gameMode){
         String code = codeGen();
         games.put(code, new GameModel(numOfPlayers, gameMode, code));
+        return code;
     }
 
     public GameModel getGame(String code){
