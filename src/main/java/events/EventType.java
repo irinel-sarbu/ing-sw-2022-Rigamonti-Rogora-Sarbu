@@ -2,7 +2,8 @@ package events;
 
 public enum EventType {
     // Handled on server, Sended by client
-    CLIENT_TO_SERVER_INFO,
+    CREATE_GAME,
+    JOIN_GAME,
 
     // Handled on client, Sended by server
     SERVER_ACK,

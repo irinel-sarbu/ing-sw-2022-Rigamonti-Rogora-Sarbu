@@ -1,7 +1,12 @@
 package util;
 
 public enum GameState {
+    SETUP,
     PLANNING,
-    ACTION,
-    END
+    STUDENT_MOVEMENT,
+    MOTHERNATURE_MOVEMENT,
+    RESOLVE_ISLAND,
+    TURN_EPILOGUE,
+    CHARACTER_EFFECT_HANDLER,
+    GAME_OVER
 }
