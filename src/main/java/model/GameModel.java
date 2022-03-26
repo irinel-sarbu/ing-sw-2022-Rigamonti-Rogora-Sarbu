@@ -16,6 +16,8 @@ import model.player.Player;
 import util.CharacterType;
 import util.Color;
 import exceptions.PlayerNotFoundException;
+import util.GameMode;
+import util.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +28,18 @@ public class GameModel extends EventSender {
 
     public static final int MAX_PLAYERS = 3;
 
+    private final int numOfPlayers;
+    private final GameMode gameMode;
+    private GameState state;
     private final Bag bag;
     private final CoinSupply coinSupply;
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
     private final MotherNature motherNature;
 
-    public GameModel() {
+    public GameModel(int numOfPlayers, GameMode gameMode) {
+        this.numOfPlayers=numOfPlayers;
+        this.gameMode=gameMode;
         this.bag = new Bag(24);
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
@@ -45,6 +52,24 @@ public class GameModel extends EventSender {
 
         moveFromBagToIslandTile();
     }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public int getNumOfPlayers() {
+        return numOfPlayers;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {
         for (Player player : players) {
