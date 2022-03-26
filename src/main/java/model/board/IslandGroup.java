@@ -30,6 +30,10 @@ public class IslandGroup {
         this.noEntry = new Stack<>();
     }
 
+    public List<IslandTile> getIslands() {
+        return islands;
+    }
+
     public IslandTile getIslandTileByID(int id) {
         for (IslandTile island : islands) {
             if (island.getIslandID() == id)

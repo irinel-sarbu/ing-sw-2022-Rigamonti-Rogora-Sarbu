@@ -1,12 +1,10 @@
 package events;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-public abstract class Event {
-    protected Logger LOGGER = Logger.getLogger(Event.class.getName());
-
+public abstract class Event implements Serializable {
     protected boolean handled;
     private final EventType type;
     private final UUID uuid;

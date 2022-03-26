@@ -5,11 +5,16 @@ import exceptions.EmptyStudentListException;
 import model.board.Bag;
 import model.board.CloudTile;
 import model.board.IslandGroup;
+import model.board.IslandTile;
 import model.board.MotherNature;
 import model.board.Student;
+import model.expert.CoinSupply;
 import exceptions.EntranceFullException;
+import exceptions.IslandNotFoundException;
 import exceptions.MaxPlayersException;
 import model.player.Player;
+import util.CharacterType;
+import util.Color;
 import exceptions.PlayerNotFoundException;
 
 import java.util.ArrayList;
@@ -22,12 +27,14 @@ public class GameModel extends EventSender {
     public static final int MAX_PLAYERS = 3;
 
     private final Bag bag;
+    private final CoinSupply coinSupply;
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
     private final MotherNature motherNature;
 
     public GameModel() {
         this.bag = new Bag(24);
+        this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
 
@@ -36,7 +43,7 @@ public class GameModel extends EventSender {
             islandGroups.add(new IslandGroup(i));
         }
 
-        init();
+        moveFromBagToIslandTile();
     }
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {
@@ -67,14 +74,6 @@ public class GameModel extends EventSender {
         return result;
     }
 
-    private void init() {
-        moveFromBagToIslandTile();
-
-        for(Player p : players) {
-            moveFromBagToEntrance(p);
-        }
-    }
-
     private void moveFromBagToIslandTile() {
         Bag initialBag = new Bag(2);
         int motherNaturePos = motherNature.getPosition();
@@ -88,7 +87,7 @@ public class GameModel extends EventSender {
                 } catch (EmptyStudentListException e) {
                     logger.warning("Pulling from initial bag. Something went wrong...");
                 }
-                islandGroup.getIslandTileByID(0).addStudent(student);
+                islandGroup.getIslands().get(0).addStudent(student);
             }
             System.out.println(islandGroup);
         }
@@ -99,10 +98,20 @@ public class GameModel extends EventSender {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                logger.warning("Setting up entrance. Something went wrong...");
+                logger.severe("Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                logger.warning("Pulling from initial bag. Something went wrong...");
+                logger.severe("Empty bag...");
             }
+    }
+
+    public IslandTile getIslandTileByID(int id) {
+        for (IslandGroup ig : islandGroups) {
+            IslandTile it = ig.getIslandTileByID(id);
+            if (it != null)
+                return it;
+        }
+
+        throw new IslandNotFoundException("Island with id " + id + " not found!");
     }
 
     public void moveFromBagToCloudTile(CloudTile cloudTile) {
@@ -111,14 +120,30 @@ public class GameModel extends EventSender {
             try {
                 cloudTile.put(bag.pull());
             } catch (EmptyStudentListException e) {
-                logger.warning("Pulling from initial bag. Something went wrong...");
+                logger.severe("Pulling from initial bag. Something went wrong...");
             }
         }
     }
 
-    public void moveFromCloudTileToEntrance(CloudTile cloudTile, Player player) {
-        
+    public void moveMotherNature(int steps) {
+        motherNature.progress(steps, islandGroups.size());
     }
 
-    
+    public void joinAdiacent(int islandGroupPos) {
+        // TODO implement
+    }
+
+    public void moveFromCloudTileToEntrance(Color color, CloudTile cloudTile, Player player) {
+
+    }
+
+    // Expert mode functions
+    public void fillUpCoins() {
+        // TODO implement
+    }
+
+    public List<Character> getCharacters() {
+        // TODO
+        return null;
+    }
 }
