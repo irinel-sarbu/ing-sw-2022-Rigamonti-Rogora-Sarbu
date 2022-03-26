@@ -1,126 +1,106 @@
 package network;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import controller.server.GameController;
 import events.Event;
 import events.EventDispatcher;
 import events.EventListener;
 import events.EventType;
-import events.types.network.ClientToServerInfoEvent;
-import events.types.network.ServerACKEvent;
+import events.NetworkEventListener;
+import events.types.clientToServer.RegisterEvent;
+import util.Tuple;
 
-public class Server implements EventListener {
+public class Server extends Thread implements NetworkEventListener {
 	private final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
-	private ArrayList<ClientConnection> clientList;
-	private LinkedBlockingQueue<Event> messages;
+	private final GameController controller;
+	private final Map<String, ClientConnection> clientList;
+	private final List<Tuple<Event, ClientConnection>> eventQueue;
 	private ServerSocket serverSocket;
 
-	public Server(int port) throws IOException {
-		clientList = new ArrayList<ClientConnection>();
-		messages = new LinkedBlockingQueue<>();
-		serverSocket = new ServerSocket(port);
-
-		Thread accept = new Thread() {
-			public void run() {
-				LOGGER.info("Waiting for clients to connect...");
-				while (true) {
-					try {
-						Socket s = serverSocket.accept();
-						clientList.add(new ClientConnection(s));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		accept.start();
-
-		Thread messageHandling = new Thread() {
-			public void run() {
-				while (true) {
-					try {
-						onEvent(messages.take());
-					} catch (InterruptedException e) {
-						LOGGER.info("Connection interrupted...");
-					}
-				}
-			}
-		};
-		messageHandling.start();
-
+	public Server(GameController controller) {
+		this.controller = controller;
+		clientList = new HashMap<>();
+		eventQueue = new ArrayList<>();
 	}
 
 	@Override
-	public void onEvent(Event event) {
-		EventDispatcher dispatcher = new EventDispatcher(event);
-		dispatcher.dispatch(EventType.NETWORK_MESSAGE, (Event e) -> onClientInfo((ClientToServerInfoEvent) e));
-	}
-
-	private class ClientConnection {
-		ObjectInputStream in;
-		ObjectOutputStream out;
-		Socket socket;
-
-		ClientConnection(Socket socket) throws IOException {
-			LOGGER.info("New client connected!");
-			this.socket = socket;
-			in = new ObjectInputStream(socket.getInputStream());
-
-			Thread read = new Thread() {
-				public void run() {
-					while (true) {
-						try {
-							messages.put((Event) in.readObject());
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-			};
-
-			read.setDaemon(true);
-			read.start();
-
-			out = new ObjectOutputStream(socket.getOutputStream());
+	public void run() {
+		try {
+			serverSocket = new ServerSocket(5000);
+			LOGGER.info("Server started on port 5000.\nWaiting for clients...");
+		} catch (IOException e) {
+			LOGGER.severe(e.getMessage());
 		}
 
-		public void write(Event obj) {
+		Thread eventDigest = new Thread() {
+			public void run() {
+				while (!serverSocket.isClosed()) {
+					onEvent(digestEvent());
+				}
+			}
+		};
+		eventDigest.start();
+
+		while (!serverSocket.isClosed()) {
 			try {
-				out.writeObject(obj);
+				Socket clientSocket = serverSocket.accept();
+				ClientConnection clientConnection = new ClientConnection(this, clientSocket);
+				clientConnection.start();
+
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.severe(e.toString());
 			}
 		}
 	}
 
-	public void sendToOne(int index, Event message) throws IndexOutOfBoundsException {
-		clientList.get(index).write(message);
+	public synchronized void pushEvent(Tuple<Event, ClientConnection> networkEvent) {
+		eventQueue.add(networkEvent);
 	}
 
-	public void sendToAll(Event message) {
-		for (ClientConnection client : clientList)
-			client.write(message);
+	public synchronized Tuple<Event, ClientConnection> digestEvent() {
+		if (eventQueue.size() > 0)
+			return eventQueue.get(0);
+		return null;
+	}
+
+	@Override
+	public synchronized void onEvent(Tuple<Event, ClientConnection> networkEvent) {
+		if (networkEvent == null)
+			return;
+		EventDispatcher dispatcher = new EventDispatcher(networkEvent);
+
+		dispatcher.dispatch(EventType.REGISTER, (Tuple<Event, ClientConnection> t) -> onRegister((RegisterEvent) t.getKey(), t.getValue()));
+	}
+
+	public void onDisconnect(ClientConnection clientConnection) {
+		String name = getNameByClientCOnnection(clientConnection);
+
+		LOGGER.info(name + " disconnected.");
+	}
+
+	public String getNameByClientCOnnection(ClientConnection client) {
+		for (Entry<String, ClientConnection> entry : clientList.entrySet()) {
+			if (entry.getValue().equals(client)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 	// Handlers
-	private boolean onClientInfo(ClientToServerInfoEvent event) {
-		LOGGER.info("New CLIENT_TO_SERVER_INFO event: " + event.getMessage());
-		LOGGER.info(">\tSending ACK to new Client...");
-		sendToAll(new ServerACKEvent("Sup bro! Welcome to the the server!"));
+	private boolean onRegister(RegisterEvent event, ClientConnection client) {
+		LOGGER.info("Registering: " + event.getName());
+		clientList.put(event.getName(), client);
 		return true;
 	}
 }

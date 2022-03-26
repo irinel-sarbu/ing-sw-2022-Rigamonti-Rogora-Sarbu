@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+// TODO Add game code to Event to identify model
+
 public abstract class Event implements Serializable {
     protected boolean handled;
     private final EventType type;

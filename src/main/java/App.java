@@ -1,5 +1,8 @@
+import java.io.IOException;
+
 import controller.client.ClientController;
 import model.GameModel;
+import network.Client;
 import util.GameMode;
 import view.View;
 import view.cli.CliView;
@@ -24,14 +27,19 @@ public class App {
             }
         }
 
-        /*if (run) {
-        GameModel model = new GameModel(3, GameMode.NORMAL);
-        View view = cliEnabled ? new CliView() : new GuiView();
-        ClientController controller = new ClientController(model, view);
-        view.registerListener(controller);
-        model.registerListener(view);
-        view.run();
-        }*/
-        
+        /*
+         * if (run) {
+         * GameModel model = new GameModel(3, GameMode.NORMAL);
+         * View view = cliEnabled ? new CliView() : new GuiView();
+         * ClientController controller = new ClientController(model, view);
+         * view.registerListener(controller);
+         * model.registerListener(view);
+         * view.run();
+         * }
+         */
+
+        Client client = new Client("localhost", 5000);
+        client.start();
+
     }
 }
