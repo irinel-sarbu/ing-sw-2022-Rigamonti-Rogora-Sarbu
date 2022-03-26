@@ -1,4 +1,4 @@
-import controller.ClientController;
+import controller.client.ClientController;
 import model.GameModel;
 import view.View;
 import view.cli.CliView;

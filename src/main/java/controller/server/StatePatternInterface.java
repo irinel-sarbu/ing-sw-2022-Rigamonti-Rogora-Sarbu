@@ -1,4 +1,4 @@
-package controller;
+package controller.server;
 
 public interface StatePatternInterface {
 }

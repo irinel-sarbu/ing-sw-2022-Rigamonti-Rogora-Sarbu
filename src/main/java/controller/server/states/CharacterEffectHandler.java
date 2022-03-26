@@ -1,4 +1,4 @@
-package controller.states;
+package controller.server.states;
 
 public class CharacterEffectHandler {
 }

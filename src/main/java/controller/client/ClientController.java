@@ -1,5 +1,6 @@
-package controller;
+package controller.client;
 
+import controller.server.GameController;
 import events.*;
 import events.types.SimpleMessageEvent;
 import model.GameModel;

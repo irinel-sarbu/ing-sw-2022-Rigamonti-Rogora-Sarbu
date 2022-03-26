@@ -1,4 +1,4 @@
-package controller;
+package controller.server;
 
 import events.*;
 import events.types.SimpleMessageEvent;

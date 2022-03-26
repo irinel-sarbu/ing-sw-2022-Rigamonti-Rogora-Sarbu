@@ -1,4 +1,4 @@
-package controller;
+package controller.server;
 
 public class PlanningPhase {
 }
