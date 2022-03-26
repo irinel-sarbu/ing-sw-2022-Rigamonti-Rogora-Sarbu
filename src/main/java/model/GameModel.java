@@ -28,6 +28,7 @@ public class GameModel extends EventSender {
 
     public static final int MAX_PLAYERS = 3;
 
+    private final String code;
     private final int numOfPlayers;
     private final GameMode gameMode;
     private GameState state;
@@ -37,9 +38,10 @@ public class GameModel extends EventSender {
     private final List<Player> players;
     private final MotherNature motherNature;
 
-    public GameModel(int numOfPlayers, GameMode gameMode) {
+    public GameModel(int numOfPlayers, GameMode gameMode, String code) {
         this.numOfPlayers = numOfPlayers;
         this.gameMode = gameMode;
+        this.code = code;
         this.bag = new Bag(24);
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
@@ -51,6 +53,10 @@ public class GameModel extends EventSender {
         }
 
         moveFromBagToIslandTile();
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public GameState getState() {
