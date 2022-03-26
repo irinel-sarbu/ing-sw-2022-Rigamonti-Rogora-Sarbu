@@ -4,12 +4,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import exceptions.*;
+import model.expert.CoinSupply;
 import util.Color;
 
 public class SchoolBoard {
     private static int count = 0;
     private final static int maxEntranceSize = 9;
-    private int coins;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;
     private final static int maxTowersSize = 8;
@@ -18,12 +18,13 @@ public class SchoolBoard {
     private final List<Student> entrance;                                                                               // TODO: check if List must be final or not
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
+    private CoinSupply coins;
 
     public SchoolBoard(int ID) {
         this.ID = ID;
-        this.coins = 0;
+        this.coins = new CoinSupply();
         this.entrance = new ArrayList<>();
-        this.diningRoom = new ArrayList<Stack<Student>>(Color.values().length);
+        this.diningRoom = new ArrayList<>(Color.values().length);
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
     }
@@ -49,14 +50,16 @@ public class SchoolBoard {
         if (!success) throw new StudentNotFoundException();
     }
 
-    public void addToDiningRoom(Student student) throws DiningRoomFullException {
+    public boolean addToDiningRoom(Student student) throws DiningRoomFullException {
         if (diningRoom.get(student.getColor().getValue()).size() + 1 > maxDiningSize) {
             throw new DiningRoomFullException();
         }
         diningRoom.get(student.getColor().getValue()).push(student);
-        if ((diningRoom.get(student.getColor().getValue()).size() % 3) == 0) {
-            addCoin();
-        }
+        return (diningRoom.get(student.getColor().getValue()).size() % 3) == 0;
+    }
+
+    public CoinSupply getCoinSupply() {
+        return coins;
     }
 
     public Student removeFromDiningRoom(Color color) throws DiningRoomEmptyException {
@@ -120,24 +123,6 @@ public class SchoolBoard {
             boardsString.append("\n");
         }
         return new String(boardsString);
-    }
-
-    private void addCoin() {
-        coins += 1;
-    }
-
-    public int getCoins() {
-        return coins;
-    }
-
-    public void setCoins(int coins) {
-        this.coins = coins;
-    }
-
-    public void removeCoins(int coins) throws NotEnoughCoinsException {
-        if (coins <= 0) return;
-        if (coins > this.coins) throw new NotEnoughCoinsException();
-        this.coins -= coins;
     }
 
     @Override
