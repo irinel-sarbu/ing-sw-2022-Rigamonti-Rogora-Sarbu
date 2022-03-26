@@ -38,8 +38,8 @@ public class GameModel extends EventSender {
     private final MotherNature motherNature;
 
     public GameModel(int numOfPlayers, GameMode gameMode) {
-        this.numOfPlayers=numOfPlayers;
-        this.gameMode=gameMode;
+        this.numOfPlayers = numOfPlayers;
+        this.gameMode = gameMode;
         this.bag = new Bag(24);
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
@@ -68,8 +68,6 @@ public class GameModel extends EventSender {
     public GameMode getGameMode() {
         return gameMode;
     }
-
-
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {
         for (Player player : players) {

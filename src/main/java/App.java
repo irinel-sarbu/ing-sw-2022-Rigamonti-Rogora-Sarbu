@@ -25,13 +25,13 @@ public class App {
         }
 
         if (run) {
-            GameModel model = new GameModel(3, GameMode.NORMAL);
-            View view = cliEnabled ? new CliView() : new GuiView();
-            ClientController controller = new ClientController(model, view);
-            view.registerListener(controller);
-            model.registerListener(view);
-            view.run();
-
+        GameModel model = new GameModel(3, GameMode.NORMAL);
+        View view = cliEnabled ? new CliView() : new GuiView();
+        ClientController controller = new ClientController(model, view);
+        view.registerListener(controller);
+        model.registerListener(view);
+        view.run();
         }
+        
     }
 }
