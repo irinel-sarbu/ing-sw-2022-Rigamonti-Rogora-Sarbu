@@ -20,7 +20,7 @@ public class GameController implements EventListener {
         this.view = view;
     }
 
-    public String codeGen() {
+    private String codeGen() {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 5;
