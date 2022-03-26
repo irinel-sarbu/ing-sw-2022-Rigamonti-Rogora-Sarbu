@@ -1,7 +1,6 @@
 package controller.server;
 
 import events.*;
-import events.types.SimpleMessageEvent;
 import model.GameModel;
 import view.View;
 
@@ -21,12 +20,6 @@ public class GameController implements EventListener {
     @Override
     public void onEvent(Event event) {
         EventDispatcher dispatcher = new EventDispatcher(event);
-        dispatcher.dispatch(EventType.SIMPLE_MESSAGE, (Event e) -> (onSimpleMessage((SimpleMessageEvent) e)));
-    }
-
-    private boolean onSimpleMessage(SimpleMessageEvent event) {
-        LOGGER.info("New message: " + event.getMessage());
-        return true;
     }
 
 }
