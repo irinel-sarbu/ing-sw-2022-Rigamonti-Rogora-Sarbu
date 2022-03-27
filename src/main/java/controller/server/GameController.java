@@ -5,7 +5,6 @@ import events.*;
 import exceptions.GameNotFoundException;
 import model.GameModel;
 import util.GameMode;
-import view.View;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -15,6 +14,7 @@ public class GameController implements EventListener {
     private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
     private final HashMap<String, GameModel> games;
+
     private final TurnEpilogue epilogue;
     private final StudentMovement studentMovement;
     private final ResolveIsland resolveIsland;
@@ -24,7 +24,7 @@ public class GameController implements EventListener {
     private final CharacterEffectHandler characterEffectHandler;
 
     public GameController() {
-        this.games = new HashMap<String, GameModel>();
+        this.games = new HashMap<>();
         this.epilogue = new TurnEpilogue();
         this.studentMovement = new StudentMovement();
         this.resolveIsland = new ResolveIsland();
@@ -72,5 +72,4 @@ public class GameController implements EventListener {
     public void onEvent(Event event) {
         EventDispatcher dispatcher = new EventDispatcher(event);
     }
-
 }

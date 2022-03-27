@@ -18,15 +18,11 @@ public class ServerConnection extends Thread {
     Socket socket;
 
     ServerConnection(Client client, Socket socket) throws IOException {
-        LOGGER.info("> Connecting to server...");
         this.client = client;
         this.socket = socket;
 
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
-
-        write(new RegisterEvent("test"));
-        LOGGER.info("> Connection enstablished");
     }
 
     @Override
@@ -38,7 +34,7 @@ public class ServerConnection extends Thread {
                     disconnect();
                 client.pushEvent(event);
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                LOGGER.severe(e.getMessage());
                 disconnect();
             }
         }

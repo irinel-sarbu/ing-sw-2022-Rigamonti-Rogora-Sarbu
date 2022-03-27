@@ -1,6 +1,8 @@
 package view.cli;
 
 import events.Event;
+import events.types.clientToClient.ConnectEvent;
+import events.types.clientToClient.PlayerNameInsertedEvent;
 import view.View;
 
 import java.util.Scanner;
@@ -11,51 +13,44 @@ public class CliView extends View {
     @Override
     public void run() {
         this.scanner = new Scanner(System.in);
-        init();
-    }
 
-    @Override
-    public void onEvent(Event event) {
-
-    }
-
-    private void init() {
         System.out.println("Eriantys #LOGO TODO");
         getServerInfo();
     }
 
-    private void getServerInfo() {
-        final String defaultPort = "12345";
-        final String defaultAddress = "127.0.0.1";
+    @Override
+    public void onEvent(Event event) {
+    }
+
+    @Override
+    public void getServerInfo() {
+        final int defaultPort = 12345;
+        final String defaultAddress = "localhost";
 
         String insertedAddress = "";
         String insertedPort = "";
 
-        boolean serverAddrIsValid = false;
-        boolean serverPortIsValid = false;
+        System.out.print("\rInsert server ADDRESS [localhost] >>> ");
+        insertedAddress = scanner.nextLine();
 
-        while (!serverAddrIsValid) {
-            System.out.print("\rInsert server ADDRESS [localhost] >>> ");
-            insertedAddress = scanner.nextLine();
+        System.out.print("\rInsert server PORT [" + defaultPort + "] >>> ");
+        insertedPort = scanner.nextLine();
 
-            if (insertedAddress.isEmpty())
-                insertedAddress = defaultAddress;
-            //serverAddrIsValid = ClientController.validateIPV4(insertedAddress);
+        String eventIP = insertedAddress.isEmpty() ? defaultAddress : insertedAddress;
+        int eventPort = insertedPort.isEmpty() ? defaultPort : Integer.parseInt(insertedPort);
 
-            if (!serverAddrIsValid) System.out.println("\rAddress is invalid try again!\r");
-        }
+        notifyListeners(new ConnectEvent(eventIP, eventPort));
+    }
 
-        while(!serverPortIsValid) {
-            System.out.print("\rInsert server PORT [" + defaultPort + "] >>> ");
-            insertedPort = scanner.nextLine();
+    @Override
+    public void getPlayerName() {
+        String insertedName = "";
 
-            if (insertedPort.isEmpty())
-                insertedPort = defaultPort;
-            //serverPortIsValid = ClientController.validateServerPort(insertedPort);
+        do {
+            System.out.print("\rInsert your name >>> ");
+            insertedName = scanner.nextLine();
+        } while(insertedName.isEmpty());
 
-            if (!serverPortIsValid) System.out.println("\rPort is invalid try again!\r");
-        }
-
-        //notifyListeners(new ServerInformationInsertedEvent(insertedAddress, Integer.parseInt(insertedPort)));
+        notifyListeners(new PlayerNameInsertedEvent(insertedName));
     }
 }

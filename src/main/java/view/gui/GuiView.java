@@ -10,6 +10,21 @@ public class GuiView extends View {
     }
 
     @Override
+    public void displayError(String errorMessage) {
+
+    }
+
+    @Override
+    public void getServerInfo() {
+
+    }
+
+    @Override
+    public void getPlayerName() {
+
+    }
+
+    @Override
     public void onEvent(Event event) {
 
     }

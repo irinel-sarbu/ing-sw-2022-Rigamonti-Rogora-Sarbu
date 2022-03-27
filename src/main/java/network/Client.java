@@ -4,28 +4,31 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
-import events.Event;
-import events.EventDispatcher;
-import events.EventListener;
-import events.EventType;
-import events.types.network.ServerACKEvent;
+import events.*;
+import events.types.clientToClient.ConnectionRefusedEvent;
+import events.types.serverToClient.ConnectOkEvent;
 
-public class Client extends Thread implements EventListener {
+public class Client extends EventSender implements Runnable {
     private final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
+    private final LinkedBlockingQueue<Event> eventQueue;
+
     private ServerConnection server;
-    private List<Event> eventQueue;
     private Socket socket;
 
     private String IPAddress;
     private int port;
 
-    public Client(String IPAddress, int port) {
-        this.IPAddress = IPAddress;
+    public Client() {
+        eventQueue = new LinkedBlockingQueue<>();
+    }
+
+    public void setAddressAndPort(String ip, int port) {
+        this.IPAddress = ip;
         this.port = port;
-        eventQueue = new ArrayList<>();
     }
 
     @Override
@@ -34,47 +37,30 @@ public class Client extends Thread implements EventListener {
             socket = new Socket(IPAddress, port);
             server = new ServerConnection(this, socket);
         } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
+            notifyListeners(new ConnectionRefusedEvent(e.getMessage()));
+            return;
         }
 
         server.start();
-        Thread eventDigest = new Thread() {
-            public void run() {
-                while (!socket.isClosed()) {
-                    onEvent(digestEvent());
+        Thread incomingEventsDigestion = new Thread(() -> {
+            while (!socket.isClosed()) {
+                try {
+                    notifyListeners(eventQueue.take());
+                } catch (InterruptedException e) {
+                    LOGGER.severe(e.getMessage());
                 }
             }
-        };
-        eventDigest.start();
+        });
+        incomingEventsDigestion.start();
+
+        notifyListeners(new ConnectOkEvent());
     }
 
     public synchronized void pushEvent(Event event) {
         eventQueue.add(event);
     }
 
-    public synchronized Event digestEvent() {
-        if (eventQueue.size() > 0)
-            return eventQueue.get(0);
-        return null;
-    }
-
-    @Override
-    public synchronized void onEvent(Event event) {
-        if (event == null)
-            return;
-        EventDispatcher dispatcher = new EventDispatcher(event);
-
-        dispatcher.dispatch(EventType.SERVER_ACK, (Event e) -> onServerAck((ServerACKEvent) e));
-    }
-
     public void send(Event obj) {
         server.write(obj);
     }
-
-    // Handlers
-    private boolean onServerAck(ServerACKEvent event) {
-        LOGGER.info("New SERVER_ACK event: " + event.getMessage());
-        return true;
-    }
-
 }
