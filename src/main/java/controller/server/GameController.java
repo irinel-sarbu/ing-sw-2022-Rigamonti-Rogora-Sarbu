@@ -3,18 +3,18 @@ package controller.server;
 import controller.server.states.*;
 import events.*;
 import exceptions.GameNotFoundException;
-import model.GameModel;
 import util.GameMode;
-import view.View;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Logger;
 
 public class GameController implements EventListener {
     private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
-    private final HashMap<String, GameModel> games;
+    private static final Map<String, GameLobby> games = new HashMap<>();
+
     private final TurnEpilogue epilogue;
     private final StudentMovement studentMovement;
     private final ResolveIsland resolveIsland;
@@ -24,7 +24,6 @@ public class GameController implements EventListener {
     private final CharacterEffectHandler characterEffectHandler;
 
     public GameController() {
-        this.games = new HashMap<String, GameModel>();
         this.epilogue = new TurnEpilogue();
         this.studentMovement = new StudentMovement();
         this.resolveIsland = new ResolveIsland();
@@ -35,35 +34,30 @@ public class GameController implements EventListener {
     }
 
     private String codeGen() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
+        int leftLimit = '0'; // numeral '0'
+        int rightLimit = 'z'; // letter 'z'
         int targetStringLength = 5;
         Random random = new Random();
+        String codeGenerated;
 
-        String codeGenerated = random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-
-        while (games.containsKey(codeGenerated)) {
+        do {
             codeGenerated = random.ints(leftLimit, rightLimit + 1)
-                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .filter(i -> (i <= '9' || i >= 'A') && (i <= 'Z' || i >= 'a'))
                     .limit(targetStringLength)
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
-        }
+        } while (games.containsKey(codeGenerated));
 
         return codeGenerated;
     }
 
-    public String addGame(int numOfPlayers, GameMode gameMode){
+    public String addGame(int numOfPlayers, GameMode gameMode) {
         String code = codeGen();
-        games.put(code, new GameModel(numOfPlayers, gameMode, code));
+        games.put(code, new GameLobby(numOfPlayers, gameMode, code));
         return code;
     }
 
-    public GameModel getGame(String code) throws GameNotFoundException {
+    public GameLobby getGame(String code) throws GameNotFoundException {
         if (games.get(code) == null) throw new GameNotFoundException();
         return games.get(code);
     }
