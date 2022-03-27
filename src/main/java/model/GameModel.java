@@ -12,8 +12,6 @@ import model.expert.CoinSupply;
 import exceptions.EntranceFullException;
 import exceptions.IslandNotFoundException;
 import exceptions.MaxPlayersException;
-import model.player.Player;
-import util.CharacterType;
 import util.Color;
 import exceptions.PlayerNotFoundException;
 import util.GameMode;
