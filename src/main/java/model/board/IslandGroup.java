@@ -53,11 +53,15 @@ public class IslandGroup {
 
     public void addNoEntry(NoEntryTile noEntryTile) {
         noEntry.push(noEntryTile);
+        noEntryTile.setPosition(islandGroupID);
     }
 
     public NoEntryTile removeNoEntry() throws EmptyNoEntryListException {
+        NoEntryTile noEntryTile;
         if (noEntry.size() == 0) throw new EmptyNoEntryListException();
-        return noEntry.pop();
+        noEntryTile = noEntry.pop();
+        noEntryTile.setPosition(-1);
+        return noEntryTile;
     }
 
     public int getNoEntrySize() {
