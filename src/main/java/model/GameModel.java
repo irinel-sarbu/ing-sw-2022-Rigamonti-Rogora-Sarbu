@@ -78,9 +78,13 @@ public class GameModel extends EventSender {
 
     public List<String> getPlayerNames() {
         List<String> playerNames = new ArrayList<>();
-        for(Player p : players)
+        for (Player p : players)
             playerNames.add(p.getName());
         return playerNames;
+    }
+
+    public List<Player> getPlayers() {
+        return new ArrayList<>(players);
     }
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {

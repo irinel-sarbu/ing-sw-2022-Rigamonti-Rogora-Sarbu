@@ -12,21 +12,25 @@ public class Player {
     private final String name;
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
-    private final Stack<Assistant> foldDeck;
+    private Assistant foldCard;
 
     public Player(String name, Wizard wizard) {
         this.name = name;
         this.schoolBoard = new SchoolBoard();
         this.assistantDeck = Assistant.getWizardDeck(wizard);
-        this.foldDeck = new Stack<>();
+        this.foldCard = null;
     }
 
     public void pushFoldDeck(Assistant assistantCard) {
-        foldDeck.push(assistantCard);
+        this.foldCard = assistantCard;
     }
 
     public Assistant peekFoldDeck() {
-        return foldDeck.peek();
+        return foldCard;
+    }
+
+    public void clearFoldDeck() {
+        foldCard = null;
     }
 
     public List<Assistant> getAssistants() {

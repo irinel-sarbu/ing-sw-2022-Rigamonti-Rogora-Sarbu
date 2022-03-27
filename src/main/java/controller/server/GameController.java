@@ -17,6 +17,7 @@ import util.Tuple;
 import util.Wizard;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 public class GameController implements NetworkEventListener {
     private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
-    private final HashMap<String, GameModel> games;
+    protected static final Map<String, GameLobby> games = new HashMap<>();
     private final Server server;
 
     private final TurnEpilogue epilogue;
@@ -38,7 +39,6 @@ public class GameController implements NetworkEventListener {
     public GameController(Server server) {
         this.server = server;
 
-        this.games = new HashMap<>();
         this.epilogue = new TurnEpilogue();
         this.studentMovement = new StudentMovement();
         this.resolveIsland = new ResolveIsland();
@@ -71,15 +71,15 @@ public class GameController implements NetworkEventListener {
         return codeGenerated;
     }
 
-    public String addGame(int numOfPlayers, GameMode gameMode) {
-        String code = codeGen();
-        games.put(code, new GameModel(numOfPlayers, gameMode));
-        return code;
-    }
-
-    public GameModel getGame(String code) throws GameNotFoundException {
+    public static GameLobby getGame(String code) throws GameNotFoundException {
         if (games.get(code) == null) throw new GameNotFoundException();
         return games.get(code);
+    }
+
+    public String addGame(int numOfPlayers, GameMode gameMode) {
+        String code = codeGen();
+        games.put(code, new GameLobby(numOfPlayers, gameMode, code));
+        return code;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class GameController implements NetworkEventListener {
         String clientName = server.getNameByClientConnection(client);
 
         try {
-            games.get(code).addPlayer(new Player(clientName, Wizard.WIZARD_1));
+            games.get(code).getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1));
         } catch (MaxPlayersException e) {
             e.printStackTrace();
         }
@@ -133,11 +133,11 @@ public class GameController implements NetworkEventListener {
         String clientName = server.getNameByClientConnection(client);
 
         try {
-            GameModel game = getGame(event.getCode());
-            game.addPlayer(new Player(clientName, Wizard.WIZARD_1));
+            GameLobby lobby = getGame(event.getCode());
+            lobby.getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1));
             LOGGER.info(clientName + " joined lobby " + event.getCode());
             client.send(new GameJoinedEvent(event.getCode()));
-            broadcast(new PlayerConnectedEvent(clientName), game.getPlayerNames(), clientName);
+            broadcast(new PlayerConnectedEvent(clientName), lobby.getModel().getPlayerNames(), clientName);
         } catch (GameNotFoundException e) {
             LOGGER.warning(clientName + " trying to connect to non existent lobby");
             client.send(new GameNotFoundEvent(event.getCode()));
