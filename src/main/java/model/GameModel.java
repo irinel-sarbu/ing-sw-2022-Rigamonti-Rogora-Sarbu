@@ -35,6 +35,7 @@ public class GameModel extends EventSender {
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
     private final MotherNature motherNature;
+    private final Turn turn;
 
     public GameModel(int numOfPlayers, GameMode gameMode, String code) {
         this.numOfPlayers = numOfPlayers;
@@ -44,6 +45,7 @@ public class GameModel extends EventSender {
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
+        this.turn = new Turn(numOfPlayers+1);
 
         islandGroups = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -150,6 +152,10 @@ public class GameModel extends EventSender {
                 logger.severe("Pulling from initial bag. Something went wrong...");
             }
         }
+    }
+
+    public Turn getTurn() {
+        return turn;
     }
 
     public void moveMotherNature(int steps) {
