@@ -2,18 +2,18 @@ package model.expert;
 
 import util.*;
 
-public class Character {
+public class CharacterCard {
     private int cost;
     private CharacterType character;
     private boolean effectIsUsed;
 
-    public Character(CharacterType character){
+    public CharacterCard(CharacterType character){
         this.cost= character.getBaseCost();
         this.character=character;
         resetEffect();
     }
 
-    public Character(int cost, CharacterType character) {
+    public CharacterCard(int cost, CharacterType character) {
         this.cost = cost;
         this.character = character;
         resetEffect();

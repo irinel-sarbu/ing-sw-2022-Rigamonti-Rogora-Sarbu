@@ -3,13 +3,13 @@ package util.unused.characterCards;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
-import model.expert.Character;
+import model.expert.CharacterCard;
 import util.CharacterType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jester extends Character {
+public class Jester extends CharacterCard {
 
     List<Student> studentList;
 

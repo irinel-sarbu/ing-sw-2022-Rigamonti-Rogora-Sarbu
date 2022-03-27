@@ -20,12 +20,11 @@ public enum CharacterType {
 
     private final int baseCost;
     private final String name;
-    private final List<CharacterType> extractedCharacters;
+
 
     CharacterType(int baseCost, String name) {
         this.baseCost = baseCost;
         this.name = name;
-        this.extractedCharacters = new ArrayList<>();
     }
 
     public int getBaseCost() {
@@ -34,18 +33,6 @@ public enum CharacterType {
 
     public String getName() {
         return name;
-    }
-
-    public CharacterType getRandomCharacter() {
-        CharacterType extracted = null;
-        Random random = new Random();
-
-        while(!extractedCharacters.contains(extracted))
-            extracted = values()[random.nextInt(values().length)];
-
-        extractedCharacters.add(extracted);
-
-        return extracted;
     }
 
     @Override

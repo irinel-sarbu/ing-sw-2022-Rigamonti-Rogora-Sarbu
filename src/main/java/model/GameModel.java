@@ -8,10 +8,12 @@ import model.board.IslandGroup;
 import model.board.IslandTile;
 import model.board.MotherNature;
 import model.board.Student;
+import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import exceptions.EntranceFullException;
 import exceptions.IslandNotFoundException;
 import exceptions.MaxPlayersException;
+import util.CharacterType;
 import util.Color;
 import exceptions.PlayerNotFoundException;
 import util.GameMode;
@@ -19,6 +21,7 @@ import util.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class GameModel extends EventSender {
@@ -35,6 +38,7 @@ public class GameModel extends EventSender {
     private final List<Player> players;
     private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
+    private List<CharacterCard> characters;
 
     public GameModel(int numOfPlayers, GameMode gameMode) {
         this.numOfPlayers = numOfPlayers;
@@ -43,6 +47,11 @@ public class GameModel extends EventSender {
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
+
+        if (gameMode == GameMode.EXPERT) {
+            this.characters = new ArrayList<>();
+            drawThreeCharacters();
+        }
 
         this.cloudTiles = new ArrayList<>();
         for (int i = 0; i < numOfPlayers; i++) cloudTiles.add(new CloudTile(numOfPlayers + 1));
@@ -168,6 +177,7 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
+
     public void joinAdiacent(int islandGroupPos) {
         // TODO implement
     }
@@ -181,8 +191,30 @@ public class GameModel extends EventSender {
         // TODO implement
     }
 
-    public List<Character> getCharacters() {
-        // TODO
+    private void drawThreeCharacters() {
+        for (int i = 0; i < 3; i++) characters.add(getRandomCharacter());
+    }
+
+    private CharacterCard getRandomCharacter() {
+        CharacterCard character;
+        do {
+            int pick = new Random().nextInt(CharacterType.values().length);
+            character = new CharacterCard(CharacterType.values()[pick]);
+        }while(characters.contains(character));
+        return character;
+    }
+
+
+    public List<CharacterCard> getCharacters() {
+        return characters;
+    }
+
+    public CharacterCard getCharacterByType(CharacterType characterType){
+        for(CharacterCard characterCard : characters){
+            if(characterCard.getCharacter().equals(characterType)){
+                return characterCard;
+            }
+        }
         return null;
     }
 }
