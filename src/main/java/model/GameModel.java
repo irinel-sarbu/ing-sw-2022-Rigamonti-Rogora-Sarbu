@@ -1,7 +1,7 @@
 package model;
 
 import events.EventSender;
-import exceptions.EmptyStudentListException;
+import exceptions.*;
 import model.board.Bag;
 import model.board.CloudTile;
 import model.board.IslandGroup;
@@ -10,12 +10,9 @@ import model.board.MotherNature;
 import model.board.Student;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
-import exceptions.EntranceFullException;
-import exceptions.IslandNotFoundException;
-import exceptions.MaxPlayersException;
+import model.expert.NoEntryTile;
 import util.CharacterType;
 import util.Color;
-import exceptions.PlayerNotFoundException;
 import util.GameMode;
 import util.GameState;
 
@@ -200,6 +197,19 @@ public class GameModel extends EventSender {
             int pick = new Random().nextInt(CharacterType.values().length);
             character = new CharacterCard(CharacterType.values()[pick]);
         } while (characters.contains(character));
+        switch (character.getCharacter()) {
+            case MONK, PRINCESS -> {
+                for (int i = 0; i < 4; i++) character.addStudent(bag.pull());
+            }
+            case GRANNY_HERBS -> {
+                for (int i = 0; i < 4; i++) character.addNoEntryTile(new NoEntryTile());
+            }
+            case JESTER -> {
+                for (int i = 0; i < 6; i++) character.addStudent(bag.pull());
+            }
+            default -> {
+            }
+        }
         return character;
     }
 
