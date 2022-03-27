@@ -1,6 +1,7 @@
 package util;
 
 public enum GameState {
+    SETUP,
     PLANNING,
     STUDENT_MOVEMENT,
     MOTHERNATURE_MOVEMENT,

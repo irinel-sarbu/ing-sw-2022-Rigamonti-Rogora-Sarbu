@@ -2,8 +2,6 @@
 
 Group GC6 (Rigamonti-Rogora-Sarbu)
 
----
-
 ## Design choices and additional notes regarding intial UML of the Model:
 
 - The Game class is used as a broker for the controller to call more complex methods on the model; simpler methods can
@@ -15,10 +13,14 @@ Group GC6 (Rigamonti-Rogora-Sarbu)
   when in the entrance or a Stack when in the `DiningRoom`.
 - All pieces in the play ar identified by an unique ID (an `int` or a `String`).
 - In expert mode there are both:
-    - A common stash of coins as an object of `CoinSupply`.
-    - A personal stash of coins for each player, accessible through their `SchoolBoard`.
+  - A common stash of coins as an object of `CoinSupply`.
+  - A personal stash of coins for each player, accessible through their `SchoolBoard`.
 - Each IslandGroups is an aggregation of IslandTiles, when constructed an `IslandGroup` contains a single `IslandTile`;
   The `IslandGroup.join(IslandGroup)` methods remove all tiles from a group and add them to the other only if the tower
   colors of the two groups matches.
+
+[initial UML in SVG](../Initial_UML_Model.svg)
+
+[initial UML in HTML](../Initial_UML_Model.html)
 
 ---

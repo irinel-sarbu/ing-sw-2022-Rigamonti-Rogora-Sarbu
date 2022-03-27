@@ -26,7 +26,6 @@ public class GameModel extends EventSender {
 
     public static final int MAX_PLAYERS = 3;
 
-    private final String code;
     private final int numOfPlayers;
     private final GameMode gameMode;
     private GameState state;
@@ -34,16 +33,19 @@ public class GameModel extends EventSender {
     private final CoinSupply coinSupply;
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
+    private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
 
-    public GameModel(int numOfPlayers, GameMode gameMode, String code) {
+    public GameModel(int numOfPlayers, GameMode gameMode) {
         this.numOfPlayers = numOfPlayers;
         this.gameMode = gameMode;
-        this.code = code;
         this.bag = new Bag(24);
         this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
+
+        this.cloudTiles = new ArrayList<>();
+        for (int i = 0; i < numOfPlayers; i++) cloudTiles.add(new CloudTile(numOfPlayers + 1));
 
         islandGroups = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -51,10 +53,6 @@ public class GameModel extends EventSender {
         }
 
         moveFromBagToIslandTile();
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public GameState getState() {
@@ -71,6 +69,10 @@ public class GameModel extends EventSender {
 
     public GameMode getGameMode() {
         return gameMode;
+    }
+
+    public Player getPlayerByID(int playerID) throws PlayerNotFoundException {
+        return players.get(playerID);
     }
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {
@@ -139,6 +141,15 @@ public class GameModel extends EventSender {
         }
 
         throw new IslandNotFoundException("Island with id " + id + " not found!");
+    }
+
+    public int getNumOfCloudTiles() {
+        return cloudTiles.size();
+    }
+
+    public void refillCloudTile(int cloudTileID) {
+        if (cloudTiles.get(cloudTileID).isEmpty())
+            moveFromBagToCloudTile(cloudTiles.get(cloudTileID));
     }
 
     public void moveFromBagToCloudTile(CloudTile cloudTile) {
