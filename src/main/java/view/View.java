@@ -6,7 +6,7 @@ import events.EventSender;
 public abstract class View extends EventSender {
     public abstract void run();
     public void displayMessage(String message) {
-        System.out.println("INFO > " + message);
+        System.out.println("> " + message);
     }
 
     public void displayError(String errorMessage) {

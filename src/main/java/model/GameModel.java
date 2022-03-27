@@ -2,19 +2,9 @@ package model;
 
 import events.EventSender;
 import exceptions.*;
-import model.board.Bag;
-import model.board.CloudTile;
-import model.board.IslandGroup;
-import model.board.IslandTile;
-import model.board.MotherNature;
-import model.board.Student;
-import model.expert.CharacterCard;
-import model.expert.CoinSupply;
-import model.expert.NoEntryTile;
-import util.CharacterType;
-import util.Color;
-import util.GameMode;
-import util.GameState;
+import model.board.*;
+import model.expert.*;
+import util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +20,24 @@ public class GameModel extends EventSender {
     private final GameMode gameMode;
     private GameState state;
     private final Bag bag;
-    private final CoinSupply coinSupply;
+
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
     private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
+    private CoinSupply coinSupply;
 
     public GameModel(int numOfPlayers, GameMode gameMode) {
         this.numOfPlayers = numOfPlayers;
         this.gameMode = gameMode;
         this.bag = new Bag(24);
-        this.coinSupply = new CoinSupply();
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
 
         if (gameMode == GameMode.EXPERT) {
             this.characters = new ArrayList<>();
+            this.coinSupply = new CoinSupply(20);
             drawThreeCharacters();
         }
 
@@ -77,8 +68,19 @@ public class GameModel extends EventSender {
         return gameMode;
     }
 
-    public Player getPlayerByID(int playerID) throws PlayerNotFoundException {
-        return players.get(playerID);
+    public Player getPlayerByID(int id) throws PlayerNotFoundException {
+        Player ret = players.get(id);
+        if(ret == null)
+            throw new PlayerNotFoundException();
+
+        return ret;
+    }
+
+    public List<String> getPlayerNames() {
+        List<String> playerNames = new ArrayList<>();
+        for(Player p : players)
+            playerNames.add(p.getName());
+        return playerNames;
     }
 
     public Player getPlayerByName(String name) throws PlayerNotFoundException {
@@ -104,9 +106,8 @@ public class GameModel extends EventSender {
             player = null;
             logger.warning(e.getMessage());
         }
-        boolean result = players.remove(player);
 
-        return result;
+        return players.remove(player);
     }
 
     private void moveFromBagToIslandTile() {
@@ -173,20 +174,30 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
+    public void joinAdiacent() {
+        for(IslandGroup islandGroup : islandGroups) {
+            int index = islandGroups.indexOf(islandGroup);
+            IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
+            IslandGroup right = islandGroups.get((index + 1) % islandGroups.size());
 
-    public void joinAdiacent(int islandGroupPos) {
-        // TODO implement
+            try {
+                left.join(islandGroup);
+                islandGroup.join(right);
+            } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void moveFromCloudTileToEntrance(Color color, CloudTile cloudTile, Player player) {
-
+    public void moveFromCloudTileToEntrance(CloudTile cloudTile, Player player) {
+        try {
+            player.getSchoolBoard().addToEntrance(cloudTile.getAndRemoveStudents());
+        } catch (EntranceFullException e) {
+            e.printStackTrace();
+        }
     }
 
     // Expert mode functions
-    public void fillUpCoins() {
-        // TODO implement
-    }
-
     private void drawThreeCharacters() {
         for (int i = 0; i < 3; i++) characters.add(getRandomCharacter());
     }
@@ -212,7 +223,6 @@ public class GameModel extends EventSender {
         }
         return character;
     }
-
 
     public List<CharacterCard> getCharacters() {
         return characters;

@@ -1,11 +1,10 @@
-
 import controller.client.ClientController;
 import network.Client;
 import view.View;
 import view.cli.CliView;
 import view.gui.GuiView;
 
-public class App {
+public class ClientApp {
     static public void main(String[] args) {
         boolean run = true;
         boolean cliEnabled = false;

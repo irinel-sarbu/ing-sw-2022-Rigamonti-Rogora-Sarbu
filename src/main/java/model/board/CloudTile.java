@@ -32,12 +32,14 @@ public class CloudTile {
         studentList.addAll(Arrays.asList(students));
     }
 
-    public List<Student> getStudentList() {
+    public List<Student> getStudents() {
         return studentList;
     }
 
-    public void removeStudents() {
+    public List<Student> getAndRemoveStudents() {
+        List<Student> students = new ArrayList<>(studentList);
         studentList.clear();
+        return students;
     }
 
     @Override

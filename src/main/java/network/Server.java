@@ -76,6 +76,15 @@ public class Server extends NetworkEventSender implements Runnable {
         LOGGER.info(name + " disconnected.");
     }
 
+    public ClientConnection getClientConnectionByName(String client) {
+        for (Entry<String, ClientConnection> entry : clientList.entrySet()) {
+            if (entry.getKey().equals(client)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     public String getNameByClientConnection(ClientConnection client) {
         for (Entry<String, ClientConnection> entry : clientList.entrySet()) {
             if (entry.getValue().equals(client)) {

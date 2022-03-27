@@ -4,6 +4,7 @@ import events.Event;
 import events.types.clientToClient.ConnectEvent;
 import events.types.clientToClient.PlayerNameInsertedEvent;
 import events.types.clientToServer.CreateGameEvent;
+import events.types.clientToServer.JoinGameEvent;
 import model.GameModel;
 import util.GameMode;
 import view.View;
@@ -69,6 +70,8 @@ public class CliView extends View {
         int normalOrExpert;
         int numOfPlayers;
 
+        String lobbyJoinCode = "";
+
         switch (createOrJoin) {
             case 1 -> {
                 System.out.println("Choose between:");
@@ -90,7 +93,9 @@ public class CliView extends View {
             }
 
             case 2 -> {
-                System.out.println("TODO Implement");
+                System.out.print("\rInsert lobby code >>> ");
+                lobbyJoinCode = scanner.next();
+                notifyListeners(new JoinGameEvent(lobbyJoinCode));
             }
         }
     }

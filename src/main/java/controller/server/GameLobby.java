@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class GameLobby {
-
     private final Logger logger = Logger.getLogger(GameLobby.class.getName());
 
     private final String code;

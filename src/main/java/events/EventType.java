@@ -11,6 +11,9 @@ public enum EventType {
     PLAYER_NAME_TAKEN,
     REGISTER_OK,
     GAME_CREATED,
+    GAME_JOINED,
+    GAME_NOT_FOUND,
+    PLAYER_CONNECTED,
 
     
     // handled on client, Sended by client

@@ -15,7 +15,7 @@ public class SchoolBoard {
     private final static int maxTowersSize = 8;
     private final static int maxDiningSize = 10;
     private final int ID;
-    private final List<Student> entrance;                                                                               // TODO: check if List must be final or not
+    private final List<Student> entrance;
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
     private CoinSupply coins;
@@ -38,7 +38,12 @@ public class SchoolBoard {
         return entrance;
     }
 
-    public void addToEntrance(Student... students) throws EntranceFullException {
+    public void addToEntrance(Student student) throws EntranceFullException {
+        if (entrance.size() >= maxEntranceSize) throw new EntranceFullException();
+        entrance.add(student);
+    }
+
+    public void addToEntrance(List<Student> students) throws EntranceFullException {
         for (Student student : students) {
             if (entrance.size() >= maxEntranceSize) throw new EntranceFullException();
             entrance.add(student);
@@ -136,7 +141,8 @@ public class SchoolBoard {
             char[] colorStudents = new char[maxDiningSize];
             Arrays.fill(colorStudents, '-');
             for (int i = 2; i < maxDiningSize; i += 3) colorStudents[i] = 'o';
-            for (int i = 0; i < diningRoom.get(color.getValue()).size(); i++) colorStudents[i] = color.toString().charAt(0);
+            for (int i = 0; i < diningRoom.get(color.getValue()).size(); i++)
+                colorStudents[i] = color.toString().charAt(0);
             String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
