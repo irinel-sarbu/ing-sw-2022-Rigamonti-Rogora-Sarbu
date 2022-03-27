@@ -5,9 +5,12 @@ import events.*;
 import events.types.clientToClient.ConnectEvent;
 import events.types.clientToClient.ConnectionRefusedEvent;
 import events.types.clientToClient.PlayerNameInsertedEvent;
+import events.types.clientToServer.CreateGameEvent;
 import events.types.clientToServer.RegisterEvent;
 import events.types.serverToClient.ConnectOkEvent;
+import events.types.serverToClient.GameCreatedEvent;
 import events.types.serverToClient.PlayerNameTakenEvent;
+import events.types.serverToClient.RegistrationOkEvent;
 import model.GameModel;
 import network.Client;
 import view.View;
@@ -31,6 +34,8 @@ public class ClientController implements EventListener {
 
         // From server
         dispatcher.dispatch(EventType.PLAYER_NAME_TAKEN, (Event e) -> onPlayerNameTaken((PlayerNameTakenEvent) e));
+        dispatcher.dispatch(EventType.REGISTER_OK, (Event e) -> onRegistrationOk((RegistrationOkEvent) e));
+        dispatcher.dispatch(EventType.GAME_CREATED, (Event e) -> onGameCreated((GameCreatedEvent) e));
 
         // From other parts of the clientApp
         dispatcher.dispatch(EventType.CONNECT, (Event e) -> onConnectRequested((ConnectEvent) e));
@@ -38,6 +43,7 @@ public class ClientController implements EventListener {
         dispatcher.dispatch(EventType.CONNECTION_REFUSED, (Event e) -> onConnectionRefused((ConnectionRefusedEvent) e));
 
         dispatcher.dispatch(EventType.PLAYER_NAME_INSERTED, (Event e) -> onPlayerNameInserted((PlayerNameInsertedEvent) e));
+        dispatcher.dispatch(EventType.CREATE_GAME, (Event e) -> onCreateGame((CreateGameEvent) e));
     }
 
     private boolean onConnectRequested(ConnectEvent event) {
@@ -68,6 +74,21 @@ public class ClientController implements EventListener {
     private boolean onPlayerNameTaken(PlayerNameTakenEvent event) {
         view.displayError("Player name already taken. Try again.");
         view.getPlayerName();
+        return true;
+    }
+
+    private boolean onRegistrationOk(RegistrationOkEvent event) {
+        view.chooseCreateOrJoin();
+        return true;
+    }
+
+    private boolean onCreateGame(CreateGameEvent event) {
+        client.send(event);
+        return true;
+    }
+
+    private boolean onGameCreated(GameCreatedEvent event) {
+        view.displayMessage("Lobby with id " + event.getCode() + " created.");
         return true;
     }
 }

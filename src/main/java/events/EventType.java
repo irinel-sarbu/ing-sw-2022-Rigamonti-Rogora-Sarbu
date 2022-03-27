@@ -10,7 +10,8 @@ public enum EventType {
     // Handled on client, Sended by server
     PLAYER_NAME_TAKEN,
     REGISTER_OK,
-    SERVER_ACK,
+    GAME_CREATED,
+
     
     // handled on client, Sended by client
     CONNECT,

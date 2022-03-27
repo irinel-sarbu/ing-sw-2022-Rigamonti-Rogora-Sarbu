@@ -12,26 +12,20 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 import controller.server.GameController;
-import events.Event;
-import events.EventDispatcher;
-import events.EventListener;
-import events.EventType;
-import events.NetworkEventListener;
+import events.*;
 import events.types.clientToServer.RegisterEvent;
 import events.types.serverToClient.PlayerNameTakenEvent;
 import events.types.serverToClient.RegistrationOkEvent;
 import util.Tuple;
 
-public class Server extends Thread implements NetworkEventListener {
+public class Server extends NetworkEventSender implements Runnable {
     private final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
-    private final GameController controller;
     private final Map<String, ClientConnection> clientList;
     private final LinkedBlockingQueue<Tuple<Event, ClientConnection>> eventQueue;
     private ServerSocket serverSocket;
 
-    public Server(GameController controller) {
-        this.controller = controller;
+    public Server() {
         clientList = new HashMap<>();
         eventQueue = new LinkedBlockingQueue<>();
     }
@@ -48,7 +42,7 @@ public class Server extends Thread implements NetworkEventListener {
         Thread incomingEventsDigestion = new Thread(() -> {
             while (!serverSocket.isClosed()) {
                 try {
-                    onEvent(eventQueue.take());
+                    notifyListeners(eventQueue.take());
                 } catch (InterruptedException e) {
                     LOGGER.severe(e.getMessage());
                 }
@@ -72,41 +66,22 @@ public class Server extends Thread implements NetworkEventListener {
         eventQueue.add(networkEvent);
     }
 
-    @Override
-    public synchronized void onEvent(Tuple<Event, ClientConnection> networkEvent) {
-        if (networkEvent == null)
-            return;
-        EventDispatcher dispatcher = new EventDispatcher(networkEvent);
-
-        dispatcher.dispatch(EventType.REGISTER, (Tuple<Event, ClientConnection> t) -> onRegister((RegisterEvent) t.getKey(), t.getValue()));
+    public Map<String, ClientConnection> getClientList() {
+        return clientList;
     }
 
     public void onDisconnect(ClientConnection clientConnection) {
-        String name = getNameByClientCOnnection(clientConnection);
+        String name = getNameByClientConnection(clientConnection);
 
         LOGGER.info(name + " disconnected.");
     }
 
-    public String getNameByClientCOnnection(ClientConnection client) {
+    public String getNameByClientConnection(ClientConnection client) {
         for (Entry<String, ClientConnection> entry : clientList.entrySet()) {
             if (entry.getValue().equals(client)) {
                 return entry.getKey();
             }
         }
         return null;
-    }
-
-    // Handlers
-    private boolean onRegister(RegisterEvent event, ClientConnection client) {
-        if(clientList.containsKey(event.getName())) {
-            LOGGER.info("Trying to register again " + event.getName() + ". Sending ERROR to client.");
-            client.write(new PlayerNameTakenEvent());
-        } else {
-            LOGGER.info("Registering: " + event.getName());
-            clientList.put(event.getName(), client);
-            client.write(new RegistrationOkEvent());
-        }
-
-        return true;
     }
 }

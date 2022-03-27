@@ -172,7 +172,6 @@ public class GameModel extends EventSender {
         }
     }
 
-
     public void moveMotherNature(int steps) {
         motherNature.progress(steps, islandGroups.size());
     }
@@ -200,7 +199,7 @@ public class GameModel extends EventSender {
         do {
             int pick = new Random().nextInt(CharacterType.values().length);
             character = new CharacterCard(CharacterType.values()[pick]);
-        }while(characters.contains(character));
+        } while (characters.contains(character));
         return character;
     }
 
@@ -209,9 +208,9 @@ public class GameModel extends EventSender {
         return characters;
     }
 
-    public CharacterCard getCharacterByType(CharacterType characterType){
-        for(CharacterCard characterCard : characters){
-            if(characterCard.getCharacter().equals(characterType)){
+    public CharacterCard getCharacterByType(CharacterType characterType) {
+        for (CharacterCard characterCard : characters) {
+            if (characterCard.getCharacter().equals(characterType)) {
                 return characterCard;
             }
         }

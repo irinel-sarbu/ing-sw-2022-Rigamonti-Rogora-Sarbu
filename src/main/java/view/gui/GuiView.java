@@ -25,7 +25,7 @@ public class GuiView extends View {
     }
 
     @Override
-    public void onEvent(Event event) {
+    public void chooseCreateOrJoin() {
 
     }
 }

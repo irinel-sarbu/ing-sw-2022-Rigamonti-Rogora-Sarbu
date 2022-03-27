@@ -39,7 +39,7 @@ public class ClientConnection extends Thread {
         }
     }
 
-    public void write(Event event) {
+    public void send(Event event) {
         try {
             out.writeObject(event);
         } catch (IOException e) {
