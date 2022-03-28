@@ -2,9 +2,7 @@ package controller.server.states;
 
 import controller.server.GameController;
 import controller.server.GameLobby;
-import exceptions.GameNotFoundException;
-import exceptions.WrongPhaseException;
-import exceptions.WrongPlayerException;
+import exceptions.*;
 import model.GameModel;
 import model.Player;
 import model.board.Assistant;
@@ -21,26 +19,26 @@ public class PlanningPhase {
             game.refillCloudTile(i);
     }
 
-    private boolean otherOptions(GameLobby thisGame, Assistant assistantCard) {
+    private boolean playable(GameLobby thisGame, Assistant assistantCard) {
 
         List<Assistant> played = thisGame.getOrder().stream()
                 .map(Player::peekFoldDeck)
                 .filter(Objects::nonNull).collect(Collectors.toList());
 
-        return !(thisGame.getCurrentPlayer().getAssistants().stream()
-                .filter(assistant -> !assistant.equals(assistantCard)).allMatch(played::contains));
+        return !played.contains(assistantCard) ||                                                  // unique card
+                !thisGame.getCurrentPlayer().getAssistants().stream()                               // and no other options
+                        .filter(assistant -> !assistant.equals(assistantCard)).allMatch(played::contains);
+
     }
 
-    /*public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
-                        throws GameNotFoundException, WrongPhaseException, WrongPlayerException {
-        if(thisGame.getCurrentGameState() != GameState.PLANNING) throw new WrongPhaseException();
-        if(thisGame.getCurrentPlayer() != actingPlayer) throw new WrongPlayerException();
-        List<Assistant> played = thisGame.getOrder().stream().map(Player::peekFoldDeck).collect(Collectors.toList());
-            if (played.contains(assistantCard) && !otherOptions(thisGame, assistantCard)) {                             // TODO: contains -> equals
-                throw new // TODO: non puoi giocarlo
-            }
-        }
+    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
+            throws WrongPhaseException, WrongPlayerException, NotPlayableAssistantException, AssistantNotInDeckException {
+        if (thisGame.getCurrentGameState() != GameState.PLANNING) throw new WrongPhaseException();
+        if (thisGame.getCurrentPlayer() != actingPlayer) throw new WrongPlayerException();
+        if (!playable(thisGame, assistantCard)) throw new NotPlayableAssistantException();
 
-    } broken */
+        thisGame.getCurrentPlayer().pushFoldDeck(
+                thisGame.getCurrentPlayer().removeCard(assistantCard));
+    }
 
 }

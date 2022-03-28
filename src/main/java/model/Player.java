@@ -37,13 +37,14 @@ public class Player {
         return new ArrayList<>(assistantDeck);
     }
 
-    public void removeCard(Assistant assistantCard) throws AssistantNotInDeckException {
+    public Assistant removeCard(Assistant assistantCard) throws AssistantNotInDeckException {
         if (!assistantDeck.contains(assistantCard)) throw new AssistantNotInDeckException();
         assistantDeck.remove(assistantCard);
+        return assistantCard;
     }
 
     public void removeCard(int assistantCardID) throws AssistantNotInDeckException {
-        if(assistantCardID >= assistantDeck.size()) throw new AssistantNotInDeckException();
+        if (assistantCardID >= assistantDeck.size()) throw new AssistantNotInDeckException();
         assistantDeck.remove(assistantCardID);
     }
 
