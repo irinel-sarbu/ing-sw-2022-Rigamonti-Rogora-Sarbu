@@ -28,6 +28,11 @@ public class GameModel extends EventSender {
     private List<CharacterCard> characters;
     private CoinSupply coinSupply;
 
+    /**
+     * Constructor of the GameModel
+     * @param numOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
+     * @param gameMode GameMode chosen when the game is created. Can be EXPERT or NORMAL.
+     */
     public GameModel(int numOfPlayers, GameMode gameMode) {
         this.numOfPlayers = numOfPlayers;
         this.gameMode = gameMode;

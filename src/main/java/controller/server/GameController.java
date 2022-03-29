@@ -6,9 +6,8 @@ import events.types.clientToServer.CreateGameEvent;
 import events.types.clientToServer.JoinGameEvent;
 import events.types.clientToServer.RegisterEvent;
 import events.types.serverToClient.*;
-import exceptions.GameNotFoundException;
+import exceptions.LobbyNotFoundException;
 import exceptions.MaxPlayersException;
-import model.GameModel;
 import model.Player;
 import network.ClientConnection;
 import network.Server;
@@ -71,9 +70,10 @@ public class GameController implements NetworkEventListener {
         return codeGenerated;
     }
 
-    public static GameLobby getGame(String code) throws GameNotFoundException {
-        if (games.get(code) == null) throw new GameNotFoundException();
+    public static GameLobby getLobby(String code) throws LobbyNotFoundException {
+        if (games.get(code) == null) throw new LobbyNotFoundException();
         return games.get(code);
+
     }
 
     public String addGame(int numOfPlayers, GameMode gameMode) {
@@ -133,12 +133,12 @@ public class GameController implements NetworkEventListener {
         String clientName = server.getNameByClientConnection(client);
 
         try {
-            GameLobby lobby = getGame(event.getCode());
+            GameLobby lobby = getLobby(event.getCode());
             lobby.getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1));
             LOGGER.info(clientName + " joined lobby " + event.getCode());
             client.send(new GameJoinedEvent(event.getCode()));
             broadcast(new PlayerConnectedEvent(clientName), lobby.getModel().getPlayerNames(), clientName);
-        } catch (GameNotFoundException e) {
+        } catch (LobbyNotFoundException e) {
             LOGGER.warning(clientName + " trying to connect to non existent lobby");
             client.send(new GameNotFoundEvent(event.getCode()));
         } catch (MaxPlayersException e) {
