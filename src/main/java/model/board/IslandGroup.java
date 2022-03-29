@@ -19,7 +19,7 @@ public class IslandGroup {
     public IslandGroup(int islandGroupID) {
         this.islandGroupID = islandGroupID;
         this.islands = new ArrayList<>();
-        this.islands.add(new IslandTile());
+        this.islands.add(new IslandTile(islandGroupID));
         this.noEntry = new Stack<>();
     }
 

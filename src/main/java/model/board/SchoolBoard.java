@@ -4,34 +4,29 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import exceptions.*;
+import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
 
 public class SchoolBoard {
-    private static int count = 0;
     private final static int maxEntranceSize = 9;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;
     private final static int maxTowersSize = 8;
     private final static int maxDiningSize = 10;
-    private final int ID;
     private final List<Student> entrance;
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
     private CoinSupply coins;
+    private final Player owner;
 
-    public SchoolBoard(int ID) {
-        this.ID = ID;
+    public SchoolBoard(Player player) {
         this.coins = new CoinSupply();
         this.entrance = new ArrayList<>();
         this.diningRoom = new ArrayList<>(Color.values().length);
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
-    }
-
-    public SchoolBoard() {
-        this(count);
-        count++;
+        this.owner = player;
     }
 
     public List<Student> getEntranceStudents() {
@@ -146,7 +141,8 @@ public class SchoolBoard {
             String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
-        return "SchoolBoard " + ID + " entr:" + entranceString + diningRoomString +
+        //SchoolBoard will be identified by the previous print of a numbered player.
+        return "SchoolBoard of " + owner.getName() + " entr:" + entranceString + diningRoomString +
                 " Coins: " + coins +
                 "\n    " + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
     }

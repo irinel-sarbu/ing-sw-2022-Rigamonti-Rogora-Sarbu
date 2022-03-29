@@ -16,7 +16,7 @@ public class Player {
 
     public Player(String name, Wizard wizard) {
         this.name = name;
-        this.schoolBoard = new SchoolBoard();
+        this.schoolBoard = new SchoolBoard(this);
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
     }

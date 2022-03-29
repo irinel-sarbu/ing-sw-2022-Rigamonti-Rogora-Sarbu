@@ -30,8 +30,9 @@ public class GameModel extends EventSender {
 
     /**
      * Constructor of the GameModel
+     *
      * @param numOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
-     * @param gameMode GameMode chosen when the game is created. Can be EXPERT or NORMAL.
+     * @param gameMode     GameMode chosen when the game is created. Can be EXPERT or NORMAL.
      */
     public GameModel(int numOfPlayers, GameMode gameMode) {
         this.numOfPlayers = numOfPlayers;
@@ -47,7 +48,10 @@ public class GameModel extends EventSender {
         }
 
         this.cloudTiles = new ArrayList<>();
-        for (int i = 0; i < numOfPlayers; i++) cloudTiles.add(new CloudTile(numOfPlayers + 1));
+        //CloudTileId is generated with the i in the for
+        for (int i = 0; i < numOfPlayers; i++) {
+            cloudTiles.add(new CloudTile(i, numOfPlayers + 1));
+        }
 
         islandGroups = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -75,7 +79,7 @@ public class GameModel extends EventSender {
 
     public Player getPlayerByID(int id) throws PlayerNotFoundException {
         Player ret = players.get(id);
-        if(ret == null)
+        if (ret == null)
             throw new PlayerNotFoundException();
 
         return ret;
@@ -184,7 +188,7 @@ public class GameModel extends EventSender {
     }
 
     public void joinAdiacent() {
-        for(IslandGroup islandGroup : islandGroups) {
+        for (IslandGroup islandGroup : islandGroups) {
             int index = islandGroups.indexOf(islandGroup);
             IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
             IslandGroup right = islandGroups.get((index + 1) % islandGroups.size());
@@ -204,6 +208,10 @@ public class GameModel extends EventSender {
         } catch (EntranceFullException e) {
             e.printStackTrace();
         }
+    }
+
+    public Bag getBag() {
+        return bag;
     }
 
     // Expert mode functions
