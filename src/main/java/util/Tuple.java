@@ -11,15 +11,15 @@ public class Tuple<K, V> implements Entry<K, V> {
         this.value = value;
     }
 
-    public K getKey() {
+    public synchronized K getKey() {
         return key;
     }
 
-    public V getValue() {
+    public synchronized V getValue() {
         return value;
     }
 
-    public V setValue(final V value) {
+    public synchronized V setValue(final V value) {
         final V oldValue = this.value;
         this.value = value;
         return oldValue;

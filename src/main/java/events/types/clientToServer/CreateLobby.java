@@ -4,14 +4,16 @@ import events.Event;
 import events.EventType;
 import util.GameMode;
 
-public class CreateGameEvent extends Event {
+public class CreateLobby extends Event {
     private final int numOfPlayers;
     private final GameMode gameMode;
+    private final String creatorName;
 
-    public CreateGameEvent(GameMode gameMode, int numOfPlayers) {
-        super(EventType.CREATE_GAME);
+    public CreateLobby(GameMode gameMode, int numOfPlayers, String creatorName) {
+        super(EventType.CREATE_LOBBY);
         this.gameMode = gameMode;
         this.numOfPlayers = numOfPlayers;
+        this.creatorName = creatorName;
     }
 
     public int getNumOfPlayers() {
@@ -20,5 +22,9 @@ public class CreateGameEvent extends Event {
 
     public GameMode getGameMode() {
         return gameMode;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
     }
 }

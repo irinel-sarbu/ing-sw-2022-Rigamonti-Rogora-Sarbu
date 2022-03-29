@@ -1,6 +1,5 @@
 package controller.server.states;
 
-import controller.server.GameController;
 import controller.server.GameLobby;
 import exceptions.*;
 import model.GameModel;
@@ -23,7 +22,7 @@ public class PlanningPhase {
 
         List<Assistant> played = thisGame.getOrder().stream()
                 .map(Player::peekFoldDeck)
-                .filter(Objects::nonNull).collect(Collectors.toList());
+                .filter(Objects::nonNull).toList();
 
         return !played.contains(assistantCard) ||                                                  // unique card
                 !thisGame.getCurrentPlayer().getAssistants().stream()                               // and no other options

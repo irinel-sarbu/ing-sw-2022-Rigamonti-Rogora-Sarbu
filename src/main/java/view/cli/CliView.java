@@ -1,11 +1,8 @@
 package view.cli;
 
-import events.Event;
 import events.types.clientToClient.ConnectEvent;
-import events.types.clientToClient.PlayerNameInsertedEvent;
-import events.types.clientToServer.CreateGameEvent;
-import events.types.clientToServer.JoinGameEvent;
-import model.GameModel;
+import events.types.clientToServer.CreateLobby;
+import events.types.clientToServer.JoinLobby;
 import util.GameMode;
 import view.View;
 
@@ -24,11 +21,11 @@ public class CliView extends View {
 
     @Override
     public void getServerInfo() {
-        final int defaultPort = 12345;
+        final int defaultPort = 5000;
         final String defaultAddress = "localhost";
 
-        String insertedAddress = "";
-        String insertedPort = "";
+        String insertedAddress;
+        String insertedPort;
 
         System.out.print("\rInsert server ADDRESS [localhost] >>> ");
         insertedAddress = scanner.nextLine();
@@ -42,16 +39,20 @@ public class CliView extends View {
         notifyListeners(new ConnectEvent(eventIP, eventPort));
     }
 
-    @Override
-    public void getPlayerName() {
-        String insertedName = "";
+    private String getPlayerName() {
+        String insertedName;
 
         do {
             System.out.print("\rInsert your name >>> ");
             insertedName = scanner.nextLine();
         } while (insertedName.isEmpty());
 
-        notifyListeners(new PlayerNameInsertedEvent(insertedName));
+        return insertedName;
+    }
+
+    @Override
+    public void getPlayerName(String lobbyToJoin) {
+        notifyListeners(new JoinLobby(getPlayerName(), lobbyToJoin));
     }
 
     @Override
@@ -70,7 +71,7 @@ public class CliView extends View {
         int normalOrExpert;
         int numOfPlayers;
 
-        String lobbyJoinCode = "";
+        String lobbyCode;
 
         switch (createOrJoin) {
             case 1 -> {
@@ -89,13 +90,15 @@ public class CliView extends View {
                 } while ((numOfPlayers != 2) && (numOfPlayers != 3));
 
                 GameMode gameMode = normalOrExpert == 1 ? GameMode.NORMAL : GameMode.EXPERT;
-                notifyListeners(new CreateGameEvent(gameMode, numOfPlayers));
+
+                notifyListeners(new CreateLobby(gameMode, numOfPlayers, getPlayerName()));
             }
 
             case 2 -> {
                 System.out.print("\rInsert lobby code >>> ");
-                lobbyJoinCode = scanner.next();
-                notifyListeners(new JoinGameEvent(lobbyJoinCode));
+                lobbyCode = scanner.next();
+
+                notifyListeners(new JoinLobby(getPlayerName(), lobbyCode));
             }
         }
     }

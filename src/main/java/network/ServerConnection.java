@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 import events.Event;
-import events.types.clientToServer.RegisterEvent;
 
 public class ServerConnection extends Thread {
     private final Logger LOGGER = Logger.getLogger(ServerConnection.class.getName());
@@ -50,11 +49,9 @@ public class ServerConnection extends Thread {
 
     public void disconnect() {
         try {
-            if (!socket.isClosed()) {
-                in.close();
-                out.close();
-                socket.close();
-            }
+            in.close();
+            out.close();
+            socket.close();
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
         }

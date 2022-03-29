@@ -14,6 +14,6 @@ public abstract class View extends EventSender {
     }
 
     public abstract void getServerInfo();
-    public abstract void getPlayerName();
+    public abstract void getPlayerName(String lobbyToJoin);
     public abstract void chooseCreateOrJoin();
 }

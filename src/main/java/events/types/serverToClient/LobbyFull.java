@@ -3,11 +3,11 @@ package events.types.serverToClient;
 import events.Event;
 import events.EventType;
 
-public class GameJoinedEvent extends Event {
+public class LobbyFull extends Event {
     private final String code;
 
-    public GameJoinedEvent(String gameCode) {
-        super(EventType.GAME_JOINED);
+    public LobbyFull(String gameCode) {
+        super(EventType.LOBBY_FULL);
         this.code = gameCode;
     }
 

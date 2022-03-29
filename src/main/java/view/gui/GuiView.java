@@ -20,7 +20,7 @@ public class GuiView extends View {
     }
 
     @Override
-    public void getPlayerName() {
+    public void getPlayerName(String lobbyToJoin) {
 
     }
 

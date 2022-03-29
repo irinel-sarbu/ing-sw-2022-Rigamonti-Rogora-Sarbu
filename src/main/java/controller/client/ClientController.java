@@ -1,18 +1,13 @@
 package controller.client;
 
-import controller.server.GameController;
 import events.*;
 import events.types.clientToClient.*;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
-import model.Player;
 import network.Client;
 import view.View;
 
-import java.util.logging.Logger;
-
 public class ClientController implements EventListener {
-    private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
     private final Client client;
     private final View view;
@@ -26,58 +21,27 @@ public class ClientController implements EventListener {
     public void onEvent(Event event) {
         EventDispatcher dispatcher = new EventDispatcher(event);
 
-        // From server
-        dispatcher.dispatch(EventType.PLAYER_NAME_TAKEN, (Event e) -> onPlayerNameTaken((PlayerNameTakenEvent) e));
-        dispatcher.dispatch(EventType.REGISTER_OK, (Event e) -> onRegistrationOk((RegistrationOkEvent) e));
-        dispatcher.dispatch(EventType.GAME_CREATED, (Event e) -> onGameCreated((GameCreatedEvent) e));
-        dispatcher.dispatch(EventType.GAME_JOINED, (Event e) -> onGameJoined((GameJoinedEvent) e));
-        dispatcher.dispatch(EventType.GAME_NOT_FOUND, (Event e) -> onGameNotFound((GameNotFoundEvent) e));
-        dispatcher.dispatch(EventType.PLAYER_CONNECTED, (Event e) -> onPlayerConnected((PlayerConnectedEvent) e));
-
-        // From other parts of the clientApp
+        // Connection stage
         dispatcher.dispatch(EventType.CONNECT, (Event e) -> onConnectRequested((ConnectEvent) e));
-        dispatcher.dispatch(EventType.CONNECTION_OK, (Event e) -> onConnectionOk((ConnectOkEvent) e));
-        dispatcher.dispatch(EventType.CONNECTION_REFUSED, (Event e) -> onConnectionRefused((ConnectionRefusedEvent) e));
-        dispatcher.dispatch(EventType.PLAYER_NAME_INSERTED, (Event e) -> onPlayerNameInserted((PlayerNameInsertedEvent) e));
-        dispatcher.dispatch(EventType.CREATE_GAME, (Event e) -> onCreateGame((CreateGameEvent) e));
-        dispatcher.dispatch(EventType.JOIN_GAME, (Event e) -> onJoinGame((JoinGameEvent) e));
+        dispatcher.dispatch(EventType.CONNECTION_OK, (Event e) -> onConnectionOk((ConnectOk) e));
+        dispatcher.dispatch(EventType.CONNECTION_REFUSED, (Event e) -> onConnectionRefused((ConnectionRefused) e));
+
+        // Create/Join lobby
+        dispatcher.dispatch(EventType.CREATE_LOBBY, (Event e) -> onCreateLobby((CreateLobby) e));
+        dispatcher.dispatch(EventType.JOIN_LOBBY, (Event e) -> onJoinLobby((JoinLobby) e));
+        dispatcher.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((LobbyJoined) e));
+        dispatcher.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((PlayerJoined) e));
+        dispatcher.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((PlayerDisconnected) e));
+
+        // Create/Join lobby exception handling
+        dispatcher.dispatch(EventType.PLAYER_NAME_TAKEN, (Event e) -> onPlayerNameTaken((PlayerNameTaken) e));
+        dispatcher.dispatch(EventType.LOBBY_NOT_FOUND, (Event e) -> onLobbyNotFound((LobbyNotFound) e));
+        dispatcher.dispatch(EventType.LOBBY_FULL, (Event e) -> onLobbyFull((LobbyFull) e));
     }
 
-    // Events from server
-    private boolean onPlayerNameTaken(PlayerNameTakenEvent event) {
-        view.displayError("Player name already taken. Try again.");
-        view.getPlayerName();
-        return true;
-    }
-
-    private boolean onRegistrationOk(RegistrationOkEvent event) {
-        view.chooseCreateOrJoin();
-        return true;
-    }
-
-    private boolean onGameCreated(GameCreatedEvent event) {
-        view.displayMessage("Lobby with id " + event.getCode() + " created.");
-        view.displayMessage("Waiting for other players to connect...");
-        return true;
-    }
-
-    private boolean onGameJoined(GameJoinedEvent event) {
-        view.displayMessage("Joined lobby " + event.getCode());
-        return true;
-    }
-
-    private boolean onGameNotFound(GameNotFoundEvent event) {
-        view.displayError("Lobby with ID " + event.getCode() + " not found!");
-        view.chooseCreateOrJoin();
-        return true;
-    }
-
-    private boolean onPlayerConnected(PlayerConnectedEvent event) {
-        view.displayMessage(event.getPlayerName() + " connected!");
-        return true;
-    }
-
-    // Events other parts of the client
+    /**
+     * Client request a connection to the server
+     */
     private boolean onConnectRequested(ConnectEvent event) {
         view.displayMessage("Connecting to server...");
         client.setAddressAndPort(event.getIP(), event.getPort());
@@ -86,32 +50,89 @@ public class ClientController implements EventListener {
         return true;
     }
 
-    private boolean onConnectionOk(ConnectOkEvent event) {
-        view.displayMessage("Connection OK");
-        view.getPlayerName();
+    /**
+     * Client established a connection with the Server
+     */
+    private boolean onConnectionOk(ConnectOk event) {
+        view.chooseCreateOrJoin();
         return true;
     }
 
-    private boolean onConnectionRefused(ConnectionRefusedEvent event) {
+    /**
+     * Client was unable to connect to Server
+     */
+    private boolean onConnectionRefused(ConnectionRefused event) {
         view.displayError(event.getMessage());
         view.getServerInfo();
         return true;
     }
 
-    private boolean onPlayerNameInserted(PlayerNameInsertedEvent event) {
-        client.send(new RegisterEvent(event.getName()));
+    /**
+     * Client is trying to create a Lobby
+     */
+    private boolean onCreateLobby(CreateLobby event) {
+        view.displayMessage("Creating Lobby...");
+        client.sendToServer(event);
         return true;
     }
 
-    private boolean onCreateGame(CreateGameEvent event) {
-        view.displayMessage("Creating game...");
-        client.send(event);
+    /**
+     * If Lobby creation was successful, Client connects to Lobby.
+     * This event can also be triggered by the Client when Event <code>JoinLobby</code> is successful.
+     */
+    private boolean onLobbyJoined(LobbyJoined event) {
+        view.displayMessage("Joined lobby " + event.getCode());
         return true;
     }
 
-    private boolean onJoinGame(JoinGameEvent event) {
-        view.displayMessage("Joining game...");
-        client.send(event);
+    /**
+     * Client is trying to connect to a Lobby.
+     */
+    private boolean onJoinLobby(JoinLobby event) {
+        client.sendToServer(event);
+        return true;
+    }
+
+    /**
+     * This is an Exception thrown by the server when client try to connect to a non-existent Lobby
+     */
+    private boolean onLobbyNotFound(LobbyNotFound event) {
+        view.displayError("Lobby with ID " + event.getCode() + " not found!");
+        view.chooseCreateOrJoin();
+        return true;
+    }
+
+    /**
+     * This is an Exception thrown by the server when client try to connect to a full Lobby
+     */
+    private boolean onLobbyFull(LobbyFull event) {
+        view.displayError("Lobby with ID " + event.getCode() + " is full!");
+        view.chooseCreateOrJoin();
+        return true;
+    }
+
+    /**
+     * This is an Exception thrown by the server when client try to connect to a Lobby but there is already a Player with the same name.
+     */
+    private boolean onPlayerNameTaken(PlayerNameTaken event) {
+        view.displayError("Player name already taken. Try again.");
+        view.getPlayerName(event.getLobbyToJoin());
+        return true;
+    }
+
+    /**
+     * A new Client connected to the same Lobby
+     */
+    private boolean onPlayerConnected(PlayerJoined event) {
+        view.displayMessage(event.getPlayerName() + " connected to Lobby!");
+        return true;
+    }
+
+    /**
+     * A new Client connected to the same Lobby
+     */
+    private boolean onPlayerDisconnected(PlayerDisconnected event) {
+        view.displayMessage(event.getPlayerName() + " left the Lobby!");
         return true;
     }
 }

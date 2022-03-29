@@ -2,13 +2,12 @@ package events.types.serverToClient;
 
 import events.Event;
 import events.EventType;
-import util.GameMode;
 
-public class GameCreatedEvent extends Event {
+public class LobbyCreated extends Event {
     private final String code;
 
-    public GameCreatedEvent(String gameCode) {
-        super(EventType.GAME_CREATED);
+    public LobbyCreated(String gameCode) {
+        super(EventType.LOBBY_CREATED);
         this.code = gameCode;
     }
 

@@ -178,7 +178,7 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
-    public void joinAdiacent() {
+    public void joinAdjacent() {
         for(IslandGroup islandGroup : islandGroups) {
             int index = islandGroups.indexOf(islandGroup);
             IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());

@@ -2,14 +2,12 @@ package network;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 import events.*;
-import events.types.clientToClient.ConnectionRefusedEvent;
-import events.types.serverToClient.ConnectOkEvent;
+import events.types.clientToClient.ConnectionRefused;
+import events.types.serverToClient.ConnectOk;
 
 public class Client extends EventSender implements Runnable {
     private final Logger LOGGER = Logger.getLogger(Client.class.getName());
@@ -37,7 +35,7 @@ public class Client extends EventSender implements Runnable {
             socket = new Socket(IPAddress, port);
             server = new ServerConnection(this, socket);
         } catch (IOException e) {
-            notifyListeners(new ConnectionRefusedEvent(e.getMessage()));
+            notifyListeners(new ConnectionRefused(e.getMessage()));
             return;
         }
 
@@ -53,14 +51,14 @@ public class Client extends EventSender implements Runnable {
         });
         incomingEventsDigestion.start();
 
-        notifyListeners(new ConnectOkEvent());
+        notifyListeners(new ConnectOk());
     }
 
     public synchronized void pushEvent(Event event) {
         eventQueue.add(event);
     }
 
-    public void send(Event obj) {
+    public void sendToServer(Event obj) {
         server.write(obj);
     }
 }
