@@ -33,8 +33,8 @@ public class PlanningPhase {
 
     public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
             throws WrongPhaseException, WrongPlayerException, NotPlayableAssistantException, AssistantNotInDeckException {
-        if (thisGame.getCurrentGameState() != GameState.PLANNING) throw new WrongPhaseException();
-        if (thisGame.getCurrentPlayer() != actingPlayer) throw new WrongPlayerException();
+        if (thisGame.getCurrentGameState().equals(GameState.PLANNING)) throw new WrongPhaseException();
+        if (thisGame.getCurrentPlayer().equals(actingPlayer)) throw new WrongPlayerException();
         if (!playable(thisGame, assistantCard)) throw new NotPlayableAssistantException();
 
         thisGame.getCurrentPlayer().pushFoldDeck(
