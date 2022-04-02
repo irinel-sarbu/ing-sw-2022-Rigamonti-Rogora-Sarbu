@@ -101,6 +101,10 @@ public class SchoolBoard {
         if (!success) throw new ProfessorNotFoundException();
     }
 
+    public Professor removeProfessorByColor(Color color) throws ProfessorNotFoundException {
+        return professors.stream().filter(prof -> prof.getColor().equals(color)).findFirst().orElse(null);
+    }
+
     public List<Tower> getTowers() {
         return towers;
     }

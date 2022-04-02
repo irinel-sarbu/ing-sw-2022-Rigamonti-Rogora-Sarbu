@@ -45,7 +45,7 @@ public class PlanningPhase {
         if (thisGame.setNextPlayer()) computeNext(thisGame);
     }
 
-    public void computeNext(GameLobby thisGame) throws WrongPhaseException {
+    private void computeNext(GameLobby thisGame) throws WrongPhaseException {
         if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
         if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() !=
                 thisGame.getOrder().size()) throw new WrongPhaseException();

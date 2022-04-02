@@ -21,9 +21,7 @@ public class GameLobby {
     private Player currentPlayer;
     private int turnProgress;
     private int studentsMoved;
-    private int maxMovableStudents;
     private GameState currentGameState;
-    private GameState previousGameState;
     private List<Player> planningPhaseOrder;
     private List<Player> actionPhaseOrder;
 
@@ -32,14 +30,12 @@ public class GameLobby {
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
         this.code = code;
         this.gameModel = new GameModel(numOfPlayers, gameMode);
-        maxMovableStudents = numOfPlayers + 1;
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
             logger.warning("Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
-        this.previousGameState = GameState.SETUP;
         this.currentGameState = GameState.SETUP;
         this.planningPhaseOrder = gameModel.getPlayers();
         this.actionPhaseOrder = null;
@@ -51,18 +47,9 @@ public class GameLobby {
         return currentGameState;
     }
 
-    public GameState getPreviousGameState() {
-        return previousGameState;
-    }
-
     public void setGameState(GameState nextGameState) {
-        this.previousGameState = this.currentGameState;
         this.currentGameState = nextGameState;
         currentPlayer = (currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder).get(0);
-    }
-
-    public void setPreviousGameState(GameState previousGameState) {
-        this.previousGameState = previousGameState;
     }
 
     public Player getCurrentPlayer() {
@@ -83,15 +70,15 @@ public class GameLobby {
         return studentsMoved;
     }
 
-    public void setStudentsMoved(int studentsMoved) {
-        this.studentsMoved = studentsMoved;
+    public void addStudentsMoved() {
+        this.studentsMoved += 1;
     }
 
     public void resetStudentsMoved() {
         this.studentsMoved = 0;
     }
 
-    public int getMaxStudentMovements() {
+    public int getMaxStudentsMoved() {
         return gameModel.getNumOfPlayers() + 1;
     }
 

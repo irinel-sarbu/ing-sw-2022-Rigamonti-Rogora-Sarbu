@@ -6,10 +6,9 @@ import model.board.*;
 import model.expert.*;
 import util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class GameModel extends EventSender {
     Logger logger = Logger.getLogger(GameModel.class.getName());
@@ -27,6 +26,7 @@ public class GameModel extends EventSender {
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
     private CoinSupply coinSupply;
+    private Set<Color> unassignedProfessors;
 
     /**
      * Constructor of the GameModel
@@ -40,6 +40,8 @@ public class GameModel extends EventSender {
         this.bag = new Bag(24);
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
+
+        unassignedProfessors = Arrays.stream(Color.values()).collect(Collectors.toSet());
 
         if (gameMode == GameMode.EXPERT) {
             this.characters = new ArrayList<>();
@@ -220,6 +222,17 @@ public class GameModel extends EventSender {
 
     public Bag getBag() {
         return bag;
+    }
+
+    public Set<Color> getUnassignedProfessors() {
+        return unassignedProfessors;
+    }
+
+    public Professor removeProfessor(Color color) throws ProfessorNotFoundException {
+        if (!unassignedProfessors.contains(color)) throw new ProfessorNotFoundException();
+
+        unassignedProfessors.remove(color);
+        return new Professor(color);
     }
 
     // Expert mode functions
