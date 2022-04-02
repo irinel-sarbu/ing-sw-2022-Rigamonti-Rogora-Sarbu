@@ -69,6 +69,10 @@ public class GameModel extends EventSender {
         this.state = state;
     }
 
+    public MotherNature getMotherNature() {
+        return motherNature;
+    }
+
     public int getNumOfPlayers() {
         return numOfPlayers;
     }

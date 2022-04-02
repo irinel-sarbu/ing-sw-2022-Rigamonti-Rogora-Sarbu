@@ -72,7 +72,6 @@ public class CharacterEffectHandler {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.POSTMAN);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            // TODO : when calculating mother nature movement, add 2 possible
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -89,7 +88,6 @@ public class CharacterEffectHandler {
             } catch (EmptyNoEntryListException e) {
 
             }
-            // TODO : remember to handle the noEntryTile when mother nature moves, and to add it back on granny
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }

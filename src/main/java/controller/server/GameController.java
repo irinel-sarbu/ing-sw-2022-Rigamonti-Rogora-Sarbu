@@ -43,7 +43,7 @@ public class GameController implements NetworkEventListener {
         this.studentMovement = new StudentMovement();
         this.resolveIsland = new ResolveIsland();
         this.planningPhase = new PlanningPhase();
-        this.motherNatureMovement = new MotherNatureMovement();
+        this.motherNatureMovement = new MotherNatureMovement(this);
         this.gameOver = new GameOver();
         this.characterEffectHandler = new CharacterEffectHandler(this);
     }
