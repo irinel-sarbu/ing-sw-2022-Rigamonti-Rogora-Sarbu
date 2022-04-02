@@ -57,15 +57,21 @@ public class CharacterEffectHandler {
             IslandGroup tempIslandGroup = tempGame.getIslandGroupByID(islandGroupID);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
+            int playerPosition;
 
             // calculates the influence of each player and stores it in islandSum in the relative position
             if (tempIslandGroup.getIslandTileByID(0).getHasTower()) {
                 islandSum = checkMostInfluenceWithTower(tempGame, tempIslandGroup);
-
             } else {
                 islandSum= checkMostInfluenceWithoutTower(tempGame, tempIslandGroup);
             }
-
+            // check which player has the most influence and, if there is one, changes island's tower to his color
+            playerPosition=playerId(islandSum);
+            if(playerPosition!=-1){
+                tempIslandGroup.setTowersColor(tempGame.getPlayerByID(playerPosition).getColor());
+            }
+            // joins adjacent islandGroups
+            tempGame.joinAdiacent();
         } catch (LobbyNotFoundException | PlayerNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -98,8 +104,26 @@ public class CharacterEffectHandler {
         return islandSum;
     }
 
-    private void switchTower(){
-
+    private int playerId(int[] islandSum){
+        int max1 = 0, max2 = 0;
+        int pos = 0;
+        for(int i=0; i<islandSum.length; i++){
+            if(islandSum[i]>max1){
+                max1=islandSum[i];
+                pos=i;
+            }
+        }
+        islandSum[pos]=0;
+        for(int i=0; i<islandSum.length; i++){
+            if(islandSum[i]>max2){
+                max2=islandSum[i];
+            }
+        }
+        if(max1==max2){
+            return -1;
+        }
+        else{
+            return pos;
+        }
     }
-
 }

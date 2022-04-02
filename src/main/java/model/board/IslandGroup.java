@@ -72,8 +72,7 @@ public class IslandGroup {
         return this.islands.size();
     }
 
-    public void setTowersColor(TowerColor towerColor) throws NullTowerColorException {
-        if (towerColor == null) throw new NullTowerColorException();
+    public void setTowersColor(TowerColor towerColor){
         this.islands.forEach(island -> island.setTowerColor(towerColor));
     }
 
