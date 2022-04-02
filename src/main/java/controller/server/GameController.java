@@ -45,7 +45,7 @@ public class GameController implements NetworkEventListener {
         this.planningPhase = new PlanningPhase();
         this.motherNatureMovement = new MotherNatureMovement();
         this.gameOver = new GameOver();
-        this.characterEffectHandler = new CharacterEffectHandler();
+        this.characterEffectHandler = new CharacterEffectHandler(this);
     }
 
     private String codeGen() {
@@ -81,6 +81,10 @@ public class GameController implements NetworkEventListener {
         String code = codeGen();
         games.put(code, new GameLobby(numOfPlayers, gameMode, code));
         return code;
+    }
+
+    public ResolveIsland getResolveIsland() {
+        return resolveIsland;
     }
 
     @Override
