@@ -51,8 +51,14 @@ public class SchoolBoard {
         }
     }
 
-    public Student removeFromEntrance(int position) throws StudentNotFoundException {
-        Student removed = entrance.remove(position);
+    public Student removeFromEntrance(int studentID) throws StudentNotFoundException {
+        Student removed = null;
+        for(int i = 0; i < entrance.size(); i++){
+            if(entrance.get(i).getID()==studentID) {
+              removed=entrance.remove(i);
+              break;
+            }
+        }
         if (removed == null) throw new StudentNotFoundException();
         return removed;
     }
