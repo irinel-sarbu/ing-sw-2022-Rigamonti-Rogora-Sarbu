@@ -17,6 +17,7 @@ public class CharacterCard {
     private boolean effectIsUsed;
     private List<Student> students;
     private Stack<NoEntryTile> noEntryTiles;
+    private Color color;
 
 
     public CharacterCard(CharacterType character) {
@@ -32,6 +33,9 @@ public class CharacterCard {
             case JESTER -> {
                 students = new ArrayList<>(6);
             }
+            case MUSHROOM_FANATIC -> {
+                color = null;
+            }
             default -> {
             }
         }
@@ -42,6 +46,14 @@ public class CharacterCard {
         this.cost = cost;
         this.character = character;
         resetEffect();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public CharacterType getCharacter() {
@@ -68,18 +80,18 @@ public class CharacterCard {
         this.cost = cost;
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         students.add(student);
     }
 
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
         return students;
     }
 
     public Student removeStudent(int studentId) throws StudentNotFoundException, EmptyStudentListException {
         if (this.students.size() == 0) throw new EmptyStudentListException();
-        for(Student student : students){
-            if(student.getID()==studentId){
+        for (Student student : students) {
+            if (student.getID() == studentId) {
                 students.remove(student);
                 return student;
             }
@@ -87,7 +99,7 @@ public class CharacterCard {
         throw new StudentNotFoundException();
     }
 
-    public void addNoEntryTile(NoEntryTile noEntryTile){
+    public void addNoEntryTile(NoEntryTile noEntryTile) {
         noEntryTiles.push(noEntryTile);
     }
 

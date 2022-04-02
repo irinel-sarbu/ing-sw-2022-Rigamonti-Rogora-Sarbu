@@ -22,7 +22,7 @@ public class MotherNatureMovement {
     public void moveMotherNature(String code, int steps)throws IllegalMovementException {
         try {
             GameLobby tempLobby = GameController.getLobby(code);
-            if(tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN)!= null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()){
+            if(tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()){
                 if(steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements()+2) throw new IllegalMovementException();
             }else{
                 if(steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements()) throw new IllegalMovementException();

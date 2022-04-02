@@ -91,6 +91,10 @@ public class GameModel extends EventSender {
         return ret;
     }
 
+    public int getPlayerId(Player player){
+        return players.indexOf(player);
+    }
+
     public List<String> getPlayerNames() {
         List<String> playerNames = new ArrayList<>();
         for (Player p : players)
@@ -255,6 +259,9 @@ public class GameModel extends EventSender {
             }
             case JESTER -> {
                 for (int i = 0; i < 6; i++) character.addStudent(bag.pull());
+            }
+            case MUSHROOM_FANATIC -> {
+                character.setColor(null);
             }
             default -> {
             }

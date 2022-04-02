@@ -99,7 +99,6 @@ public class CharacterEffectHandler {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.CENTAUR);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            // TODO : in resolve, towers do not count if effect is active
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -118,7 +117,7 @@ public class CharacterEffectHandler {
 
             Student tempStudent;
             if (entranceStudents.size() != jesterStudents.size()) throw new LengthMismatchException();
-            for (int i = 0; i < entranceStudents.size(); i++){
+            for (int i = 0; i < entranceStudents.size(); i++) {
                 tempStudent = tempSchoolBoard.removeFromEntrance(entranceStudents.get(i));
                 tempSchoolBoard.addToEntrance(tempCharacter.removeStudent(jesterStudents.get(i)));
                 tempCharacter.addStudent(tempStudent);
@@ -138,8 +137,8 @@ public class CharacterEffectHandler {
             tempCharacter.setCost(tempCharacter.getCost() + 1);
 
             Student tempStudent;
-            for (int i = 0; i < entranceStudents.size(); i++){
-                tempStudent=tempSchoolBoard.removeFromDiningRoom(diningStudents.get(i));
+            for (int i = 0; i < entranceStudents.size(); i++) {
+                tempStudent = tempSchoolBoard.removeFromDiningRoom(diningStudents.get(i));
                 tempSchoolBoard.addToDiningRoom(tempSchoolBoard.removeFromEntrance(entranceStudents.get(i)));
                 tempSchoolBoard.addToEntrance(tempStudent);
             }
@@ -155,7 +154,6 @@ public class CharacterEffectHandler {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.KNIGHT);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            // TODO : in ResolveIsland, CurrentPlayer has +2 on influence if activated
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -174,13 +172,13 @@ public class CharacterEffectHandler {
         }
     }
 
-    public void mushroomFanaticEffect(String code) {
+    public void mushroomFanaticEffect(String code, Color color) {
         try {
             GameModel tempGame = GameController.getLobby(code).getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            // TODO : in influence
+            tempCharacter.setColor(color);
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
