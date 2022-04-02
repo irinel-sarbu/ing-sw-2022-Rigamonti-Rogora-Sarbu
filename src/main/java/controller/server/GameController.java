@@ -12,6 +12,7 @@ import model.Player;
 import network.ClientConnection;
 import network.Server;
 import util.GameMode;
+import util.TowerColor;
 import util.Tuple;
 import util.Wizard;
 
@@ -118,8 +119,10 @@ public class GameController implements NetworkEventListener {
         String code = addGame(event.getNumOfPlayers(), event.getGameMode());
         String clientName = server.getNameByClientConnection(client);
 
+
+        // TODO : let the player choose wich wizard by passing the wizard when creating a game
         try {
-            games.get(code).getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1));
+            games.get(code).getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1, TowerColor.WHITE));
         } catch (MaxPlayersException e) {
             e.printStackTrace();
         }
@@ -131,10 +134,15 @@ public class GameController implements NetworkEventListener {
 
     private boolean onJoinGame(JoinGameEvent event, ClientConnection client) {
         String clientName = server.getNameByClientConnection(client);
-
+        // TODO : let the player choose wich wizard by passing the wizard when creating a game
         try {
             GameLobby lobby = getLobby(event.getCode());
-            lobby.getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1));
+            if(lobby.getModel().getPlayers().size()==1) {
+                lobby.getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1, TowerColor.BLACK));
+            }
+            else{
+                lobby.getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1, TowerColor.GRAY));
+            }
             LOGGER.info(clientName + " joined lobby " + event.getCode());
             client.send(new GameJoinedEvent(event.getCode()));
             broadcast(new PlayerConnectedEvent(clientName), lobby.getModel().getPlayerNames(), clientName);

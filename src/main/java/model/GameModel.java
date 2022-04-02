@@ -153,6 +153,11 @@ public class GameModel extends EventSender {
             }
     }
 
+    public IslandGroup getIslandGroupByID(int id) throws IslandGroupNotFoundException {
+        if (islandGroups.get(id) == null) throw new IslandGroupNotFoundException();
+        return islandGroups.get(id);
+    }
+
     public IslandTile getIslandTileByID(int id) {
         for (IslandGroup ig : islandGroups) {
             IslandTile it = ig.getIslandTileByID(id);

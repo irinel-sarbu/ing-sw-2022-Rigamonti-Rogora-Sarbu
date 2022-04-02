@@ -10,12 +10,14 @@ public class IslandTile implements Comparable<IslandTile> {
     private List<Student> students;
     private Tower tower;
     private Integer islandID;
+    private boolean hasTower;
 
     //Since at the start of the game there is only 1 tile per islandGroup, they have the same ID
     public IslandTile(int islandID) {
         students = new ArrayList<>();
         tower = null;
         this.islandID = islandID;
+        this.hasTower=false;
     }
 
     public int getIslandID() {
@@ -23,7 +25,12 @@ public class IslandTile implements Comparable<IslandTile> {
     }
 
     public void setTowerColor(TowerColor towerColor) {
+        this.hasTower = true;
         this.tower = new Tower(towerColor);
+    }
+
+    public boolean getHasTower() {
+        return hasTower;
     }
 
     public TowerColor getTowerColor() {

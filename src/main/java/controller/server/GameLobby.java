@@ -20,6 +20,7 @@ public class GameLobby {
     private int turnProgress;
     private int studentsMoved;
     private GameState currentGameState;
+    private GameState previousGameState;
     private List<Player> planningPhaseOrder;
     private List<Player> actionPhaseOrder;
 
@@ -34,6 +35,7 @@ public class GameLobby {
             logger.warning("Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
+        this.previousGameState = GameState.SETUP;
         this.currentGameState = GameState.SETUP;
         this.planningPhaseOrder = gameModel.getPlayers();
         this.actionPhaseOrder = null;
@@ -45,8 +47,16 @@ public class GameLobby {
         return currentGameState;
     }
 
+    public GameState getPreviousGameState() {
+        return previousGameState;
+    }
+
     public void setCurrentGameState(GameState currentGameState) {
         this.currentGameState = currentGameState;
+    }
+
+    public void setPreviousGameState(GameState previousGameState) {
+        this.previousGameState = previousGameState;
     }
 
     public Player getCurrentPlayer() {

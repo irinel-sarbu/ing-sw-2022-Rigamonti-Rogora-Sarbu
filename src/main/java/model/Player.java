@@ -3,7 +3,9 @@ package model;
 import exceptions.AssistantNotInDeckException;
 import model.board.Assistant;
 import model.board.SchoolBoard;
+import util.TowerColor;
 import util.Wizard;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -13,12 +15,14 @@ public class Player {
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
     private Assistant foldCard;
+    private final TowerColor color;
 
-    public Player(String name, Wizard wizard) {
+    public Player(String name, Wizard wizard, TowerColor towerColor) {
         this.name = name;
         this.schoolBoard = new SchoolBoard(this);
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
+        this.color = towerColor;
     }
 
     public void pushFoldDeck(Assistant assistantCard) {
@@ -50,6 +54,10 @@ public class Player {
 
     public SchoolBoard getSchoolBoard() {
         return schoolBoard;
+    }
+
+    public TowerColor getColor() {
+        return color;
     }
 
     public String getName() {
