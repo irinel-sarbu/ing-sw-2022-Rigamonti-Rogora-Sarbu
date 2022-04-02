@@ -33,6 +33,12 @@ public class SchoolBoard {
         return entrance;
     }
 
+    public Student getEntranceStudent(int studentPosition) throws StudentNotFoundException {
+        Student student = entrance.get(studentPosition);
+        if (student == null) throw new StudentNotFoundException();
+        return student;
+    }
+
     public void addToEntrance(Student student) throws EntranceFullException {
         if (entrance.size() >= maxEntranceSize) throw new EntranceFullException();
         entrance.add(student);
@@ -45,9 +51,10 @@ public class SchoolBoard {
         }
     }
 
-    public void removeFromEntrance(int position) throws StudentNotFoundException {
-        boolean success = entrance.remove(position) != null;
-        if (!success) throw new StudentNotFoundException();
+    public Student removeFromEntrance(int position) throws StudentNotFoundException {
+        Student removed = entrance.remove(position);
+        if (removed == null) throw new StudentNotFoundException();
+        return removed;
     }
 
     public boolean addToDiningRoom(Student student) throws DiningRoomFullException {

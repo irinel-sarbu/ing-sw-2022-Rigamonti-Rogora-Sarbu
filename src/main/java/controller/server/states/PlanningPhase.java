@@ -35,21 +35,25 @@ public class PlanningPhase {
 
     public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
             throws WrongPhaseException, WrongPlayerException, NotPlayableAssistantException, AssistantNotInDeckException {
-        if (thisGame.getCurrentGameState().equals(GameState.PLANNING)) throw new WrongPhaseException();
-        if (thisGame.getCurrentPlayer().equals(actingPlayer)) throw new WrongPlayerException();
+        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
+        if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
         if (!playable(thisGame, assistantCard)) throw new NotPlayableAssistantException();
 
         thisGame.getCurrentPlayer().pushFoldDeck(
                 thisGame.getCurrentPlayer().removeCard(assistantCard));
+
+        if (thisGame.setNextPlayer()) computeNext(thisGame);
     }
 
     public void computeNext(GameLobby thisGame) throws WrongPhaseException {
-        if (thisGame.getCurrentGameState().equals(GameState.PLANNING)) throw new WrongPhaseException();
+        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
         if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() !=
                 thisGame.getOrder().size()) throw new WrongPhaseException();
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
         nextOrder.sort(Player::compareTo);
         thisGame.setOrder(nextOrder);
+
+        thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
 }

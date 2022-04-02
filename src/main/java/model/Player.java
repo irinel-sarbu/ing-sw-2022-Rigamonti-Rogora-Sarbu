@@ -6,11 +6,7 @@ import model.board.SchoolBoard;
 import util.TowerColor;
 import util.Wizard;
 
-import java.util.Comparator;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 public class Player implements Comparator<Player>, Comparable<Player> {
     private final String name;
@@ -64,6 +60,19 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return name.equals(player.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 
     @Override

@@ -21,6 +21,7 @@ public class GameLobby {
     private Player currentPlayer;
     private int turnProgress;
     private int studentsMoved;
+    private int maxMovableStudents;
     private GameState currentGameState;
     private GameState previousGameState;
     private List<Player> planningPhaseOrder;
@@ -31,6 +32,7 @@ public class GameLobby {
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
         this.code = code;
         this.gameModel = new GameModel(numOfPlayers, gameMode);
+        maxMovableStudents = numOfPlayers + 1;
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
@@ -53,8 +55,10 @@ public class GameLobby {
         return previousGameState;
     }
 
-    public void setCurrentGameState(GameState currentGameState) {
-        this.currentGameState = currentGameState;
+    public void setGameState(GameState nextGameState) {
+        this.previousGameState = this.currentGameState;
+        this.currentGameState = nextGameState;
+        currentPlayer = (currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder).get(0);
     }
 
     public void setPreviousGameState(GameState previousGameState) {
@@ -69,9 +73,10 @@ public class GameLobby {
         this.currentPlayer = player;
     }
 
-    public void setNextPlayer() {
+    public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;
+        return currentPlayer != null;
     }
 
     public int getStudentsMoved() {
@@ -124,5 +129,13 @@ public class GameLobby {
         actionPhaseOrder = new ArrayList<>(actionOrder);
         nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
         Collections.reverse(nextPlanningPhaseOrder);
+    }
+
+    public boolean wrongState(GameState gameState) {
+        return !this.getCurrentGameState().equals(gameState);
+    }
+
+    public boolean wrongPlayer(Player player) {
+        return !this.getCurrentPlayer().equals(player);
     }
 }

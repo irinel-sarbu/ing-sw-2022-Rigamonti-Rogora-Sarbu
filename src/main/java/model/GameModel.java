@@ -164,7 +164,6 @@ public class GameModel extends EventSender {
             if (it != null)
                 return it;
         }
-
         throw new IslandNotFoundException("Island with id " + id + " not found!");
     }
 
