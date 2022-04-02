@@ -8,6 +8,9 @@ import model.Player;
 import model.board.Assistant;
 import util.GameState;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -20,7 +23,6 @@ public class PlanningPhase {
     }
 
     private boolean playable(GameLobby thisGame, Assistant assistantCard) {
-
         List<Assistant> played = thisGame.getOrder().stream()
                 .map(Player::peekFoldDeck)
                 .filter(Objects::nonNull).collect(Collectors.toList());
@@ -39,6 +41,15 @@ public class PlanningPhase {
 
         thisGame.getCurrentPlayer().pushFoldDeck(
                 thisGame.getCurrentPlayer().removeCard(assistantCard));
+    }
+
+    public void computeNext(GameLobby thisGame) throws WrongPhaseException {
+        if (thisGame.getCurrentGameState().equals(GameState.PLANNING)) throw new WrongPhaseException();
+        if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() !=
+                thisGame.getOrder().size()) throw new WrongPhaseException();
+        List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
+        nextOrder.sort(Player::compareTo);
+        thisGame.setOrder(nextOrder);
     }
 
 }

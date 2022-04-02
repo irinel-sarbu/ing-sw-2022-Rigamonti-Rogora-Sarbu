@@ -6,7 +6,9 @@ import model.Player;
 import util.GameMode;
 import util.GameState;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -105,15 +107,22 @@ public class GameLobby {
         return index == players.size() - 1;
     }
 
-    public void nextTurn() {
+    public void nextTurn(GameState nextPhase) {
         planningPhaseOrder = nextPlanningPhaseOrder;
         currentPlayer = planningPhaseOrder.get(0);
         nextPlanningPhaseOrder = null;
+        actionPhaseOrder = null;
         turnCounter++;
         turnProgress = 1;
     }
 
     public GameModel getModel() {
         return gameModel;
+    }
+
+    public void setOrder(List<Player> actionOrder) {
+        actionPhaseOrder = new ArrayList<>(actionOrder);
+        nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
+        Collections.reverse(nextPlanningPhaseOrder);
     }
 }

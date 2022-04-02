@@ -6,11 +6,13 @@ import model.board.SchoolBoard;
 import util.TowerColor;
 import util.Wizard;
 
+import java.util.Comparator;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Player {
+public class Player implements Comparator<Player>, Comparable<Player> {
     private final String name;
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
@@ -62,5 +64,15 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Player other) {
+        return compare(this, other);
+    }
+
+    @Override
+    public int compare(Player player, Player t1) {
+        return player.foldCard.getValue() - t1.foldCard.getValue();
     }
 }
