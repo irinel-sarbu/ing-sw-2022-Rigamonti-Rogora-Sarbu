@@ -1,6 +1,5 @@
 package model.expert;
 
-import com.sun.source.tree.ReturnTree;
 import exceptions.EmptyNoEntryListException;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
@@ -13,7 +12,7 @@ import java.util.Stack;
 
 public class CharacterCard {
     private int cost;
-    private CharacterType character;
+    private final CharacterType character;
     private boolean effectIsUsed;
     private List<Student> students;
     private Stack<NoEntryTile> noEntryTiles;
@@ -24,18 +23,10 @@ public class CharacterCard {
         this.cost = character.getBaseCost();
         this.character = character;
         switch (character) {
-            case MONK, PRINCESS -> {
-                students = new ArrayList<>(4);
-            }
-            case GRANNY_HERBS -> {
-                noEntryTiles = new Stack<>();
-            }
-            case JESTER -> {
-                students = new ArrayList<>(6);
-            }
-            case MUSHROOM_FANATIC -> {
-                color = null;
-            }
+            case MONK, PRINCESS -> students = new ArrayList<>(4);
+            case GRANNY_HERBS -> noEntryTiles = new Stack<>();
+            case JESTER -> students = new ArrayList<>(6);
+            case MUSHROOM_FANATIC -> color = null;
             default -> {
             }
         }

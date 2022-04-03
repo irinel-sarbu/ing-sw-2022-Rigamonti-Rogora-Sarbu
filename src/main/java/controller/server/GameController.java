@@ -128,7 +128,7 @@ public class GameController implements NetworkEventListener {
         String clientName = server.getNameByClientConnection(client);
 
 
-        // TODO : let the player choose wich wizard by passing the wizard when creating a game
+        // TODO : let the player choose which wizard by passing the wizard when creating a game
         try {
             games.get(code).getModel().addPlayer(new Player(clientName, Wizard.WIZARD_1, TowerColor.WHITE));
         } catch (MaxPlayersException e) {
@@ -142,7 +142,7 @@ public class GameController implements NetworkEventListener {
 
     private boolean onJoinGame(JoinGameEvent event, ClientConnection client) {
         String clientName = server.getNameByClientConnection(client);
-        // TODO : let the player choose wich wizard by passing the wizard when creating a game
+        // TODO : let the player choose which wizard by passing the wizard when creating a game
         try {
             GameLobby lobby = getLobby(event.getCode());
             if(lobby.getModel().getPlayers().size()==1) {

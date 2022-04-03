@@ -8,7 +8,6 @@ import model.GameModel;
 import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
-import util.unused.characterCards.MushroomFanatic;
 
 public class ResolveIsland {
 
@@ -30,7 +29,7 @@ public class ResolveIsland {
                 tempIslandGroup.setTowersColor(tempGame.getPlayerByID(playerPosition).getColor());
             }
             // joins adjacent islandGroups
-            tempGame.joinAdiacent();
+            tempGame.joinAdjacent();
         } catch (LobbyNotFoundException | PlayerNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -75,9 +74,9 @@ public class ResolveIsland {
             }
         }
         islandSum[pos] = 0;
-        for (int i = 0; i < islandSum.length; i++) {
-            if (islandSum[i] > max2) {
-                max2 = islandSum[i];
+        for (int j : islandSum) {
+            if (j > max2) {
+                max2 = j;
             }
         }
         if (max1 == max2) {

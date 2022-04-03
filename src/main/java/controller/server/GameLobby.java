@@ -6,7 +6,6 @@ import model.Player;
 import util.GameMode;
 import util.GameState;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,6 @@ public class GameLobby {
     private final Logger logger = Logger.getLogger(GameLobby.class.getName());
 
     private int turnCounter = 0;
-    private final String code;
     private final GameModel gameModel;
     private Player currentPlayer;
     private int turnProgress;
@@ -28,7 +26,6 @@ public class GameLobby {
     private List<Player> nextPlanningPhaseOrder;
 
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
-        this.code = code;
         this.gameModel = new GameModel(numOfPlayers, gameMode);
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);

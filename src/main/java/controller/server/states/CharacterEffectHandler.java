@@ -86,7 +86,7 @@ public class CharacterEffectHandler {
             try {
                 tempGame.getIslandGroupByID(islandID).addNoEntry(tempCharacter.removeNoEntryTile());
             } catch (EmptyNoEntryListException e) {
-
+                // Do nothing
             }
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue

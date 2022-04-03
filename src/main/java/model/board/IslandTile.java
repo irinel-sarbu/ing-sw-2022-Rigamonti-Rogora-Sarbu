@@ -7,9 +7,9 @@ import util.TowerColor;
 import util.Color;
 
 public class IslandTile implements Comparable<IslandTile> {
-    private List<Student> students;
+    private final List<Student> students;
     private Tower tower;
-    private Integer islandID;
+    private final int islandID;
     private boolean hasTower;
 
     //Since at the start of the game there is only 1 tile per islandGroup, they have the same ID
@@ -61,7 +61,7 @@ public class IslandTile implements Comparable<IslandTile> {
 
     @Override
     public String toString() {
-        String stringID = String.format("%2s", islandID.toString());
+        String stringID = String.format("%2s", islandID);
         String stringContent = students.stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))

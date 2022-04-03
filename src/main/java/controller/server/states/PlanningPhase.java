@@ -47,7 +47,7 @@ public class PlanningPhase {
 
     private void computeNext(GameLobby thisGame) throws WrongPhaseException {
         if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
-        /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // in case of disconnection prevent game progress
+        /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO in case of disconnection prevent game progress
                 thisGame.getOrder().size()) throw new WrongPhaseException(); */
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
         nextOrder.sort(Player::compareTo);

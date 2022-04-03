@@ -73,10 +73,6 @@ public class MotherNatureMovement {
     }
 
     public boolean checkForToFewIslands(GameModel tempGame){
-        if(tempGame.getRemainingIslandGroups()<=3){
-            return true;
-        }else{
-            return false;
-        }
+        return tempGame.getRemainingIslandGroups() <= 3;
     }
 }

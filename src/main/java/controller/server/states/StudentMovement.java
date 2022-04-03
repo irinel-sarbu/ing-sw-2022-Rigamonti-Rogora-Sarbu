@@ -29,7 +29,7 @@ public class StudentMovement {
     private void stealProfessor(GameLobby thisGame, Color color, Boolean farmerUsed)
             throws ProfessorFullException, ProfessorNotFoundException {
         if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color)) return; // prevent from self stealing
-        // TODO: magari esiste un altro modo per farlo
+        // TODO: may exists another way to check this
         try {
             thisGame.getCurrentPlayer().getSchoolBoard().addProfessor(thisGame.getModel().removeProfessor(color));
         } catch (ProfessorNotFoundException e) {    // someone else already has this professor
@@ -55,7 +55,15 @@ public class StudentMovement {
         if (thisGame.wrongPlayer(player)) throw new WrongPlayerException();
 
         Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentPosition);
-        thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent);
+        if (thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent)) {
+            try {
+                thisGame.getModel().getCoinSupply().removeCoins(1);
+                thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
+            } catch (supplyEmptyException e) {
+                // Do nothing
+            }
+
+        }
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentPosition);
 
         CharacterCard farmer = thisGame.getModel().getCharacterByType(CharacterType.FARMER);
@@ -64,7 +72,6 @@ public class StudentMovement {
         stealProfessor(thisGame, movingStudent.getColor(), farmerUsed);
 
         movementEpilogue(thisGame);
-
     }
 
     public void moveStudentToIsland(GameLobby thisGame, Player player, int studentPosition, int islandID)

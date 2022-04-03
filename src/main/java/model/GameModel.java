@@ -25,8 +25,8 @@ public class GameModel extends EventSender {
     private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
-    private CoinSupply coinSupply;
-    private Set<Color> unassignedProfessors;
+    private final Set<Color> unassignedProfessors;
+    private CoinSupply coinSupply;                          // TODO: trovare un utilizzo di CoinSupply
 
     /**
      * Constructor of the GameModel
@@ -61,6 +61,10 @@ public class GameModel extends EventSender {
         }
 
         moveFromBagToIslandTile();
+    }
+
+    public CoinSupply getCoinSupply() {
+        return coinSupply;
     }
 
     public GameState getState() {
@@ -182,22 +186,25 @@ public class GameModel extends EventSender {
     }
 
     public void refillCloudTile(int cloudTileID) {
-        if (cloudTiles.get(cloudTileID).isEmpty())
+        try {
             moveFromBagToCloudTile(cloudTiles.get(cloudTileID));
+        } catch (TooManyStudentsException e) {
+            // do Nothing
+        }
     }
 
     public CloudTile getCloudTile(int cloudTileID) {
         return cloudTiles.get(cloudTileID);
     }
 
-    public void moveFromBagToCloudTile(CloudTile cloudTile) {
+    public void moveFromBagToCloudTile(CloudTile cloudTile) throws TooManyStudentsException {
         int num = players.size() + 1;
-        for (int i = 0; i < num; i++) {
-            try {
+        try {
+            for (int i = 0; i < num; i++) {
                 cloudTile.put(bag.pull());
-            } catch (EmptyStudentListException e) {
-                logger.severe("Pulling from initial bag. Something went wrong...");
             }
+        } catch (EmptyStudentListException e) {
+            // No more students will be placed on this cloudTiles
         }
     }
 
@@ -205,7 +212,7 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
-    public void joinAdiacent() {
+    public void joinAdjacent() {
         for (IslandGroup islandGroup : islandGroups) {
             int index = islandGroups.indexOf(islandGroup);
             IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
