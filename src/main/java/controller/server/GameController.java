@@ -87,6 +87,10 @@ public class GameController implements NetworkEventListener {
         return resolveIsland;
     }
 
+    public GameOver getGameOver() {
+        return gameOver;
+    }
+
     @Override
     public synchronized void onEvent(Tuple<Event, ClientConnection> networkEvent) {
         EventDispatcher dispatcher = new EventDispatcher(networkEvent);

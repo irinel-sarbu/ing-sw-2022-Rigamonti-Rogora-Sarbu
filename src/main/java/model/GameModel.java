@@ -281,4 +281,8 @@ public class GameModel extends EventSender {
         }
         return null;
     }
+
+    public int getRemainingIslandGroups(){
+        return islandGroups.size();
+    }
 }
