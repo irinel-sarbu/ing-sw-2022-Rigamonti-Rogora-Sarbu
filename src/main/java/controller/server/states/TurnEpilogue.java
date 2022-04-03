@@ -1,11 +1,18 @@
 package controller.server.states;
 
+import controller.server.GameController;
 import controller.server.GameLobby;
 import exceptions.*;
 import model.Player;
 import util.GameState;
 
 public class TurnEpilogue {
+
+    private final GameController controller;
+
+    public TurnEpilogue(GameController controller) {
+        this.controller = controller;
+    }
 
     private boolean checkGameOver(GameLobby thisGame) {
         return thisGame.getModel().getBag().isEmpty() ||
@@ -24,12 +31,10 @@ public class TurnEpilogue {
         if (thisGame.setNextPlayer()) {
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
-            if (checkGameOver(thisGame)) {
-                // TODO: implement gameOver action
-            }
-            // TODO: se è brutto crea GameOverException
-            thisGame.nextTurn();
+            if (checkGameOver(thisGame))
+                controller.getGameOver().selectWinner(thisGame.getCode());
+            else
+                thisGame.nextTurn();
         }
-
     }
 }

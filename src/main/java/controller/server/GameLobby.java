@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class GameLobby {
     private final Logger logger = Logger.getLogger(GameLobby.class.getName());
 
+    private final String code;
     private int turnCounter = 0;
     private final GameModel gameModel;
     private Player currentPlayer;
@@ -26,6 +27,7 @@ public class GameLobby {
     private List<Player> nextPlanningPhaseOrder;
 
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
+        this.code = code;
         this.gameModel = new GameModel(numOfPlayers, gameMode);
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
@@ -38,6 +40,10 @@ public class GameLobby {
         this.actionPhaseOrder = null;
         this.nextPlanningPhaseOrder = null;
         this.turnProgress = 1;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public GameState getCurrentGameState() {

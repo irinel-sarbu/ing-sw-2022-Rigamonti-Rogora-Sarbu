@@ -39,7 +39,7 @@ public class GameController implements NetworkEventListener {
     public GameController(Server server) {
         this.server = server;
 
-        this.epilogue = new TurnEpilogue();
+        this.epilogue = new TurnEpilogue(this);
         this.studentMovement = new StudentMovement();
         this.resolveIsland = new ResolveIsland();
         this.planningPhase = new PlanningPhase();

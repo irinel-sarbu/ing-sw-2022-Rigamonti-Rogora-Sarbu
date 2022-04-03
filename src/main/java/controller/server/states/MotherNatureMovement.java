@@ -5,7 +5,6 @@ import controller.server.GameLobby;
 import exceptions.EmptyNoEntryListException;
 import exceptions.IllegalMovementException;
 import exceptions.LobbyNotFoundException;
-import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.expert.CharacterCard;
 import util.CharacterType;
