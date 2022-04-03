@@ -1,7 +1,7 @@
 package util.unused.characterCards;
 
 import exceptions.EmptyNoEntryListException;
-import model.expert.Character;
+import model.expert.CharacterCard;
 import model.expert.NoEntryTile;
 import util.CharacterType;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GrannyHerbs extends Character {
+public class GrannyHerbs extends CharacterCard {
 
     List<NoEntryTile> noEntryTileList;
 

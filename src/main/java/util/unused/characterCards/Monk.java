@@ -4,13 +4,13 @@ package util.unused.characterCards;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
-import model.expert.Character;
+import model.expert.CharacterCard;
 import util.CharacterType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Monk extends Character {
+public class Monk extends CharacterCard {
     private final List<Student> students;
 
     public Monk() {

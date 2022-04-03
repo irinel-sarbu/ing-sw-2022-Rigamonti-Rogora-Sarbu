@@ -1,9 +1,9 @@
 package util.unused.characterCards;
 
-import model.expert.Character;
+import model.expert.CharacterCard;
 import util.CharacterType;
 
-public class Farmer extends Character {
+public class Farmer extends CharacterCard {
 
     public Farmer() {
         super(2, CharacterType.FARMER);

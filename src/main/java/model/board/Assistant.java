@@ -95,4 +95,9 @@ public class Assistant {
     public int getMovements() {
         return movements;
     }
+
+    @Override
+    public String toString() {
+        return "(" + value + ") [" + movements + "] " + name;
+    }
 }

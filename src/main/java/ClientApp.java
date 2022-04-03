@@ -1,10 +1,10 @@
-import controller.GameController;
-import model.Game;
+import controller.client.ClientController;
+import network.Client;
 import view.View;
 import view.cli.CliView;
 import view.gui.GuiView;
 
-public class Client {
+public class ClientApp {
     static public void main(String[] args) {
         boolean run = true;
         boolean cliEnabled = false;
@@ -24,11 +24,14 @@ public class Client {
         }
 
         if (run) {
-            Game model = Game.getInstance();
+            Client client = new Client();
             View view = cliEnabled ? new CliView() : new GuiView();
-            GameController controller = new GameController(model, view);
+
+            ClientController controller = new ClientController(client, view);
+
+            client.registerListener(controller);
             view.registerListener(controller);
-            model.registerListener(view);
+
             view.run();
         }
     }

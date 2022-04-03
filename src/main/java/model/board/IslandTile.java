@@ -7,16 +7,17 @@ import util.TowerColor;
 import util.Color;
 
 public class IslandTile implements Comparable<IslandTile> {
-    private List<Student> students;
+    private final List<Student> students;
     private Tower tower;
-    private Integer islandID;
-    private static int count = 0;
+    private final int islandID;
+    private boolean hasTower;
 
-    public IslandTile() {
+    //Since at the start of the game there is only 1 tile per islandGroup, they have the same ID
+    public IslandTile(int islandID) {
         students = new ArrayList<>();
         tower = null;
-        this.islandID = count;
-        count++;
+        this.islandID = islandID;
+        this.hasTower=false;
     }
 
     public int getIslandID() {
@@ -24,15 +25,20 @@ public class IslandTile implements Comparable<IslandTile> {
     }
 
     public void setTowerColor(TowerColor towerColor) {
+        this.hasTower = true;
         this.tower = new Tower(towerColor);
+    }
+
+    public boolean getHasTower() {
+        return hasTower;
     }
 
     public TowerColor getTowerColor() {
         return tower.getColor();
     }
 
-    public void addStudent(Color color) {
-        students.add(new Student(color));
+    public void addStudent(Student student) {
+        students.add(student);
     }
 
     public int getStudentsNumber(Color color) {
@@ -51,5 +57,17 @@ public class IslandTile implements Comparable<IslandTile> {
 
     public int compareTo(IslandTile other) {
         return Integer.compare(this.getIslandID(), other.getIslandID());
+    }
+
+    @Override
+    public String toString() {
+        String stringID = String.format("%2s", islandID);
+        String stringContent = students.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
+                .entrySet().stream()
+                .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
+                .collect(Collectors.joining(" ", "[", "]"));
+        return "Island" + stringID + stringContent + (tower != null ? tower.toString() : "X");
     }
 }
