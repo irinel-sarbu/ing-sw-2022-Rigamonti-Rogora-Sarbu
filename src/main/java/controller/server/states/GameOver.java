@@ -1,8 +1,6 @@
 package controller.server.states;
 
-import controller.server.GameController;
 import controller.server.GameLobby;
-import exceptions.LobbyNotFoundException;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.board.SchoolBoard;
