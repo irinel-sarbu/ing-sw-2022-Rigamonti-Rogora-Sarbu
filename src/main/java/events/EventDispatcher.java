@@ -1,6 +1,7 @@
 package events;
 
 import network.server.ClientSocketConnection;
+import util.Logger;
 import util.Tuple;
 
 public class EventDispatcher {
@@ -18,19 +19,19 @@ public class EventDispatcher {
     }
 
     public synchronized void dispatch(EventType eventType, EventHandler handler) {
-        if(event.handled || event.getType() != eventType)
+        if (event.handled || event.getType() != eventType)
             return;
 
         event.handled = handler.handle(event);
     }
 
     public synchronized void dispatch(EventType eventType, NetworkEventHandler handler) {
-//        System.err.println("Dispatching event " + event + " with event type " + eventType);
-//        System.err.println("\tEvent.handled " + event.handled);
-//        System.err.println("\tEvent.type " + event.getType());
+        Logger.debug("Dispatching event " + event + " with event type " + eventType + "\n" +
+                "\tEvent.handled " + event.handled + "\n" +
+                "\tEvent.type " + event.getType());
         if (event.handled || event.getType() != eventType)
             return;
-//        System.err.println("Event " + eventType + " passed test, going to handler");
+
         event.handled = handler.handle(networkEvent);
     }
 }

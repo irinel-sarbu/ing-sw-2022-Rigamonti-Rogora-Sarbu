@@ -8,6 +8,7 @@ import events.*;
 import events.types.Messages;
 import events.types.serverToClient.Message;
 import observer.Observable;
+import util.Logger;
 
 public class Client extends Observable implements Runnable {
 
@@ -42,7 +43,7 @@ public class Client extends Observable implements Runnable {
                 try {
                     notifyListeners(eventQueue.take());
                 } catch (InterruptedException e) {
-                    System.out.println("[ERROR] " +e.getMessage());
+                    Logger.error(e.getMessage());
                 }
             }
         }).start();

@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import events.Event;
+import util.Logger;
 
 public class ServerConnection extends Thread {
 
@@ -17,8 +18,6 @@ public class ServerConnection extends Thread {
     ServerConnection(Client client, Socket socket) throws IOException {
         this.client = client;
         this.socket = socket;
-
-
     }
 
     @Override
@@ -40,7 +39,7 @@ public class ServerConnection extends Thread {
         try {
             out.writeObject(event);
         } catch (IOException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 
@@ -56,7 +55,7 @@ public class ServerConnection extends Thread {
 
             System.out.println("\rConnection with server closed...");
         } catch (IOException e) {
-            System.err.println("[ERROR] " +e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 }

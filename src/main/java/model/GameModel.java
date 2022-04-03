@@ -9,10 +9,9 @@ import util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Logger;
 
 public class GameModel extends Observable {
-    private final int numOfPlayers;
+    private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private GameState state;
     private final Bag bag;
@@ -24,8 +23,8 @@ public class GameModel extends Observable {
     private List<CharacterCard> characters;
     private CoinSupply coinSupply;
 
-    public GameModel(int numOfPlayers, GameMode gameMode) {
-        this.numOfPlayers = numOfPlayers;
+    public GameModel(int maxNumOfPlayers, GameMode gameMode) {
+        this.maxNumOfPlayers = maxNumOfPlayers;
         this.gameMode = gameMode;
         this.bag = new Bag(24);
         this.players = new ArrayList<>();
@@ -38,7 +37,7 @@ public class GameModel extends Observable {
         }
 
         this.cloudTiles = new ArrayList<>();
-        for (int i = 0; i < numOfPlayers; i++) cloudTiles.add(new CloudTile(numOfPlayers + 1));
+        for (int i = 0; i < maxNumOfPlayers; i++) cloudTiles.add(new CloudTile(maxNumOfPlayers + 1));
 
         islandGroups = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -57,7 +56,11 @@ public class GameModel extends Observable {
     }
 
     public int getNumOfPlayers() {
-        return numOfPlayers;
+        return maxNumOfPlayers;
+    }
+
+    public int getPlayerSize() {
+        return players.size();
     }
 
     public GameMode getGameMode() {
@@ -114,11 +117,10 @@ public class GameModel extends Observable {
                 try {
                     student = initialBag.pull();
                 } catch (EmptyStudentListException e) {
-                    System.out.println("[INFO] Pulling from initial bag. Something went wrong...");
+                    Logger.info("Pulling from initial bag. Something went wrong...");
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
-            System.out.println(islandGroup);
         }
     }
 
@@ -127,9 +129,9 @@ public class GameModel extends Observable {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                System.out.println("[ERROR] Setting up entrance. Something went wrong...");
+                Logger.error("Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                System.out.println("[ERROR] Empty bag...");
+                Logger.error("Empty bag...");
             }
     }
 
@@ -158,7 +160,7 @@ public class GameModel extends Observable {
             try {
                 cloudTile.put(bag.pull());
             } catch (EmptyStudentListException e) {
-                System.out.println("[ERROR] Pulling from initial bag. Something went wrong...");
+                Logger.error("Pulling from initial bag. Something went wrong...");
             }
         }
     }

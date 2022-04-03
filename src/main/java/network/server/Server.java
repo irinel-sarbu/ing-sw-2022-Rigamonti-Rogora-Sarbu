@@ -7,6 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import events.*;
 import observer.NetworkObservable;
+import util.Logger;
 import util.Tuple;
 
 public class Server extends NetworkObservable implements Runnable {
@@ -23,9 +24,9 @@ public class Server extends NetworkObservable implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(PORT);
-            System.out.println("[INFO] Server started on port " + PORT + ".\nWaiting for clients...");
+            Logger.info("Server started on port " + PORT + ".\n\tWaiting for clients...");
         } catch (IOException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+            Logger.error(e.getMessage());
         }
 
         // Event digestion
@@ -35,7 +36,7 @@ public class Server extends NetworkObservable implements Runnable {
                     Tuple<Event, ClientSocketConnection> networkEvent = eventQueue.take();
                     notifyListeners(networkEvent);
                 } catch (InterruptedException e) {
-                    System.out.println("[ERROR] " + e.getMessage());
+                    Logger.error(e.getMessage());
                 }
             }
         }).start();
@@ -47,7 +48,7 @@ public class Server extends NetworkObservable implements Runnable {
                 clientConnection.start();
 
             } catch (IOException e) {
-                System.out.println("[ERROR] " + e.getMessage());
+                Logger.error(e.getMessage());
             }
         }
     }

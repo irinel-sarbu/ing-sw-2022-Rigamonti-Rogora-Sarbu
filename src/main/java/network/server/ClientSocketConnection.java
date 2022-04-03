@@ -12,6 +12,7 @@ import events.EventType;
 import events.types.Messages;
 import events.types.serverToClient.Message;
 import events.types.serverToClient.PingEvent;
+import util.Logger;
 import util.Tuple;
 
 public class ClientSocketConnection extends Thread implements ClientConnection {
@@ -26,7 +27,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     Socket socket;
 
     ClientSocketConnection(Server server, Socket socket) throws IOException {
-        System.out.println("[INFO] New client connected!");
+        Logger.info("New client connected!");
         this.server = server;
         this.socket = socket;
 
@@ -52,7 +53,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
 
             while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
-                System.out.println("[DEBUG] New event " + event + " from " + socket.toString());
+                Logger.debug("New event " + event + " from " + socket.toString());
                 server.pushEvent(new Tuple<>(event, this));
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -76,10 +77,10 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     private synchronized void send(Event event) {
         try {
             if(event.getType() != EventType.PING)
-                System.out.println("[DEBUG] Sending event " + event + " to " + socket.toString());
+                Logger.debug("Sending event " + event + " to " + socket.toString());
             out.writeObject(event);
         } catch (IOException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 
@@ -93,7 +94,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             System.out.println("\rConnection with client " + socket.toString() + " closed...");
             server.pushEvent(new Tuple<>(new Message(Messages.CLIENT_DISCONNECTED), this));
         } catch (IOException e) {
-            System.out.println("[ERROR] " + e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 

@@ -15,13 +15,11 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+import util.Logger;
 import util.Wizard;
 
 public class Assistant {
-    static Logger logger = Logger.getLogger(Assistant.class.getName());
-
     Wizard wizard;
     String name;
     int value;
@@ -71,9 +69,6 @@ public class Assistant {
                     int movements = Integer.parseInt(movementsElement.item(0).getTextContent());
 
                     deck.add(new Assistant(wizard, name, value, movements));
-
-                    System.out.println("[INFO] New assistant: \n" + "\tName: " + name + "\n\tValue: " + value
-                            + "\n\tMother nature movements: " + movements);
                 }
             }
 

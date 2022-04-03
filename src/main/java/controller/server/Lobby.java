@@ -1,16 +1,14 @@
 package controller.server;
 
-import events.Event;
-import events.EventDispatcher;
-import events.EventType;
+import events.*;
 import events.types.clientToServer.EWizardChosen;
-import model.GameModel;
-import model.Player;
+import model.*;
 import observer.NetworkObserver;
 import events.types.Messages;
 import events.types.serverToClient.*;
 import network.server.ClientSocketConnection;
 import util.GameMode;
+import util.Logger;
 import util.Tuple;
 import util.Wizard;
 
@@ -33,14 +31,13 @@ public class Lobby implements NetworkObserver {
         this.gameMode = gameMode;
 
         this.clientList = new HashMap<>();
-        this.model = new GameModel(maxPlayers, gameMode);
-        this.availableWizards = Collections.synchronizedList(new ArrayList<>(Arrays.asList(Wizard.values())));
+        this.model = new GameModel(maxPlayers, this.gameMode);
+        this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
     }
 
     @Override
-    public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
+    public void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
         EventDispatcher dp = new EventDispatcher(networkEvent);
-        System.err.println("Lobby - New event " + networkEvent.getKey());
 
         dp.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
     }
@@ -77,26 +74,24 @@ public class Lobby implements NetworkObserver {
     }
 
     public void addClientToLobby(String name, ClientSocketConnection client) {
-        Player player = model.getPlayerByName(name);
-
         if(model.getPlayerByName(name) != null && model.getPlayerByName(name).isDisconnected()) {
             clientList.put(name, client);
             client.joinLobby(lobbyCode);
             model.getPlayerByName(name).setDisconnected(false);
             broadcastExceptOne(new PlayerJoined(name), name);
-            System.out.println("[INFO] Player " + name + " reconnected to Lobby " + getLobbyCode());
+            Logger.info("Player " + name + " reconnected to Lobby " + getLobbyCode());
             return;
         }
 
-        if (clientList.size() >= maxPlayers) {
+        if (model.getPlayerSize() >= maxPlayers) {
             client.asyncSend(new Message(Messages.LOBBY_FULL));
-            System.out.println("[INFO] Player " + name + " trying to connect but lobby is full.");
+            Logger.info("Player " + name + " trying to connect but lobby is full.");
             return;
         }
 
         if (getClientByName(name) != null) {
             client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
-            System.out.println("[INFO] Player " + name + " trying to connect but lobby there is already a player with that name connected.");
+            Logger.info("Player " + name + " trying to connect but lobby there is already a player with that name connected.");
             return;
         }
 
@@ -117,7 +112,7 @@ public class Lobby implements NetworkObserver {
         return clientList.get(name);
     }
 
-    public synchronized String getClientBySocket(ClientSocketConnection clientSocket) {
+    public String getClientBySocket(ClientSocketConnection clientSocket) {
         for (Map.Entry<String, ClientSocketConnection> client : clientList.entrySet()) {
             if (client.getValue().equals(clientSocket)) {
                 return client.getKey();
@@ -127,17 +122,25 @@ public class Lobby implements NetworkObserver {
     }
 
     public boolean playerHasChosenWizard(EWizardChosen event, ClientSocketConnection client) {
-        System.err.println("Lobby - playerHasChosenWizard");
         Wizard choice = event.getWizard();
 
-//        if (!availableWizards.contains(choice)) {
-//            client.asyncSend(new EWizardNotAvailable(availableWizards));
-//            return true;
-//        }
+        if (!availableWizards.contains(choice)) {
+            client.asyncSend(new EWizardNotAvailable(availableWizards));
+            return true;
+        }
 
         String playerName = getClientBySocket(client);
-        System.out.println("[DEBUG] Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
+        Logger.debug("Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
         model.addPlayer(new Player(playerName, choice));
+        availableWizards.remove(choice);
+
+        checkReadyPlayers();
         return true;
+    }
+
+    private void checkReadyPlayers() {
+        if(model.getNumOfPlayers() == maxPlayers) {
+            broadcast(new Message(Messages.GAME_STARTED));
+        }
     }
 }

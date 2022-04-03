@@ -144,6 +144,6 @@ public class CliView extends View {
             choice = readInt(-1);
         } while (choice < 0 || choice >= availableWizards.size());
 
-        notifyListeners(new EWizardChosen(Wizard.values()[choice]));
+        notifyListeners(new EWizardChosen(availableWizards.get(choice)));
     }
 }
