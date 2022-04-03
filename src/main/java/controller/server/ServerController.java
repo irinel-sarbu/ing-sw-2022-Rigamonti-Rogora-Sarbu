@@ -1,25 +1,25 @@
 package controller.server;
 
 import events.*;
+import events.types.Messages;
 import events.types.clientToServer.*;
-import events.types.serverToClient.LobbyNotFound;
-import events.types.serverToClient.PingEvent;
+import events.types.serverToClient.Message;
 import events.types.serverToClient.PlayerDisconnected;
-import events.types.serverToServer.ClientDisconnect;
-import network.*;
+import network.server.ClientSocketConnection;
+import network.server.Server;
+import observer.NetworkObserver;
 import util.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
-public class ServerController implements NetworkEventListener {
-    private final Logger LOGGER = Logger.getLogger(ServerController.class.getName());
+public class ServerController implements NetworkObserver {
+    private final Map<String, Lobby> lobbyList;
+    private final Server server;
 
-    protected final Map<String, Lobby> lobbyList;
-
-    public ServerController() {
+    public ServerController(Server server) {
         this.lobbyList = new ConcurrentHashMap<>();
+        this.server = server;
     }
 
     private String generateLobbyCode() {
@@ -52,20 +52,8 @@ public class ServerController implements NetworkEventListener {
      */
     public Lobby createLobby(int numOfPlayers, GameMode gameMode) {
         String code = generateLobbyCode();
-        lobbyList.put(code, new Lobby(this, code, numOfPlayers, gameMode));
+        lobbyList.put(code, new Lobby(code, numOfPlayers, gameMode));
         return lobbyList.get(code);
-    }
-
-    /**
-     * Search if player is in a Lobby.
-     * If True, returns the Lobby.
-     * If False, returns null.
-     *
-     * @param client ClientConnection
-     * @return LobbyController | null
-     */
-    private Lobby searchClientInLobbies(ClientConnection client) {
-        return client.isInLobby() ? lobbyList.get(client.getLobbyCode()) : null;
     }
 
     /**
@@ -75,45 +63,48 @@ public class ServerController implements NetworkEventListener {
      * @param networkEvent An Event linked to a ClientConnection
      */
     @Override
-    public synchronized void onEvent(Tuple<Event, ClientConnection> networkEvent) {
-        EventDispatcher dispatcher = new EventDispatcher(networkEvent);
+    public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
+        EventDispatcher dp = new EventDispatcher(networkEvent);
 
-        LOGGER.info("New event " + networkEvent.getKey() + " from " + networkEvent.getValue());
+        dp.dispatch(EventType.MESSAGE, (Tuple<Event, ClientSocketConnection> t) -> onMessage((Message) t.getKey(), t.getValue()));
 
-        dispatcher.dispatch(EventType.CREATE_LOBBY, (Tuple<Event, ClientConnection> t) -> onCreateLobby((CreateLobby) t.getKey(), t.getValue()));
-        dispatcher.dispatch(EventType.JOIN_LOBBY, (Tuple<Event, ClientConnection> t) -> onJoinLobby((JoinLobby) t.getKey(), t.getValue()));
-
-        dispatcher.dispatch(EventType.CLIENT_DISCONNECT, (Tuple<Event, ClientConnection> t) -> onClientDisconnect((ClientDisconnect) t.getKey(), t.getValue()));
+        dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onCreateLobbyRequest((ECreateLobbyRequest) t.getKey(), t.getValue()));
+        dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onJoinLobbyRequest((EJoinLobbyRequest) t.getKey(), t.getValue()));
     }
 
     // Handlers
-    private boolean onCreateLobby(CreateLobby event, ClientConnection client) {
-        Lobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
-        createdLobby.addClientToLobby(event.getCreatorName(), client);
+    private boolean onMessage(Message message, ClientSocketConnection client) {
+        switch (message.getMsg()) {
+            case Messages.CLIENT_DISCONNECTED -> {
+                if(!client.isInLobby())
+                    return true;
+
+                Lobby lobby = lobbyList.get(client.getLobbyCode());
+                String playerName = lobby.getClientBySocket(client);
+
+                lobby.broadcastExceptOne(new PlayerDisconnected(playerName), playerName);
+                lobby.removeClientFromLobbyByName(playerName);
+            }
+        }
+
         return true;
     }
 
-    private boolean onJoinLobby(JoinLobby event, ClientConnection client) {
+    private boolean onCreateLobbyRequest(ECreateLobbyRequest event, ClientSocketConnection client) {
+        Lobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
+        createdLobby.addClientToLobby(event.getPlayerName(), client);
+        server.registerListener(createdLobby);
+        return true;
+    }
+
+    private boolean onJoinLobbyRequest(EJoinLobbyRequest event, ClientSocketConnection client) {
         Lobby lobby = getLobbyByCode(event.getLobbyCode());
         if (lobby == null) {
-            client.send(new LobbyNotFound(event.getLobbyCode()));
+            client.asyncSend(new Message(Messages.LOBBY_NOT_FOUND));
             return true;
         }
 
         lobby.addClientToLobby(event.getPlayerName(), client);
-
         return true;
     }
-
-    private boolean onClientDisconnect(ClientDisconnect event, ClientConnection client) {
-        if(!client.isInLobby())
-            return true;
-
-        Lobby lobby = lobbyList.get(client.getLobbyCode());
-        String playerName = lobby.getClientBySocket(client);
-
-        lobby.broadcastExceptOne(new PlayerDisconnected(playerName), playerName);
-        return true;
-    }
-
 }

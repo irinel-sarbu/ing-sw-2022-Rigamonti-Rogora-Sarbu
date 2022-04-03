@@ -1,6 +1,6 @@
 package model;
 
-import events.EventSender;
+import observer.Observable;
 import exceptions.*;
 import model.board.*;
 import model.expert.*;
@@ -11,11 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class GameModel extends EventSender {
-    Logger logger = Logger.getLogger(GameModel.class.getName());
-
-    public static final int MAX_PLAYERS = 3;
-
+public class GameModel extends Observable {
     private final int numOfPlayers;
     private final GameMode gameMode;
     private GameState state;
@@ -70,7 +66,7 @@ public class GameModel extends EventSender {
 
     public Player getPlayerByID(int id) throws PlayerNotFoundException {
         Player ret = players.get(id);
-        if(ret == null)
+        if (ret == null)
             throw new PlayerNotFoundException();
 
         return ret;
@@ -87,29 +83,22 @@ public class GameModel extends EventSender {
         return new ArrayList<>(players);
     }
 
-    public Player getPlayerByName(String name) throws PlayerNotFoundException {
+    public synchronized Player getPlayerByName(String name) {
         for (Player player : players) {
             if (player.getName().equals(name))
                 return player;
         }
 
-        throw new PlayerNotFoundException("Player " + name + " not found!");
+        return null;
     }
 
-    public void addPlayer(Player player) throws MaxPlayersException {
-        if (players.size() >= MAX_PLAYERS)
-            throw new MaxPlayersException();
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
     public boolean removePlayerByName(String name) {
         Player player;
-        try {
-            player = getPlayerByName(name);
-        } catch (PlayerNotFoundException e) {
-            player = null;
-            logger.warning(e.getMessage());
-        }
+        player = getPlayerByName(name);
 
         return players.remove(player);
     }
@@ -125,7 +114,7 @@ public class GameModel extends EventSender {
                 try {
                     student = initialBag.pull();
                 } catch (EmptyStudentListException e) {
-                    logger.warning("Pulling from initial bag. Something went wrong...");
+                    System.out.println("[INFO] Pulling from initial bag. Something went wrong...");
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
@@ -138,9 +127,9 @@ public class GameModel extends EventSender {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                logger.severe("Setting up entrance. Something went wrong...");
+                System.out.println("[ERROR] Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                logger.severe("Empty bag...");
+                System.out.println("[ERROR] Empty bag...");
             }
     }
 
@@ -169,7 +158,7 @@ public class GameModel extends EventSender {
             try {
                 cloudTile.put(bag.pull());
             } catch (EmptyStudentListException e) {
-                logger.severe("Pulling from initial bag. Something went wrong...");
+                System.out.println("[ERROR] Pulling from initial bag. Something went wrong...");
             }
         }
     }
@@ -179,7 +168,7 @@ public class GameModel extends EventSender {
     }
 
     public void joinAdjacent() {
-        for(IslandGroup islandGroup : islandGroups) {
+        for (IslandGroup islandGroup : islandGroups) {
             int index = islandGroups.indexOf(islandGroup);
             IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
             IslandGroup right = islandGroups.get((index + 1) % islandGroups.size());

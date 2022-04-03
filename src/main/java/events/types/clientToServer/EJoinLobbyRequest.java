@@ -3,18 +3,18 @@ package events.types.clientToServer;
 import events.Event;
 import events.EventType;
 
-public class JoinLobby extends Event {
-    private final String playerName;
+public class EJoinLobbyRequest extends Event {
+    private final String name;
     private final String lobbyCode;
 
-    public JoinLobby(String playerName, String lobbyCode) {
-        super(EventType.JOIN_LOBBY);
-        this.playerName = playerName.strip();
+    public EJoinLobbyRequest(String lobbyCode, String playerName) {
+        super(EventType.JOIN_LOBBY_REQUEST);
         this.lobbyCode = lobbyCode;
+        this.name = playerName;
     }
 
     public String getPlayerName() {
-        return playerName;
+        return name;
     }
 
     public String getLobbyCode() {

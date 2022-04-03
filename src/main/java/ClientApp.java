@@ -1,8 +1,6 @@
 import controller.client.ClientController;
-import network.Client;
 import view.View;
 import view.cli.CliView;
-import view.gui.GuiView;
 
 public class ClientApp {
     static public void main(String[] args) {
@@ -24,12 +22,10 @@ public class ClientApp {
         }
 
         if (run) {
-            Client client = new Client();
-            View view = cliEnabled ? new CliView() : new GuiView();
+            //View view = cliEnabled ? new CliView() : new GuiView();
+            View view = new CliView();
 
-            ClientController controller = new ClientController(client, view);
-
-            client.registerListener(controller);
+            ClientController controller = new ClientController(view);
             view.registerListener(controller);
 
             view.run();

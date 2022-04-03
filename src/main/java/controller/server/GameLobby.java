@@ -31,7 +31,7 @@ public class GameLobby {
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
-            logger.warning("Game lobby <" + code + "> is empty");
+            System.out.println("[INFO] Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
         this.currentGameState = GameState.SETUP;

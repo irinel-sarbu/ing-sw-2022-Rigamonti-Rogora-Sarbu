@@ -1,10 +1,11 @@
 import controller.server.ServerController;
-import network.Server;
+import network.server.Server;
 
 public class ServerApp {
 	static public void main(String[] args) {
-		ServerController controller = new ServerController();
-		Server server = new Server(controller);
+		Server server = new Server();
+		ServerController controller = new ServerController(server);
+		server.registerListener(controller);
 
 		new Thread(server).start();
 	}

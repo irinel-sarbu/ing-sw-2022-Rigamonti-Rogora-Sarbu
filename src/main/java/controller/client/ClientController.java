@@ -1,78 +1,102 @@
 package controller.client;
 
 import events.*;
+import events.types.Messages;
 import events.types.clientToClient.*;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
-import network.Client;
+import network.client.Client;
+import observer.Observer;
+import observer.ViewObserver;
 import view.View;
 
-public class ClientController implements EventListener {
-
-    private final Client client;
+public class ClientController implements ViewObserver, Observer {
     private final View view;
 
-    public ClientController(Client client, View view) {
-        this.client = client;
+    private Client client;
+    private String nickname;
+    private String lobbyCode;
+
+    public ClientController(View view) {
         this.view = view;
     }
 
     @Override
     public void onEvent(Event event) {
-        EventDispatcher dispatcher = new EventDispatcher(event);
+        EventDispatcher dp = new EventDispatcher(event);
+        dp.dispatch(EventType.MESSAGE, (Event e) -> onMessage((Message) e));
 
-        // Connection stage
-        dispatcher.dispatch(EventType.CONNECT, (Event e) -> onConnectRequested((ConnectEvent) e));
-        dispatcher.dispatch(EventType.CONNECTION_OK, (Event e) -> onConnectionOk((ConnectOk) e));
-        dispatcher.dispatch(EventType.CONNECTION_REFUSED, (Event e) -> onConnectionRefused((ConnectionRefused) e));
+        dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((LobbyJoined) e));
+        dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((PlayerJoined) e));
+        dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((PlayerDisconnected) e));
 
-        // Create/Join lobby
-        dispatcher.dispatch(EventType.CREATE_LOBBY, (Event e) -> onCreateLobby((CreateLobby) e));
-        dispatcher.dispatch(EventType.JOIN_LOBBY, (Event e) -> onJoinLobby((JoinLobby) e));
-        dispatcher.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((LobbyJoined) e));
-        dispatcher.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((PlayerJoined) e));
-        dispatcher.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((PlayerDisconnected) e));
+        dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
+        dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
+    }
 
-        // Create/Join lobby exception handling
-        dispatcher.dispatch(EventType.PLAYER_NAME_TAKEN, (Event e) -> onPlayerNameTaken((PlayerNameTaken) e));
-        dispatcher.dispatch(EventType.LOBBY_NOT_FOUND, (Event e) -> onLobbyNotFound((LobbyNotFound) e));
-        dispatcher.dispatch(EventType.LOBBY_FULL, (Event e) -> onLobbyFull((LobbyFull) e));
+    @Override
+    public void onViewEvent(Event event) {
+        EventDispatcher dp = new EventDispatcher(event);
+
+        dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
+        dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
+        dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
+        dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
+    }
+
+    private boolean onMessage(Message message) {
+        switch (message.getMsg()) {
+            case Messages.CONNECTION_OK -> view.chooseCreateOrJoin();
+            case Messages.CONNECTION_REFUSED -> {
+                view.displayError(Messages.CONNECTION_REFUSED);
+                view.askServerInfo();
+            }
+
+            case Messages.LOBBY_NOT_FOUND -> {
+                view.displayError("Lobby with ID " + lobbyCode + " not found!");
+                view.chooseCreateOrJoin();
+            }
+            case Messages.LOBBY_FULL -> {
+                view.displayError("Lobby with ID " + lobbyCode + " is full!");
+                view.chooseCreateOrJoin();
+            }
+            case Messages.NAME_NOT_AVAILABLE -> {
+                view.displayError("Player name already taken. Try again.");
+                view.chooseCreateOrJoin();
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Client request a connection to the server
+     * Client inserted server info
      */
-    private boolean onConnectRequested(ConnectEvent event) {
-        view.displayMessage("Connecting to server...");
-        client.setAddressAndPort(event.getIP(), event.getPort());
+    private boolean onUpdateServerInfo(EUpdateServerInfo event) {
+        client = new Client(event.getIP(), event.getPort());
+        client.registerListener(this);
         Thread clientThread = new Thread(client);
         clientThread.start();
         return true;
     }
 
     /**
-     * Client established a connection with the Server
+     * Client tries to create a Lobby
      */
-    private boolean onConnectionOk(ConnectOk event) {
-        view.chooseCreateOrJoin();
-        return true;
-    }
-
-    /**
-     * Client was unable to connect to Server
-     */
-    private boolean onConnectionRefused(ConnectionRefused event) {
-        view.displayError(event.getMessage());
-        view.getServerInfo();
-        return true;
-    }
-
-    /**
-     * Client is trying to create a Lobby
-     */
-    private boolean onCreateLobby(CreateLobby event) {
+    private boolean onCreateLobbyRequest(ECreateLobbyRequest event) {
         view.displayMessage("Creating Lobby...");
-        client.sendToServer(event);
+        this.nickname = event.getPlayerName();
+        client.sendToServer(new ECreateLobbyRequest(event.getGameMode(), event.getNumOfPlayers(), nickname));
+        return true;
+    }
+
+    /**
+     * Client tries to connect to a Lobby.
+     */
+    private boolean onJoinLobbyRequest(EJoinLobbyRequest event) {
+        this.nickname = event.getPlayerName();
+        this.lobbyCode = event.getLobbyCode();
+        client.sendToServer(new EJoinLobbyRequest(lobbyCode, nickname));
         return true;
     }
 
@@ -81,42 +105,8 @@ public class ClientController implements EventListener {
      * This event can also be triggered by the Client when Event <code>JoinLobby</code> is successful.
      */
     private boolean onLobbyJoined(LobbyJoined event) {
+        this.lobbyCode = event.getCode();
         view.displayMessage("Joined lobby " + event.getCode());
-        return true;
-    }
-
-    /**
-     * Client is trying to connect to a Lobby.
-     */
-    private boolean onJoinLobby(JoinLobby event) {
-        client.sendToServer(event);
-        return true;
-    }
-
-    /**
-     * This is an Exception thrown by the server when client try to connect to a non-existent Lobby
-     */
-    private boolean onLobbyNotFound(LobbyNotFound event) {
-        view.displayError("Lobby with ID " + event.getCode() + " not found!");
-        view.chooseCreateOrJoin();
-        return true;
-    }
-
-    /**
-     * This is an Exception thrown by the server when client try to connect to a full Lobby
-     */
-    private boolean onLobbyFull(LobbyFull event) {
-        view.displayError("Lobby with ID " + event.getCode() + " is full!");
-        view.chooseCreateOrJoin();
-        return true;
-    }
-
-    /**
-     * This is an Exception thrown by the server when client try to connect to a Lobby but there is already a Player with the same name.
-     */
-    private boolean onPlayerNameTaken(PlayerNameTaken event) {
-        view.displayError("Player name already taken. Try again.");
-        view.getPlayerName(event.getLobbyToJoin());
         return true;
     }
 
@@ -133,6 +123,22 @@ public class ClientController implements EventListener {
      */
     private boolean onPlayerDisconnected(PlayerDisconnected event) {
         view.displayMessage(event.getPlayerName() + " left the Lobby!");
+        return true;
+    }
+
+    private boolean onChooseWizard(EChooseWizard event) {
+        view.chooseWizard(event.getAvailableWizards());
+        return true;
+    }
+
+    private boolean onWizardNoMoreAvailable(EWizardNotAvailable event) {
+        view.displayError("Wizard is no longer available. Choose another one.");
+        view.chooseWizard(event.getAvailableWizards());
+        return true;
+    }
+
+    private boolean onWizardChosen(EWizardChosen event) {
+        client.sendToServer(new EWizardChosen(event.getWizard()));
         return true;
     }
 }

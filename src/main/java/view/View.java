@@ -1,9 +1,11 @@
 package view;
 
-import events.EventListener;
-import events.EventSender;
+import observer.ViewObservable;
+import util.Wizard;
 
-public abstract class View extends EventSender {
+import java.util.List;
+
+public abstract class View extends ViewObservable {
     public abstract void run();
     public void displayMessage(String message) {
         System.out.println("> " + message);
@@ -13,7 +15,10 @@ public abstract class View extends EventSender {
         System.out.println("ERROR > " + errorMessage);
     }
 
-    public abstract void getServerInfo();
-    public abstract void getPlayerName(String lobbyToJoin);
+    public abstract void askServerInfo();
+    public abstract void createLobby();
+    public abstract void joinLobby();
     public abstract void chooseCreateOrJoin();
+
+    public abstract void chooseWizard(List<Wizard> availableWizards);
 }

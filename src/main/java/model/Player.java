@@ -13,12 +13,22 @@ public class Player {
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
     private Assistant foldCard;
+    private boolean disconnected;
 
     public Player(String name, Wizard wizard) {
         this.name = name;
         this.schoolBoard = new SchoolBoard();
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
+        this.disconnected = false;
+    }
+
+    public synchronized void setDisconnected(boolean disconnected) {
+        this.disconnected = disconnected;
+    }
+
+    public synchronized boolean isDisconnected() {
+        return this.disconnected;
     }
 
     public void pushFoldDeck(Assistant assistantCard) {

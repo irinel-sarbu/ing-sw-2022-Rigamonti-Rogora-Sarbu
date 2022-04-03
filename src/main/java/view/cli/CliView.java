@@ -1,11 +1,15 @@
 package view.cli;
 
-import events.types.clientToClient.ConnectEvent;
-import events.types.clientToServer.CreateLobby;
-import events.types.clientToServer.JoinLobby;
+import events.types.clientToClient.EUpdateServerInfo;
+import events.types.clientToServer.ECreateLobbyRequest;
+import events.types.clientToServer.EJoinLobbyRequest;
+import events.types.clientToServer.EWizardChosen;
+import org.junit.platform.commons.util.StringUtils;
 import util.GameMode;
+import util.Wizard;
 import view.View;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class CliView extends View {
@@ -16,48 +20,70 @@ public class CliView extends View {
         this.scanner = new Scanner(System.in);
 
         System.out.println("Eriantys #LOGO TODO");
-        getServerInfo();
+        askServerInfo();
+    }
+
+    public void closeScanner() {
+        scanner.close();
+        scanner = new Scanner(System.in);
+    }
+
+    private String readString(String defaultValue) {
+        String string;
+        string = scanner.nextLine();
+
+        return StringUtils.isBlank(string) ? defaultValue : string;
+    }
+
+    private int readInt(int defaultValue) {
+        int num;
+
+        try {
+            String numString = readString(null);
+            if (StringUtils.isBlank(numString))
+                return defaultValue;
+            num = Integer.parseInt(numString);
+        } catch (NumberFormatException e) {
+            System.err.print("Please insert a number and not a String >>> ");
+            num = readInt(defaultValue);
+        }
+
+        return num;
     }
 
     @Override
-    public void getServerInfo() {
+    public void askServerInfo() {
         final int defaultPort = 5000;
         final String defaultAddress = "localhost";
 
-        String insertedAddress;
-        String insertedPort;
+        String address;
+        int port;
+
+        System.out.println("> Please specify the following settings. The default value is shown between brackets.");
 
         System.out.print("\rInsert server ADDRESS [localhost] >>> ");
-        insertedAddress = scanner.nextLine();
+        address = readString(defaultAddress);
 
         System.out.print("\rInsert server PORT [" + defaultPort + "] >>> ");
-        insertedPort = scanner.nextLine();
+        port = readInt(defaultPort);
 
-        String eventIP = insertedAddress.isEmpty() ? defaultAddress : insertedAddress;
-        int eventPort = insertedPort.isEmpty() ? defaultPort : Integer.parseInt(insertedPort);
-
-        notifyListeners(new ConnectEvent(eventIP, eventPort));
+        notifyListeners(new EUpdateServerInfo(address, port));
     }
 
-    private String getPlayerName() {
+    private String askPlayerName() {
         String insertedName;
 
         do {
             System.out.print("\rInsert your name >>> ");
-            insertedName = scanner.nextLine();
-        } while (insertedName.isEmpty());
+            insertedName = readString(null);
+        } while (StringUtils.isBlank(insertedName));
 
         return insertedName;
     }
 
     @Override
-    public void getPlayerName(String lobbyToJoin) {
-        notifyListeners(new JoinLobby(getPlayerName(), lobbyToJoin));
-    }
-
-    @Override
     public void chooseCreateOrJoin() {
-        int createOrJoin;
+        int selection;
 
         System.out.println("Choose between:");
         System.out.println(" [1] Create lobby");
@@ -65,41 +91,59 @@ public class CliView extends View {
 
         do {
             System.out.print("\rInsert your choice [1 or 2] >>> ");
-            createOrJoin = scanner.nextInt();
-        } while ((createOrJoin != 1) && (createOrJoin != 2));
+            selection = readInt(0);
+        } while ((selection != 1) && (selection != 2));
 
-        int normalOrExpert;
-        int numOfPlayers;
-
-        String lobbyCode;
-
-        switch (createOrJoin) {
-            case 1 -> {
-                System.out.println("Choose between:");
-                System.out.println(" [1] NORMAL");
-                System.out.println(" [2] EXPERT");
-
-                do {
-                    System.out.print("\rInsert your choice [1 or 2] >>> ");
-                    normalOrExpert = scanner.nextInt();
-                } while ((normalOrExpert != 1) && (normalOrExpert != 2));
-
-                do {
-                    System.out.print("\rInsert number of players [2 or 3] >>> ");
-                    numOfPlayers = scanner.nextInt();
-                } while ((numOfPlayers != 2) && (numOfPlayers != 3));
-
-                GameMode gameMode = normalOrExpert == 1 ? GameMode.NORMAL : GameMode.EXPERT;
-
-                notifyListeners(new CreateLobby(gameMode, numOfPlayers, getPlayerName()));
-            }
-
-            case 2 -> {
-                System.out.print("\rInsert lobby code >>> ");
-                lobbyCode = scanner.next();
-
-                notifyListeners(new JoinLobby(getPlayerName(), lobbyCode));
-            }
+        switch (selection) {
+            case 1 -> createLobby();
+            case 2 -> joinLobby();
         }
+    }
+
+    @Override
+    public void createLobby() {
+        System.out.println("Choose between:");
+        System.out.println(" [1] NORMAL");
+        System.out.println(" [2] EXPERT");
+
+        int gameMode;
+        do {
+            System.out.print("\rInsert your choice [1 or 2] >>> ");
+            gameMode = readInt(0);
+        } while ((gameMode != 1) && (gameMode != 2));
+
+        int numOfPlayers;
+        do {
+            System.out.print("\rInsert how many players are going to play [2 or 3] >>> ");
+            numOfPlayers = readInt(0);
+        } while ((numOfPlayers != 2) && (numOfPlayers != 3));
+
+        String nickname = askPlayerName();
+        notifyListeners(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers, nickname));
+    }
+
+    @Override
+    public void joinLobby() {
+        System.out.print("\rInsert lobby code >>> ");
+        String lobbyCode = readString(null);
+
+        String nickname = askPlayerName();
+        notifyListeners(new EJoinLobbyRequest(lobbyCode, nickname));
+    }
+
+    @Override
+    public void chooseWizard(List<Wizard> availableWizards) {
+        System.out.println("Choose your wizard:");
+        for (int i = 0; i < availableWizards.size(); i++) {
+            System.out.println(" [" + i + "] " + availableWizards.get(i));
+        }
+
+        int choice;
+        do {
+            System.out.print("\rInsert your choice >>> ");
+            choice = readInt(-1);
+        } while (choice < 0 || choice >= availableWizards.size());
+
+        notifyListeners(new EWizardChosen(Wizard.values()[choice]));
     }
 }

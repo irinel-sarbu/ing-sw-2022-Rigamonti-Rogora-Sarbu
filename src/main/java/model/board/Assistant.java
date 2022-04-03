@@ -72,7 +72,7 @@ public class Assistant {
 
                     deck.add(new Assistant(wizard, name, value, movements));
 
-                    logger.info("New assistant: \n" + "\tName: " + name + "\n\tValue: " + value
+                    System.out.println("[INFO] New assistant: \n" + "\tName: " + name + "\n\tValue: " + value
                             + "\n\tMother nature movements: " + movements);
                 }
             }
