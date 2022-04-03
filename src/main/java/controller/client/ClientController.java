@@ -7,10 +7,9 @@ import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import network.client.Client;
 import observer.Observer;
-import observer.ViewObserver;
 import view.View;
 
-public class ClientController implements ViewObserver, Observer {
+public class ClientController implements Observer {
     private final View view;
 
     private Client client;
@@ -24,6 +23,8 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onEvent(Event event) {
         EventDispatcher dp = new EventDispatcher(event);
+
+        // Server events
         dp.dispatch(EventType.MESSAGE, (Event e) -> onMessage((Message) e));
 
         dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((LobbyJoined) e));
@@ -32,12 +33,8 @@ public class ClientController implements ViewObserver, Observer {
 
         dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
         dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
-    }
 
-    @Override
-    public void onViewEvent(Event event) {
-        EventDispatcher dp = new EventDispatcher(event);
-
+        // View Events
         dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));

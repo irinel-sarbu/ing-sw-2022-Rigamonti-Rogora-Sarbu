@@ -1,11 +1,11 @@
 package view;
 
-import observer.ViewObservable;
+import observer.Observable;
 import util.Wizard;
 
 import java.util.List;
 
-public abstract class View extends ViewObservable {
+public abstract class View extends Observable {
     public abstract void run();
     public void displayMessage(String message) {
         System.out.println("> " + message);
