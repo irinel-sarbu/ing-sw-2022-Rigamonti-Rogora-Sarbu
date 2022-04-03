@@ -11,9 +11,8 @@ import util.CharacterType;
 
 public class ResolveIsland {
 
-    public void solveIsland(String code, int islandGroupID) {
+    public void solveIsland(GameLobby tempLobby, int islandGroupID) {
         try {
-            GameLobby tempLobby = GameController.getLobby(code);
             GameModel tempGame = tempLobby.getModel();
             int[] islandSum;
             IslandGroup tempIslandGroup = tempGame.getIslandGroupByID(islandGroupID);
@@ -30,7 +29,7 @@ public class ResolveIsland {
             }
             // joins adjacent islandGroups
             tempGame.joinAdjacent();
-        } catch (LobbyNotFoundException | PlayerNotFoundException e) {
+        } catch (PlayerNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
     }

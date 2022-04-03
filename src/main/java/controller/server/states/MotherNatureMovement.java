@@ -19,40 +19,35 @@ public class MotherNatureMovement {
         this.controller = gameController;
     }
 
-    public void moveMotherNature(String code, int steps) throws IllegalMovementException {
-        try {
-            GameLobby tempLobby = GameController.getLobby(code);
-            if (tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()) {
-                if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements() + 2)
-                    throw new IllegalMovementException();
-            } else {
-                if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements())
-                    throw new IllegalMovementException();
-            }
-            tempLobby.getModel().moveMotherNature(steps);
-            nextState(code);
-        } catch (LobbyNotFoundException e) {
-            e.printStackTrace();
+    public void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException {
+        if (tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()) {
+            if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements() + 2)
+                throw new IllegalMovementException();
+        } else {
+            if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements())
+                throw new IllegalMovementException();
         }
+        tempLobby.getModel().moveMotherNature(steps);
+        nextState(tempLobby);
     }
 
-    private void nextState(String code) {
+    private void nextState(GameLobby tempLobby) {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
             int motherNaturePos = tempGame.getMotherNature().getPosition();
             if (tempGame.getIslandGroupByID(motherNaturePos).getNoEntrySize() == 0) {
-                controller.getResolveIsland().solveIsland(code, motherNaturePos);
+                controller.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
             } else {
                 tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
             }
-            if (tempGame.checkForRooksEmpty()||tempGame.checkForToFewIslands()){
-                controller.getGameOver().selectWinner(code);
-            }else{
-                GameController.getLobby(code).setGameState(GameState.TURN_EPILOGUE);
+            if (tempGame.checkForRooksEmpty() || tempGame.checkForToFewIslands()) {
+                controller.getGameOver().selectWinner(tempLobby);
+            } else {
+                tempLobby.setGameState(GameState.TURN_EPILOGUE);
             }
 
-        } catch (LobbyNotFoundException | EmptyNoEntryListException e) {
+        } catch (EmptyNoEntryListException e) {
             e.printStackTrace();
         }
     }

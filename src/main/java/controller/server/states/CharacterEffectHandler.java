@@ -2,6 +2,7 @@ package controller.server.states;
 
 
 import controller.server.GameController;
+import controller.server.GameLobby;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
@@ -28,60 +29,48 @@ public class CharacterEffectHandler {
         this.controller = gameController;
     }
 
-    public void monkEffect(String code, int studentID, int islandPos) {
+    public void monkEffect(GameLobby tempLobby, int studentID, int islandPos) {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MONK);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             tempGame.getIslandTileByID(islandPos).addStudent(tempCharacter.removeStudent(studentID));
             if (tempGame.getBag().getRemainingStudents() != 0) tempCharacter.addStudent(tempGame.getBag().pull());
-        } catch (LobbyNotFoundException | StudentNotFoundException e) {
+        } catch (StudentNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
     }
 
-    public void farmerEffect(String code) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void farmerEffect(GameLobby tempLobby) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.FARMER);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
-    public void heraldEffect(String code, int islandGroupID) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void heraldEffect(GameLobby tempLobby, int islandGroupID) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.HERALD);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             // calls solveIsland method in ResolveIsland Class of GameController, passing the island to solve
-            controller.getResolveIsland().solveIsland(code, islandGroupID);
+            controller.getResolveIsland().solveIsland(tempLobby, islandGroupID);
             if (tempGame.checkForRooksEmpty()||tempGame.checkForToFewIslands()){
-                controller.getGameOver().selectWinner(code);
+                controller.getGameOver().selectWinner(tempLobby);
             }
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
-    public void postmanEffect(String code) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void postmanEffect(GameLobby tempLobby) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.POSTMAN);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
+
     }
 
-    public void grannyHerbsEffect(String code, int islandID) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void grannyHerbsEffect(GameLobby tempLobby, int islandID) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
@@ -90,30 +79,23 @@ public class CharacterEffectHandler {
             } catch (EmptyNoEntryListException e) {
                 // Do nothing
             }
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
-    public void centaurEffect(String code) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void centaurEffect(GameLobby tempLobby) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.CENTAUR);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
     // CLIENT checks that size is at most 3
     // the arrayLists are as follows (example 2 students exchanged): eS [13][45]  jS[87][24] containing
     // student IDS, 13 is exchanged with 87 and 45 is exchanged with 24
-    public void jesterEffect(String code, ArrayList<Integer> entranceStudents, ArrayList<Integer> jesterStudents) throws LengthMismatchException {
+    public void jesterEffect(GameLobby tempLobby, ArrayList<Integer> entranceStudents, ArrayList<Integer> jesterStudents) throws LengthMismatchException {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.JESTER);
-            SchoolBoard tempSchoolBoard = GameController.getLobby(code).getCurrentPlayer().getSchoolBoard();
+            SchoolBoard tempSchoolBoard = tempLobby.getCurrentPlayer().getSchoolBoard();
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
 
@@ -124,17 +106,17 @@ public class CharacterEffectHandler {
                 tempSchoolBoard.addToEntrance(tempCharacter.removeStudent(jesterStudents.get(i)));
                 tempCharacter.addStudent(tempStudent);
             }
-        } catch (LobbyNotFoundException | StudentNotFoundException | EntranceFullException e) {
+        } catch (StudentNotFoundException | EntranceFullException e) {
             // TODO : write a line of text that notify the issue
         }
     }
 
     // CLIENT checks that size is at most 2
-    public void minstrelEffect(String code, ArrayList<Integer> entranceStudents, ArrayList<Color> diningStudents) {
+    public void minstrelEffect(GameLobby tempLobby, ArrayList<Integer> entranceStudents, ArrayList<Color> diningStudents) {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MINSTREL);
-            SchoolBoard tempSchoolBoard = GameController.getLobby(code).getCurrentPlayer().getSchoolBoard();
+            SchoolBoard tempSchoolBoard = tempLobby.getCurrentPlayer().getSchoolBoard();
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
 
@@ -145,50 +127,42 @@ public class CharacterEffectHandler {
                 tempSchoolBoard.addToEntrance(tempStudent);
             }
 
-        } catch (LobbyNotFoundException | DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException | EntranceFullException e) {
+        } catch (DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException | EntranceFullException e) {
             // TODO : write a line of text that notify the issue
         }
     }
 
-    public void knightEffect(String code) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void knightEffect(GameLobby tempLobby) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.KNIGHT);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
-    public void princessEffect(String code, int studentID) {
+    public void princessEffect(GameLobby tempLobby, int studentID) {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.PRINCESS);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            GameController.getLobby(code).getCurrentPlayer().getSchoolBoard().addToDiningRoom(tempCharacter.removeStudent(studentID));
+            tempLobby.getCurrentPlayer().getSchoolBoard().addToDiningRoom(tempCharacter.removeStudent(studentID));
             if (tempGame.getBag().getRemainingStudents() != 0) tempCharacter.addStudent(tempGame.getBag().pull());
-        } catch (LobbyNotFoundException | StudentNotFoundException | DiningRoomFullException e) {
+        } catch (StudentNotFoundException | DiningRoomFullException e) {
             // TODO : write a line of text that notify the issue
         }
     }
 
-    public void mushroomFanaticEffect(String code, Color color) {
-        try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+    public void mushroomFanaticEffect(GameLobby tempLobby, Color color) {
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             tempCharacter.setColor(color);
-        } catch (LobbyNotFoundException e) {
-            // TODO : write a line of text that notify the issue
-        }
     }
 
-    public void thiefEffect(String code, Color color) {
+    public void thiefEffect(GameLobby tempLobby, Color color) {
         try {
-            GameModel tempGame = GameController.getLobby(code).getModel();
+            GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.THIEF);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
@@ -201,7 +175,7 @@ public class CharacterEffectHandler {
                     }
                 }
             }
-        } catch (LobbyNotFoundException | PlayerNotFoundException e) {
+        } catch (PlayerNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
     }

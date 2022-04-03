@@ -32,7 +32,7 @@ public class TurnEpilogue {
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
             if (checkGameOver(thisGame))
-                controller.getGameOver().selectWinner(thisGame.getCode());
+                controller.getGameOver().selectWinner(thisGame);
             else
                 thisGame.nextTurn();
         }

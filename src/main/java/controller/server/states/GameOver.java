@@ -10,9 +10,8 @@ import util.GameState;
 
 public class GameOver {
 
-    public void selectWinner(String code) {
+    public void selectWinner(GameLobby tempLobby) {
         try {
-            GameLobby tempLobby = GameController.getLobby(code);
             GameModel tempGame = tempLobby.getModel();
 
             int playerId, numOfTowers = 100, numOfProfessor = 0;
@@ -29,7 +28,7 @@ public class GameOver {
             tempGame.setState(GameState.GAME_OVER);
             // TODO : create a function that broadcast the player indicised by playerId
 
-        } catch (LobbyNotFoundException | PlayerNotFoundException e) {
+        } catch (PlayerNotFoundException e) {
             e.printStackTrace();
         }
     }
