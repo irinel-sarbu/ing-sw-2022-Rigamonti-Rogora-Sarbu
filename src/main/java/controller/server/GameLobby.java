@@ -1,5 +1,6 @@
 package controller.server;
 
+import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.Player;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class GameLobby {
-    private final Logger logger = Logger.getLogger(GameLobby.class.getName());
 
     private final String code;
     private int turnCounter = 0;
@@ -32,6 +32,7 @@ public class GameLobby {
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
+            Logger logger = Logger.getLogger(GameLobby.class.getName());
             logger.warning("Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
@@ -66,6 +67,12 @@ public class GameLobby {
     public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;
+        try {
+            for (int i = 0; i < getModel().getCharacters().size(); i++)
+                this.getModel().getCharacterById(i).resetEffect();
+        } catch (CharacterCardNotFound characterCardNotFound) {
+            assert false;   // should never happen
+        }
         return currentPlayer != null;
     }
 
@@ -103,6 +110,7 @@ public class GameLobby {
     }
 
     public void nextTurn() {
+        // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextTurn
         setGameState(GameState.PLANNING);
         planningPhaseOrder = nextPlanningPhaseOrder;
         setCurrentPlayer(planningPhaseOrder.get(0));

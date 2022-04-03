@@ -280,6 +280,13 @@ public class GameModel extends EventSender {
         return characters;
     }
 
+    public CharacterCard getCharacterById(int id) throws CharacterCardNotFound {
+        CharacterCard ret = characters.get(id);
+        if (ret == null)
+            throw new CharacterCardNotFound();
+        return ret;
+    }
+
     public CharacterCard getCharacterByType(CharacterType characterType) {
         for (CharacterCard characterCard : characters) {
             if (characterCard.getCharacter().equals(characterType)) {

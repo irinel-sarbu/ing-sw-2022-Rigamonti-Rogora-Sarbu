@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * When the client activates a character effect, the event handler will call one of the methods Below.
  * All the information needed will be sent using the parameters.
  * After the effect is activated, effectIsUsed will become TRUE.
- *  TODO : switch effectIsUsed to FALSE at the end of the turn (in TurnEpilogue).
+ * // TODO: in EventDispatcher check if effect is already active
  */
 public class CharacterEffectHandler {
     private final GameController controller;
@@ -47,7 +47,6 @@ public class CharacterEffectHandler {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.FARMER);
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
-            // TODO : when calculating to whom the professor goes, add an if that checks if this effect is active
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
