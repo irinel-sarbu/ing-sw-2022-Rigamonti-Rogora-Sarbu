@@ -47,7 +47,7 @@ public class MotherNatureMovement {
             } else {
                 tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
             }
-            if (checkForRooksEmpty(tempGame)||checkForToFewIslands(tempGame)){
+            if (tempGame.checkForRooksEmpty()||tempGame.checkForToFewIslands()){
                 controller.getGameOver().selectWinner(code);
             }else{
                 GameController.getLobby(code).setGameState(GameState.TURN_EPILOGUE);
@@ -58,21 +58,4 @@ public class MotherNatureMovement {
         }
     }
 
-
-    private boolean checkForRooksEmpty(GameModel tempGame) {
-        for (int i = 0; i < tempGame.getPlayers().size(); i++){
-            try {
-                if(tempGame.getPlayerByID(i).getSchoolBoard().getTowers().size()==0){
-                    return true;
-                }
-            } catch (PlayerNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
-
-    public boolean checkForToFewIslands(GameModel tempGame){
-        return tempGame.getRemainingIslandGroups() <= 3;
-    }
 }

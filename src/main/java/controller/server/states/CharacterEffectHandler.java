@@ -61,6 +61,9 @@ public class CharacterEffectHandler {
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             // calls solveIsland method in ResolveIsland Class of GameController, passing the island to solve
             controller.getResolveIsland().solveIsland(code, islandGroupID);
+            if (tempGame.checkForRooksEmpty()||tempGame.checkForToFewIslands()){
+                controller.getGameOver().selectWinner(code);
+            }
         } catch (LobbyNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }

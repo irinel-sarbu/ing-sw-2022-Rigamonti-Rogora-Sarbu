@@ -292,4 +292,21 @@ public class GameModel extends EventSender {
     public int getRemainingIslandGroups() {
         return islandGroups.size();
     }
+
+    public boolean checkForRooksEmpty() {
+        for (int i = 0; i < getPlayers().size(); i++){
+            try {
+                if(getPlayerByID(i).getSchoolBoard().getTowers().size()==0){
+                    return true;
+                }
+            } catch (PlayerNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean checkForToFewIslands(){
+        return getRemainingIslandGroups() <= 3;
+    }
 }
