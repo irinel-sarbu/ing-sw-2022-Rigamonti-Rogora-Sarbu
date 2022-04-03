@@ -99,9 +99,10 @@ public class GameLobby {
         return index == players.size() - 1;
     }
 
-    public void nextTurn(GameState nextPhase) {
+    public void nextTurn() {
+        setGameState(GameState.PLANNING);
         planningPhaseOrder = nextPlanningPhaseOrder;
-        currentPlayer = planningPhaseOrder.get(0);
+        setCurrentPlayer(planningPhaseOrder.get(0));
         nextPlanningPhaseOrder = null;
         actionPhaseOrder = null;
         turnCounter++;

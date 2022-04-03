@@ -23,7 +23,10 @@ public class SchoolBoard {
     public SchoolBoard(Player player) {
         this.coins = new CoinSupply();
         this.entrance = new ArrayList<>();
-        this.diningRoom = new ArrayList<>(Color.values().length);
+        this.diningRoom = new ArrayList<>();
+        for (int i = 0; i < Color.values().length; i++) {
+            diningRoom.add(i, new Stack<>());
+        }
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
         this.owner = player;
@@ -83,7 +86,8 @@ public class SchoolBoard {
     }
 
     public int getStudentsOfColor(Color color) {
-        return diningRoom.get(color.getValue()).size();
+        return diningRoom.get(color.getValue()) == null ? 0 :
+                diningRoom.get(color.getValue()).size();
     }
 
     public List<Professor> getProfessors() {

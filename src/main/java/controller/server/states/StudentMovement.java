@@ -29,13 +29,14 @@ public class StudentMovement {
     private void stealProfessor(GameLobby thisGame, Color color, Boolean farmerUsed)
             throws ProfessorFullException, ProfessorNotFoundException {
         if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color)) return; // prevent from self stealing
-        // TODO: puzza
+        // TODO: magari esiste un altro modo per farlo
         try {
             thisGame.getCurrentPlayer().getSchoolBoard().addProfessor(thisGame.getModel().removeProfessor(color));
         } catch (ProfessorNotFoundException e) {    // someone else already has this professor
             SchoolBoard withProfessor = thisGame.getOrder().stream()
                     .map(Player::getSchoolBoard)
                     .filter(sb -> sb.hasProfessor(color)).findFirst().orElse(null);
+            assert withProfessor != null;
             int withProfessorCount = withProfessor.getStudentsOfColor(color);
             SchoolBoard current = thisGame.getCurrentPlayer().getSchoolBoard();
             int currentCount = current.getStudentsOfColor(color);
@@ -57,12 +58,12 @@ public class StudentMovement {
         thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent);
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentPosition);
 
-        movementEpilogue(thisGame);
-
         CharacterCard farmer = thisGame.getModel().getCharacterByType(CharacterType.FARMER);
         boolean farmerUsed = (farmer != null && farmer.getEffect());
 
         stealProfessor(thisGame, movingStudent.getColor(), farmerUsed);
+
+        movementEpilogue(thisGame);
 
     }
 

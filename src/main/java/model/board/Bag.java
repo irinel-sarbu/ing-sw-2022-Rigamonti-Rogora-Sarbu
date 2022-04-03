@@ -43,7 +43,7 @@ public class Bag {
             studentIdCount += 1;
         }
 
-        for (int p = 0; p < pink; p++){
+        for (int p = 0; p < pink; p++) {
             this.studentList.add(new Student(studentIdCount, Color.PINK));
             studentIdCount += 1;
         }
@@ -51,6 +51,10 @@ public class Bag {
 
     public int getRemainingStudents() {
         return studentList.size();
+    }
+
+    public boolean isEmpty() {
+        return getRemainingStudents() == 0;
     }
 
     private void shuffle() {

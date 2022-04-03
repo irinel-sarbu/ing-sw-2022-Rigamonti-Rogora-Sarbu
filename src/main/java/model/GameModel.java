@@ -91,7 +91,7 @@ public class GameModel extends EventSender {
         return ret;
     }
 
-    public int getPlayerId(Player player){
+    public int getPlayerId(Player player) {
         return players.indexOf(player);
     }
 
@@ -186,6 +186,10 @@ public class GameModel extends EventSender {
             moveFromBagToCloudTile(cloudTiles.get(cloudTileID));
     }
 
+    public CloudTile getCloudTile(int cloudTileID) {
+        return cloudTiles.get(cloudTileID);
+    }
+
     public void moveFromBagToCloudTile(CloudTile cloudTile) {
         int num = players.size() + 1;
         for (int i = 0; i < num; i++) {
@@ -260,11 +264,7 @@ public class GameModel extends EventSender {
             case JESTER -> {
                 for (int i = 0; i < 6; i++) character.addStudent(bag.pull());
             }
-            case MUSHROOM_FANATIC -> {
-                character.setColor(null);
-            }
-            default -> {
-            }
+            case MUSHROOM_FANATIC -> character.setColor(null);
         }
         return character;
     }
@@ -282,7 +282,7 @@ public class GameModel extends EventSender {
         return null;
     }
 
-    public int getRemainingIslandGroups(){
+    public int getRemainingIslandGroups() {
         return islandGroups.size();
     }
 }

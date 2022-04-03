@@ -82,6 +82,8 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     @Override
     public int compare(Player player, Player t1) {
-        return player.foldCard.getValue() - t1.foldCard.getValue();
+        return player.foldCard == null ? -1 :
+                t1.foldCard == null ? 1 :
+                        player.foldCard.getValue() - t1.foldCard.getValue();
     }
 }
