@@ -3,6 +3,7 @@ package model.board;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import exceptions.TowersIsEmptyException;
 import util.TowerColor;
 import util.Color;
 
@@ -34,6 +35,7 @@ public class IslandTile implements Comparable<IslandTile> {
     }
 
     public TowerColor getTowerColor() {
+        if (this.tower == null) return null;
         return tower.getColor();
     }
 
@@ -43,10 +45,12 @@ public class IslandTile implements Comparable<IslandTile> {
 
     public int getStudentsNumber(Color color) {
         return (int) students.stream()
-                .filter(s -> s.getColor().equals(color))
+                .map(Student::getColor)
+                .filter(color::equals)
                 .count();
     }
 
+    @Deprecated
     public Color getMostNumerous() {
         return students.stream()
                 .filter(Objects::nonNull)

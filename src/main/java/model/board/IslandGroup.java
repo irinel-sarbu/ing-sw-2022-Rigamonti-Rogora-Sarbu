@@ -5,10 +5,7 @@ import model.expert.NoEntryTile;
 import util.Color;
 import util.TowerColor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class IslandGroup {
@@ -28,6 +25,8 @@ public class IslandGroup {
         this.islands = new ArrayList<>();
         this.islands.addAll(islandGroup.islands);
         this.noEntry = new Stack<>();
+        while (islandGroup.noEntry.size() > 0)
+            noEntry.push(islandGroup.noEntry.pop());
     }
 
     public List<IslandTile> getIslands() {
@@ -92,6 +91,11 @@ public class IslandGroup {
 
         IslandGroup newIslandGroup = new IslandGroup(this);
         newIslandGroup.islands.addAll(other.islands);
+
+
+        while (other.noEntry.size() > 0)
+            newIslandGroup.noEntry.push(other.noEntry.pop());
+
         Collections.sort(newIslandGroup.islands);
 
         return newIslandGroup;

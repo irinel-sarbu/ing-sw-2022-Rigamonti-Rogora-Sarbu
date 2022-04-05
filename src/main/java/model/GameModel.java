@@ -26,7 +26,7 @@ public class GameModel extends EventSender {
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
     private final Set<Color> unassignedProfessors;
-    private CoinSupply coinSupply;                          // TODO: trovare un utilizzo di CoinSupply
+    private CoinSupply coinSupply;
 
     /**
      * Constructor of the GameModel
