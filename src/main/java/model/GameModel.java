@@ -67,14 +67,6 @@ public class GameModel extends EventSender {
         return coinSupply;
     }
 
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
-    }
-
     public MotherNature getMotherNature() {
         return motherNature;
     }
@@ -152,7 +144,7 @@ public class GameModel extends EventSender {
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
-            System.out.println(islandGroup);
+            //System.out.println(islandGroup);
         }
     }
 
