@@ -1,17 +1,21 @@
 package model;
 
-import observer.Observable;
+import events.EventSender;
 import exceptions.*;
 import model.board.*;
 import model.expert.*;
 import util.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-public class GameModel extends Observable {
-    private final int maxNumOfPlayers;
+public class GameModel extends EventSender {
+    Logger logger = Logger.getLogger(GameModel.class.getName());
+
+    public static final int MAX_PLAYERS = 3;
+
+    private final int numOfPlayers;
     private final GameMode gameMode;
     private GameState state;
     private final Bag bag;
@@ -21,14 +25,23 @@ public class GameModel extends Observable {
     private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
-    private CoinSupply coinSupply;
+    private final Set<Color> unassignedProfessors;
+    private CoinSupply coinSupply;                          // TODO: trovare un utilizzo di CoinSupply
 
-    public GameModel(int maxNumOfPlayers, GameMode gameMode) {
-        this.maxNumOfPlayers = maxNumOfPlayers;
+    /**
+     * Constructor of the GameModel
+     *
+     * @param numOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
+     * @param gameMode     GameMode chosen when the game is created. Can be EXPERT or NORMAL.
+     */
+    public GameModel(int numOfPlayers, GameMode gameMode) {
+        this.numOfPlayers = numOfPlayers;
         this.gameMode = gameMode;
         this.bag = new Bag(24);
         this.players = new ArrayList<>();
         this.motherNature = new MotherNature();
+
+        unassignedProfessors = Arrays.stream(Color.values()).collect(Collectors.toSet());
 
         if (gameMode == GameMode.EXPERT) {
             this.characters = new ArrayList<>();
@@ -37,7 +50,10 @@ public class GameModel extends Observable {
         }
 
         this.cloudTiles = new ArrayList<>();
-        for (int i = 0; i < maxNumOfPlayers; i++) cloudTiles.add(new CloudTile(maxNumOfPlayers + 1));
+        //CloudTileId is generated with the i in the for
+        for (int i = 0; i < numOfPlayers; i++) {
+            cloudTiles.add(new CloudTile(i, numOfPlayers + 1));
+        }
 
         islandGroups = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
@@ -45,6 +61,10 @@ public class GameModel extends Observable {
         }
 
         moveFromBagToIslandTile();
+    }
+
+    public CoinSupply getCoinSupply() {
+        return coinSupply;
     }
 
     public GameState getState() {
@@ -55,12 +75,12 @@ public class GameModel extends Observable {
         this.state = state;
     }
 
-    public int getNumOfPlayers() {
-        return maxNumOfPlayers;
+    public MotherNature getMotherNature() {
+        return motherNature;
     }
 
-    public int getPlayerSize() {
-        return players.size();
+    public int getNumOfPlayers() {
+        return numOfPlayers;
     }
 
     public GameMode getGameMode() {
@@ -75,6 +95,10 @@ public class GameModel extends Observable {
         return ret;
     }
 
+    public int getPlayerId(Player player) {
+        return players.indexOf(player);
+    }
+
     public List<String> getPlayerNames() {
         List<String> playerNames = new ArrayList<>();
         for (Player p : players)
@@ -86,22 +110,29 @@ public class GameModel extends Observable {
         return new ArrayList<>(players);
     }
 
-    public synchronized Player getPlayerByName(String name) {
+    public Player getPlayerByName(String name) throws PlayerNotFoundException {
         for (Player player : players) {
             if (player.getName().equals(name))
                 return player;
         }
 
-        return null;
+        throw new PlayerNotFoundException("Player " + name + " not found!");
     }
 
-    public void addPlayer(Player player) {
+    public void addPlayer(Player player) throws MaxPlayersException {
+        if (players.size() >= MAX_PLAYERS)
+            throw new MaxPlayersException();
         players.add(player);
     }
 
     public boolean removePlayerByName(String name) {
         Player player;
-        player = getPlayerByName(name);
+        try {
+            player = getPlayerByName(name);
+        } catch (PlayerNotFoundException e) {
+            player = null;
+            logger.warning(e.getMessage());
+        }
 
         return players.remove(player);
     }
@@ -117,10 +148,11 @@ public class GameModel extends Observable {
                 try {
                     student = initialBag.pull();
                 } catch (EmptyStudentListException e) {
-                    Logger.info("Pulling from initial bag. Something went wrong...");
+                    logger.warning("Pulling from initial bag. Something went wrong...");
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
+            System.out.println(islandGroup);
         }
     }
 
@@ -129,10 +161,15 @@ public class GameModel extends Observable {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                Logger.error("Setting up entrance. Something went wrong...");
+                logger.severe("Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                Logger.error("Empty bag...");
+                logger.severe("Empty bag...");
             }
+    }
+
+    public IslandGroup getIslandGroupByID(int id) throws IslandGroupNotFoundException {
+        if (islandGroups.get(id) == null) throw new IslandGroupNotFoundException();
+        return islandGroups.get(id);
     }
 
     public IslandTile getIslandTileByID(int id) {
@@ -141,7 +178,6 @@ public class GameModel extends Observable {
             if (it != null)
                 return it;
         }
-
         throw new IslandNotFoundException("Island with id " + id + " not found!");
     }
 
@@ -150,18 +186,25 @@ public class GameModel extends Observable {
     }
 
     public void refillCloudTile(int cloudTileID) {
-        if (cloudTiles.get(cloudTileID).isEmpty())
+        try {
             moveFromBagToCloudTile(cloudTiles.get(cloudTileID));
+        } catch (TooManyStudentsException e) {
+            // do Nothing
+        }
     }
 
-    public void moveFromBagToCloudTile(CloudTile cloudTile) {
+    public CloudTile getCloudTile(int cloudTileID) {
+        return cloudTiles.get(cloudTileID);
+    }
+
+    public void moveFromBagToCloudTile(CloudTile cloudTile) throws TooManyStudentsException {
         int num = players.size() + 1;
-        for (int i = 0; i < num; i++) {
-            try {
+        try {
+            for (int i = 0; i < num; i++) {
                 cloudTile.put(bag.pull());
-            } catch (EmptyStudentListException e) {
-                Logger.error("Pulling from initial bag. Something went wrong...");
             }
+        } catch (EmptyStudentListException e) {
+            // No more students will be placed on this cloudTiles
         }
     }
 
@@ -192,6 +235,21 @@ public class GameModel extends Observable {
         }
     }
 
+    public Bag getBag() {
+        return bag;
+    }
+
+    public Set<Color> getUnassignedProfessors() {
+        return unassignedProfessors;
+    }
+
+    public Professor removeProfessor(Color color) throws ProfessorNotFoundException {
+        if (!unassignedProfessors.contains(color)) throw new ProfessorNotFoundException();
+
+        unassignedProfessors.remove(color);
+        return new Professor(color);
+    }
+
     // Expert mode functions
     private void drawThreeCharacters() {
         for (int i = 0; i < 3; i++) characters.add(getRandomCharacter());
@@ -213,14 +271,20 @@ public class GameModel extends Observable {
             case JESTER -> {
                 for (int i = 0; i < 6; i++) character.addStudent(bag.pull());
             }
-            default -> {
-            }
+            case MUSHROOM_FANATIC -> character.setColor(null);
         }
         return character;
     }
 
     public List<CharacterCard> getCharacters() {
         return characters;
+    }
+
+    public CharacterCard getCharacterById(int id) throws CharacterCardNotFound {
+        CharacterCard ret = characters.get(id);
+        if (ret == null)
+            throw new CharacterCardNotFound();
+        return ret;
     }
 
     public CharacterCard getCharacterByType(CharacterType characterType) {
@@ -230,5 +294,26 @@ public class GameModel extends Observable {
             }
         }
         return null;
+    }
+
+    public int getRemainingIslandGroups() {
+        return islandGroups.size();
+    }
+
+    public boolean checkForRooksEmpty() {
+        for (int i = 0; i < getPlayers().size(); i++){
+            try {
+                if(getPlayerByID(i).getSchoolBoard().getTowers().size()==0){
+                    return true;
+                }
+            } catch (PlayerNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean checkForToFewIslands(){
+        return getRemainingIslandGroups() <= 3;
     }
 }

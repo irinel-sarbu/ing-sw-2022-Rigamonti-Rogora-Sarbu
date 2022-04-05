@@ -1,17 +1,21 @@
 package controller.server;
 
+import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.Player;
 import util.GameMode;
 import util.GameState;
-import util.Logger;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class GameLobby {
-    private int turnCounter = 0;
+
     private final String code;
+    private int turnCounter = 0;
     private final GameModel gameModel;
     private Player currentPlayer;
     private int turnProgress;
@@ -28,7 +32,8 @@ public class GameLobby {
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
-            Logger.info("Game lobby <" + code + "> is empty");
+            Logger logger = Logger.getLogger(GameLobby.class.getName());
+            logger.warning("Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
         this.currentGameState = GameState.SETUP;
@@ -38,12 +43,17 @@ public class GameLobby {
         this.turnProgress = 1;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     public GameState getCurrentGameState() {
         return currentGameState;
     }
 
-    public void setCurrentGameState(GameState currentGameState) {
-        this.currentGameState = currentGameState;
+    public void setGameState(GameState nextGameState) {
+        this.currentGameState = nextGameState;
+        currentPlayer = (currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder).get(0);
     }
 
     public Player getCurrentPlayer() {
@@ -54,24 +64,31 @@ public class GameLobby {
         this.currentPlayer = player;
     }
 
-    public void setNextPlayer() {
+    public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;
+        try {
+            for (int i = 0; i < getModel().getCharacters().size(); i++)
+                this.getModel().getCharacterById(i).resetEffect();
+        } catch (CharacterCardNotFound characterCardNotFound) {
+            assert false;   // should never happen
+        }
+        return currentPlayer != null;
     }
 
     public int getStudentsMoved() {
         return studentsMoved;
     }
 
-    public void setStudentsMoved(int studentsMoved) {
-        this.studentsMoved = studentsMoved;
+    public void addStudentsMoved() {
+        this.studentsMoved += 1;
     }
 
     public void resetStudentsMoved() {
         this.studentsMoved = 0;
     }
 
-    public int getMaxStudentMovements() {
+    public int getMaxStudentsMoved() {
         return gameModel.getNumOfPlayers() + 1;
     }
 
@@ -93,14 +110,31 @@ public class GameLobby {
     }
 
     public void nextTurn() {
+        // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextTurn
+        setGameState(GameState.PLANNING);
         planningPhaseOrder = nextPlanningPhaseOrder;
-        currentPlayer = planningPhaseOrder.get(0);
+        setCurrentPlayer(planningPhaseOrder.get(0));
         nextPlanningPhaseOrder = null;
+        actionPhaseOrder = null;
         turnCounter++;
         turnProgress = 1;
     }
 
     public GameModel getModel() {
         return gameModel;
+    }
+
+    public void setOrder(List<Player> actionOrder) {
+        actionPhaseOrder = new ArrayList<>(actionOrder);
+        nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
+        Collections.reverse(nextPlanningPhaseOrder);
+    }
+
+    public boolean wrongState(GameState gameState) {
+        return !this.getCurrentGameState().equals(gameState);
+    }
+
+    public boolean wrongPlayer(Player player) {
+        return !this.getCurrentPlayer().equals(player);
     }
 }

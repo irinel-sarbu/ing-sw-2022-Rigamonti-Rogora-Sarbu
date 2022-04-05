@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 public class IslandGroup {
     private final int islandGroupID;
     private final List<IslandTile> islands;
-    private Stack<NoEntryTile> noEntry;
+    private final Stack<NoEntryTile> noEntry;
 
     public IslandGroup(int islandGroupID) {
         this.islandGroupID = islandGroupID;
         this.islands = new ArrayList<>();
-        this.islands.add(new IslandTile());
+        this.islands.add(new IslandTile(islandGroupID));
         this.noEntry = new Stack<>();
     }
 
@@ -72,8 +72,7 @@ public class IslandGroup {
         return this.islands.size();
     }
 
-    public void setTowersColor(TowerColor towerColor) throws NullTowerColorException {
-        if (towerColor == null) throw new NullTowerColorException();
+    public void setTowersColor(TowerColor towerColor){
         this.islands.forEach(island -> island.setTowerColor(towerColor));
     }
 

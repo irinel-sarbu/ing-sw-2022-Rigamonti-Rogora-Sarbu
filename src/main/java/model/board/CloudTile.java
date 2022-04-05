@@ -1,5 +1,7 @@
 package model.board;
 
+import exceptions.TooManyStudentsException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,19 +9,11 @@ import java.util.stream.Collectors;
 
 public class CloudTile {
     private final int cloudTileID;
-    private static int count = 0;
     private final List<Student> studentList;
-    private int maxSize;
+    private final int maxSize;
 
     public CloudTile(int cloudTileID, int size) {
         this.cloudTileID = cloudTileID;
-        this.studentList = new ArrayList<>();
-        this.maxSize = size;
-    }
-
-    public CloudTile(int size) {
-        this.cloudTileID = count;
-        count++;
         this.studentList = new ArrayList<>();
         this.maxSize = size;
     }
@@ -28,7 +22,9 @@ public class CloudTile {
         return this.studentList.isEmpty();
     }
 
-    public void put(Student... students) {
+    public void put(Student... students) throws TooManyStudentsException {
+        List<Student> incomingStudents = new ArrayList<>(Arrays.asList(students));
+        if (studentList.size() + incomingStudents.size() > maxSize) throw new TooManyStudentsException();
         studentList.addAll(Arrays.asList(students));
     }
 

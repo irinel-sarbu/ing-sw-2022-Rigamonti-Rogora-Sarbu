@@ -4,38 +4,42 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import exceptions.*;
+import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
 
 public class SchoolBoard {
-    private static int count = 0;
     private final static int maxEntranceSize = 9;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;
     private final static int maxTowersSize = 8;
     private final static int maxDiningSize = 10;
-    private final int ID;
     private final List<Student> entrance;
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
     private CoinSupply coins;
+    private final Player owner;
 
-    public SchoolBoard(int ID) {
-        this.ID = ID;
+    public SchoolBoard(Player player) {
         this.coins = new CoinSupply();
         this.entrance = new ArrayList<>();
-        this.diningRoom = new ArrayList<>(Color.values().length);
+        this.diningRoom = new ArrayList<>();
+        for (int i = 0; i < Color.values().length; i++) {
+            diningRoom.add(i, new Stack<>());
+        }
         this.professors = new ArrayList<>();
         this.towers = new ArrayList<>();
-    }
-
-    public SchoolBoard() {
-        this(count);
-        count++;
+        this.owner = player;
     }
 
     public List<Student> getEntranceStudents() {
         return entrance;
+    }
+
+    public Student getEntranceStudent(int studentPosition) throws StudentNotFoundException {
+        Student student = entrance.get(studentPosition);
+        if (student == null) throw new StudentNotFoundException();
+        return student;
     }
 
     public void addToEntrance(Student student) throws EntranceFullException {
@@ -50,9 +54,16 @@ public class SchoolBoard {
         }
     }
 
-    public void removeFromEntrance(int position) throws StudentNotFoundException {
-        boolean success = entrance.remove(position) != null;
-        if (!success) throw new StudentNotFoundException();
+    public Student removeFromEntrance(int studentID) throws StudentNotFoundException {
+        Student removed = null;
+        for(int i = 0; i < entrance.size(); i++){
+            if(entrance.get(i).getID()==studentID) {
+              removed=entrance.remove(i);
+              break;
+            }
+        }
+        if (removed == null) throw new StudentNotFoundException();
+        return removed;
     }
 
     public boolean addToDiningRoom(Student student) throws DiningRoomFullException {
@@ -75,7 +86,8 @@ public class SchoolBoard {
     }
 
     public int getStudentsOfColor(Color color) {
-        return diningRoom.get(color.getValue()).size();
+        return diningRoom.get(color.getValue()) == null ? 0 :
+                diningRoom.get(color.getValue()).size();
     }
 
     public List<Professor> getProfessors() {
@@ -91,6 +103,10 @@ public class SchoolBoard {
         boolean success;
         success = professors.remove(professor);
         if (!success) throw new ProfessorNotFoundException();
+    }
+
+    public Professor removeProfessorByColor(Color color) throws ProfessorNotFoundException {
+        return professors.stream().filter(prof -> prof.getColor().equals(color)).findFirst().orElse(null);
     }
 
     public List<Tower> getTowers() {
@@ -146,7 +162,8 @@ public class SchoolBoard {
             String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
-        return "SchoolBoard " + ID + " entr:" + entranceString + diningRoomString +
+        //SchoolBoard will be identified by the previous print of a numbered player.
+        return "SchoolBoard of " + owner.getName() + " entr:" + entranceString + diningRoomString +
                 " Coins: " + coins +
                 "\n    " + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
     }

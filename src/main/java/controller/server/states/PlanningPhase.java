@@ -7,6 +7,9 @@ import model.Player;
 import model.board.Assistant;
 import util.GameState;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,7 +22,6 @@ public class PlanningPhase {
     }
 
     private boolean playable(GameLobby thisGame, Assistant assistantCard) {
-
         List<Assistant> played = thisGame.getOrder().stream()
                 .map(Player::peekFoldDeck)
                 .filter(Objects::nonNull).toList();
@@ -32,12 +34,25 @@ public class PlanningPhase {
 
     public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
             throws WrongPhaseException, WrongPlayerException, NotPlayableAssistantException, AssistantNotInDeckException {
-        if (thisGame.getCurrentGameState() != GameState.PLANNING) throw new WrongPhaseException();
-        if (thisGame.getCurrentPlayer() != actingPlayer) throw new WrongPlayerException();
+        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
+        if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
         if (!playable(thisGame, assistantCard)) throw new NotPlayableAssistantException();
 
         thisGame.getCurrentPlayer().pushFoldDeck(
                 thisGame.getCurrentPlayer().removeCard(assistantCard));
+
+        if (thisGame.setNextPlayer()) computeNext(thisGame);
+    }
+
+    private void computeNext(GameLobby thisGame) throws WrongPhaseException {
+        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
+        /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO in case of disconnection prevent game progress
+                thisGame.getOrder().size()) throw new WrongPhaseException(); */
+        List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
+        nextOrder.sort(Player::compareTo);
+        thisGame.setOrder(nextOrder);
+
+        thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
 }

@@ -12,20 +12,25 @@ public class CoinSupply {
         this.numOfCoins=maxCoins;
     }
 
-    public CoinSupply(int numOfCoins){
-        this.numOfCoins=numOfCoins;
+    public CoinSupply(int numOfCoins) {
+        this.numOfCoins = numOfCoins;
     }
 
     public int getNumOfCoins() {
         return numOfCoins;
     }
 
+    public void addCoin() {
+        this.numOfCoins += 1;
+    }
+
     public void addCoins(int numOfCoins) {
         this.numOfCoins += numOfCoins;
     }
 
-    public void removeCoins(int numOfCoins) throws supplyEmptyException {
-        if(this.numOfCoins==0) throw new supplyEmptyException();
+    public int removeCoins(int numOfCoins) throws supplyEmptyException {
+        if (this.numOfCoins == 0) throw new supplyEmptyException();
         this.numOfCoins -= numOfCoins;
+        return numOfCoins;
     }
 }

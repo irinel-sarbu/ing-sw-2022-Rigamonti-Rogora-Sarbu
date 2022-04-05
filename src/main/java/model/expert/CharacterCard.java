@@ -1,6 +1,5 @@
 package model.expert;
 
-import com.sun.source.tree.ReturnTree;
 import exceptions.EmptyNoEntryListException;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
@@ -13,25 +12,21 @@ import java.util.Stack;
 
 public class CharacterCard {
     private int cost;
-    private CharacterType character;
+    private final CharacterType character;
     private boolean effectIsUsed;
     private List<Student> students;
     private Stack<NoEntryTile> noEntryTiles;
+    private Color color;
 
 
     public CharacterCard(CharacterType character) {
         this.cost = character.getBaseCost();
         this.character = character;
         switch (character) {
-            case MONK, PRINCESS -> {
-                students = new ArrayList<>(4);
-            }
-            case GRANNY_HERBS -> {
-                noEntryTiles = new Stack<>();
-            }
-            case JESTER -> {
-                students = new ArrayList<>(6);
-            }
+            case MONK, PRINCESS -> students = new ArrayList<>(4);
+            case GRANNY_HERBS -> noEntryTiles = new Stack<>();
+            case JESTER -> students = new ArrayList<>(6);
+            case MUSHROOM_FANATIC -> color = null;
             default -> {
             }
         }
@@ -42,6 +37,14 @@ public class CharacterCard {
         this.cost = cost;
         this.character = character;
         resetEffect();
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public CharacterType getCharacter() {
@@ -68,18 +71,18 @@ public class CharacterCard {
         this.cost = cost;
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         students.add(student);
     }
 
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
         return students;
     }
 
     public Student removeStudent(int studentId) throws StudentNotFoundException, EmptyStudentListException {
         if (this.students.size() == 0) throw new EmptyStudentListException();
-        for(Student student : students){
-            if(student.getID()==studentId){
+        for (Student student : students) {
+            if (student.getID() == studentId) {
                 students.remove(student);
                 return student;
             }
@@ -87,7 +90,7 @@ public class CharacterCard {
         throw new StudentNotFoundException();
     }
 
-    public void addNoEntryTile(NoEntryTile noEntryTile){
+    public void addNoEntryTile(NoEntryTile noEntryTile) {
         noEntryTiles.push(noEntryTile);
     }
 
