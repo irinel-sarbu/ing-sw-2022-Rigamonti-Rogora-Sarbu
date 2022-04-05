@@ -26,9 +26,9 @@ public class EventDispatcher {
     }
 
     public synchronized void dispatch(EventType eventType, NetworkEventHandler handler) {
-        Logger.debug("Dispatching event " + event + " with event type " + eventType + "\n" +
-                "\tEvent.handled " + event.handled + "\n" +
-                "\tEvent.type " + event.getType());
+        Logger.debug("Dispatching event " + event + " with event type " + eventType,
+                "Event.handled " + event.handled,
+                "Event.type " + event.getType());
         if (event.handled || event.getType() != eventType)
             return;
 

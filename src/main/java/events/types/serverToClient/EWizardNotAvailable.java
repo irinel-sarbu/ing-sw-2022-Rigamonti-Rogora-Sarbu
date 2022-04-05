@@ -17,4 +17,9 @@ public class EWizardNotAvailable extends Event {
     public List<Wizard> getAvailableWizards() {
         return wizards;
     }
+
+    @Override
+    public String toString() {
+        return "EWizardNotAvailable { availableWizards: " + wizards + " }";
+    }
 }

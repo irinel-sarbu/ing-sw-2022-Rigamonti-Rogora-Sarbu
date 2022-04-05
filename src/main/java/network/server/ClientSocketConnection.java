@@ -11,7 +11,7 @@ import events.Event;
 import events.EventType;
 import events.types.Messages;
 import events.types.serverToClient.Message;
-import events.types.serverToClient.PingEvent;
+import events.types.serverToClient.Ping;
 import util.Logger;
 import util.Tuple;
 
@@ -27,7 +27,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     Socket socket;
 
     ClientSocketConnection(Server server, Socket socket) throws IOException {
-        Logger.info("New client connected!");
+        Logger.info("New client connected " + socket);
         this.server = server;
         this.socket = socket;
 
@@ -45,7 +45,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             TimerTask ping = new TimerTask() {
                 @Override
                 public void run() {
-                    send(new PingEvent());
+                    send(new Ping());
                 }
             };
 
@@ -53,7 +53,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
 
             while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
-                Logger.debug("New event " + event + " from " + socket.toString());
+                Logger.info("New event " + event + " from " + socketToString());
                 server.pushEvent(new Tuple<>(event, this));
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -76,8 +76,8 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
 
     private synchronized void send(Event event) {
         try {
-            if(event.getType() != EventType.PING)
-                Logger.debug("Sending event " + event + " to " + socket.toString());
+            if (event.getType() != EventType.PING)
+                Logger.info("Sending event " + event + " to " + socketToString());
             out.writeObject(event);
         } catch (IOException e) {
             Logger.error(e.getMessage());
@@ -91,11 +91,15 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             out.close();
             socket.close();
             pingTimer.cancel();
-            System.out.println("\rConnection with client " + socket.toString() + " closed...");
+            Logger.info("Connection with client " + socketToString() + " closed...");
             server.pushEvent(new Tuple<>(new Message(Messages.CLIENT_DISCONNECTED), this));
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
+    }
+
+    private String socketToString() {
+        return socket.getInetAddress() + ":" + socket.getPort();
     }
 
     @Override
@@ -105,6 +109,6 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
 
     @Override
     public String toString() {
-        return socket.toString();
+        return socketToString();
     }
 }

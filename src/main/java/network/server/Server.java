@@ -24,7 +24,7 @@ public class Server extends NetworkObservable implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(PORT);
-            Logger.info("Server started on port " + PORT + ".\n\tWaiting for clients...");
+            Logger.info("Server started on port " + PORT, "Waiting for clients...");
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }

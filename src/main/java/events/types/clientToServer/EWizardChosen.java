@@ -15,4 +15,9 @@ public class EWizardChosen extends Event {
     public Wizard getWizard() {
         return wizard;
     }
+
+    @Override
+    public String toString() {
+        return "EWizardChosen { wizard: " + wizard + " }";
+    }
 }

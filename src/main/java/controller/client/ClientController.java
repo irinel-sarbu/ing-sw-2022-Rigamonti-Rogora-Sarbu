@@ -27,9 +27,9 @@ public class ClientController implements Observer {
         // Server events
         dp.dispatch(EventType.MESSAGE, (Event e) -> onMessage((Message) e));
 
-        dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((LobbyJoined) e));
-        dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((PlayerJoined) e));
-        dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((PlayerDisconnected) e));
+        dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((ELobbyJoined) e));
+        dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((EPlayerJoined) e));
+        dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((EPlayerDisconnected) e));
 
         dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
         dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
@@ -101,7 +101,7 @@ public class ClientController implements Observer {
      * If Lobby creation was successful, Client connects to Lobby.
      * This event can also be triggered by the Client when Event <code>JoinLobby</code> is successful.
      */
-    private boolean onLobbyJoined(LobbyJoined event) {
+    private boolean onLobbyJoined(ELobbyJoined event) {
         this.lobbyCode = event.getCode();
         view.displayMessage("Joined lobby " + event.getCode());
         return true;
@@ -110,7 +110,7 @@ public class ClientController implements Observer {
     /**
      * A new Client connected to the same Lobby
      */
-    private boolean onPlayerConnected(PlayerJoined event) {
+    private boolean onPlayerConnected(EPlayerJoined event) {
         view.displayMessage(event.getPlayerName() + " connected to Lobby!");
         return true;
     }
@@ -118,7 +118,7 @@ public class ClientController implements Observer {
     /**
      * A new Client connected to the same Lobby
      */
-    private boolean onPlayerDisconnected(PlayerDisconnected event) {
+    private boolean onPlayerDisconnected(EPlayerDisconnected event) {
         view.displayMessage(event.getPlayerName() + " left the Lobby!");
         return true;
     }

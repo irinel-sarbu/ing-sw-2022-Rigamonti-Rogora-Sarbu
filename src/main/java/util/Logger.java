@@ -26,7 +26,7 @@ public class Logger {
 
         private final int value;
 
-        private LoggerLevel(int num) {
+        LoggerLevel(int num) {
             this.value = num;
         }
 
@@ -51,42 +51,91 @@ public class Logger {
         get().level = level;
     }
 
-    private synchronized void print(String string) {
-        System.out.println(string);
+    private synchronized void print(String msg) {
+        System.out.println(msg);
     }
 
-    public static void debug(String string) {
+    private synchronized void printIndented(String msg) {
+        System.out.println("\t" + msg);
+    }
+
+    public static void debug(String msg) {
         if (LoggerLevel.DEBUG.getValue() >= get().level.getValue()) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_WHITE_UNDERLINED + "DEBUG" + ANSI_RESET + "   - " + string);
+            get().print(date + " - " + TEXT_WHITE_UNDERLINED + "DEBUG" + ANSI_RESET + "   - " + msg);
         }
     }
 
-    public static void info(String string) {
+    public static void debug(String... msg) {
+        if (LoggerLevel.DEBUG.getValue() >= get().level.getValue()) {
+            debug(msg[0]);
+            for(int i = 1; i < msg.length; i++) {
+                get().printIndented(msg[i]);
+            }
+        }
+    }
+
+    public static void info(String msg) {
         if (LoggerLevel.INFO.getValue() >= get().level.getValue()) {
             String date = get().getDate();
-            get().print(date + " - INFO    - " + string);
+            get().print(date + " - INFO    - " + msg);
         }
     }
 
-    public static void warning(String string) {
+    public static void info(String... msg) {
+        if (LoggerLevel.INFO.getValue() >= get().level.getValue()) {
+            info(msg[0]);
+            for(int i = 1; i < msg.length; i++) {
+                get().printIndented(msg[i]);
+            }
+        }
+    }
+
+    public static void warning(String msg) {
         if (LoggerLevel.WARNING.getValue() >= get().level.getValue()) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_YELLOW + "WARNING" + ANSI_RESET + " - " + string);
+            get().print(date + " - " + TEXT_YELLOW + "WARNING" + ANSI_RESET + " - " + msg);
         }
     }
 
-    public static void error(String string) {
+    public static void warning(String... msg) {
+        if (LoggerLevel.WARNING.getValue() >= get().level.getValue()) {
+            warning(msg[0]);
+            for(int i = 1; i < msg.length; i++) {
+                get().printIndented(msg[i]);
+            }
+        }
+    }
+
+    public static void error(String msg) {
         if (LoggerLevel.ERROR.getValue() >= get().level.getValue()) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_RED + "ERROR  " + ANSI_RESET + " - " + string);
+            get().print(date + " - " + TEXT_RED + "ERROR" + ANSI_RESET + "   - " + msg);
         }
     }
 
-    public static void severe(String string) {
+    public static void error(String... msg) {
+        if (LoggerLevel.ERROR.getValue() >= get().level.getValue()) {
+            error(msg[0]);
+            for(int i = 1; i < msg.length; i++) {
+                get().printIndented(msg[i]);
+            }
+        }
+    }
+
+    public static void severe(String msg) {
         if (LoggerLevel.SEVERE.getValue() >= get().level.getValue()) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_RED_BOLD + "SEVERE" + ANSI_RESET + "  - " + string);
+            get().print(date + " - " + TEXT_RED_BOLD + "SEVERE" + ANSI_RESET + "  - " + msg);
+        }
+    }
+
+    public static void severe(String... msg) {
+        if (LoggerLevel.SEVERE.getValue() >= get().level.getValue()) {
+            severe(msg[0]);
+            for(int i = 1; i < msg.length; i++) {
+                get().printIndented(msg[i]);
+            }
         }
     }
 

@@ -20,4 +20,9 @@ public class EUpdateServerInfo extends Event {
     public int getPort() {
         return port;
     }
+
+    @Override
+    public String toString() {
+        return "EUpdateServerInfo { ip: '" + ip + "'; port: " + port + " }";
+    }
 }

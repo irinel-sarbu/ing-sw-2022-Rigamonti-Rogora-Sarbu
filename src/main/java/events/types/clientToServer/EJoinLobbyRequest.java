@@ -20,4 +20,9 @@ public class EJoinLobbyRequest extends Event {
     public String getLobbyCode() {
         return  lobbyCode;
     }
+
+    @Override
+    public String toString() {
+        return "EJoinLobbyRequest { name: '" + name + "'; lobbyCode: '" + lobbyCode + "' }";
+    }
 }

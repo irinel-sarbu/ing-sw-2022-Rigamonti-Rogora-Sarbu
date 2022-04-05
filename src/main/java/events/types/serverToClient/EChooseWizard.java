@@ -17,4 +17,9 @@ public class EChooseWizard extends Event {
     public List<Wizard> getAvailableWizards() {
         return wizards;
     }
+
+    @Override
+    public String toString() {
+        return "EChooseWizard { wizards: " + wizards + " }";
+    }
 }

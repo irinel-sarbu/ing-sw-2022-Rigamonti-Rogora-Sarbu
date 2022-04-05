@@ -78,7 +78,7 @@ public class Lobby implements NetworkObserver {
             clientList.put(name, client);
             client.joinLobby(lobbyCode);
             model.getPlayerByName(name).setDisconnected(false);
-            broadcastExceptOne(new PlayerJoined(name), name);
+            broadcastExceptOne(new EPlayerJoined(name), name);
             Logger.info("Player " + name + " reconnected to Lobby " + getLobbyCode());
             return;
         }
@@ -97,8 +97,8 @@ public class Lobby implements NetworkObserver {
 
         clientList.put(name, client);
         client.joinLobby(lobbyCode);
-        client.asyncSend(new LobbyJoined(lobbyCode));
-        broadcastExceptOne(new PlayerJoined(name), name);
+        client.asyncSend(new ELobbyJoined(lobbyCode));
+        broadcastExceptOne(new EPlayerJoined(name), name);
         client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
     }
 

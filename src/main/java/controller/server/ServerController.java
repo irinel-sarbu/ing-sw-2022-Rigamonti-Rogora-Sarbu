@@ -4,7 +4,7 @@ import events.*;
 import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.Message;
-import events.types.serverToClient.PlayerDisconnected;
+import events.types.serverToClient.EPlayerDisconnected;
 import network.server.ClientSocketConnection;
 import network.server.Server;
 import observer.NetworkObserver;
@@ -82,7 +82,7 @@ public class ServerController implements NetworkObserver {
                 Lobby lobby = lobbyList.get(client.getLobbyCode());
                 String playerName = lobby.getClientBySocket(client);
 
-                lobby.broadcastExceptOne(new PlayerDisconnected(playerName), playerName);
+                lobby.broadcastExceptOne(new EPlayerDisconnected(playerName), playerName);
                 lobby.removeClientFromLobbyByName(playerName);
             }
         }

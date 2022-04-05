@@ -27,4 +27,9 @@ public class ECreateLobbyRequest extends Event {
     public String getPlayerName() {
         return playerName;
     }
+
+    @Override
+    public String toString() {
+        return "ECreateLobbyRequest { numOfPlayers: " + numOfPlayers + "; gameMode: " + gameMode + "; playerName: '" + playerName + "' }";
+    }
 }

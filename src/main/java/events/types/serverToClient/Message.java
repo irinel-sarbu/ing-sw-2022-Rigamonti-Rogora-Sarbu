@@ -14,4 +14,9 @@ public class Message extends Event {
     public String getMsg() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        return "Message {  msg: '" + message + "' }";
+    }
 }
