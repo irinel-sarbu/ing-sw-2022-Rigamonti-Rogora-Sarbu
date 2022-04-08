@@ -20,7 +20,7 @@ public class TurnEpilogue {
         if (cloudTilePos >= thisGame.getModel().getNumOfCloudTiles()) throw new NoCloudTileException();
         if (thisGame.getModel().getCloudTile(cloudTilePos).isEmpty()) throw new EmptyStudentListException();
 
-        actingPlayer.getSchoolBoard().addToEntrance(thisGame.getModel().getCloudTile(cloudTilePos).getAndRemoveStudents());
+        thisGame.getModel().moveFromCloudTileToEntrance(thisGame.getModel().getCloudTile(cloudTilePos), thisGame.getCurrentPlayer());
 
         if (thisGame.setNextPlayer()) {
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
