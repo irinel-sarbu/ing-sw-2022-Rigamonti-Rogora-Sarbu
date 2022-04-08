@@ -7,6 +7,7 @@ import exceptions.*;
 import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
+import util.TowerColor;
 
 public class SchoolBoard {
     private final static int maxEntranceSize = 9;
@@ -56,10 +57,10 @@ public class SchoolBoard {
 
     public Student removeFromEntrance(int studentID) throws StudentNotFoundException {
         Student removed = null;
-        for(int i = 0; i < entrance.size(); i++){
-            if(entrance.get(i).getID()==studentID) {
-              removed=entrance.remove(i);
-              break;
+        for (int i = 0; i < entrance.size(); i++) {
+            if (entrance.get(i).getID() == studentID) {
+                removed = entrance.remove(i);
+                break;
             }
         }
         if (removed == null) throw new StudentNotFoundException();
@@ -121,6 +122,16 @@ public class SchoolBoard {
     public void removeTower() throws TowersIsEmptyException {
         boolean success = towers.remove(0) != null;
         if (!success) throw new TowersIsEmptyException();
+    }
+
+    public void setUpTowers(TowerColor color, int numOfPlayers) {
+        try {
+            for (int i = 0; i < numOfPlayers; i++) {
+                addTower(new Tower(color));
+            }
+        } catch (TowersFullException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean hasProfessor(Color color) {

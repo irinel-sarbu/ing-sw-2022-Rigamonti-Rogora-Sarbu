@@ -118,6 +118,7 @@ public class GameModel extends Observable {
     public void addPlayer(Player player) {
         players.add(player);
         moveFromBagToEntrance(player);
+        player.getSchoolBoard().setUpTowers(player.getColor(), numOfPlayers);
     }
 
     public boolean removePlayerByName(String name) {
@@ -193,7 +194,7 @@ public class GameModel extends Observable {
     }
 
     public void moveFromBagToCloudTile(CloudTile cloudTile) throws TooManyStudentsException {
-        int num = players.size() + 1;
+        int num = numOfPlayers + 1;
         try {
             for (int i = 0; i < num; i++) {
                 cloudTile.put(bag.pull());

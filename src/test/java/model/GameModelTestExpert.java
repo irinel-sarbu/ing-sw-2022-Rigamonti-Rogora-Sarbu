@@ -1,8 +1,6 @@
 package model;
 
-import exceptions.CharacterCardNotFound;
-import exceptions.MaxPlayersException;
-import exceptions.PlayerNotFoundException;
+import exceptions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -44,7 +42,7 @@ public class GameModelTestExpert {
 
     @Test
     public void getGameMode() {
-        assertNotNull(game.getGameMode());
+        assertTrue(game.getGameMode() != null);
     }
 
     @Test
@@ -260,7 +258,45 @@ public class GameModelTestExpert {
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
         assertEquals(8, game.getRemainingIslandGroups());
         assertEquals(3, game.getIslandGroupByID(5).getIslands().size());
+        System.out.println("------------->Join done successfully");
     }
 
+    @Test
+    public void moveFromCloudTileToEntrance() {
+        try {
+            for (int i = 0; i < 3; i++)
+                game.getPlayerByID(0).getSchoolBoard().removeFromEntrance(game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().get(0).getID());
+            int size = game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().size();
+            game.moveFromCloudTileToEntrance(game.getCloudTile(0), game.getPlayerByID(0));
+            //number of students in the entrance must increase by 4 if players are 3
+            assertTrue(game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().size() == (size + 4));
+        } catch (PlayerNotFoundException | StudentNotFoundException e) {
+            assertTrue(false);
+        }
+        System.out.println("------------->Moving students cloud->entrance done successfully");
+    }
 
+    @Test
+    public void removeProfessor() {
+        int size = game.getUnassignedProfessors().size();
+        try {
+            game.removeProfessor(Color.BLUE);
+        } catch (ProfessorNotFoundException e) {
+            assertTrue(false);
+        }
+        assertTrue(size!=game.getUnassignedProfessors().size());
+        assertTrue(game.getUnassignedProfessors().size()==4);
+    }
+
+    //DrawThreeCharacters and getRandomCharacter already tested
+
+    @Test
+    public void checkForTooFewIsland() {
+        assertTrue(!game.checkForToFewIslands());
+    }
+
+    @Test
+    public void checkForRooksEmpty() {
+        assertTrue(!game.checkForRooksEmpty());
+    }
 }
