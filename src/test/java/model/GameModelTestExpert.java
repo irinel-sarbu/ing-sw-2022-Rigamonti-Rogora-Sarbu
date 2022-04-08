@@ -269,9 +269,9 @@ public class GameModelTestExpert {
             int size = game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().size();
             game.moveFromCloudTileToEntrance(game.getCloudTile(0), game.getPlayerByID(0));
             //number of students in the entrance must increase by 4 if players are 3
-            assertTrue(game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().size() == (size + 4));
+            assertEquals(game.getPlayerByID(0).getSchoolBoard().getEntranceStudents().size(), (size + 4));
         } catch (PlayerNotFoundException | StudentNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         System.out.println("------------->Moving students cloud->entrance done successfully");
     }
@@ -282,21 +282,21 @@ public class GameModelTestExpert {
         try {
             game.removeProfessor(Color.BLUE);
         } catch (ProfessorNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         assertTrue(size!=game.getUnassignedProfessors().size());
-        assertTrue(game.getUnassignedProfessors().size()==4);
+        assertEquals(4, game.getUnassignedProfessors().size());
     }
 
     //DrawThreeCharacters and getRandomCharacter already tested
 
     @Test
     public void checkForTooFewIsland() {
-        assertTrue(!game.checkForToFewIslands());
+        assertFalse(game.checkForToFewIslands());
     }
 
     @Test
     public void checkForRooksEmpty() {
-        assertTrue(!game.checkForRooksEmpty());
+        assertFalse(game.checkForRooksEmpty());
     }
 }
