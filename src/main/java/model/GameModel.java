@@ -205,21 +205,18 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
-    public void joinAdjacent() {
-        int i = 0;
-        while (i < islandGroups.size()) {
-            int left = (i - 1 + islandGroups.size()) % islandGroups.size();
-            int right = (i + 1) % islandGroups.size();
-            try {
-                islandGroups.add(i, this.getIslandGroupByID(i).join(islandGroups.get(right)));
-                islandGroups.remove(right);
-            } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-            }
-            try {
-                islandGroups.add(i, islandGroups.get(i).join(this.getIslandGroupByID(left)));
-                islandGroups.remove(left);
-            } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-            }
+    public void joinAdjacent(int position) {
+        int left = (position - 1 + islandGroups.size()-1) % islandGroups.size();
+        int right = (position + 1) % islandGroups.size();
+        try {
+            islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
+            islandGroups.remove(right);
+        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+        }
+        try {
+            islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
+            islandGroups.remove(left);
+        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
     }
 

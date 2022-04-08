@@ -26,7 +26,7 @@ public class ResolveIsland {
                 tempIslandGroup.setTowersColor(tempGame.getPlayerByID(playerPosition).getColor());
             }
             // joins adjacent islandGroups
-            tempGame.joinAdjacent();
+            tempGame.joinAdjacent(tempGame.getMotherNature().getPosition());
         } catch (PlayerNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }

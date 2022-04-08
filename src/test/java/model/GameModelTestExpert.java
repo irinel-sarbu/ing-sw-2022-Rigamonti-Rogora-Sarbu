@@ -246,11 +246,10 @@ public class GameModelTestExpert {
         game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
         game.getIslandTileByID(1).setTowerColor(TowerColor.BLACK);
         //join should now join islandGroup 0 and 1, and in the new 0 there should be Tile 0 and 1
-        game.joinAdjacent();
+        //let's assume mother nature is on 0, and just turned the rook on 0 black
+        game.joinAdjacent(0);
         for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
-        System.out.println("numOfRemIslands:" + game.getRemainingIslandGroups());
         assertTrue(game.getRemainingIslandGroups() == 11);
-        System.out.println("sizeOf0:" + game.getIslandGroupByID(0).getIslands().size());
         assertTrue(game.getIslandGroupByID(0).getIslands().size() == 2);
         assertTrue(game.getIslandGroupByID(0).getIslandTileByID(0) != null && game.getIslandGroupByID(0).getIslandTileByID(1) != null);
     }
