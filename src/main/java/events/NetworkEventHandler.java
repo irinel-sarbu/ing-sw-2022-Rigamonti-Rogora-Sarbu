@@ -1,8 +1,8 @@
 package events;
 
-import network.ClientConnection;
+import network.server.ClientSocketConnection;
 import util.Tuple;
 
 public interface NetworkEventHandler {
-    boolean handle(Tuple<Event, ClientConnection> networkEvent);
+    boolean handle(Tuple<Event, ClientSocketConnection> networkEvent);
 }

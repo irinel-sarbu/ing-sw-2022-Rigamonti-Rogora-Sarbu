@@ -1,6 +1,5 @@
 package controller.server.states;
 
-import controller.server.GameController;
 import controller.server.GameLobby;
 import exceptions.EmptyNoEntryListException;
 import exceptions.IllegalMovementException;
@@ -11,12 +10,6 @@ import util.GameState;
 
 
 public class MotherNatureMovement {
-
-    private final GameController controller;
-
-    public MotherNatureMovement(GameController gameController) {
-        this.controller = gameController;
-    }
 
     public void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException {
         if (tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()) {
@@ -36,12 +29,12 @@ public class MotherNatureMovement {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
             int motherNaturePos = tempGame.getMotherNature().getPosition();
             if (tempGame.getIslandGroupByID(motherNaturePos).getNoEntrySize() == 0) {
-                controller.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
+                tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
             } else {
                 tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
             }
             if (tempGame.checkForRooksEmpty() || tempGame.checkForToFewIslands()) {
-                controller.getGameOver().selectWinner(tempLobby);
+                tempLobby.getGameOver().selectWinner(tempLobby);
             } else {
                 tempLobby.setGameState(GameState.TURN_EPILOGUE);
             }

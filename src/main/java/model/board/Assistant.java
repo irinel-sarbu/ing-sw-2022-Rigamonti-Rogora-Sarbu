@@ -15,12 +15,12 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Objects;
 
+import util.Logger;
 import util.Wizard;
 
 public class Assistant {
-    static Logger logger = Logger.getLogger(Assistant.class.getName());
 
     Wizard wizard;
     String name;
@@ -72,8 +72,7 @@ public class Assistant {
 
                     deck.add(new Assistant(wizard, name, value, movements));
 
-                    logger.info("New assistant: \n" + "\tName: " + name + "\n\tValue: " + value
-                            + "\n\tMother nature movements: " + movements);
+                    //Logger.debug("New assistant:", "Name: " + name, "Value: " + value, "Mother nature movements: " + movements);
                 }
             }
 
@@ -94,6 +93,14 @@ public class Assistant {
 
     public int getMovements() {
         return movements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Assistant assistant = (Assistant) o;
+        return Objects.equals(name, assistant.name);
     }
 
     @Override

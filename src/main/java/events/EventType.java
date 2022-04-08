@@ -1,25 +1,24 @@
 package events;
 
 public enum EventType {
-    // Handled on server, Sended by client
-    REGISTER,
-    DISCONNECT,
-    CREATE_GAME,
-    JOIN_GAME,
+    // Handled on server, Sent by client
+    CLIENT_DISCONNECT,
+    CREATE_LOBBY_REQUEST,
+    JOIN_LOBBY_REQUEST,
+    WIZARD_CHOSEN,
 
-    // Handled on client, Sended by server
-    PLAYER_NAME_TAKEN,
-    REGISTER_OK,
-    GAME_CREATED,
-    GAME_JOINED,
-    GAME_NOT_FOUND,
-    PLAYER_CONNECTED,
+    // Handled on client, Sent by server
+    LOBBY_JOINED,
+    PLAYER_JOINED,
+    PLAYER_DISCONNECTED,
 
-    
-    // handled on client, Sended by client
-    CONNECT,
-    CONNECTION_REFUSED,
-    CONNECTION_OK,
+    CHOOSE_WIZARD,
+    WIZARD_NOT_AVAILABLE,
 
-    PLAYER_NAME_INSERTED
+    // handled on client, Sent by client
+    UPDATE_SERVER_INFO,
+
+    // other
+    PING,
+    MESSAGE
 }

@@ -8,6 +8,7 @@ import util.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Stack;
 
 public class CharacterCard {
@@ -101,5 +102,18 @@ public class CharacterCard {
     public NoEntryTile removeNoEntryTile() throws EmptyNoEntryListException {
         if (this.noEntryTiles.size() == 0) throw new EmptyNoEntryListException();
         return noEntryTiles.pop();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CharacterCard that = (CharacterCard) o;
+        return character == that.character;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(character);
     }
 }

@@ -1,21 +1,20 @@
 package model;
 
-import events.EventSender;
+import observer.Observable;
 import exceptions.*;
 import model.board.*;
 import model.expert.*;
 import util.*;
 
+import javax.management.ListenerNotFoundException;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class GameModel extends EventSender {
-    Logger logger = Logger.getLogger(GameModel.class.getName());
+public class GameModel extends Observable {
 
     public static final int MAX_PLAYERS = 3;
 
-    private final int numOfPlayers;
+    private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private GameState state;
     private final Bag bag;
@@ -26,16 +25,16 @@ public class GameModel extends EventSender {
     private final MotherNature motherNature;
     private List<CharacterCard> characters;
     private final Set<Color> unassignedProfessors;
-    private CoinSupply coinSupply;                          // TODO: trovare un utilizzo di CoinSupply
+    private CoinSupply coinSupply;
 
     /**
      * Constructor of the GameModel
      *
-     * @param numOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
-     * @param gameMode     GameMode chosen when the game is created. Can be EXPERT or NORMAL.
+     * @param maxNumOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
+     * @param gameMode        GameMode chosen when the game is created. Can be EXPERT or NORMAL.
      */
-    public GameModel(int numOfPlayers, GameMode gameMode) {
-        this.numOfPlayers = numOfPlayers;
+    public GameModel(int maxNumOfPlayers, GameMode gameMode) {
+        this.maxNumOfPlayers = maxNumOfPlayers;
         this.gameMode = gameMode;
         this.bag = new Bag(24);
         this.players = new ArrayList<>();
@@ -51,8 +50,9 @@ public class GameModel extends EventSender {
 
         this.cloudTiles = new ArrayList<>();
         //CloudTileId is generated with the i in the for
-        for (int i = 0; i < numOfPlayers; i++) {
-            cloudTiles.add(new CloudTile(i, numOfPlayers + 1));
+        for (int i = 0; i < maxNumOfPlayers; i++) {
+            cloudTiles.add(new CloudTile(i, maxNumOfPlayers + 1));
+            refillCloudTile(i);
         }
 
         islandGroups = new ArrayList<>();
@@ -67,20 +67,16 @@ public class GameModel extends EventSender {
         return coinSupply;
     }
 
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
-    }
-
     public MotherNature getMotherNature() {
         return motherNature;
     }
 
-    public int getNumOfPlayers() {
-        return numOfPlayers;
+    public int getMaxNumOfPlayers() {
+        return maxNumOfPlayers;
+    }
+
+    public int getPlayerSize() {
+        return players.size();
     }
 
     public GameMode getGameMode() {
@@ -119,10 +115,10 @@ public class GameModel extends EventSender {
         throw new PlayerNotFoundException("Player " + name + " not found!");
     }
 
-    public void addPlayer(Player player) throws MaxPlayersException {
-        if (players.size() >= MAX_PLAYERS)
-            throw new MaxPlayersException();
+    public void addPlayer(Player player) {
         players.add(player);
+        moveFromBagToEntrance(player);
+        player.getSchoolBoard().setUpTowers(player.getColor(), numOfPlayers);
     }
 
     public boolean removePlayerByName(String name) {
@@ -131,7 +127,7 @@ public class GameModel extends EventSender {
             player = getPlayerByName(name);
         } catch (PlayerNotFoundException e) {
             player = null;
-            logger.warning(e.getMessage());
+            Logger.warning(e.getMessage());
         }
 
         return players.remove(player);
@@ -148,11 +144,11 @@ public class GameModel extends EventSender {
                 try {
                     student = initialBag.pull();
                 } catch (EmptyStudentListException e) {
-                    logger.warning("Pulling from initial bag. Something went wrong...");
+                    Logger.warning("Pulling from initial bag. Something went wrong...");
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
-            System.out.println(islandGroup);
+            //System.out.println(islandGroup);
         }
     }
 
@@ -161,9 +157,9 @@ public class GameModel extends EventSender {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                logger.severe("Setting up entrance. Something went wrong...");
+                Logger.severe("Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                logger.severe("Empty bag...");
+                Logger.severe("Empty bag...");
             }
     }
 
@@ -198,7 +194,7 @@ public class GameModel extends EventSender {
     }
 
     public void moveFromBagToCloudTile(CloudTile cloudTile) throws TooManyStudentsException {
-        int num = players.size() + 1;
+        int num = numOfPlayers + 1;
         try {
             for (int i = 0; i < num; i++) {
                 cloudTile.put(bag.pull());
@@ -212,18 +208,26 @@ public class GameModel extends EventSender {
         motherNature.progress(steps, islandGroups.size());
     }
 
-    public void joinAdjacent() {
-        for (IslandGroup islandGroup : islandGroups) {
-            int index = islandGroups.indexOf(islandGroup);
-            IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
-            IslandGroup right = islandGroups.get((index + 1) % islandGroups.size());
+    public void joinAdjacent(int position) {
+        int left = (position - 1 + islandGroups.size() - 1) % (islandGroups.size() - 1);
+        int right = (position + 1) % (islandGroups.size() - 1);
+        try {
+            islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
+            islandGroups.remove(right);
+        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+        }
+        try {
+            islandGroups.set(left, islandGroups.get(left).join(this.getIslandGroupByID(position)));
+            islandGroups.remove(position);
+            getMotherNature().progress(-1, islandGroups.size());
+        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+        }
+        updateIslandGroupsID();
+    }
 
-            try {
-                left.join(islandGroup);
-                islandGroup.join(right);
-            } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-                e.printStackTrace();
-            }
+    private void updateIslandGroupsID() {
+        for (int i = 0; i < islandGroups.size(); i++) {
+            islandGroups.get(i).setIslandGroupID(i);
         }
     }
 
@@ -301,9 +305,9 @@ public class GameModel extends EventSender {
     }
 
     public boolean checkForRooksEmpty() {
-        for (int i = 0; i < getPlayers().size(); i++){
+        for (int i = 0; i < getPlayers().size(); i++) {
             try {
-                if(getPlayerByID(i).getSchoolBoard().getTowers().size()==0){
+                if (getPlayerByID(i).getSchoolBoard().getTowers().size() == 0) {
                     return true;
                 }
             } catch (PlayerNotFoundException e) {
@@ -313,7 +317,7 @@ public class GameModel extends EventSender {
         return false;
     }
 
-    public boolean checkForToFewIslands(){
+    public boolean checkForToFewIslands() {
         return getRemainingIslandGroups() <= 3;
     }
 }

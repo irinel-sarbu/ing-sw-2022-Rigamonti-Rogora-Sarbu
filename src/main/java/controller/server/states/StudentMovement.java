@@ -14,9 +14,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StudentMovement {
-    public StudentMovement() {
-
-    }
 
     private void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
@@ -27,7 +24,7 @@ public class StudentMovement {
     }
 
     private void stealProfessor(GameLobby thisGame, Color color, Boolean farmerUsed)
-            throws ProfessorFullException, ProfessorNotFoundException {
+            throws ProfessorFullException, ProfessorNotFoundException {             // FIXME: use strategy patern
         if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color)) return; // prevent from self stealing
         // TODO: may exists another way to check this
         try {
@@ -41,6 +38,7 @@ public class StudentMovement {
             SchoolBoard current = thisGame.getCurrentPlayer().getSchoolBoard();
             int currentCount = current.getStudentsOfColor(color);
 
+
             if (currentCount > withProfessorCount - (farmerUsed ? 1 : 0)) {
                 current.addProfessor(withProfessor.removeProfessorByColor(color));
             }
@@ -48,13 +46,13 @@ public class StudentMovement {
     }
 
 
-    public void moveStudentToDining(GameLobby thisGame, Player player, int studentPosition)
+    public void moveStudentToDining(GameLobby thisGame, Player player, int studentID)
             throws WrongPhaseException, WrongPlayerException, StudentNotFoundException, DiningRoomFullException,
             ProfessorFullException, ProfessorNotFoundException {
         if (thisGame.wrongState(GameState.STUDENT_MOVEMENT)) throw new WrongPhaseException();
         if (thisGame.wrongPlayer(player)) throw new WrongPlayerException();
 
-        Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentPosition);
+        Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentID);
         if (thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent)) {
             try {
                 thisGame.getModel().getCoinSupply().removeCoins(1);
@@ -64,7 +62,7 @@ public class StudentMovement {
             }
 
         }
-        thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentPosition);
+        thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
         CharacterCard farmer = thisGame.getModel().getCharacterByType(CharacterType.FARMER);
         boolean farmerUsed = (farmer != null && farmer.getEffect());
@@ -74,14 +72,14 @@ public class StudentMovement {
         movementEpilogue(thisGame);
     }
 
-    public void moveStudentToIsland(GameLobby thisGame, Player player, int studentPosition, int islandID)
+    public void moveStudentToIsland(GameLobby thisGame, Player player, int studentID, int islandID)
             throws WrongPhaseException, WrongPlayerException, StudentNotFoundException {
         if (thisGame.wrongState(GameState.STUDENT_MOVEMENT)) throw new WrongPhaseException();
         if (thisGame.wrongPlayer(player)) throw new WrongPlayerException();
 
-        Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentPosition);
+        Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentID);
         thisGame.getModel().getIslandTileByID(islandID).addStudent(movingStudent);
-        thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentPosition);
+        thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
         movementEpilogue(thisGame);
 

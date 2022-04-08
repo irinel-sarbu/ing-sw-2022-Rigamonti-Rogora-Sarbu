@@ -5,14 +5,11 @@ import model.expert.NoEntryTile;
 import util.Color;
 import util.TowerColor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class IslandGroup {
-    private final int islandGroupID;
+    private int islandGroupID;
     private final List<IslandTile> islands;
     private final Stack<NoEntryTile> noEntry;
 
@@ -28,6 +25,8 @@ public class IslandGroup {
         this.islands = new ArrayList<>();
         this.islands.addAll(islandGroup.islands);
         this.noEntry = new Stack<>();
+        while (islandGroup.noEntry.size() > 0)
+            noEntry.push(islandGroup.noEntry.pop());
     }
 
     public List<IslandTile> getIslands() {
@@ -40,11 +39,15 @@ public class IslandGroup {
                 return island;
         }
 
-        throw new IslandNotFoundException("Island with id " + id + " not found!");
+        return null;
     }
 
     public int getIslandGroupID() {
         return islandGroupID;
+    }
+
+    public void setIslandGroupID(int islandGroupID) {
+        this.islandGroupID = islandGroupID;
     }
 
     public List<Integer> getIslandTilesID() {
@@ -88,10 +91,15 @@ public class IslandGroup {
 
     public IslandGroup join(IslandGroup other) throws IllegalIslandGroupJoinException, NullIslandGroupException {
         if (other == null) throw new NullIslandGroupException();
-        if (!this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
+        if (this.getTowersColor()==null||other.getTowersColor()==null||!this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
 
         IslandGroup newIslandGroup = new IslandGroup(this);
         newIslandGroup.islands.addAll(other.islands);
+
+
+        while (other.noEntry.size() > 0)
+            newIslandGroup.noEntry.push(other.noEntry.pop());
+
         Collections.sort(newIslandGroup.islands);
 
         return newIslandGroup;

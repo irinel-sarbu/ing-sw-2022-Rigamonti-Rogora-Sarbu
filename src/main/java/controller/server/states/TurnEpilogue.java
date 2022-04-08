@@ -1,18 +1,11 @@
 package controller.server.states;
 
-import controller.server.GameController;
 import controller.server.GameLobby;
 import exceptions.*;
 import model.Player;
 import util.GameState;
 
 public class TurnEpilogue {
-
-    private final GameController controller;
-
-    public TurnEpilogue(GameController controller) {
-        this.controller = controller;
-    }
 
     private boolean checkGameOver(GameLobby thisGame) {
         return thisGame.getModel().getBag().isEmpty() ||
@@ -26,13 +19,13 @@ public class TurnEpilogue {
         if (cloudTilePos >= thisGame.getModel().getNumOfCloudTiles()) throw new NoCloudTileException();
         if (thisGame.getModel().getCloudTile(cloudTilePos).isEmpty()) throw new EmptyStudentListException();
 
-        actingPlayer.getSchoolBoard().addToEntrance(thisGame.getModel().getCloudTile(cloudTilePos).getAndRemoveStudents());
+        thisGame.getModel().moveFromCloudTileToEntrance(thisGame.getModel().getCloudTile(cloudTilePos), thisGame.getCurrentPlayer());
 
         if (thisGame.setNextPlayer()) {
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
             if (checkGameOver(thisGame))
-                controller.getGameOver().selectWinner(thisGame);
+                thisGame.getGameOver().selectWinner(thisGame);
             else
                 thisGame.nextTurn();
         }

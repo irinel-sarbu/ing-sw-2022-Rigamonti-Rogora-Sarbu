@@ -23,7 +23,7 @@ public class GameOver {
                 }
             }
 
-            tempGame.setState(GameState.GAME_OVER);
+            tempLobby.setGameState(GameState.GAME_OVER);
             // TODO : create a function that broadcast the player indicised by playerId
 
         } catch (PlayerNotFoundException e) {

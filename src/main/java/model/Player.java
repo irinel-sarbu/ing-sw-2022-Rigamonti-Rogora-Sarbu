@@ -14,6 +14,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     private final List<Assistant> assistantDeck;
     private Assistant foldCard;
     private final TowerColor color;
+    private boolean disconnected;
 
     public Player(String name, Wizard wizard, TowerColor towerColor) {
         this.name = name;
@@ -21,6 +22,14 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
         this.color = towerColor;
+    }
+
+    public synchronized void setDisconnected(boolean disconnected) {
+        this.disconnected = disconnected;
+    }
+
+    public synchronized boolean isDisconnected() {
+        return this.disconnected;
     }
 
     public void pushFoldDeck(Assistant assistantCard) {
@@ -71,19 +80,17 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    @Override
     public int compareTo(Player other) {
         return compare(this, other);
     }
 
     @Override
     public int compare(Player player, Player t1) {
-        return player.foldCard == null ? -1 :
-                t1.foldCard == null ? 1 :
-                        player.foldCard.getValue() - t1.foldCard.getValue();
+        if (t1.foldCard == null) {
+            return player.foldCard != null ? -1 : 0;
+        } else {
+            return player.foldCard == null ? 1 :
+                    player.foldCard.getValue() - t1.foldCard.getValue();
+        }
     }
 }
