@@ -54,6 +54,7 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <sonar.exclusions>**/network/**/*,**/view/**/*,**/ClientApp.java,**/ServerApp.java</sonar.exclusions>
     </properties>
 
     <dependencies>
