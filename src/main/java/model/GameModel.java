@@ -219,6 +219,13 @@ public class GameModel extends EventSender {
             getMotherNature().progress(-1, islandGroups.size());
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
+        updateIslandGroupsID();
+    }
+
+    private void updateIslandGroupsID(){
+        for(int i=0; i< islandGroups.size(); i++){
+            islandGroups.get(i).setIslandGroupID(i);
+        }
     }
 
     public void moveFromCloudTileToEntrance(CloudTile cloudTile, Player player) {

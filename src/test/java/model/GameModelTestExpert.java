@@ -248,10 +248,26 @@ public class GameModelTestExpert {
         //join should now join islandGroup 0 and 1, and in the new 0 there should be Tile 0 and 1
         //let's assume mother nature is on 0, and just turned the rook on 0 black
         game.joinAdjacent(0);
-        for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        System.out.println("");
         assertTrue(game.getRemainingIslandGroups() == 11);
         assertTrue(game.getIslandGroupByID(0).getIslands().size() == 2);
-        assertTrue(game.getIslandGroupByID(0).getIslandTileByID(0) != null && game.getIslandGroupByID(0).getIslandTileByID(1) != null);
+        //now testing the right join
+        game.getIslandTileByID(5).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(6).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(5);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        System.out.println("");
+        assertTrue(game.getRemainingIslandGroups() == 10);
+        assertTrue(game.getIslandGroupByID(4).getIslands().size() == 2);
+        //now testing both joins
+        game.getIslandTileByID(7).setTowerColor(TowerColor.WHITE);
+        game.getIslandTileByID(8).setTowerColor(TowerColor.WHITE);
+        game.getIslandTileByID(9).setTowerColor(TowerColor.WHITE);
+        game.joinAdjacent(6);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        assertTrue(game.getRemainingIslandGroups() == 8);
+        assertTrue(game.getIslandGroupByID(5).getIslands().size() == 3);
     }
 
 

@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class IslandGroup {
-    private final int islandGroupID;
+    private int islandGroupID;
     private final List<IslandTile> islands;
     private final Stack<NoEntryTile> noEntry;
 
@@ -44,6 +44,10 @@ public class IslandGroup {
 
     public int getIslandGroupID() {
         return islandGroupID;
+    }
+
+    public void setIslandGroupID(int islandGroupID) {
+        this.islandGroupID = islandGroupID;
     }
 
     public List<Integer> getIslandTilesID() {
