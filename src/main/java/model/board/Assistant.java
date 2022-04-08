@@ -71,7 +71,7 @@ public class Assistant {
 
                     deck.add(new Assistant(wizard, name, value, movements));
 
-                    Logger.debug("New assistant:", "Name: " + name, "Value: " + value, "Mother nature movements: " + movements);
+                    //Logger.debug("New assistant:", "Name: " + name, "Value: " + value, "Mother nature movements: " + movements);
                 }
             }
 

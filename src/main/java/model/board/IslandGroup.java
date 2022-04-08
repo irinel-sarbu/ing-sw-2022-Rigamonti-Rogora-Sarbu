@@ -87,7 +87,7 @@ public class IslandGroup {
 
     public IslandGroup join(IslandGroup other) throws IllegalIslandGroupJoinException, NullIslandGroupException {
         if (other == null) throw new NullIslandGroupException();
-        if (!this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
+        if (this.getTowersColor()==null||other.getTowersColor()==null||!this.getTowersColor().equals(other.getTowersColor())) throw new IllegalIslandGroupJoinException();
 
         IslandGroup newIslandGroup = new IslandGroup(this);
         newIslandGroup.islands.addAll(other.islands);

@@ -6,6 +6,7 @@ import model.board.*;
 import model.expert.*;
 import util.*;
 
+import javax.management.ListenerNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -205,16 +206,19 @@ public class GameModel extends EventSender {
     }
 
     public void joinAdjacent() {
-        for (IslandGroup islandGroup : islandGroups) {
-            int index = islandGroups.indexOf(islandGroup);
-            IslandGroup left = islandGroups.get((index - 1) % islandGroups.size());
-            IslandGroup right = islandGroups.get((index + 1) % islandGroups.size());
-
+        int i = 0;
+        while (i < islandGroups.size()) {
+            int left = (i - 1 + islandGroups.size()) % islandGroups.size();
+            int right = (i + 1) % islandGroups.size();
             try {
-                left.join(islandGroup);
-                islandGroup.join(right);
+                islandGroups.add(i, this.getIslandGroupByID(i).join(islandGroups.get(right)));
+                islandGroups.remove(right);
             } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-                e.printStackTrace();
+            }
+            try {
+                islandGroups.add(i, islandGroups.get(i).join(this.getIslandGroupByID(left)));
+                islandGroups.remove(left);
+            } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
             }
         }
     }
@@ -293,9 +297,9 @@ public class GameModel extends EventSender {
     }
 
     public boolean checkForRooksEmpty() {
-        for (int i = 0; i < getPlayers().size(); i++){
+        for (int i = 0; i < getPlayers().size(); i++) {
             try {
-                if(getPlayerByID(i).getSchoolBoard().getTowers().size()==0){
+                if (getPlayerByID(i).getSchoolBoard().getTowers().size() == 0) {
                     return true;
                 }
             } catch (PlayerNotFoundException e) {
@@ -305,7 +309,7 @@ public class GameModel extends EventSender {
         return false;
     }
 
-    public boolean checkForToFewIslands(){
+    public boolean checkForToFewIslands() {
         return getRemainingIslandGroups() <= 3;
     }
 }

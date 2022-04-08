@@ -222,15 +222,38 @@ public class GameModelTestExpert {
     @Test
     public void moveFromBagToEntrance() {
         for (Player player : game.getPlayers()) {
-            assertTrue(player.getSchoolBoard().getEntranceStudents().size()!=0);
+            assertTrue(player.getSchoolBoard().getEntranceStudents().size() != 0);
         }
     }
 
     @Test
     public void refillCloudTiles() {
-        for (int i=0; i<3; i++) {
-            assertTrue(game.getCloudTile(i).getStudents().size()!=0);
+        for (int i = 0; i < 3; i++) {
+            assertTrue(game.getCloudTile(i).getStudents().size() != 0);
         }
     }
+
+    @Test
+    public void moveFromBagToCloudTile() {
+        //it's called by RefillCloudTiles, so the test is the same
+        for (int i = 0; i < 3; i++) {
+            assertTrue(game.getCloudTile(i).getStudents().size() != 0);
+        }
+    }
+
+    @Test
+    public void joinAdjacent() {
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(1).setTowerColor(TowerColor.BLACK);
+        //join should now join islandGroup 0 and 1, and in the new 0 there should be Tile 0 and 1
+        game.joinAdjacent();
+        for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        System.out.println("numOfRemIslands:" + game.getRemainingIslandGroups());
+        assertTrue(game.getRemainingIslandGroups() == 11);
+        System.out.println("sizeOf0:" + game.getIslandGroupByID(0).getIslands().size());
+        assertTrue(game.getIslandGroupByID(0).getIslands().size() == 2);
+        assertTrue(game.getIslandGroupByID(0).getIslandTileByID(0) != null && game.getIslandGroupByID(0).getIslandTileByID(1) != null);
+    }
+
 
 }
