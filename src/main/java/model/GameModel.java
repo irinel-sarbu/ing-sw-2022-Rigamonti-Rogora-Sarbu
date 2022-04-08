@@ -51,6 +51,7 @@ public class GameModel extends EventSender {
         //CloudTileId is generated with the i in the for
         for (int i = 0; i < numOfPlayers; i++) {
             cloudTiles.add(new CloudTile(i, numOfPlayers + 1));
+            refillCloudTile(i);
         }
 
         islandGroups = new ArrayList<>();
@@ -113,6 +114,7 @@ public class GameModel extends EventSender {
         if (players.size() >= MAX_PLAYERS)
             throw new MaxPlayersException();
         players.add(player);
+        moveFromBagToEntrance(player);
     }
 
     public boolean removePlayerByName(String name) {

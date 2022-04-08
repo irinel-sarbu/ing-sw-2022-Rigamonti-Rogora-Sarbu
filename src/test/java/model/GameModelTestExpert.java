@@ -6,6 +6,7 @@ import exceptions.PlayerNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import util.Color;
 import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
@@ -192,5 +193,44 @@ public class GameModelTestExpert {
         System.out.println("------------->Added and recovered giacomo");
     }
 
+    @Test
+    public void removePlayerByName() {
+        game.removePlayerByName("marco");
+        try {
+            assertTrue(game.getPlayerByID(0) != null);
+            assertTrue(game.getPlayerByID(0).getName().equals("pietro"));
+        } catch (PlayerNotFoundException e) {
+            assertTrue(false);
+        }
+        System.out.println("------------->Removed marco successfully");
+    }
+
+    @Test
+    public void moveFromBagToIslandTile() {
+        for (int i = 0; i < 12; i++) {
+            if (i != game.getMotherNature().getPosition() && i != (game.getMotherNature().getPosition() + 6) % 12) {
+                assertTrue(game.getIslandTileByID(i).getStudentsNumber(Color.YELLOW) != 0 ||
+                        game.getIslandTileByID(i).getStudentsNumber(Color.RED) != 0 ||
+                        game.getIslandTileByID(i).getStudentsNumber(Color.GREEN) != 0 ||
+                        game.getIslandTileByID(i).getStudentsNumber(Color.BLUE) != 0 ||
+                        game.getIslandTileByID(i).getStudentsNumber(Color.PINK) != 0
+                );
+            }
+        }
+    }
+
+    @Test
+    public void moveFromBagToEntrance() {
+        for (Player player : game.getPlayers()) {
+            assertTrue(player.getSchoolBoard().getEntranceStudents().size()!=0);
+        }
+    }
+
+    @Test
+    public void refillCloudTiles() {
+        for (int i=0; i<3; i++) {
+            assertTrue(game.getCloudTile(i).getStudents().size()!=0);
+        }
+    }
 
 }

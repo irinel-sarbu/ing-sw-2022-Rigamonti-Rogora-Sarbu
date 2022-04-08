@@ -39,7 +39,7 @@ public class IslandGroup {
                 return island;
         }
 
-        throw new IslandNotFoundException("Island with id " + id + " not found!");
+        return null;
     }
 
     public int getIslandGroupID() {
