@@ -11,7 +11,7 @@ import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameModelTestExpert {
     private static GameModel game;
@@ -19,12 +19,9 @@ public class GameModelTestExpert {
     @BeforeAll
     public static void setUp() {
         game = new GameModel(3, GameMode.EXPERT);
-        try {
-            game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
-            game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
-        } catch (MaxPlayersException e) {
-            assertTrue(false);
-        }
+
+        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
+        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
     }
 
     /*
@@ -32,33 +29,33 @@ public class GameModelTestExpert {
     */
     @Test
     public void getCoinSupply() {
-        assertTrue(game.getCoinSupply() != null);
+        assertNotNull(game.getCoinSupply());
     }
 
     @Test
     public void getMotherNature() {
-        assertTrue(game.getMotherNature() != null);
+        assertNotNull(game.getMotherNature());
     }
 
     @Test
     public void getNumOfPlayers() {
-        assertTrue(game.getNumOfPlayers() != 0);
+        assertTrue(game.getPlayerSize() != 0);
     }
 
     @Test
     public void getGameMode() {
-        assertTrue(game.getGameMode() != null);
+        assertNotNull(game.getGameMode());
     }
 
     @Test
     public void getPlayerByID() {
         try {
-            assertTrue(game.getPlayerByID(1) != null);
-            assertTrue(game.getPlayerByID(1).getName().equals("pietro"));
-            assertTrue(game.getPlayerByID(1).getColor().equals(TowerColor.WHITE));
+            assertNotNull(game.getPlayerByID(1));
+            assertEquals("pietro", game.getPlayerByID(1).getName());
+            assertEquals(game.getPlayerByID(1).getColor(), TowerColor.WHITE);
             System.out.println("------------->Player 2 is pietro");
         } catch (PlayerNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
     }
 
@@ -71,86 +68,86 @@ public class GameModelTestExpert {
     @Test
     public void getPlayerID() {
         try {
-            assertTrue(game.getPlayerId(game.getPlayerByID(1)) == 1);
+            assertEquals(1, game.getPlayerId(game.getPlayerByID(1)));
         } catch (PlayerNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         System.out.println("------------->ID return is correct");
     }
 
     @Test
     public void getPlayers() {
-        assertTrue(game.getPlayers() != null);
+        assertNotNull(game.getPlayers());
     }
 
     @Test
     public void getPlayerByName() {
         try {
-            assertTrue(game.getPlayerByName("marco").equals(game.getPlayerByID(0)));
+            assertEquals(game.getPlayerByName("marco"), game.getPlayerByID(0));
         } catch (PlayerNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         System.out.println("------------->Player 1 marco found");
     }
 
     @Test
     public void getIslandGroupByID() {
-        assertTrue(game.getIslandGroupByID(0) != null);
+        assertNotNull(game.getIslandGroupByID(0));
     }
 
     @Test
     public void getIslandTileByID() {
         assertTrue(game.getIslandGroupByID(0).getSize() != 0);
-        assertTrue(game.getIslandTileByID(0) != null);
+        assertNotNull(game.getIslandTileByID(0));
     }
 
     @Test
     public void getNumOfCloudTiles() {
-        assertTrue(game.getNumOfCloudTiles() == 3);
+        assertEquals(3, game.getNumOfCloudTiles());
     }
 
     @Test
     public void getCloudTile() {
-        assertTrue(game.getCloudTile(0) != null);
+        assertNotNull(game.getCloudTile(0));
     }
 
     @Test
     public void getBag() {
-        assertTrue(game.getBag() != null);
+        assertNotNull(game.getBag());
     }
 
     @Test
     public void getUnassignedProfessor() {
-        assertTrue(game.getUnassignedProfessors() != null);
+        assertNotNull(game.getUnassignedProfessors());
         //atGameStart the size should be 5
-        assertTrue(game.getUnassignedProfessors().size() == 5);
+        assertEquals(5, game.getUnassignedProfessors().size());
     }
 
     @Test
     public void getCharacters() {
-        assertTrue(game.getCharacters() != null);
-        assertTrue(game.getCharacters().size() == 3);
+        assertNotNull(game.getCharacters());
+        assertEquals(3, game.getCharacters().size());
     }
 
     @Test
     public void getCharacterByID() {
         try {
-            assertTrue(game.getCharacterById(0) != null);
+            assertNotNull(game.getCharacterById(0));
         } catch (CharacterCardNotFound e) {
-            assertTrue(false);
+            fail();
         }
     }
 
     @Test
     public void getActualCharacters() {
-        assertTrue(game.getCharacters() != null);
+        assertNotNull(game.getCharacters());
         System.out.println("------------->Characters:");
         for (int i = 0; i < 3; i++) {
             try {
                 System.out.println("Character " + i + ": " + game.getCharacterById(i).getCharacter().toString());
-                assertTrue(game.getCharacterByType(game.getCharacterById(i).getCharacter()) != null);
+                assertNotNull(game.getCharacterByType(game.getCharacterById(i).getCharacter()));
             } catch (CharacterCardNotFound e) {
-                assertTrue(false);
+                fail();
             }
         }
     }
@@ -170,25 +167,20 @@ public class GameModelTestExpert {
     @AfterEach
     public void resetModel() {
         game = new GameModel(3, GameMode.EXPERT);
-        try {
-            game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
-            game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
-        } catch (MaxPlayersException e) {
-            assertTrue(false);
-        }
+
+        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
+        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
+
     }
 
     @Test
     public void addPlayer() {
+
+        game.addPlayer(new Player("giacomo", Wizard.WIZARD_4, TowerColor.GRAY));
         try {
-            game.addPlayer(new Player("giacomo", Wizard.WIZARD_4, TowerColor.GRAY));
-        } catch (MaxPlayersException e) {
-            assertTrue(false);
-        }
-        try {
-            assertTrue(game.getPlayerByName("giacomo") != null);
+            assertNotNull(game.getPlayerByName("giacomo"));
         } catch (PlayerNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         System.out.println("------------->Added and recovered giacomo");
     }
@@ -197,10 +189,10 @@ public class GameModelTestExpert {
     public void removePlayerByName() {
         game.removePlayerByName("marco");
         try {
-            assertTrue(game.getPlayerByID(0) != null);
-            assertTrue(game.getPlayerByID(0).getName().equals("pietro"));
+            assertNotNull(game.getPlayerByID(0));
+            assertEquals("pietro", game.getPlayerByID(0).getName());
         } catch (PlayerNotFoundException e) {
-            assertTrue(false);
+            fail();
         }
         System.out.println("------------->Removed marco successfully");
     }
@@ -250,24 +242,24 @@ public class GameModelTestExpert {
         game.joinAdjacent(0);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
         System.out.println("");
-        assertTrue(game.getRemainingIslandGroups() == 11);
-        assertTrue(game.getIslandGroupByID(0).getIslands().size() == 2);
+        assertEquals(11, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
         //now testing the right join
         game.getIslandTileByID(5).setTowerColor(TowerColor.BLACK);
         game.getIslandTileByID(6).setTowerColor(TowerColor.BLACK);
         game.joinAdjacent(5);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
         System.out.println("");
-        assertTrue(game.getRemainingIslandGroups() == 10);
-        assertTrue(game.getIslandGroupByID(4).getIslands().size() == 2);
+        assertEquals(10, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(4).getIslands().size());
         //now testing both joins
         game.getIslandTileByID(7).setTowerColor(TowerColor.WHITE);
         game.getIslandTileByID(8).setTowerColor(TowerColor.WHITE);
         game.getIslandTileByID(9).setTowerColor(TowerColor.WHITE);
         game.joinAdjacent(6);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
-        assertTrue(game.getRemainingIslandGroups() == 8);
-        assertTrue(game.getIslandGroupByID(5).getIslands().size() == 3);
+        assertEquals(8, game.getRemainingIslandGroups());
+        assertEquals(3, game.getIslandGroupByID(5).getIslands().size());
     }
 
 

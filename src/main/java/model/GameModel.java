@@ -1,6 +1,6 @@
 package model;
 
-import events.EventSender;
+import observer.Observable;
 import exceptions.*;
 import model.board.*;
 import model.expert.*;
@@ -10,11 +10,11 @@ import javax.management.ListenerNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GameModel extends EventSender {
+public class GameModel extends Observable {
 
     public static final int MAX_PLAYERS = 3;
 
-    private final int numOfPlayers;
+    private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private GameState state;
     private final Bag bag;
@@ -30,11 +30,11 @@ public class GameModel extends EventSender {
     /**
      * Constructor of the GameModel
      *
-     * @param numOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
-     * @param gameMode     GameMode chosen when the game is created. Can be EXPERT or NORMAL.
+     * @param maxNumOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
+     * @param gameMode        GameMode chosen when the game is created. Can be EXPERT or NORMAL.
      */
-    public GameModel(int numOfPlayers, GameMode gameMode) {
-        this.numOfPlayers = numOfPlayers;
+    public GameModel(int maxNumOfPlayers, GameMode gameMode) {
+        this.maxNumOfPlayers = maxNumOfPlayers;
         this.gameMode = gameMode;
         this.bag = new Bag(24);
         this.players = new ArrayList<>();
@@ -50,8 +50,8 @@ public class GameModel extends EventSender {
 
         this.cloudTiles = new ArrayList<>();
         //CloudTileId is generated with the i in the for
-        for (int i = 0; i < numOfPlayers; i++) {
-            cloudTiles.add(new CloudTile(i, numOfPlayers + 1));
+        for (int i = 0; i < maxNumOfPlayers; i++) {
+            cloudTiles.add(new CloudTile(i, maxNumOfPlayers + 1));
             refillCloudTile(i);
         }
 
@@ -71,8 +71,12 @@ public class GameModel extends EventSender {
         return motherNature;
     }
 
-    public int getNumOfPlayers() {
-        return numOfPlayers;
+    public int getMaxNumOfPlayers() {
+        return maxNumOfPlayers;
+    }
+
+    public int getPlayerSize() {
+        return players.size();
     }
 
     public GameMode getGameMode() {
@@ -111,9 +115,7 @@ public class GameModel extends EventSender {
         throw new PlayerNotFoundException("Player " + name + " not found!");
     }
 
-    public void addPlayer(Player player) throws MaxPlayersException {
-        if (players.size() >= MAX_PLAYERS)
-            throw new MaxPlayersException();
+    public void addPlayer(Player player) {
         players.add(player);
         moveFromBagToEntrance(player);
     }
@@ -206,8 +208,8 @@ public class GameModel extends EventSender {
     }
 
     public void joinAdjacent(int position) {
-        int left = (position - 1 + islandGroups.size()-1) % (islandGroups.size()-1);
-        int right = (position + 1) % (islandGroups.size()-1);
+        int left = (position - 1 + islandGroups.size() - 1) % (islandGroups.size() - 1);
+        int right = (position + 1) % (islandGroups.size() - 1);
         try {
             islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
             islandGroups.remove(right);
@@ -222,8 +224,8 @@ public class GameModel extends EventSender {
         updateIslandGroupsID();
     }
 
-    private void updateIslandGroupsID(){
-        for(int i=0; i< islandGroups.size(); i++){
+    private void updateIslandGroupsID() {
+        for (int i = 0; i < islandGroups.size(); i++) {
             islandGroups.get(i).setIslandGroupID(i);
         }
     }

@@ -1,23 +1,35 @@
 package controller.server;
 
 import controller.server.states.*;
+import events.Event;
+import events.EventDispatcher;
+import events.EventType;
+import events.types.Messages;
+import events.types.clientToServer.*;
+import events.types.serverToClient.*;
+import events.types.serverToClient.Message;
 import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.Player;
-import util.GameMode;
-import util.GameState;
-import util.Logger;
+import network.server.ClientSocketConnection;
+import observer.NetworkObserver;
+import util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class GameLobby {
+public class GameLobby implements NetworkObserver {
 
-    private final String code;
+    private final String lobbyCode;
+    private final int maxPlayers;
+    private final GameMode gameMode;
+    private final Map<String, ClientSocketConnection> clientList;
+
+    private final List<Wizard> availableWizards;
+
+    private final GameModel model;
+
     private int turnCounter = 0;
-    private final GameModel gameModel;
     private Player currentPlayer;
     private int turnProgress;
     private int studentsMoved;
@@ -37,19 +49,26 @@ public class GameLobby {
 
 
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
-        this.code = code;
-        this.gameModel = new GameModel(numOfPlayers, gameMode);
-        try {
-            this.currentPlayer = gameModel.getPlayerByID(0);
-        } catch (PlayerNotFoundException e) {
-            Logger.warning("Game lobby <" + code + "> is empty");
-        }
-        this.studentsMoved = 0;
-        this.currentGameState = GameState.SETUP;
-        this.planningPhaseOrder = gameModel.getPlayers();
-        this.actionPhaseOrder = null;
-        this.nextPlanningPhaseOrder = null;
-        this.turnProgress = 1;
+        this.lobbyCode = code;
+        this.maxPlayers = numOfPlayers;
+        this.gameMode = gameMode;
+
+        this.clientList = new HashMap<>();
+        this.model = new GameModel(maxPlayers, this.gameMode);
+        this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
+
+        // TODO: ERROR At this point there are 0 players in lobby -> move to create lobby function
+//        try {
+//            this.currentPlayer = model.getPlayerByID(0);
+//        } catch (PlayerNotFoundException e) {
+//            Logger.warning("Game lobby <" + code + "> is empty");
+//        }
+//        this.studentsMoved = 0;
+//        this.currentGameState = GameState.SETUP;
+//        this.planningPhaseOrder = gameModel.getPlayers();
+//        this.actionPhaseOrder = null;
+//        this.nextPlanningPhaseOrder = null;
+//        this.turnProgress = 1;
 
         //states
         this.epilogue = new TurnEpilogue();
@@ -61,8 +80,119 @@ public class GameLobby {
         this.characterEffectHandler = new CharacterEffectHandler();
     }
 
-    public String getCode() {
-        return code;
+    @Override
+    public void onNetworkEvent(Tuple<Event, ClientSocketConnection> event) {
+        EventDispatcher dp = new EventDispatcher(event);
+
+        dp.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
+
+    }
+
+    /**
+     * Broadcast Event to all clients connected to lobby
+     *
+     * @param event Event to broadcast
+     */
+    public void broadcast(Event event) {
+        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+            ClientSocketConnection client = entry.getValue();
+            client.asyncSend(event);
+        }
+    }
+
+    /**
+     * Broadcast Event to all clients connected to lobby, except sender
+     *
+     * @param event          Event to broadcast
+     * @param excludedClient Client to exclude
+     */
+    public void broadcastExceptOne(Event event, String excludedClient) {
+        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+            if (entry.getKey() != null && !entry.getKey().equals(excludedClient)) {
+                ClientSocketConnection client = entry.getValue();
+                client.asyncSend(event);
+            }
+        }
+    }
+
+    public String getLobbyCode() {
+        return lobbyCode;
+    }
+
+    public void addClientToLobby(String name, ClientSocketConnection client) {
+        if (model.getPlayerSize() >= maxPlayers) {
+            client.asyncSend(new Message(Messages.LOBBY_FULL));
+            Logger.info("Player " + name + " trying to connect but lobby is full.");
+        }
+
+        try {
+            Player player = model.getPlayerByName(name);
+            if (player.isDisconnected()) {
+                clientList.put(name, client);
+                client.joinLobby(lobbyCode);
+                model.getPlayerByName(name).setDisconnected(false);
+                broadcastExceptOne(new EPlayerJoined(name), name);
+                Logger.info("Player " + name + " reconnected to Lobby " + getLobbyCode());
+            } else {
+                client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+                Logger.info("Player " + name + " trying to connect but lobby there is already a player with that name connected.");
+            }
+        } catch (PlayerNotFoundException e) {
+            clientList.put(name, client);
+            client.joinLobby(lobbyCode);
+            client.asyncSend(new ELobbyJoined(lobbyCode));
+            broadcastExceptOne(new EPlayerJoined(name), name);
+            client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
+        }
+
+
+    }
+
+    public void removeClientFromLobbyByName(String name) {
+        clientList.remove(name);
+
+        try {
+            Player player = model.getPlayerByName(name);
+            player.setDisconnected(true);
+        } catch (PlayerNotFoundException e) {
+            Logger.severe(e.getMessage());
+        }
+    }
+
+    public ClientSocketConnection getClientByName(String name) {
+        return clientList.get(name);
+    }
+
+    public String getClientBySocket(ClientSocketConnection clientSocket) {
+        for (Map.Entry<String, ClientSocketConnection> client : clientList.entrySet()) {
+            if (client.getValue().equals(clientSocket)) {
+                return client.getKey();
+            }
+        }
+        return null;
+    }
+
+    public boolean playerHasChosenWizard(EWizardChosen event, ClientSocketConnection client) {
+        Wizard choice = event.getWizard();
+
+        if (!availableWizards.contains(choice)) {
+            client.asyncSend(new EWizardNotAvailable(availableWizards));
+            return true;
+        }
+
+        String playerName = getClientBySocket(client);
+        Logger.debug("Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
+        model.addPlayer(new Player(playerName, choice, TowerColor.BLACK));
+        availableWizards.remove(choice);
+
+        checkReadyPlayers();
+        return true;
+    }
+
+    private void checkReadyPlayers() {
+        if (model.getPlayerSize() == maxPlayers) {
+            broadcast(new Message(Messages.GAME_STARTED));
+        }
     }
 
     public GameState getCurrentGameState() {
@@ -107,7 +237,7 @@ public class GameLobby {
     }
 
     public int getMaxStudentsMoved() {
-        return gameModel.getNumOfPlayers() + 1;
+        return model.getMaxNumOfPlayers() + 1;
     }
 
     public Player getNextPlayer() {
@@ -139,7 +269,7 @@ public class GameLobby {
     }
 
     public GameModel getModel() {
-        return gameModel;
+        return model;
     }
 
     public void setOrder(List<Player> actionOrder) {

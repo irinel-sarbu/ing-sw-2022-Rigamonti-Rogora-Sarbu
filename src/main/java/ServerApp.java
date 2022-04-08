@@ -1,12 +1,16 @@
-import controller.server.GameController;
-import network.Server;
+import controller.server.ServerController;
+import network.server.Server;
+import util.Logger;
 
 public class ServerApp {
 	static public void main(String[] args) {
 		Server server = new Server();
-		GameController controller = new GameController(server);
+		ServerController controller = new ServerController(server);
 
 		server.registerListener(controller);
+
+		Logger.setLevel(Logger.LoggerLevel.ALL);
+
 		new Thread(server).start();
 	}
 }

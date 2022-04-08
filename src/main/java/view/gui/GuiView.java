@@ -1,7 +1,9 @@
 package view.gui;
 
-import events.Event;
+import util.Wizard;
 import view.View;
+
+import java.util.List;
 
 public class GuiView extends View {
     @Override
@@ -10,22 +12,27 @@ public class GuiView extends View {
     }
 
     @Override
-    public void displayError(String errorMessage) {
+    public void askServerInfo() {
 
     }
 
     @Override
-    public void getServerInfo() {
+    public void createLobby() {
 
     }
 
     @Override
-    public void getPlayerName() {
+    public void joinLobby() {
 
     }
 
     @Override
     public void chooseCreateOrJoin() {
+
+    }
+
+    @Override
+    public void chooseWizard(List<Wizard> availableWizards) {
 
     }
 }

@@ -1,6 +1,5 @@
 package controller.server.states;
 
-import controller.server.GameController;
 import controller.server.GameLobby;
 import exceptions.EmptyNoEntryListException;
 import exceptions.IllegalMovementException;

@@ -1,4 +1,4 @@
-package network;
+package network.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,6 +9,7 @@ import events.Event;
 import util.Logger;
 
 public class ServerConnection extends Thread {
+
     ObjectInputStream in;
     ObjectOutputStream out;
     Client client;
@@ -17,43 +18,44 @@ public class ServerConnection extends Thread {
     ServerConnection(Client client, Socket socket) throws IOException {
         this.client = client;
         this.socket = socket;
-
-        out = new ObjectOutputStream(socket.getOutputStream());
-        in = new ObjectInputStream(socket.getInputStream());
     }
 
     @Override
     public void run() {
-        while (!socket.isClosed()) {
-            try {
+        try {
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+
+            while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
-                if (event == null)
-                    disconnect();
                 client.pushEvent(event);
-            } catch (IOException | ClassNotFoundException e) {
-                Logger.severe(e.getMessage());
-                disconnect();
             }
+        } catch (IOException | ClassNotFoundException e) {
+            closeConnection();
         }
     }
 
-    public void write(Event event) {
+    private synchronized void send(Event event) {
         try {
             out.writeObject(event);
         } catch (IOException e) {
-            Logger.severe(e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 
-    public void disconnect() {
+    public synchronized void asyncSend(Event event) {
+        new Thread(() -> send(event)).start();
+    }
+
+    private void closeConnection() {
         try {
-            if (!socket.isClosed()) {
-                in.close();
-                out.close();
-                socket.close();
-            }
+            in.close();
+            out.close();
+            socket.close();
+
+            System.out.println("\rConnection with server closed...");
         } catch (IOException e) {
-            Logger.severe(e.getMessage());
+            Logger.error(e.getMessage());
         }
     }
 }
