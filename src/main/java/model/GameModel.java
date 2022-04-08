@@ -7,11 +7,9 @@ import model.expert.*;
 import util.*;
 
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class GameModel extends EventSender {
-    Logger logger = Logger.getLogger(GameModel.class.getName());
 
     public static final int MAX_PLAYERS = 3;
 
@@ -123,7 +121,7 @@ public class GameModel extends EventSender {
             player = getPlayerByName(name);
         } catch (PlayerNotFoundException e) {
             player = null;
-            logger.warning(e.getMessage());
+            Logger.warning(e.getMessage());
         }
 
         return players.remove(player);
@@ -140,7 +138,7 @@ public class GameModel extends EventSender {
                 try {
                     student = initialBag.pull();
                 } catch (EmptyStudentListException e) {
-                    logger.warning("Pulling from initial bag. Something went wrong...");
+                    Logger.warning("Pulling from initial bag. Something went wrong...");
                 }
                 islandGroup.getIslands().get(0).addStudent(student);
             }
@@ -153,9 +151,9 @@ public class GameModel extends EventSender {
             try {
                 player.getSchoolBoard().addToEntrance(bag.pull());
             } catch (EntranceFullException e) {
-                logger.severe("Setting up entrance. Something went wrong...");
+                Logger.severe("Setting up entrance. Something went wrong...");
             } catch (EmptyStudentListException e) {
-                logger.severe("Empty bag...");
+                Logger.severe("Empty bag...");
             }
     }
 

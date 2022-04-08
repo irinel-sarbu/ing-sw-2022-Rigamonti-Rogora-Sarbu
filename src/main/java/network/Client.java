@@ -2,17 +2,13 @@ package network;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Logger;
-
 import events.*;
 import events.types.clientToClient.ConnectionRefusedEvent;
 import events.types.serverToClient.ConnectOkEvent;
+import util.Logger;
 
 public class Client extends EventSender implements Runnable {
-    private final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
     private final LinkedBlockingQueue<Event> eventQueue;
 
@@ -47,7 +43,7 @@ public class Client extends EventSender implements Runnable {
                 try {
                     notifyListeners(eventQueue.take());
                 } catch (InterruptedException e) {
-                    LOGGER.severe(e.getMessage());
+                    Logger.severe(e.getMessage());
                 }
             }
         });

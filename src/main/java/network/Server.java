@@ -3,23 +3,16 @@ package network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.Logger;
 
-import controller.server.GameController;
 import events.*;
-import events.types.clientToServer.RegisterEvent;
-import events.types.serverToClient.PlayerNameTakenEvent;
-import events.types.serverToClient.RegistrationOkEvent;
+import util.Logger;
 import util.Tuple;
 
 public class Server extends NetworkEventSender implements Runnable {
-    private final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     private final Map<String, ClientConnection> clientList;
     private final LinkedBlockingQueue<Tuple<Event, ClientConnection>> eventQueue;
@@ -34,9 +27,9 @@ public class Server extends NetworkEventSender implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(5000);
-            LOGGER.info("Server started on port 5000.\nWaiting for clients...");
+            Logger.info("Server started on port 5000.", "Waiting for clients...");
         } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
+            Logger.severe(e.getMessage());
         }
 
         Thread incomingEventsDigestion = new Thread(() -> {
@@ -44,7 +37,7 @@ public class Server extends NetworkEventSender implements Runnable {
                 try {
                     notifyListeners(eventQueue.take());
                 } catch (InterruptedException e) {
-                    LOGGER.severe(e.getMessage());
+                    Logger.severe(e.getMessage());
                 }
             }
         });
@@ -57,7 +50,7 @@ public class Server extends NetworkEventSender implements Runnable {
                 clientConnection.start();
 
             } catch (IOException e) {
-                LOGGER.severe(e.toString());
+                Logger.severe(e.toString());
             }
         }
     }
@@ -73,7 +66,7 @@ public class Server extends NetworkEventSender implements Runnable {
     public void onDisconnect(ClientConnection clientConnection) {
         String name = getNameByClientConnection(clientConnection);
 
-        LOGGER.info(name + " disconnected.");
+        Logger.info(name + " disconnected.");
     }
 
     public ClientConnection getClientConnectionByName(String client) {

@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 import events.Event;
+import util.Logger;
 import util.Tuple;
 
 public class ClientConnection extends Thread {
-    private final Logger LOGGER = Logger.getLogger(ClientConnection.class.getName());
     ObjectInputStream in;
     ObjectOutputStream out;
     Server server;
     Socket socket;
 
     ClientConnection(Server server, Socket socket) throws IOException {
-        LOGGER.info("New client connected!");
+        Logger.info("New client connected!");
         this.server = server;
         this.socket = socket;
 
@@ -32,7 +31,7 @@ public class ClientConnection extends Thread {
                 Event event = (Event) in.readObject();
                 if (event == null)
                     disconnect();
-                server.pushEvent(new Tuple<Event,ClientConnection>(event, this));
+                server.pushEvent(new Tuple<Event, ClientConnection>(event, this));
             } catch (IOException | ClassNotFoundException e) {
                 disconnect();
             }
@@ -43,7 +42,7 @@ public class ClientConnection extends Thread {
         try {
             out.writeObject(event);
         } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
+            Logger.severe(e.getMessage());
         }
     }
 
@@ -55,7 +54,7 @@ public class ClientConnection extends Thread {
                 socket.close();
             }
         } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
+            Logger.severe(e.getMessage());
         }
 
         server.onDisconnect(this);

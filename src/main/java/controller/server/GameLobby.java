@@ -7,11 +7,11 @@ import model.GameModel;
 import model.Player;
 import util.GameMode;
 import util.GameState;
+import util.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class GameLobby {
 
@@ -42,8 +42,7 @@ public class GameLobby {
         try {
             this.currentPlayer = gameModel.getPlayerByID(0);
         } catch (PlayerNotFoundException e) {
-            Logger logger = Logger.getLogger(GameLobby.class.getName());
-            logger.warning("Game lobby <" + code + "> is empty");
+            Logger.warning("Game lobby <" + code + "> is empty");
         }
         this.studentsMoved = 0;
         this.currentGameState = GameState.SETUP;

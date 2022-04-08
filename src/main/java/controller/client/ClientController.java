@@ -5,14 +5,10 @@ import events.*;
 import events.types.clientToClient.*;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
-import model.Player;
 import network.Client;
 import view.View;
 
-import java.util.logging.Logger;
-
 public class ClientController implements EventListener {
-    private final Logger LOGGER = Logger.getLogger(GameController.class.getName());
 
     private final Client client;
     private final View view;
