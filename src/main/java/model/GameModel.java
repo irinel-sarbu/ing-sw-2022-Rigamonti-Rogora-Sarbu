@@ -206,16 +206,17 @@ public class GameModel extends EventSender {
     }
 
     public void joinAdjacent(int position) {
-        int left = (position - 1 + islandGroups.size()-1) % islandGroups.size();
-        int right = (position + 1) % islandGroups.size();
+        int left = (position - 1 + islandGroups.size()-1) % (islandGroups.size()-1);
+        int right = (position + 1) % (islandGroups.size()-1);
         try {
             islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
             islandGroups.remove(right);
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
         try {
-            islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
-            islandGroups.remove(left);
+            islandGroups.set(left, islandGroups.get(left).join(this.getIslandGroupByID(position)));
+            islandGroups.remove(position);
+            getMotherNature().progress(-1, islandGroups.size());
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
     }

@@ -15,6 +15,11 @@ public class MotherNature {
     }
 
     public void progress(int steps, int islands) {
-        this.position = (this.position + steps) % islands;
+        if(steps>0){
+            this.position = (this.position + steps) % (islands-1);
+        }else{
+            this.position = (this.position + steps + islands-1) % (islands-1);
+        }
+
     }
 }
