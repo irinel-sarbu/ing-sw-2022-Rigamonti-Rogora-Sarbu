@@ -19,7 +19,7 @@ public class IslandTileTest {
     private static IslandTile towerIslandTile;
 
     @BeforeAll
-    public static void setUp() {
+    public static void IslandTile() {
         students = new ArrayList<>();
         emptyIslandTile = new IslandTile(1);
         towerIslandTile = new IslandTile(2);

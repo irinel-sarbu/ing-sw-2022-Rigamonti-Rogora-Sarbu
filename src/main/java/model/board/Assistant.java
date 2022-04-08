@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import util.Logger;
 import util.Wizard;
@@ -92,6 +93,14 @@ public class Assistant {
 
     public int getMovements() {
         return movements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Assistant assistant = (Assistant) o;
+        return Objects.equals(name, assistant.name);
     }
 
     @Override
