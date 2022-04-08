@@ -28,24 +28,10 @@ public class GameController implements NetworkEventListener {
     protected static final Map<String, GameLobby> games = new HashMap<>();
     private final Server server;
 
-    private final TurnEpilogue epilogue;
-    private final StudentMovement studentMovement;
-    private final ResolveIsland resolveIsland;
-    private final PlanningPhase planningPhase;
-    private final MotherNatureMovement motherNatureMovement;
-    private final GameOver gameOver;
-    private final CharacterEffectHandler characterEffectHandler;
+
 
     public GameController(Server server) {
         this.server = server;
-
-        this.epilogue = new TurnEpilogue(this);
-        this.studentMovement = new StudentMovement();
-        this.resolveIsland = new ResolveIsland();
-        this.planningPhase = new PlanningPhase();
-        this.motherNatureMovement = new MotherNatureMovement(this);
-        this.gameOver = new GameOver();
-        this.characterEffectHandler = new CharacterEffectHandler(this);
     }
 
     private String codeGen() {
@@ -81,14 +67,6 @@ public class GameController implements NetworkEventListener {
         String code = codeGen();
         games.put(code, new GameLobby(numOfPlayers, gameMode, code));
         return code;
-    }
-
-    public ResolveIsland getResolveIsland() {
-        return resolveIsland;
-    }
-
-    public GameOver getGameOver() {
-        return gameOver;
     }
 
     @Override

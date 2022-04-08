@@ -8,12 +8,6 @@ import util.GameState;
 
 public class TurnEpilogue {
 
-    private final GameController controller;
-
-    public TurnEpilogue(GameController controller) {
-        this.controller = controller;
-    }
-
     private boolean checkGameOver(GameLobby thisGame) {
         return thisGame.getModel().getBag().isEmpty() ||
                 thisGame.getOrder().stream().anyMatch(player -> player.getAssistants().size() == 0);
@@ -32,7 +26,7 @@ public class TurnEpilogue {
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
             if (checkGameOver(thisGame))
-                controller.getGameOver().selectWinner(thisGame);
+                thisGame.getGameOver().selectWinner(thisGame);
             else
                 thisGame.nextTurn();
         }

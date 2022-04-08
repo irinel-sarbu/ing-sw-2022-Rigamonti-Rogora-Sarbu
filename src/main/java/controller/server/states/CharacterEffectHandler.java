@@ -20,11 +20,7 @@ import java.util.ArrayList;
  * // TODO: in EventDispatcher check if effect is already active
  */
 public class CharacterEffectHandler {
-    private final GameController controller;
 
-    public CharacterEffectHandler(GameController gameController) {
-        this.controller = gameController;
-    }
 
     public void monkEffect(GameLobby tempLobby, int studentID, int islandPos) {
         try {
@@ -52,9 +48,9 @@ public class CharacterEffectHandler {
             tempCharacter.useEffect();
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             // calls solveIsland method in ResolveIsland Class of GameController, passing the island to solve
-            controller.getResolveIsland().solveIsland(tempLobby, islandGroupID);
+            tempLobby.getResolveIsland().solveIsland(tempLobby, islandGroupID);
             if (tempGame.checkForRooksEmpty()||tempGame.checkForToFewIslands()){
-                controller.getGameOver().selectWinner(tempLobby);
+                tempLobby.getGameOver().selectWinner(tempLobby);
             }
     }
 

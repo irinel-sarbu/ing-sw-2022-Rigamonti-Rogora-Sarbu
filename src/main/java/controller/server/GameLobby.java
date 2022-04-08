@@ -1,5 +1,6 @@
 package controller.server;
 
+import controller.server.states.*;
 import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
@@ -23,8 +24,17 @@ public class GameLobby {
     private GameState currentGameState;
     private List<Player> planningPhaseOrder;
     private List<Player> actionPhaseOrder;
-
     private List<Player> nextPlanningPhaseOrder;
+
+    //States handlers
+    private final TurnEpilogue epilogue;
+    private final StudentMovement studentMovement;
+    private final ResolveIsland resolveIsland;
+    private final PlanningPhase planningPhase;
+    private final MotherNatureMovement motherNatureMovement;
+    private final GameOver gameOver;
+    private final CharacterEffectHandler characterEffectHandler;
+
 
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
         this.code = code;
@@ -41,6 +51,15 @@ public class GameLobby {
         this.actionPhaseOrder = null;
         this.nextPlanningPhaseOrder = null;
         this.turnProgress = 1;
+
+        //states
+        this.epilogue = new TurnEpilogue();
+        this.studentMovement = new StudentMovement();
+        this.resolveIsland = new ResolveIsland();
+        this.planningPhase = new PlanningPhase();
+        this.motherNatureMovement = new MotherNatureMovement();
+        this.gameOver = new GameOver();
+        this.characterEffectHandler = new CharacterEffectHandler();
     }
 
     public String getCode() {
@@ -136,5 +155,13 @@ public class GameLobby {
 
     public boolean wrongPlayer(Player player) {
         return !this.getCurrentPlayer().equals(player);
+    }
+
+    public ResolveIsland getResolveIsland() {
+        return resolveIsland;
+    }
+
+    public GameOver getGameOver() {
+        return gameOver;
     }
 }
