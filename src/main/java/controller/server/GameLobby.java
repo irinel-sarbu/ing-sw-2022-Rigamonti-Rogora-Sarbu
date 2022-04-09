@@ -41,7 +41,7 @@ public class GameLobby implements NetworkObserver {
     //States handlers
     private ResolveIsland resolveIsland;
     private final TurnEpilogue epilogue;
-    private final StudentMovement studentMovement;
+    private StudentMovement studentMovement;
     private final PlanningPhase planningPhase;
     private final MotherNatureMovement motherNatureMovement;
     private final GameOver gameOver;
@@ -72,7 +72,7 @@ public class GameLobby implements NetworkObserver {
 
         //states
         this.epilogue = new TurnEpilogue();
-        this.studentMovement = new StudentMovement();
+        this.studentMovement = new DefaultStudentMovement();
         this.resolveIsland = new DefaultResolveIsland();
         this.planningPhase = new PlanningPhase();
         this.motherNatureMovement = new MotherNatureMovement();
