@@ -239,7 +239,7 @@ public class GameLobby implements NetworkObserver {
 
     /**
      * @return True if there is a next player
-     *
+     * <p>
      * PS: look getNextPlayer()
      */
     public boolean setNextPlayer() {
@@ -284,6 +284,12 @@ public class GameLobby implements NetworkObserver {
     }
 
     public void nextTurn() {
+        // Reset defaults before turn start
+        model.setActiveCharacterEffect(null);
+        studentMovement = new DefaultStudentMovement();
+        motherNatureMovement = new DefaultMotherNatureMovement();
+        resolveIsland = new DefaultResolveIsland();
+
         // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextTurn
         setGameState(GameState.PLANNING);
         planningPhaseOrder = nextPlanningPhaseOrder;
@@ -322,7 +328,5 @@ public class GameLobby implements NetworkObserver {
 
     // TODO : in the event dispatcher that calls knightEffect, centaurEffect, mushroomFanaticEffect create a
     //  new ResolveIsland of the specific Type.
-    // TODO : in the event dispatcher called by the TurnEpilogue at the end of a turn, create a
-    //  new ResolveIsland of the DefaultResolve Type.
     // TODO : Do the same exact thing for StudentMovement and MotherNatureMovement.
 }
