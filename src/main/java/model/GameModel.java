@@ -6,19 +6,13 @@ import model.board.*;
 import model.expert.*;
 import util.*;
 
-import javax.management.ListenerNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameModel extends Observable {
-
-    public static final int MAX_PLAYERS = 3;
-
     private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private final Bag bag;
-
-    private GameState state;
 
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
