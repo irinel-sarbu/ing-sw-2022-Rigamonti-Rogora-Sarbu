@@ -16,10 +16,8 @@ public class KnightResolveIsland extends ResolveIsland {
                 islandSum[i] += tempIslandGroup.getStudentsNumber(professor.getColor());
             }
         }
-        //checks for passive effect of KNIGHT
-        if (tempLobby.getModel().getCharacterByType(CharacterType.KNIGHT) != null && tempLobby.getModel().getCharacterByType(CharacterType.KNIGHT).getEffect()) {
-            islandSum[tempGame.getPlayerId(tempLobby.getCurrentPlayer())] += 2;
-        }
+        //passive effect of KNIGHT
+        islandSum[tempGame.getPlayerId(tempLobby.getCurrentPlayer())] += 2;
 
         return islandSum;
     }

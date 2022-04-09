@@ -13,15 +13,10 @@ public class MushroomFanaticResolveIsland extends ResolveIsland {
         int[] islandSum = new int[tempGame.getPlayers().size()];
         for (int i = 0; i < tempGame.getPlayers().size(); i++) {
             for (Professor professor : tempGame.getPlayerByID(i).getSchoolBoard().getProfessors()) {
-                //checks for passive effect of MUSHROOM_FANATIC
-                if (tempLobby.getModel().getCharacterByType(CharacterType.MUSHROOM_FANATIC) != null && tempLobby.getModel().getCharacterByType(CharacterType.MUSHROOM_FANATIC).getEffect()) {
-                    if (professor.getColor() != tempGame.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor()) {
-                        islandSum[i] += tempIslandGroup.getStudentsNumber(professor.getColor());
-                    }
-                } else {
+                //passive effect of MUSHROOM_FANATIC
+                if (professor.getColor() != tempGame.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor()) {
                     islandSum[i] += tempIslandGroup.getStudentsNumber(professor.getColor());
                 }
-
             }
         }
         return islandSum;

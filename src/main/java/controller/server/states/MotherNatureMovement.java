@@ -10,7 +10,6 @@ import util.GameState;
 
 
 public class MotherNatureMovement {
-
     public void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException {
         if (tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()) {
             if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements() + 2)
