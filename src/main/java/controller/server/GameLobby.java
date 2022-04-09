@@ -39,9 +39,9 @@ public class GameLobby implements NetworkObserver {
     private List<Player> nextPlanningPhaseOrder;
 
     //States handlers
+    private ResolveIsland resolveIsland;
     private final TurnEpilogue epilogue;
     private final StudentMovement studentMovement;
-    private final TmpResolveIsland tmpResolveIsland;
     private final PlanningPhase planningPhase;
     private final MotherNatureMovement motherNatureMovement;
     private final GameOver gameOver;
@@ -73,7 +73,7 @@ public class GameLobby implements NetworkObserver {
         //states
         this.epilogue = new TurnEpilogue();
         this.studentMovement = new StudentMovement();
-        this.tmpResolveIsland = new TmpResolveIsland();
+        this.resolveIsland = new DefaultResolveIsland();
         this.planningPhase = new PlanningPhase();
         this.motherNatureMovement = new MotherNatureMovement();
         this.gameOver = new GameOver();
@@ -286,11 +286,16 @@ public class GameLobby implements NetworkObserver {
         return !this.getCurrentPlayer().equals(player);
     }
 
-    public TmpResolveIsland getResolveIsland() {
-        return tmpResolveIsland;
+    public ResolveIsland getResolveIsland() {
+        return resolveIsland;
     }
 
     public GameOver getGameOver() {
         return gameOver;
     }
+
+    // TODO : in the event dispatcher that calls knightEffect, centaurEffect, mushroomFanaticEffect create a
+    //  new ResolveIsland of the specific Type.
+    // TODO : in the event dispatcher called by the TurnEpilogue at the end of a turn, create a
+    //  new ResolveIsland of the DefaultResolve Type.
 }
