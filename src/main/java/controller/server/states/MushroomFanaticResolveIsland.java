@@ -8,7 +8,7 @@ import model.board.Professor;
 import util.CharacterType;
 
 public class MushroomFanaticResolveIsland extends ResolveIsland {
-
+    @Override
     protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException {
         int[] islandSum = new int[tempGame.getPlayers().size()];
         for (int i = 0; i < tempGame.getPlayers().size(); i++) {
