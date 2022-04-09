@@ -12,6 +12,7 @@ import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.Player;
+import network.client.Client;
 import network.server.ClientSocketConnection;
 import observer.NetworkObserver;
 import util.*;
@@ -46,7 +47,6 @@ public class GameLobby implements NetworkObserver {
     private final PlanningPhase planningPhase;
     private final GameOver gameOver;
     private final CharacterEffectHandler characterEffectHandler;
-
 
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
         this.lobbyCode = code;
@@ -85,7 +85,7 @@ public class GameLobby implements NetworkObserver {
         EventDispatcher dp = new EventDispatcher(event);
 
         dp.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
-
+        dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
     }
 
     /**
@@ -144,8 +144,6 @@ public class GameLobby implements NetworkObserver {
             broadcastExceptOne(new EPlayerJoined(name), name);
             client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
         }
-
-
     }
 
     public void removeClientFromLobbyByName(String name) {
@@ -172,6 +170,8 @@ public class GameLobby implements NetworkObserver {
         return null;
     }
 
+    // Handlers
+
     public boolean playerHasChosenWizard(EWizardChosen event, ClientSocketConnection client) {
         Wizard choice = event.getWizard();
 
@@ -188,6 +188,31 @@ public class GameLobby implements NetworkObserver {
         checkReadyPlayers();
         return true;
     }
+
+    public boolean playerHasActivatedEffect(EUseCharacterEffect event, ClientSocketConnection client) {
+        if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
+            client.asyncSend(new Message(Messages.WRONG_PHASE));
+            return true;
+        }
+
+        if (model.getActiveCharacterEffect() != null) {
+            client.asyncSend(new Message(Messages.ANOTHER_EFFECT_IS_ACTIVE));
+            return true;
+        }
+
+        switch (event.getCharacterType()) {
+            case POSTMAN -> {
+                characterEffectHandler.postmanEffect(this);
+                model.setActiveCharacterEffect(CharacterType.POSTMAN);
+                motherNatureMovement = new PostmanMotherNatureMovement();
+            }
+        }
+
+        return true;
+    }
+
+    // TODO: rename block of functions with something more accurate
+    // Other functions
 
     private void checkReadyPlayers() {
         if (model.getPlayerSize() == maxPlayers) {
@@ -212,15 +237,16 @@ public class GameLobby implements NetworkObserver {
         this.currentPlayer = player;
     }
 
+    /**
+     * @return True if there is a next player
+     *
+     * PS: look getNextPlayer()
+     */
     public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;
-        try {
-            for (int i = 0; i < getModel().getCharacters().size(); i++)
-                this.getModel().getCharacterById(i).resetEffect();
-        } catch (CharacterCardNotFound characterCardNotFound) {
-            assert false;   // should never happen
-        }
+
+        model.setActiveCharacterEffect(null);
         return currentPlayer != null;
     }
 

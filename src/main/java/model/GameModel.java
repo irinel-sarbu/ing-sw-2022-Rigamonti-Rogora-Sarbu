@@ -16,16 +16,20 @@ public class GameModel extends Observable {
 
     private final int maxNumOfPlayers;
     private final GameMode gameMode;
-    private GameState state;
     private final Bag bag;
+
+    private GameState state;
 
     private final List<IslandGroup> islandGroups;
     private final List<Player> players;
     private final List<CloudTile> cloudTiles;
     private final MotherNature motherNature;
-    private List<CharacterCard> characters;
     private final Set<Color> unassignedProfessors;
+
+    private List<CharacterCard> characters;
     private CoinSupply coinSupply;
+
+    private CharacterType activeCharacterEffect;
 
     /**
      * Constructor of the GameModel
@@ -59,6 +63,8 @@ public class GameModel extends Observable {
         for (int i = 0; i < 12; i++) {
             islandGroups.add(new IslandGroup(i));
         }
+
+        activeCharacterEffect = null;
 
         moveFromBagToIslandTile();
     }
@@ -298,6 +304,14 @@ public class GameModel extends Observable {
             }
         }
         return null;
+    }
+
+    public void setActiveCharacterEffect(CharacterType type) {
+        activeCharacterEffect = type;
+    }
+
+    public CharacterType getActiveCharacterEffect() {
+        return activeCharacterEffect;
     }
 
     public int getRemainingIslandGroups() {

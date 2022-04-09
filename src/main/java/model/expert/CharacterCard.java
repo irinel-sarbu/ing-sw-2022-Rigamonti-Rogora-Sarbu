@@ -14,7 +14,6 @@ import java.util.Stack;
 public class CharacterCard {
     private int cost;
     private final CharacterType character;
-    private boolean effectIsUsed;
     private List<Student> students;
     private Stack<NoEntryTile> noEntryTiles;
     private Color color;
@@ -31,13 +30,11 @@ public class CharacterCard {
             default -> {
             }
         }
-        resetEffect();
     }
 
     public CharacterCard(int cost, CharacterType character) {
         this.cost = cost;
         this.character = character;
-        resetEffect();
     }
 
     public Color getColor() {
@@ -50,18 +47,6 @@ public class CharacterCard {
 
     public CharacterType getCharacter() {
         return character;
-    }
-
-    public void useEffect() {
-        this.effectIsUsed = true;
-    }
-
-    public void resetEffect() {
-        this.effectIsUsed = false;
-    }
-
-    public boolean getEffect() {
-        return effectIsUsed;
     }
 
     public int getCost() {

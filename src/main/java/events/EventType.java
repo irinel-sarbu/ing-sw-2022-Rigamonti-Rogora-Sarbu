@@ -14,6 +14,7 @@ public enum EventType {
 
     CHOOSE_WIZARD,
     WIZARD_NOT_AVAILABLE,
+    USE_CHARACTER_EFFECT,
 
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,

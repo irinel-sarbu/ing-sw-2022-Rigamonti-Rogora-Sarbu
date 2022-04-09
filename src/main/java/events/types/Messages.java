@@ -9,5 +9,10 @@ public class Messages {
 
     public static final String CLIENT_DISCONNECTED = "Client disconnected";
 
+    public static final String TURN_OVER = "Turn over";
+
+    public static final String WRONG_PHASE = "Wrong phase";
+    public static final String ANOTHER_EFFECT_IS_ACTIVE = "Another effect is already active";
+
     public static final String GAME_STARTED = "Game started";
 }
