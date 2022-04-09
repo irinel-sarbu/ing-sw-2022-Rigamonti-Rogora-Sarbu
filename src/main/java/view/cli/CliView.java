@@ -4,7 +4,6 @@ import events.types.clientToClient.EUpdateServerInfo;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
-import org.junit.platform.commons.util.StringUtils;
 import util.GameMode;
 import util.Wizard;
 import view.View;
@@ -32,7 +31,7 @@ public class CliView extends View {
         String string;
         string = scanner.nextLine();
 
-        return StringUtils.isBlank(string) ? defaultValue : string;
+        return string.isBlank() ? defaultValue : string;
     }
 
     private int readInt(int defaultValue) {
@@ -40,7 +39,7 @@ public class CliView extends View {
 
         try {
             String numString = readString(null);
-            if (StringUtils.isBlank(numString))
+            if (numString.isBlank())
                 return defaultValue;
             num = Integer.parseInt(numString);
         } catch (NumberFormatException e) {
@@ -76,7 +75,7 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert your name >>> ");
             insertedName = readString(null);
-        } while (StringUtils.isBlank(insertedName));
+        } while (insertedName.isBlank());
 
         return insertedName;
     }

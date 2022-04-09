@@ -4,10 +4,11 @@ import controller.server.GameLobby;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.board.IslandGroup;
+import model.board.Professor;
+import util.CharacterType;
 
-public abstract class ResolveIsland {
-
-    public void solveIsland(GameLobby tempLobby, int islandGroupID){
+public class DefaultResolveIsland extends ResolveIsland {
+    public void solveIsland(GameLobby tempLobby, int islandGroupID) {
         try {
             GameModel tempGame = tempLobby.getModel();
             int[] islandSum;
@@ -30,28 +31,13 @@ public abstract class ResolveIsland {
         }
     }
 
-    protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException;
-
-    protected int playerID(int[] islandSum) {
-        int max1 = 0, max2 = 0;
-        int pos = 0;
-        for (int i = 0; i < islandSum.length; i++) {
-            if (islandSum[i] > max1) {
-                max1 = islandSum[i];
-                pos = i;
+    protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException {
+        int[] islandSum = new int[tempGame.getPlayers().size()];
+        for (int i = 0; i < tempGame.getPlayers().size(); i++) {
+            for (Professor professor : tempGame.getPlayerByID(i).getSchoolBoard().getProfessors()) {
+                islandSum[i] += tempIslandGroup.getStudentsNumber(professor.getColor());
             }
         }
-        islandSum[pos] = 0;
-        for (int j : islandSum) {
-            if (j > max2) {
-                max2 = j;
-            }
-        }
-        if (max1 == max2) {
-            return -1;
-        } else {
-            return pos;
-        }
+        return islandSum;
     }
-
 }

@@ -239,7 +239,6 @@ public class GameModelTestExpert {
         //let's assume mother nature is on 0, and just turned the rook on 0 black
         game.joinAdjacent(0);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
-        System.out.println("");
         assertEquals(11, game.getRemainingIslandGroups());
         assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
         //now testing the right join
@@ -247,7 +246,6 @@ public class GameModelTestExpert {
         game.getIslandTileByID(6).setTowerColor(TowerColor.BLACK);
         game.joinAdjacent(5);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
-        System.out.println("");
         assertEquals(10, game.getRemainingIslandGroups());
         assertEquals(2, game.getIslandGroupByID(4).getIslands().size());
         //now testing both joins

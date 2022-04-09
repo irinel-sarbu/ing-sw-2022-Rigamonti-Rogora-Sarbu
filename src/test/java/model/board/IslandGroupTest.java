@@ -63,13 +63,7 @@ public class IslandGroupTest {
             System.err.println("Error getting IslandTileID");
             fail();
         }
-        try {
-            doubleIslandGroup.getIslandTileByID(0);
-            System.err.println("Expected IslandNotFoundException");
-            fail();
-        } catch (IslandNotFoundException e) {
-            assertTrue(true);
-        }
+        assertNull(doubleIslandGroup.getIslandTileByID(0));
     }
 
     @Test
@@ -192,9 +186,6 @@ public class IslandGroupTest {
             System.err.println("NullIslandGroupException not excepted");
             fail();
         } catch (IllegalIslandGroupJoinException e) {
-            System.err.println("IllegalIslandGroupJoinException not excepted");
-            fail();
-        } catch (NullPointerException e) {
             assertTrue(true);
         }
 
@@ -250,13 +241,7 @@ public class IslandGroupTest {
             fail();
         }
 
-        try {
-            test.getIslandTileByID(0);
-            System.err.println("Expected IslandNotFoundException");
-            fail();
-        } catch (IslandNotFoundException e) {
-            assertTrue(true);
-        }
+        assertNull(test.getIslandTileByID(0));
 
         try {
             assertEquals(1, test.getIslandTileByID(1).getIslandID());
