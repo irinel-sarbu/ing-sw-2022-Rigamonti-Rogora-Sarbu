@@ -9,20 +9,10 @@ import util.CharacterType;
 import util.GameState;
 
 
-public class MotherNatureMovement {
-    public void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException {
-        if (tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN) != null && tempLobby.getModel().getCharacterByType(CharacterType.POSTMAN).getEffect()) {
-            if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements() + 2)
-                throw new IllegalMovementException();
-        } else {
-            if (steps > tempLobby.getCurrentPlayer().peekFoldDeck().getMovements())
-                throw new IllegalMovementException();
-        }
-        tempLobby.getModel().moveMotherNature(steps);
-        nextState(tempLobby);
-    }
+public abstract class MotherNatureMovement {
+    public abstract void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException;
 
-    private void nextState(GameLobby tempLobby) {
+    protected void nextState(GameLobby tempLobby) {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);

@@ -40,10 +40,10 @@ public class GameLobby implements NetworkObserver {
 
     //States handlers
     private ResolveIsland resolveIsland;
-    private final TurnEpilogue epilogue;
     private StudentMovement studentMovement;
+    private MotherNatureMovement motherNatureMovement;
+    private final TurnEpilogue epilogue;
     private final PlanningPhase planningPhase;
-    private final MotherNatureMovement motherNatureMovement;
     private final GameOver gameOver;
     private final CharacterEffectHandler characterEffectHandler;
 
@@ -75,7 +75,7 @@ public class GameLobby implements NetworkObserver {
         this.studentMovement = new DefaultStudentMovement();
         this.resolveIsland = new DefaultResolveIsland();
         this.planningPhase = new PlanningPhase();
-        this.motherNatureMovement = new MotherNatureMovement();
+        this.motherNatureMovement = new DefaultMotherNatureMovement();
         this.gameOver = new GameOver();
         this.characterEffectHandler = new CharacterEffectHandler();
     }
@@ -298,4 +298,5 @@ public class GameLobby implements NetworkObserver {
     //  new ResolveIsland of the specific Type.
     // TODO : in the event dispatcher called by the TurnEpilogue at the end of a turn, create a
     //  new ResolveIsland of the DefaultResolve Type.
+    // TODO : Do the same exact thing for StudentMovement and MotherNatureMovement.
 }
