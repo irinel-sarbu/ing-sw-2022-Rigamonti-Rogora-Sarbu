@@ -4,10 +4,7 @@ import exceptions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import util.Color;
-import util.GameMode;
-import util.TowerColor;
-import util.Wizard;
+import util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -217,15 +214,7 @@ public class GameModelExpertTest {
     }
 
     @Test
-    public void refillCloudTiles() {
-        for (int i = 0; i < 3; i++) {
-            assertTrue(game.getCloudTile(i).getStudents().size() != 0);
-        }
-    }
-
-    @Test
-    public void moveFromBagToCloudTile() {
-        //it's called by RefillCloudTiles, so the test is the same
+    public void testCloudTiles() {
         for (int i = 0; i < 3; i++) {
             assertTrue(game.getCloudTile(i).getStudents().size() != 0);
         }
@@ -297,4 +286,12 @@ public class GameModelExpertTest {
     public void checkForRooksEmpty() {
         assertFalse(game.checkForRooksEmpty());
     }
+
+    @Test
+    public void testCharacterEffect() {
+        assertNull(game.getActiveCharacterEffect());
+        game.setActiveCharacterEffect(CharacterType.CENTAUR);
+        assertSame(game.getActiveCharacterEffect(), CharacterType.CENTAUR);
+    }
+
 }

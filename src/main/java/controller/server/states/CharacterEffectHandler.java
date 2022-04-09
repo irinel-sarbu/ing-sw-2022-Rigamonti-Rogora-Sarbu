@@ -19,6 +19,8 @@ import java.util.ArrayList;
  * TODO: in EventDispatcher check if effect is already active
  * TODO: set & reset effect with the handler in lobby
  */
+
+//TODO : add the removal of coins
 public class CharacterEffectHandler {
 
     public void monkEffect(GameLobby tempLobby, int studentID, int islandPos) {
