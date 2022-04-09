@@ -7,7 +7,7 @@ import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
 
-public class CentaurResolveIsland extends ResolveIsland{
+public class CentaurResolveIsland extends ResolveIsland {
 
     protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException {
         int[] islandSum = new int[tempGame.getPlayers().size()];
@@ -24,5 +24,4 @@ public class CentaurResolveIsland extends ResolveIsland{
         }
         return islandSum;
     }
-
 }
