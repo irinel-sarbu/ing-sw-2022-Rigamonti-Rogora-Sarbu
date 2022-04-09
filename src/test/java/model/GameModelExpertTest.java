@@ -11,7 +11,7 @@ import util.Wizard;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameModelTestExpert {
+public class GameModelExpertTest {
     private static GameModel game;
 
     @BeforeAll
