@@ -13,9 +13,9 @@ import util.GameState;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class StudentMovement {
+public abstract class StudentMovement {
 
-    private void movementEpilogue(GameLobby thisGame) {
+    protected void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
         if (thisGame.getStudentsMoved() == thisGame.getMaxStudentsMoved()) {
             thisGame.resetStudentsMoved();
@@ -23,8 +23,10 @@ public class StudentMovement {
         }
     }
 
-    private void stealProfessor(GameLobby thisGame, Color color, Boolean farmerUsed)
-            throws ProfessorFullException, ProfessorNotFoundException {             // FIXME: use strategy patern
+    protected abstract boolean canSteal(int currentCount, int withProfessorCount);
+
+    protected void stealProfessor(GameLobby thisGame, Color color)
+            throws ProfessorFullException, ProfessorNotFoundException {
         if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color)) return; // prevent from self stealing
         // TODO: may exists another way to check this
         try {
@@ -38,13 +40,11 @@ public class StudentMovement {
             SchoolBoard current = thisGame.getCurrentPlayer().getSchoolBoard();
             int currentCount = current.getStudentsOfColor(color);
 
-
-            if (currentCount > withProfessorCount - (farmerUsed ? 1 : 0)) {
+            if (canSteal(currentCount, withProfessorCount)) {
                 current.addProfessor(withProfessor.removeProfessorByColor(color));
             }
         }
     }
-
 
     public void moveStudentToDining(GameLobby thisGame, Player player, int studentID)
             throws WrongPhaseException, WrongPlayerException, StudentNotFoundException, DiningRoomFullException,
@@ -64,10 +64,7 @@ public class StudentMovement {
         }
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
-        CharacterCard farmer = thisGame.getModel().getCharacterByType(CharacterType.FARMER);
-        boolean farmerUsed = (farmer != null && farmer.getEffect());
-
-        stealProfessor(thisGame, movingStudent.getColor(), farmerUsed);
+        stealProfessor(thisGame, movingStudent.getColor());
 
         movementEpilogue(thisGame);
     }

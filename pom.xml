@@ -14,7 +14,15 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <sonar.exclusions>**/network/**/*,**/view/**/*,**/ClientApp.java,**/ServerApp.java</sonar.exclusions>
+        <sonar.exclusions>
+            **/network/**/*,
+            **/view/**/*,
+            **/observer/**/*,
+            **/events/**/*,
+            **/exceptions/**/*,
+            **/util/**/*,
+            **/*App.*
+        </sonar.exclusions>
     </properties>
 
     <dependencies>
@@ -59,6 +67,13 @@
                 <version>0.8.7</version>
                 <configuration>
                     <excludes>
+                        <exclude>**/network/**/*</exclude>
+                        <exclude>**/view/**/*</exclude>
+                        <exclude>**/observer/**/*</exclude>
+                        <exclude>**/events/**/*</exclude>
+                        <exclude>**/exceptions/**/*</exclude>
+                        <exclude>**/util/**/*</exclude>
+                        <exclude>**/*App.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
