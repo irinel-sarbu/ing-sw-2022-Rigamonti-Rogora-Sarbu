@@ -13,6 +13,7 @@ public class Messages {
 
     public static final String WRONG_PHASE = "Wrong phase";
     public static final String ANOTHER_EFFECT_IS_ACTIVE = "Another effect is already active";
+    public static final String INSUFFICIENT_COINS = "Insufficient coins";
 
     public static final String GAME_STARTED = "Game started";
 }

@@ -1,18 +1,17 @@
 package controller.server;
 
 import controller.server.states.*;
-import events.Event;
-import events.EventDispatcher;
-import events.EventType;
+import events.*;
 import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import events.types.serverToClient.Message;
-import exceptions.CharacterCardNotFound;
 import exceptions.PlayerNotFoundException;
+import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
-import network.client.Client;
+import model.expert.CharacterCard;
+import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
 import observer.NetworkObserver;
 import util.*;
@@ -23,6 +22,9 @@ public class GameLobby implements NetworkObserver {
 
     private final String lobbyCode;
     private final int maxPlayers;
+
+    private LobbyState lobbyState;
+
     private final GameMode gameMode;
     private final Map<String, ClientSocketConnection> clientList;
 
@@ -52,8 +54,10 @@ public class GameLobby implements NetworkObserver {
         this.lobbyCode = code;
         this.maxPlayers = numOfPlayers;
         this.gameMode = gameMode;
-
         this.clientList = new HashMap<>();
+
+        this.lobbyState = LobbyState.INIT;
+
         this.model = new GameModel(maxPlayers, this.gameMode);
         this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
 
@@ -78,6 +82,14 @@ public class GameLobby implements NetworkObserver {
         this.motherNatureMovement = new DefaultMotherNatureMovement();
         this.gameOver = new GameOver();
         this.characterEffectHandler = new CharacterEffectHandler();
+    }
+
+    public void setLobbyState(LobbyState newState) {
+        this.lobbyState = newState;
+    }
+
+    public LobbyState getLobbyState() {
+        return this.lobbyState;
     }
 
     @Override
@@ -122,7 +134,7 @@ public class GameLobby implements NetworkObserver {
     public void addClientToLobby(String name, ClientSocketConnection client) {
         if (model.getPlayerSize() >= maxPlayers) {
             client.asyncSend(new Message(Messages.LOBBY_FULL));
-            Logger.info("Player " + name + " trying to connect but lobby is full.");
+            Logger.warning("Player " + name + " trying to connect but lobby is full.");
         }
 
         try {
@@ -132,12 +144,13 @@ public class GameLobby implements NetworkObserver {
                 client.joinLobby(lobbyCode);
                 model.getPlayerByName(name).setDisconnected(false);
                 broadcastExceptOne(new EPlayerJoined(name), name);
-                Logger.info("Player " + name + " reconnected to Lobby " + getLobbyCode());
+                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
             } else {
                 client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
-                Logger.info("Player " + name + " trying to connect but lobby there is already a player with that name connected.");
+                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
             }
         } catch (PlayerNotFoundException e) {
+            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
             clientList.put(name, client);
             client.joinLobby(lobbyCode);
             client.asyncSend(new ELobbyJoined(lobbyCode));
@@ -181,7 +194,7 @@ public class GameLobby implements NetworkObserver {
         }
 
         String playerName = getClientBySocket(client);
-        Logger.debug("Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
+        Logger.info("Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
         model.addPlayer(new Player(playerName, choice, TowerColor.BLACK));
         availableWizards.remove(choice);
 
@@ -202,6 +215,18 @@ public class GameLobby implements NetworkObserver {
 
         switch (event.getCharacterType()) {
             case POSTMAN -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
+                CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+
+                model.getCoinSupply().addCoins(card.getCost());
+
                 characterEffectHandler.postmanEffect(this);
                 model.setActiveCharacterEffect(CharacterType.POSTMAN);
                 motherNatureMovement = new PostmanMotherNatureMovement();
@@ -237,11 +262,6 @@ public class GameLobby implements NetworkObserver {
         this.currentPlayer = player;
     }
 
-    /**
-     * @return True if there is a next player
-     * <p>
-     * PS: look getNextPlayer()
-     */
     public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;

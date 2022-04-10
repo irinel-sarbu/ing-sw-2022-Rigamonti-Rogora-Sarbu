@@ -8,6 +8,7 @@ import events.types.serverToClient.EPlayerDisconnected;
 import exceptions.LobbyNotFoundException;
 import network.server.ClientSocketConnection;
 import network.server.Server;
+import observer.NetworkObservable;
 import observer.NetworkObserver;
 import util.*;
 
@@ -15,7 +16,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController implements NetworkObserver {
-
     private final Map<String, GameLobby> games;
     private final Server server;
 
@@ -43,7 +43,7 @@ public class ServerController implements NetworkObserver {
      */
     public GameLobby getLobbyByCode(String code) throws LobbyNotFoundException {
         GameLobby ret = games.get(code);
-        if(ret != null)
+        if (ret != null)
             return ret;
         throw new LobbyNotFoundException("Lobby with id " + code + " not found.");
     }
@@ -61,12 +61,6 @@ public class ServerController implements NetworkObserver {
         return games.get(code);
     }
 
-    /**
-     * Dispatches events.
-     * If Event can't be handled it is redirected to the correct Lobby.
-     *
-     * @param networkEvent An Event linked to a ClientConnection
-     */
     @Override
     public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
         EventDispatcher dp = new EventDispatcher(networkEvent);
@@ -75,13 +69,33 @@ public class ServerController implements NetworkObserver {
 
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onCreateLobbyRequest((ECreateLobbyRequest) t.getKey(), t.getValue()));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onJoinLobbyRequest((EJoinLobbyRequest) t.getKey(), t.getValue()));
+
+        // Check if event was dispatched in ServerController. If not, notify correct GameLobby
+        if (networkEvent.getKey().isHandled())
+            return;
+        Logger.debug("ServerController was unable to dispatch networkEvent " + networkEvent, "Sending event to correct GameLobby");
+
+        try {
+            GameLobby clientLobby = getLobbyByCode(networkEvent.getValue().getLobbyCode());
+            clientLobby.onNetworkEvent(networkEvent);
+            return;
+        } catch (LobbyNotFoundException e) {
+            // This should never happen
+            Logger.severe(e.getMessage());
+        }
+
+        if (networkEvent.getKey().isHandled())
+            return;
+
+        // Code should never arrive here, event was not dispatched to any lobby
+        Logger.severe("Unhandled event " + networkEvent);
     }
 
     // Handlers
     private boolean onMessage(Message message, ClientSocketConnection client) {
         switch (message.getMsg()) {
             case Messages.CLIENT_DISCONNECTED -> {
-                if(!client.isInLobby())
+                if (!client.isInLobby())
                     return true;
 
                 GameLobby lobby = games.get(client.getLobbyCode());
@@ -98,7 +112,6 @@ public class ServerController implements NetworkObserver {
     private boolean onCreateLobbyRequest(ECreateLobbyRequest event, ClientSocketConnection client) {
         GameLobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
         createdLobby.addClientToLobby(event.getPlayerName(), client);
-        server.registerListener(createdLobby);
         return true;
     }
 

@@ -53,8 +53,7 @@ public class CoinSupply {
      * @throws supplyEmptyException If the supply is already empty or there aren't enough coins.
      */
     public int removeCoins(int numOfCoins) throws supplyEmptyException {
-        if (this.numOfCoins == 0) throw new supplyEmptyException();
-        if (this.numOfCoins - numOfCoins <= 0) throw new supplyEmptyException();
+        if (this.numOfCoins < numOfCoins) throw new supplyEmptyException();
         this.numOfCoins -= numOfCoins;
         return numOfCoins;
     }
