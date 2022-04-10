@@ -123,6 +123,9 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         return name;
     }
 
+    /**
+     *Overrides equals.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -131,11 +134,17 @@ public class Player implements Comparator<Player>, Comparable<Player> {
         return name.equals(player.name);
     }
 
+    /**
+     *Overrides CompareTo.
+     */
     @Override
     public int compareTo(Player other) {
         return compare(this, other);
     }
 
+    /**
+     *Overrides Compare.
+     */
     @Override
     public int compare(Player player, Player t1) {
         if (t1.foldCard == null) {
