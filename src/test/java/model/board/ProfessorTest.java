@@ -17,7 +17,7 @@ public class ProfessorTest {
     }
 
     @Test
-    public void testProfessor(){
+    public void testProfessor() {
         assertSame(professor1.getColor(), Color.RED);
         assertSame(professor2.getColor(), Color.BLUE);
     }

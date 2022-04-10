@@ -10,6 +10,7 @@ public class Tower {
 
     /**
      * Constructor of {@link Tower}. Set the final Color to the selected color.
+     *
      * @param color Is the selected color.
      */
     public Tower(TowerColor color) {
@@ -24,7 +25,7 @@ public class Tower {
     }
 
     /**
-     *Overrides ToString.
+     * Overrides ToString.
      */
     @Override
     public String toString() {

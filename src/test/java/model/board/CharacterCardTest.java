@@ -15,7 +15,7 @@ public class CharacterCardTest {
     private CharacterCard card1, card2, card3, card4;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         card1 = new CharacterCard(CharacterType.GRANNY_HERBS);
         card2 = new CharacterCard(CharacterType.MONK);
         card3 = new CharacterCard(CharacterType.JESTER);
@@ -23,14 +23,14 @@ public class CharacterCardTest {
     }
 
     @Test
-    public void testColor(){
+    public void testColor() {
         assertNull(card4.getColor());
         card4.setColor(Color.YELLOW);
         assertSame(card4.getColor(), Color.YELLOW);
     }
 
     @Test
-    public void testStudents(){
+    public void testStudents() {
         card2.addStudent(new Student(0, Color.RED));
         card2.addStudent(new Student(2, Color.YELLOW));
         card3.addStudent(new Student(1, Color.BLUE));
@@ -55,16 +55,16 @@ public class CharacterCardTest {
     }
 
     @Test
-    public void getCharacter(){
+    public void getCharacter() {
         assertSame(card1.getCharacter(), CharacterType.GRANNY_HERBS);
         assertSame(card4.getCharacter(), CharacterType.MUSHROOM_FANATIC);
         assertEquals(card1.getCost(), CharacterType.GRANNY_HERBS.getBaseCost());
-        card1.setCost(card1.getCost()+1);
+        card1.setCost(card1.getCost() + 1);
         assertEquals(card1.getCost(), CharacterType.GRANNY_HERBS.getBaseCost() + 1);
     }
 
     @Test
-    public void testNoEntry(){
+    public void testNoEntry() {
         card1.addNoEntryTile(new NoEntryTile());
         assertEquals(1, card1.getNoEntryTiles().size());
         try {

@@ -26,6 +26,7 @@ public class SchoolBoard {
 
     /**
      * Constructor of {@link SchoolBoard}. Initializes all attributes. Sets the {@link SchoolBoard#owner} to the Parameter Player.
+     *
      * @param player Is the owner of this {@link SchoolBoard}.
      */
     public SchoolBoard(Player player) {
@@ -42,6 +43,7 @@ public class SchoolBoard {
 
     /**
      * Getter for the students on the {@link SchoolBoard#entrance}.
+     *
      * @return The List of student on the {@link SchoolBoard#entrance}.
      */
     public List<Student> getEntranceStudents() {
@@ -50,6 +52,7 @@ public class SchoolBoard {
 
     /**
      * Getter for a selected student on the {@link SchoolBoard#entrance}.
+     *
      * @param studentPosition Is the position of the {@link SchoolBoard#entrance} correspondent to the selected student.
      * @return The selected student.
      * @throws StudentNotFoundException If there is no Student on the given Position.
@@ -62,6 +65,7 @@ public class SchoolBoard {
 
     /**
      * Adds a Student on the {@link SchoolBoard#entrance}.
+     *
      * @param student Is the student that needs to be added.
      * @throws EntranceFullException If the entrance is already full.
      */
@@ -72,6 +76,7 @@ public class SchoolBoard {
 
     /**
      * Adds multiple students to the {@link SchoolBoard#entrance} at the same time.
+     *
      * @param students Is the List of students that needs to be added.
      * @throws EntranceFullException If the entrance is already full.
      */
@@ -84,6 +89,7 @@ public class SchoolBoard {
 
     /**
      * Removes a selected student from the {@link SchoolBoard#entrance}.
+     *
      * @param studentID
      * @return
      * @throws StudentNotFoundException
@@ -102,6 +108,7 @@ public class SchoolBoard {
 
     /**
      * Adds a selected student to the {@link SchoolBoard#diningRoom}.
+     *
      * @param student Is the selected student that needs to be added.
      * @return True if the number of students of a certain color is 0(mod3). Player will have to pick up a coin from the stash.
      * @throws DiningRoomFullException if the Dining Room is already full.
@@ -123,6 +130,7 @@ public class SchoolBoard {
 
     /**
      * Removes a selected student from {@link SchoolBoard#diningRoom}.
+     *
      * @param color Is the color correspondent to the last student of the respective dining room table.
      * @return The selected student.
      * @throws DiningRoomEmptyException If the dining room is already Empty.
@@ -136,6 +144,7 @@ public class SchoolBoard {
 
     /**
      * Getter for the number of students of a selected table color from {@link SchoolBoard#diningRoom}.
+     *
      * @param color Is the selected color.
      * @return The number of students of that color.
      */
@@ -146,6 +155,7 @@ public class SchoolBoard {
 
     /**
      * Getter for the attribute {@link SchoolBoard#professors}.
+     *
      * @return The List of professors.
      */
     public List<Professor> getProfessors() {
@@ -154,6 +164,7 @@ public class SchoolBoard {
 
     /**
      * Adds a selected professor to {@link SchoolBoard#professors}.
+     *
      * @param professor Is the selected professor.
      * @throws ProfessorFullException If the professor List is already full.
      */
@@ -164,6 +175,7 @@ public class SchoolBoard {
 
     /**
      * Removes a selected Professor from {@link SchoolBoard#professors}.
+     *
      * @param professor Is the selected professor.
      * @throws ProfessorNotFoundException If the professor is not in the List.
      */
@@ -175,6 +187,7 @@ public class SchoolBoard {
 
     /**
      * Removes a professor of a selected color from {@link SchoolBoard#professors}.
+     *
      * @param color Is the selected color.
      * @return The professor correspondent to the selected color. Null if there is no professor with the given color.
      */
@@ -188,6 +201,7 @@ public class SchoolBoard {
 
     /**
      * Getter for the attribute {@link SchoolBoard#towers}.
+     *
      * @return The List of {@link SchoolBoard#towers}.
      */
     public List<Tower> getTowers() {
@@ -196,6 +210,7 @@ public class SchoolBoard {
 
     /**
      * Adds a New tower to {@link SchoolBoard#towers}.
+     *
      * @param tower Is the New tower.
      * @throws TowersFullException If {@link SchoolBoard#towers} is already full.
      */
@@ -206,6 +221,7 @@ public class SchoolBoard {
 
     /**
      * Removes a tower from {@link SchoolBoard#towers}.
+     *
      * @throws TowersIsEmptyException If {@link SchoolBoard#towers} is already empty.
      */
     public void removeTower() throws TowersIsEmptyException {
@@ -215,7 +231,8 @@ public class SchoolBoard {
 
     /**
      * Initializes {@link SchoolBoard#towers} by creating N new towers, where N = Right number pf tower based on the number of players.
-     * @param color Is the color of the New towers that needs to be created.
+     *
+     * @param color           Is the color of the New towers that needs to be created.
      * @param maxNumOfPlayers Is the number of players that allows to pick the correct number of towers.
      */
     public void setUpTowers(TowerColor color, int maxNumOfPlayers) {
@@ -233,6 +250,7 @@ public class SchoolBoard {
 
     /**
      * Checks if a professor of the selected color is present in {@link SchoolBoard#professors}.
+     *
      * @param color Is the selected color.
      * @return True if it is present, otherwise False.
      */

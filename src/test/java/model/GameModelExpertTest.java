@@ -350,7 +350,6 @@ public class GameModelExpertTest {
     }
 
 
-
     @Test
     public void moveFromCloudTileToEntrance() {
         try {
@@ -374,7 +373,7 @@ public class GameModelExpertTest {
         } catch (ProfessorNotFoundException e) {
             fail();
         }
-        assertTrue(size!=game.getUnassignedProfessors().size());
+        assertTrue(size != game.getUnassignedProfessors().size());
         assertEquals(4, game.getUnassignedProfessors().size());
     }
 

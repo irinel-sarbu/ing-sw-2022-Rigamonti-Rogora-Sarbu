@@ -1,7 +1,6 @@
 package model.board;
 
 
-
 import exceptions.supplyEmptyException;
 import model.expert.CoinSupply;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,13 +18,13 @@ public class CoinSupplyTest {
     }
 
     @Test
-    public void GetCoins(){
+    public void GetCoins() {
         assertEquals(20, coinSupply1.getNumOfCoins());
         assertEquals(30, coinSupply2.getNumOfCoins());
     }
 
     @Test
-    public void setCoins(){
+    public void setCoins() {
         coinSupply1.addCoin();
         assertEquals(21, coinSupply1.getNumOfCoins());
         coinSupply2.addCoins(2);
@@ -33,7 +32,7 @@ public class CoinSupplyTest {
     }
 
     @Test
-    public void removeCoins(){
+    public void removeCoins() {
         try {
             coinSupply1.removeCoins(2);
         } catch (supplyEmptyException e) {

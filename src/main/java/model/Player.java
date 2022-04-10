@@ -21,8 +21,9 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Player constructor, initializes all attributes.
-     * @param name Unique name passed to the constructor.
-     * @param wizard Unique {@link Wizard} passed to the constructor.
+     *
+     * @param name       Unique name passed to the constructor.
+     * @param wizard     Unique {@link Wizard} passed to the constructor.
      * @param towerColor Unique {@link TowerColor} passed to the constructor.
      */
     public Player(String name, Wizard wizard, TowerColor towerColor) {
@@ -36,6 +37,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Setter for the attribute {@link Player#disconnected}.
+     *
      * @param disconnected Boolean value which will be given to the attribute {@link Player#disconnected}.
      */
     public synchronized void setDisconnected(boolean disconnected) {
@@ -51,6 +53,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Changes {@link Player#foldCard} to the last played Assistant Card.
+     *
      * @param assistantCard Last played Assistant Card.
      */
     public void pushFoldDeck(Assistant assistantCard) {
@@ -73,6 +76,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Getter for the attribute {@link Player#assistantDeck}.
+     *
      * @return A copy of the list of remaining Assistants.
      */
     public List<Assistant> getAssistants() {
@@ -81,6 +85,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Removes a selected Assistant from {@link Player#assistantDeck}.
+     *
      * @param assistantCard Is the selected Assistant which needs to be removed.
      * @return The selected assistant which needs to be removed.
      * @throws AssistantNotInDeckException If the selected Assistant is not present.
@@ -94,6 +99,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
 
     /**
      * Removes a selected Assistant from {@link Player#assistantDeck}.
+     *
      * @param assistantCardID Is the ID correspondent to the selected Assistant which needs to be removed.
      * @throws AssistantNotInDeckException if the selected Assistant is not present.
      */
@@ -110,7 +116,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     }
 
     /**
-     *Getter for the Unique {@link TowerColor} stored in the attribute {@link Player#color}.
+     * Getter for the Unique {@link TowerColor} stored in the attribute {@link Player#color}.
      */
     public TowerColor getColor() {
         return color;
@@ -124,7 +130,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     }
 
     /**
-     *Overrides equals.
+     * Overrides equals.
      */
     @Override
     public boolean equals(Object o) {
@@ -135,7 +141,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     }
 
     /**
-     *Overrides CompareTo.
+     * Overrides CompareTo.
      */
     @Override
     public int compareTo(Player other) {
@@ -143,7 +149,7 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     }
 
     /**
-     *Overrides Compare.
+     * Overrides Compare.
      */
     @Override
     public int compare(Player player, Player t1) {

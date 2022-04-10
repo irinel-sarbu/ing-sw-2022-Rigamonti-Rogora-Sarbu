@@ -23,6 +23,7 @@ public class CharacterCard {
 
     /**
      * Base constructor. Initializes all needed attributes.
+     *
      * @param character Is the {@link CharacterType} of the {@link CharacterCard}.
      */
     public CharacterCard(CharacterType character) {
@@ -40,7 +41,8 @@ public class CharacterCard {
 
     /**
      * Advanced constructor. Initializes all needed Attributes and sets a cost different from the base cost.
-     * @param cost Is the selected Cost.
+     *
+     * @param cost      Is the selected Cost.
      * @param character Is the {@link CharacterType} of the {@link CharacterCard}.
      */
     public CharacterCard(int cost, CharacterType character) {
@@ -49,7 +51,7 @@ public class CharacterCard {
     }
 
     /**
-     *Getter for the attribute {@link CharacterCard#color}.
+     * Getter for the attribute {@link CharacterCard#color}.
      */
     public Color getColor() {
         return color;
@@ -57,6 +59,7 @@ public class CharacterCard {
 
     /**
      * Setter of the attribute {@link CharacterCard#color}.
+     *
      * @param color Is the selected Color.
      */
     public void setColor(Color color) {
@@ -65,6 +68,7 @@ public class CharacterCard {
 
     /**
      * Getter for the attribute {@link CharacterCard#character}.
+     *
      * @return The {@link CharacterType} of the {@link CharacterCard}.
      */
     public CharacterType getCharacter() {
@@ -80,6 +84,7 @@ public class CharacterCard {
 
     /**
      * Setter for the attribute {@link CharacterCard#cost}.
+     *
      * @param cost Is the selected Cost.
      */
     public void setCost(int cost) {
@@ -88,6 +93,7 @@ public class CharacterCard {
 
     /**
      * Adds a student to {@link CharacterCard#students}.
+     *
      * @param student Is the selected student that needs to be added.
      */
     public void addStudent(Student student) {
@@ -96,6 +102,7 @@ public class CharacterCard {
 
     /**
      * Getter for the attribute {@link CharacterCard#students}.
+     *
      * @return The list of students initialized on the card.
      */
     public List<Student> getStudents() {
@@ -104,9 +111,10 @@ public class CharacterCard {
 
     /**
      * Removes a student from {@link CharacterCard#students}.
+     *
      * @param studentId Is the ID correspondent to the selected student that needs to be removed.
      * @return The student that needs to be removed.
-     * @throws StudentNotFoundException If there is no students with the given ID.
+     * @throws StudentNotFoundException  If there is no students with the given ID.
      * @throws EmptyStudentListException If {@link CharacterCard#students} is empty.
      */
     public Student removeStudent(int studentId) throws StudentNotFoundException, EmptyStudentListException {
@@ -122,6 +130,7 @@ public class CharacterCard {
 
     /**
      * Adds a NoEntryTile to {@link CharacterCard#noEntryTiles}.
+     *
      * @param noEntryTile Is the selected NoEntryTile that needs to be added.
      */
     public void addNoEntryTile(NoEntryTile noEntryTile) {
@@ -130,6 +139,7 @@ public class CharacterCard {
 
     /**
      * Getter for the attribute {@link CharacterCard#noEntryTiles}.
+     *
      * @return The Stack of NoEntryTiles.
      */
     public Stack<NoEntryTile> getNoEntryTiles() {
@@ -138,6 +148,7 @@ public class CharacterCard {
 
     /**
      * Remove the first NoEntryTile from {@link CharacterCard#noEntryTiles}.
+     *
      * @return The removed NoEntryTile.
      * @throws EmptyNoEntryListException If there is no more NoEntryTiles in {@link CharacterCard#noEntryTiles}.
      */

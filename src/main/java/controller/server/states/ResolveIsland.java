@@ -8,7 +8,7 @@ import model.board.IslandGroup;
 
 public abstract class ResolveIsland {
 
-    public void solveIsland(GameLobby tempLobby, int islandGroupID){
+    public void solveIsland(GameLobby tempLobby, int islandGroupID) {
         try {
             GameModel tempGame = tempLobby.getModel();
             int[] islandSum;

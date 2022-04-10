@@ -46,7 +46,7 @@ public class SchoolBoardTest {
     }
 
     @Test
-    public void removeFromEntrance(){
+    public void removeFromEntrance() {
         Student student = new Student(100, Color.RED);
         try {
             student = schoolBoard.removeFromEntrance(0);
@@ -58,7 +58,7 @@ public class SchoolBoardTest {
     }
 
     @Test
-    public void testDining(){
+    public void testDining() {
         try {
             schoolBoard.addToDiningRoom(schoolBoard.removeFromEntrance(0));
             schoolBoard.addToDiningRoom(schoolBoard.removeFromEntrance(1));
@@ -78,7 +78,7 @@ public class SchoolBoardTest {
     }
 
     @Test
-    public void testProfessor(){
+    public void testProfessor() {
         Professor professor = new Professor(Color.GREEN);
         assertEquals(0, schoolBoard.getProfessors().size());
         try {
@@ -106,7 +106,7 @@ public class SchoolBoardTest {
     }
 
     @Test
-    public void testTowers(){
+    public void testTowers() {
         schoolBoard.setUpTowers(TowerColor.BLACK, 2);
         assertEquals(8, schoolBoard.getTowers().size());
         try {

@@ -14,7 +14,7 @@ public class NoEntryTile {
     }
 
     /**
-     *Getter for the attribute {@link NoEntryTile#position}.
+     * Getter for the attribute {@link NoEntryTile#position}.
      */
     public int getPosition() {
         return position;
@@ -22,6 +22,7 @@ public class NoEntryTile {
 
     /**
      * Setter for the attribute {@link NoEntryTile#position}.
+     *
      * @param position Is the selected position.
      */
     public void setPosition(int position) {

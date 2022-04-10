@@ -16,10 +16,10 @@ public class StudentTest {
     }
 
     @Test
-    public void getStudent(){
-        assertTrue(student1.getID()==0);
-        assertTrue(student2.getID()==1);
-        assertTrue(student1.getColor()==Color.RED);
-        assertTrue(student2.getColor()==Color.BLUE);
+    public void getStudent() {
+        assertTrue(student1.getID() == 0);
+        assertTrue(student2.getID() == 1);
+        assertTrue(student1.getColor() == Color.RED);
+        assertTrue(student2.getColor() == Color.BLUE);
     }
 }

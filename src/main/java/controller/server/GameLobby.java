@@ -196,7 +196,7 @@ public class GameLobby implements NetworkObserver {
         if (clientList.size() == maxPlayers) {
             broadcast(new Message(Messages.ALL_CLIENTS_CONNECTED));
             setLobbyState(LobbyState.PRE_GAME);
-            Logger.debug("Lobby " + getLobbyCode() + " - "  + "All clients connected. Switching state to " + getLobbyState());
+            Logger.debug("Lobby " + getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
         }
 

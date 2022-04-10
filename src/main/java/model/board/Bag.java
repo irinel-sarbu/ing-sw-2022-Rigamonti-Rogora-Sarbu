@@ -47,7 +47,7 @@ public class Bag {
             studentIdCount += 1;
         }
 
-        for (int g = 0; g < green; g++){
+        for (int g = 0; g < green; g++) {
             this.studentList.add(new Student(studentIdCount, Color.GREEN));
             studentIdCount += 1;
         }
@@ -98,6 +98,12 @@ public class Bag {
         shuffle();
     }
 
+    /**
+     * Pulls a students from the {@link Bag}.
+     *
+     * @return The pulled student.
+     * @throws EmptyStudentListException If it is already empty.
+     */
     public Student pull() throws EmptyStudentListException {
         if (studentList.size() == 0) throw new EmptyStudentListException();
         shuffle();
@@ -121,9 +127,7 @@ public class Bag {
     }
 
     /**
-     * Overrides toString
-     *
-     * @return A string indicating number of remaining students by calling {@link Bag#toString(false)}
+     * Overrides toString.
      */
     @Override
     public String toString() {

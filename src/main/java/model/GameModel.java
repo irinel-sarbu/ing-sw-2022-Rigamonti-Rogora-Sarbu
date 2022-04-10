@@ -30,8 +30,9 @@ public class GameModel extends Observable {
 
     /**
      * Constructor of the GameModel, initializes all attributes.
+     *
      * @param maxNumOfPlayers Number of players chosen when the game is created. Can be 2 or 3.
-     * @param gameMode {@link GameMode} chosen when the game is created. Can be EXPERT or NORMAL.
+     * @param gameMode        {@link GameMode} chosen when the game is created. Can be EXPERT or NORMAL.
      */
     public GameModel(int maxNumOfPlayers, GameMode gameMode) {
         this.maxNumOfPlayers = maxNumOfPlayers;
@@ -80,7 +81,7 @@ public class GameModel extends Observable {
     }
 
     /**
-     *Getter for the attribute {@link GameModel#maxNumOfPlayers}.
+     * Getter for the attribute {@link GameModel#maxNumOfPlayers}.
      */
     public int getMaxNumOfPlayers() {
         return maxNumOfPlayers;
@@ -88,6 +89,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the size of {@link GameModel#players}.
+     *
      * @return The number of players added in the game when the method is called.
      */
     public int getPlayerSize() {
@@ -95,7 +97,7 @@ public class GameModel extends Observable {
     }
 
     /**
-     *Getter for the attribute {@link GameModel#gameMode}, of {@link GameMode} Type.
+     * Getter for the attribute {@link GameModel#gameMode}, of {@link GameMode} Type.
      */
     public GameMode getGameMode() {
         return gameMode;
@@ -103,6 +105,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the selected Player from {@link GameModel#players}.
+     *
      * @param id Is the ID correspondent to the position in the ArrayList of the selected Player.
      * @return The selected Player.
      * @throws PlayerNotFoundException If there is no Player with the given ID.
@@ -117,6 +120,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the ID of a selected Player from {@link GameModel#players}.
+     *
      * @param player Is the selected Player of {@link Player} Type.
      * @return The ID correspondent to the position in the ArrayList of the selected Player.
      */
@@ -126,6 +130,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the Unique names of Players contained in {@link GameModel#players}.
+     *
      * @return an ArrayList of Strings containing the names of the players.
      */
     public List<String> getPlayerNames() {
@@ -144,6 +149,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the selected Player from {@link GameModel#players}.
+     *
      * @param name Is the Unique name correspondent to the selected Player in {@link GameModel#players}.
      * @return The selected Player.
      * @throws PlayerNotFoundException If there is no Player with the given name.
@@ -159,6 +165,7 @@ public class GameModel extends Observable {
 
     /**
      * Adds a player to the attribute {@link GameModel#players}.
+     *
      * @param player Is the player that needs to be added.
      */
     public void addPlayer(Player player) {
@@ -170,6 +177,7 @@ public class GameModel extends Observable {
     /**
      * Removes the selected Player from {@link GameModel#players}.
      * Handles PlayerNotFoundException.
+     *
      * @param name Is the unique name correspondent to the selected player that needs to be removed.
      * @return True if the operation succeeded, False otherwise.
      */
@@ -209,6 +217,7 @@ public class GameModel extends Observable {
 
     /**
      * Draws the initial 7 students to the entrance of a selected Player.
+     *
      * @param player Is the selected player.
      */
     private void moveFromBagToEntrance(Player player) {
@@ -224,6 +233,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter of a selected IslandGroup from {@link GameModel#islandGroups}.
+     *
      * @param id Is the ID correspondent to the selected IslandGroup.
      * @return The selected IslandGroup.
      * @throws IslandGroupNotFoundException If there is no IslandGroup with the given ID.
@@ -236,6 +246,7 @@ public class GameModel extends Observable {
     /**
      * Getter of a selected IslandTile contained by one of the IslandGroups in {@link GameModel#islandGroups}.
      * Handles IslandNotFoundException.
+     *
      * @param id Is the unique ID of the selected IslandTile.
      * @return the selected IslandTile.
      */
@@ -250,6 +261,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the size of the attribute {@link GameModel#cloudTiles}.
+     *
      * @return The number of CloudTiles contained in {@link GameModel#cloudTiles}.
      */
     public int getNumOfCloudTiles() {
@@ -258,6 +270,7 @@ public class GameModel extends Observable {
 
     /**
      * Draws the students on the selected CloudTile by calling {@link GameModel#moveFromBagToCloudTile(CloudTile)}.
+     *
      * @param cloudTileID Is the ID correspondent to the selected CloudTile.
      */
     public void refillCloudTile(int cloudTileID) {
@@ -270,6 +283,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the selected CloudTile from {@link GameModel#cloudTiles}.
+     *
      * @param cloudTileID Is the ID correspondent to the selected CloudTile.
      * @return The selected CloudTile.
      */
@@ -279,6 +293,7 @@ public class GameModel extends Observable {
 
     /**
      * Draws {@link GameModel#maxNumOfPlayers} + 1 Students from the bag and puts them on the selected CloudTile.
+     *
      * @param cloudTile Is the selected CloudTile.
      * @throws TooManyStudentsException If the CloudTile is already full.
      */
@@ -295,6 +310,7 @@ public class GameModel extends Observable {
 
     /**
      * Move MotherNature of the selected number of steps and update her position.
+     *
      * @param steps Is the selected number of steps.
      */
     public void moveMotherNature(int steps) {
@@ -305,6 +321,7 @@ public class GameModel extends Observable {
     /**
      * Join left and right IslandGroups if Possible (the TowerColor is the same)
      * and Updates the IslandGroupID (which is their position in {@link GameModel#islandGroups}).
+     *
      * @param position Is the IslandGroupID of the selected IslandGroup to apply {@link GameModel#joinAdjacent(int)} to.
      */
     public void joinAdjacent(int position) {
@@ -315,12 +332,12 @@ public class GameModel extends Observable {
         try {
             islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
             islandGroups.remove(right);
-            if(right<position){
-                position=(position - 1 + islandGroups.size()) % (islandGroups.size());
-                left=(left - 1 + islandGroups.size()) % (islandGroups.size());
+            if (right < position) {
+                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
+                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
                 getMotherNature().progress(-1, islandGroups.size());
-            }else{
-                if(left>position)left=(left - 1 + islandGroups.size()) % (islandGroups.size());
+            } else {
+                if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
             }
             updateIslandGroupsID();
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
@@ -330,13 +347,13 @@ public class GameModel extends Observable {
         try {
             islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
             islandGroups.remove(left);
-            if(left>position){
-                left=(left - 1 + islandGroups.size()) % (islandGroups.size());
+            if (left > position) {
+                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
 
-            }else{
-                position=(position - 1 + islandGroups.size()) % (islandGroups.size());
-                left=(left - 1 + islandGroups.size()) % (islandGroups.size());
-                if(right>position)right=(right - 1 + islandGroups.size()) % (islandGroups.size());
+            } else {
+                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
+                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+                if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
                 getMotherNature().progress(-1, islandGroups.size());
             }
             updateIslandGroupsID();
@@ -358,8 +375,9 @@ public class GameModel extends Observable {
     /**
      * Move all students of a selected CloudTile to the Entrance of a selected Player.
      * Handles EntranceFullException.
+     *
      * @param cloudTile Is the selected CloudTile.
-     * @param player Is the selected Player.
+     * @param player    Is the selected Player.
      */
     public void moveFromCloudTileToEntrance(CloudTile cloudTile, Player player) {
         try {
@@ -378,6 +396,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the attribute {@link GameModel#unassignedProfessors}.
+     *
      * @return The set of Unassigned Professors.
      */
     public Set<Color> getUnassignedProfessors() {
@@ -386,6 +405,7 @@ public class GameModel extends Observable {
 
     /**
      * Remove the selected Professor from {@link GameModel#unassignedProfessors}.
+     *
      * @param color Is the {@link Color} correspondent to the selected Professor.
      * @return The selected Professor.
      * @throws ProfessorNotFoundException If there is no professor in {@link GameModel#unassignedProfessors} with the given Color.
@@ -408,6 +428,7 @@ public class GameModel extends Observable {
 
     /**
      * Select a random Character that is not already in the list of selected {@link GameModel#characters}.
+     *
      * @return The selected Character.
      */
     private CharacterCard getRandomCharacter() {
@@ -433,6 +454,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the randomly selected {@link GameModel#characters}.
+     *
      * @return The ArrayList of Characters.
      */
     public List<CharacterCard> getCharacters() {
@@ -441,6 +463,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter of the selected Character from {@link GameModel#characters}.
+     *
      * @param id Is the ID correspondent to the selected Character.
      * @return The selected Character.
      * @throws CharacterCardNotFound If there is no Character in {@link GameModel#characters} with the given ID.
@@ -454,6 +477,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter of the selected Character from {@link GameModel#characters}.
+     *
      * @param characterType Is the {@link CharacterType} correspondent to the selected Character.
      * @return The selected Character.
      * @throws CharacterCardNotFound If there is no Character in {@link GameModel#characters} with the given {@link CharacterType}.
@@ -470,6 +494,7 @@ public class GameModel extends Observable {
     /**
      * Sets the attribute {@link GameModel#activeCharacterEffect} to the {@link CharacterType}
      * of the active Character (null if none is active).
+     *
      * @param type Is the {@link CharacterType} correspondent to the active Character.
      */
     public void setActiveCharacterEffect(CharacterType type) {
@@ -485,6 +510,7 @@ public class GameModel extends Observable {
 
     /**
      * Getter for the size of {@link GameModel#islandGroups}.
+     *
      * @return The number of remaining IslandGroups.
      */
     public int getRemainingIslandGroups() {

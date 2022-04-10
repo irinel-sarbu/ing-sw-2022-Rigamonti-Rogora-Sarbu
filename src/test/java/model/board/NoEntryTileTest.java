@@ -11,9 +11,8 @@ import util.CharacterType;
 import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
+
 import static org.junit.jupiter.api.Assertions.*;
-
-
 
 
 public class NoEntryTileTest {
@@ -35,19 +34,19 @@ public class NoEntryTileTest {
     //setPosition is tested when added/removed from islandGroup
 
     @Test
-    public void getPositionOnIsland(){
+    public void getPositionOnIsland() {
         try {
             int print = game.getIslandGroupByID(0).removeNoEntry().getPosition();
-            assertTrue(print==-1);
+            assertTrue(print == -1);
         } catch (EmptyNoEntryListException e) {
             fail();
         }
     }
 
     @Test
-    public void getPositionOnGranny(){
+    public void getPositionOnGranny() {
         try {
-            assertTrue(grannyHerbs.removeNoEntryTile().getPosition()==-1);
+            assertTrue(grannyHerbs.removeNoEntryTile().getPosition() == -1);
         } catch (EmptyNoEntryListException e) {
             fail();
         }

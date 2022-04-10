@@ -11,7 +11,8 @@ public class Student {
 
     /**
      * Constructor of {@link Student}. Sets {@link Student#ID} and {@link Student#color} to the selected respective parameters.
-     * @param ID Is the ID correspondent to the newly created Student.
+     *
+     * @param ID    Is the ID correspondent to the newly created Student.
      * @param color Is the Color correspondent to the newly created Student.
      */
     public Student(int ID, Color color) {
@@ -20,7 +21,7 @@ public class Student {
     }
 
     /**
-     *Getter of the attribute {@link Student#ID}.
+     * Getter of the attribute {@link Student#ID}.
      */
     public int getID() {
         return ID;
@@ -28,6 +29,7 @@ public class Student {
 
     /**
      * Getter of the attribute {@link Student#color}.
+     *
      * @return
      */
     public Color getColor() {
