@@ -222,31 +222,134 @@ public class GameModelExpertTest {
 
     @Test
     public void joinAdjacent() {
-        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
         game.getIslandTileByID(1).setTowerColor(TowerColor.BLACK);
-        //join should now join islandGroup 0 and 1, and in the new 0 there should be Tile 0 and 1
-        //let's assume mother nature is on 0, and just turned the rook on 0 black
-        game.joinAdjacent(0);
+        game.getIslandTileByID(2).setTowerColor(TowerColor.BLACK);
+        //join should now join islandGroup 1 and 2, and in the new 1 there should be Tile 1 and 2
+        //let's assume mother nature is on 1, and just turned the rook on 1 black
+        game.joinAdjacent(1);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
         assertEquals(11, game.getRemainingIslandGroups());
-        assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
-        //now testing the right join
+        assertEquals(2, game.getIslandGroupByID(1).getIslands().size());
+        //now testing the left join
         game.getIslandTileByID(5).setTowerColor(TowerColor.BLACK);
         game.getIslandTileByID(6).setTowerColor(TowerColor.BLACK);
+        //5 cause position got -1 for the previous join
         game.joinAdjacent(5);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
         assertEquals(10, game.getRemainingIslandGroups());
         assertEquals(2, game.getIslandGroupByID(4).getIslands().size());
         //now testing both joins
         game.getIslandTileByID(7).setTowerColor(TowerColor.WHITE);
         game.getIslandTileByID(8).setTowerColor(TowerColor.WHITE);
         game.getIslandTileByID(9).setTowerColor(TowerColor.WHITE);
+        //2 cause position got -2 for the previous joins
         game.joinAdjacent(6);
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
         assertEquals(8, game.getRemainingIslandGroups());
         assertEquals(3, game.getIslandGroupByID(5).getIslands().size());
         System.out.println("------------->Join done successfully");
     }
+
+    @Test
+    public void joinAdjacentSpecialZeroLeft() {
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(11).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(0);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(11, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecialZeroRight() {
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(1).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(0);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(11, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecialZeroBoth() {
+        game.getIslandTileByID(11).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(1).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(0);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(10, game.getRemainingIslandGroups());
+        assertEquals(3, game.getIslandGroupByID(0).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecial11Left() {
+        game.getIslandTileByID(10).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(11).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(11);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(11, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(10).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecial11Right() {
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(11).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(11);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(11, game.getRemainingIslandGroups());
+        assertEquals(2, game.getIslandGroupByID(10).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecial11Both() {
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(10).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(11).setTowerColor(TowerColor.BLACK);
+        game.joinAdjacent(11);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(10, game.getRemainingIslandGroups());
+        assertEquals(3, game.getIslandGroupByID(9).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+    @Test
+    public void joinAdjacentSpecialNoJoin() {
+        game.joinAdjacent(5);
+        game.joinAdjacent(0);
+        game.getIslandTileByID(0).setTowerColor(TowerColor.BLACK);
+        game.getIslandTileByID(10).setTowerColor(TowerColor.WHITE);
+        game.getIslandTileByID(11).setTowerColor(TowerColor.GRAY);
+        game.joinAdjacent(11);
+        //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
+        //System.out.println("");
+        assertEquals(12, game.getRemainingIslandGroups());
+        assertEquals(1, game.getIslandGroupByID(11).getIslands().size());
+
+        System.out.println("------------->Special Join done successfully");
+    }
+
+
 
     @Test
     public void moveFromCloudTileToEntrance() {
