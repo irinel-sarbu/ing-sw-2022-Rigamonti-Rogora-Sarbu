@@ -2,6 +2,7 @@ package controller.server.states;
 
 import controller.server.GameLobby;
 import exceptions.PlayerNotFoundException;
+import exceptions.TowersIsEmptyException;
 import model.GameModel;
 import model.board.IslandGroup;
 
@@ -22,10 +23,11 @@ public abstract class ResolveIsland {
             playerPosition = playerID(islandSum);
             if (playerPosition != -1) {
                 tempIslandGroup.setTowersColor(tempGame.getPlayerByID(playerPosition).getColor());
+                tempGame.getPlayerByID(playerPosition).getSchoolBoard().removeTower();
             }
             // joins adjacent islandGroups
             tempGame.joinAdjacent(islandGroupID);
-        } catch (PlayerNotFoundException e) {
+        } catch (PlayerNotFoundException | TowersIsEmptyException e) {
             // TODO : write a line of text that notify the issue
         }
     }
