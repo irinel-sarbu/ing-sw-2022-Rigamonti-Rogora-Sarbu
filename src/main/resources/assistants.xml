@@ -1,61 +1,61 @@
 <?xml version="1.0"?>
 <assistants>
     <assistant>
-        <name>Leone</name>
+        <name>Lion</name>
         <value>1</value>
         <movements>1</movements>
     </assistant>
 
     <assistant>
-        <name>Oca</name>
+        <name>Goose</name>
         <value>2</value>
         <movements>1</movements>
     </assistant>
 
     <assistant>
-        <name>Gatto</name>
+        <name>Cat</name>
         <value>3</value>
         <movements>2</movements>
     </assistant>
 
     <assistant>
-        <name>Acquila</name>
+        <name>Eagle</name>
         <value>4</value>
         <movements>2</movements>
     </assistant>
 
     <assistant>
-        <name>Volpe</name>
+        <name>Fox</name>
         <value>5</value>
         <movements>3</movements>
     </assistant>
 
     <assistant>
-        <name>Serpente</name>
+        <name>Snake</name>
         <value>6</value>
         <movements>3</movements>
     </assistant>
 
     <assistant>
-        <name>Polpo</name>
+        <name>Octopus</name>
         <value>7</value>
         <movements>4</movements>
     </assistant>
 
     <assistant>
-        <name>Cane</name>
+        <name>Dog</name>
         <value>8</value>
         <movements>4</movements>
     </assistant>
 
     <assistant>
-        <name>Elefante</name>
+        <name>Elephant</name>
         <value>9</value>
         <movements>5</movements>
     </assistant>
 
     <assistant>
-        <name>Tartaruga</name>
+        <name>Tortoise</name>
         <value>10</value>
         <movements>5</movements>
     </assistant>
