@@ -50,13 +50,21 @@ public class GameLobby implements NetworkObserver {
     private final GameOver gameOver;
     private final CharacterEffectHandler characterEffectHandler;
 
+    /**
+     * Controller of the GameModel
+     *
+     * @param numOfPlayers How many players will play
+     * @param gameMode     Game mode
+     * @param code         Unique identifier of each lobby
+     */
     public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
+
         this.lobbyCode = code;
         this.maxPlayers = numOfPlayers;
         this.gameMode = gameMode;
         this.clientList = new HashMap<>();
 
-        this.lobbyState = LobbyState.INIT;
+        setLobbyState(LobbyState.INIT);
 
         this.model = new GameModel(maxPlayers, this.gameMode);
         this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
@@ -84,20 +92,64 @@ public class GameLobby implements NetworkObserver {
         this.characterEffectHandler = new CharacterEffectHandler();
     }
 
+    /**
+     * Set net Lobby state
+     *
+     * @param newState New {@link LobbyState}
+     */
     public void setLobbyState(LobbyState newState) {
         this.lobbyState = newState;
     }
 
+    /**
+     * Get current Lobby state
+     *
+     * @return {@link LobbyState}
+     */
     public LobbyState getLobbyState() {
         return this.lobbyState;
     }
 
     @Override
-    public void onNetworkEvent(Tuple<Event, ClientSocketConnection> event) {
-        EventDispatcher dp = new EventDispatcher(event);
+    public void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
+        EventDispatcher dp = new EventDispatcher(networkEvent);
+
+        switch (lobbyState) {
+            case INIT -> initState(networkEvent);
+            case PRE_GAME -> preGameState(networkEvent);
+            case IN_GAME -> inGameState(networkEvent);
+            case END -> endGameState(networkEvent);
+        }
 
         dp.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
         dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
+    }
+
+    // LOBBY STATES
+
+    /**
+     * Handling of lobby init state
+     *
+     * @param networkEvent Event from active player
+     */
+    private void initState(Tuple<Event, ClientSocketConnection> networkEvent) {
+        // In this state a player can disconnect at any time (if players are 3)
+        // If the only player in lobby disconnects, lobby is destroyed
+        EventDispatcher initDispatcher = new EventDispatcher(networkEvent);
+
+
+    }
+
+    private void preGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
+
+    }
+
+    private void inGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
+
+    }
+
+    private void endGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
+
     }
 
     /**
@@ -127,36 +179,54 @@ public class GameLobby implements NetworkObserver {
         }
     }
 
+    /**
+     * Get current lobby code
+     */
     public String getLobbyCode() {
         return lobbyCode;
     }
 
     public void addClientToLobby(String name, ClientSocketConnection client) {
-        if (model.getPlayerSize() >= maxPlayers) {
-            client.asyncSend(new Message(Messages.LOBBY_FULL));
-            Logger.warning("Player " + name + " trying to connect but lobby is full.");
+        clientList.put(name, client);
+        client.joinLobby(getLobbyCode());
+
+        client.asyncSend(new ELobbyJoined(lobbyCode));
+        broadcastExceptOne(new EPlayerJoined(name), name);
+
+        if (clientList.size() == maxPlayers) {
+            broadcast(new Message(Messages.ALL_CLIENTS_CONNECTED));
+            setLobbyState(LobbyState.PRE_GAME);
+            Logger.debug("Lobby " + getLobbyCode() + " - "  + "All clients connected. Switching state to " + getLobbyState());
+            setupPreGame();
         }
 
-        try {
-            Player player = model.getPlayerByName(name);
-            if (player.isDisconnected()) {
-                clientList.put(name, client);
-                client.joinLobby(lobbyCode);
-                model.getPlayerByName(name).setDisconnected(false);
-                broadcastExceptOne(new EPlayerJoined(name), name);
-                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
-            } else {
-                client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
-                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
-            }
-        } catch (PlayerNotFoundException e) {
-            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
-            clientList.put(name, client);
-            client.joinLobby(lobbyCode);
-            client.asyncSend(new ELobbyJoined(lobbyCode));
-            broadcastExceptOne(new EPlayerJoined(name), name);
-            client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
-        }
+        // TODO: Resilience to disconnections
+
+//        if (model.getPlayerSize() >= maxPlayers) {
+//            client.asyncSend(new Message(Messages.LOBBY_FULL));
+//            Logger.warning("Player " + name + " trying to connect but lobby is full.");
+//        }
+//
+//        try {
+//            Player player = model.getPlayerByName(name);
+//            if (player.isDisconnected()) {
+//                clientList.put(name, client);
+//                client.joinLobby(lobbyCode);
+//                model.getPlayerByName(name).setDisconnected(false);
+//                broadcastExceptOne(new EPlayerJoined(name), name);
+//                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
+//            } else {
+//                client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+//                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
+//            }
+//        } catch (PlayerNotFoundException e) {
+//            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
+//            clientList.put(name, client);
+//            client.joinLobby(lobbyCode);
+//            client.asyncSend(new ELobbyJoined(lobbyCode));
+//            broadcastExceptOne(new EPlayerJoined(name), name);
+//            client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
+//        }
     }
 
     public void removeClientFromLobbyByName(String name) {
@@ -181,6 +251,12 @@ public class GameLobby implements NetworkObserver {
             }
         }
         return null;
+    }
+
+    // TODO: rename this section
+
+    private void setupPreGame() {
+
     }
 
     // Handlers

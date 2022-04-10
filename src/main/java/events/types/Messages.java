@@ -8,6 +8,7 @@ public class Messages {
     public static final String NAME_NOT_AVAILABLE = "Name not available";
 
     public static final String CLIENT_DISCONNECTED = "Client disconnected";
+    public static final String ALL_CLIENTS_CONNECTED = "All clients connected";
 
     public static final String TURN_OVER = "Turn over";
 

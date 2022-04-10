@@ -48,19 +48,6 @@ public class ServerController implements NetworkObserver {
         throw new LobbyNotFoundException("Lobby with id " + code + " not found.");
     }
 
-    /**
-     * Creates a new Lobby
-     *
-     * @param numOfPlayers Max players of the lobby
-     * @param gameMode     NORMAL or EXPERT
-     * @return Lobby code
-     */
-    public GameLobby createLobby(int numOfPlayers, GameMode gameMode) {
-        String code = generateLobbyCode();
-        games.put(code, new GameLobby(numOfPlayers, gameMode, code));
-        return games.get(code);
-    }
-
     @Override
     public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
         EventDispatcher dp = new EventDispatcher(networkEvent);
@@ -109,12 +96,33 @@ public class ServerController implements NetworkObserver {
         return true;
     }
 
+    // Lobby creation
+
+    /**
+     * {@link ECreateLobbyRequest} handler
+     */
     private boolean onCreateLobbyRequest(ECreateLobbyRequest event, ClientSocketConnection client) {
         GameLobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
         createdLobby.addClientToLobby(event.getPlayerName(), client);
         return true;
     }
 
+    /**
+     * Creates a new Lobby
+     *
+     * @param numOfPlayers Max players of the lobby
+     * @param gameMode     NORMAL or EXPERT
+     * @return Lobby code
+     */
+    private GameLobby createLobby(int numOfPlayers, GameMode gameMode) {
+        String code = generateLobbyCode();
+        games.put(code, new GameLobby(numOfPlayers, gameMode, code));
+        return games.get(code);
+    }
+
+    /**
+     * {@link EJoinLobbyRequest} handler
+     */
     private boolean onJoinLobbyRequest(EJoinLobbyRequest event, ClientSocketConnection client) {
         GameLobby lobby = null;
         try {
@@ -122,9 +130,26 @@ public class ServerController implements NetworkObserver {
         } catch (LobbyNotFoundException e) {
             Logger.warning(e.getMessage());
             client.asyncSend(new Message(Messages.LOBBY_NOT_FOUND));
+            return true;
         }
 
-        lobby.addClientToLobby(event.getPlayerName(), client);
+        switch (lobby.getLobbyState()) {
+            case INIT -> {
+                if (lobby.getClientByName(event.getPlayerName()) != null) {
+                    Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
+                    client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+                    return true;
+                }
+
+                lobby.addClientToLobby(event.getPlayerName(), client);
+            }
+
+            case PRE_GAME, IN_GAME, END -> {
+                client.asyncSend(new Message(Messages.LOBBY_FULL));
+                Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
+            }
+        }
+
         return true;
     }
 }

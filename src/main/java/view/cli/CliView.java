@@ -30,7 +30,6 @@ public class CliView extends View {
     private String readString(String defaultValue) {
         String string;
         string = scanner.nextLine();
-
         return string.isBlank() ? defaultValue : string;
     }
 
@@ -75,6 +74,10 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert your name >>> ");
             insertedName = readString("");
+
+            if(insertedName.equals("wwssadadba")) {
+                displayMessage("I know you know...");
+            }
         } while (insertedName.isBlank());
 
         return insertedName;
