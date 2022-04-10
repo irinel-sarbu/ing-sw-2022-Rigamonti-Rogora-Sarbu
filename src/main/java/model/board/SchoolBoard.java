@@ -22,7 +22,7 @@ public class SchoolBoard {
     private final Player owner;
 
     public SchoolBoard(Player player) {
-        this.coins = new CoinSupply();
+        this.coins = new CoinSupply(0);
         this.entrance = new ArrayList<>();
         this.diningRoom = new ArrayList<>();
         for (int i = 0; i < Color.values().length; i++) {

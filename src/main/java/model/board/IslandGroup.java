@@ -55,8 +55,8 @@ public class IslandGroup {
     }
 
     public void addNoEntry(NoEntryTile noEntryTile) {
-        noEntry.push(noEntryTile);
         noEntryTile.setPosition(islandGroupID);
+        noEntry.push(noEntryTile);
     }
 
     public NoEntryTile removeNoEntry() throws EmptyNoEntryListException {
