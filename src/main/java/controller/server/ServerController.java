@@ -19,11 +19,21 @@ public class ServerController implements NetworkObserver {
     private final Map<String, GameLobby> games;
     private final Server server;
 
+    /**
+     * Main controller class constructor
+     *
+     * @param server server instance to connect this controller to
+     */
     public ServerController(Server server) {
         this.games = new ConcurrentHashMap<>();
         this.server = server;
     }
 
+    /**
+     * Randomly generate unique lobby code
+     *
+     * @return an unique {@link String} of 5 alphanumeric characters associated to a lobby
+     */
     private String generateLobbyCode() {
         String lobbyCode;
         do {
@@ -34,12 +44,11 @@ public class ServerController implements NetworkObserver {
     }
 
     /**
-     * Searches Lobby by code.
-     * Returns Lobby if found.
-     * Returns null if Lobby not found.
+     * Get a lobby instance by its unique code
      *
-     * @param code Lobby code
-     * @return Lobby | null
+     * @param code the code of the lobby to search for
+     * @return a {@link GameLobby} associated to the specified code
+     * @throws LobbyNotFoundException if lobby code is not found
      */
     public GameLobby getLobbyByCode(String code) throws LobbyNotFoundException {
         GameLobby ret = games.get(code);
@@ -48,6 +57,16 @@ public class ServerController implements NetworkObserver {
         throw new LobbyNotFoundException("Lobby with id " + code + " not found.");
     }
 
+    /**
+     * React when an {@link Event} is raised:
+     * if the event is a network event dispatch it, otherwise pass the event to the respective {@link GameLobby}
+     * Network events comprehends:
+     * - Creating a new lobby
+     * - Joining an existing lobby
+     * - React to a ping message to detect client disconnections
+     *
+     * @param networkEvent the event to react to
+     */
     @Override
     public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
         EventDispatcher dp = new EventDispatcher(networkEvent);

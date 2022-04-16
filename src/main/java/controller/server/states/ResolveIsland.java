@@ -8,6 +8,12 @@ import model.board.IslandGroup;
 
 public abstract class ResolveIsland {
 
+    /**
+     * Calculate influence on an island and substitute towers if needed
+     *
+     * @param tempLobby     lobby the command is referring to
+     * @param islandGroupID ID of the island group to resolve
+     */
     public void solveIsland(GameLobby tempLobby, int islandGroupID) {
         try {
             GameModel tempGame = tempLobby.getModel();
@@ -32,8 +38,19 @@ public abstract class ResolveIsland {
         }
     }
 
+    /**
+     * Abstract method: check the influence of each player on the specified island group
+     *
+     * @param tempLobby       current gameLobby
+     * @param tempGame        current gameModel
+     * @param tempIslandGroup island group to resolve
+     * @param computeTowers   // TODO: (should be omitted) specify if towers need to be computed
+     * @return a vector containing influence of each player
+     * @throws PlayerNotFoundException should never happen
+     */
     protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException;
 
+    // Have no idea what this function does
     protected int playerID(int[] islandSum) {
         int max1 = 0, max2 = 0;
         int pos = 0;

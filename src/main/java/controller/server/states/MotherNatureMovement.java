@@ -10,6 +10,13 @@ import util.GameState;
 
 
 public abstract class MotherNatureMovement {
+    /**
+     * Abstract method: move mother nature by the specified number of steps
+     *
+     * @param tempLobby current lobby
+     * @param steps     steps to move mother nature
+     * @throws IllegalMovementException the specified movement exceed the maximum possible
+     */
     public abstract void moveMotherNature(GameLobby tempLobby, int steps) throws IllegalMovementException;
 
     protected void nextState(GameLobby tempLobby) {

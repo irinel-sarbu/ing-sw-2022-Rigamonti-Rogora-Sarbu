@@ -7,6 +7,16 @@ import util.GameState;
 
 public class TurnEpilogue {
 
+    // FIXME: may be GameOver should be called at the end of the next turn, not this one if bag is empty after the full students replacement
+
+    /**
+     * Check if game over should be called, conditions are:
+     * - empty bag at the end of the turn
+     * - a player's assistant deck is empty
+     *
+     * @param thisGame {@link GameLobby} to inspect
+     * @return true if game over should be called, false otherwise
+     */
     private boolean checkGameOver(GameLobby thisGame) {
         return thisGame.getModel().getBag().isEmpty() ||
                 thisGame.getOrder().stream().anyMatch(player -> player.getAssistants().size() == 0);
@@ -15,14 +25,15 @@ public class TurnEpilogue {
     /**
      * At the end of the turn, player chooses a cloud tile and moves students to own entrance.
      *
-     * @param thisGame
-     * @param actingPlayer
-     * @param cloudTilePos
-     * @throws WrongPhaseException
-     * @throws WrongPlayerException
-     * @throws NoCloudTileException
-     * @throws EntranceFullException
+     * @param thisGame     lobby the action is referring to
+     * @param actingPlayer player giving the command
+     * @param cloudTilePos index of cloud tile selected to pick student from
+     * @throws WrongPhaseException   the game is not in the proper phase to performs this action
+     * @throws WrongPlayerException  the acting player does not have the right to act at this moment
+     * @throws NoCloudTileException  the selected cloud tile does not exist
+     * @throws EntranceFullException player's entrance is full
      */
+    // TODO: when EntranceFullException is thrown, asks the player to select which students to keep in its entrance
     public void refillFromCloudTile(GameLobby thisGame, Player actingPlayer, int cloudTilePos)
             throws WrongPhaseException, WrongPlayerException, NoCloudTileException, EntranceFullException {
 

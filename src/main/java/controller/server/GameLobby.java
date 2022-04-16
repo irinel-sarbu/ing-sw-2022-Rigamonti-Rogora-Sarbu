@@ -181,11 +181,19 @@ public class GameLobby implements NetworkObserver {
 
     /**
      * Get current lobby code
+     *
+     * @return a 5 characters alphanumeric string representing the game lobby
      */
     public String getLobbyCode() {
         return lobbyCode;
     }
 
+    /**
+     * Add a client to this game lobby with the specified name
+     *
+     * @param name   nickname of the player to add to the game lobby
+     * @param client reference to the client connection to attach to this lobby
+     */
     public void addClientToLobby(String name, ClientSocketConnection client) {
         clientList.put(name, client);
         client.joinLobby(getLobbyCode());
@@ -229,6 +237,11 @@ public class GameLobby implements NetworkObserver {
 //        }
     }
 
+    /**
+     * Remove a client from the current lobby, using it's nickname
+     *
+     * @param name nickname of the player to remove
+     */
     public void removeClientFromLobbyByName(String name) {
         clientList.remove(name);
 
@@ -240,10 +253,24 @@ public class GameLobby implements NetworkObserver {
         }
     }
 
+    /**
+     * Get client by name
+     * Inverse of {@link GameLobby#getClientBySocket(ClientSocketConnection)}
+     *
+     * @param name player nickname to search for
+     * @return instance of the client associated to the specified name
+     */
     public ClientSocketConnection getClientByName(String name) {
         return clientList.get(name);
     }
 
+    /**
+     * Get nickname by connection
+     * Inverse of {@link GameLobby#getClientByName(String)}
+     *
+     * @param clientSocket socket to search for associated name
+     * @return nickname of the player associated to the socket
+     */
     public String getClientBySocket(ClientSocketConnection clientSocket) {
         for (Map.Entry<String, ClientSocketConnection> client : clientList.entrySet()) {
             if (client.getValue().equals(clientSocket)) {
@@ -261,6 +288,13 @@ public class GameLobby implements NetworkObserver {
 
     // Handlers
 
+    /**
+     * Add player to the current game with the selected wizard back if available, otherwise respond with an {@link EWizardNotAvailable} event
+     *
+     * @param event  event to react to
+     * @param client client sending the message
+     * @return true
+     */
     public boolean playerHasChosenWizard(EWizardChosen event, ClientSocketConnection client) {
         Wizard choice = event.getWizard();
 
@@ -278,6 +312,14 @@ public class GameLobby implements NetworkObserver {
         return true;
     }
 
+    /**
+     * When a player activate a character effect check its status as active for this turn if it's a passive character,
+     * performs respective actions when an active character is activated
+     *
+     * @param event  event to react to
+     * @param client client sending the event
+     * @return true
+     */
     public boolean playerHasActivatedEffect(EUseCharacterEffect event, ClientSocketConnection client) {
         if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
             client.asyncSend(new Message(Messages.WRONG_PHASE));
@@ -315,29 +357,57 @@ public class GameLobby implements NetworkObserver {
     // TODO: rename block of functions with something more accurate
     // Other functions
 
+    /**
+     * Notify game start when the lobby is full
+     */
     private void checkReadyPlayers() {
         if (model.getPlayerSize() == maxPlayers) {
             broadcast(new Message(Messages.GAME_STARTED));
         }
     }
 
+    /**
+     * Get the current game state
+     *
+     * @return a {@link GameState} reference to {@link GameLobby#currentGameState}
+     */
     public GameState getCurrentGameState() {
         return currentGameState;
     }
 
+    /**
+     * Set the next game state, also reset current active player
+     *
+     * @param nextGameState the game state to enter
+     */
     public void setGameState(GameState nextGameState) {
         this.currentGameState = nextGameState;
         currentPlayer = (currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder).get(0);
     }
 
+    /**
+     * Get the only player who can act at this moment
+     *
+     * @return a {@link Player} reference to {@link GameLobby#currentPlayer}
+     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
+    /**
+     * Set the player who can act
+     *
+     * @param player reference to the player who can act at this moment
+     */
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
     }
 
+    /**
+     * Move the control to the next player and deactivate all characters
+     *
+     * @return true if a next player exists in this game phase, false otherwise
+     */
     public boolean setNextPlayer() {
         currentPlayer = getNextPlayer();
         turnProgress++;
@@ -346,22 +416,43 @@ public class GameLobby implements NetworkObserver {
         return currentPlayer != null;
     }
 
+    /**
+     * Get number of students moved in this phase
+     *
+     * @return {@link GameLobby#studentsMoved}
+     */
     public int getStudentsMoved() {
         return studentsMoved;
     }
 
+    /**
+     * Increment the number of the moved students in this phase by 1
+     */
     public void addStudentsMoved() {
         this.studentsMoved += 1;
     }
 
+    /**
+     * Reset to 0 the number of students moved in this phase
+     */
     public void resetStudentsMoved() {
         this.studentsMoved = 0;
     }
 
+    /**
+     * Get the maximum number of students moved
+     *
+     * @return an integer representing the maximum amount of movable student by the current player during this phase
+     */
     public int getMaxStudentsMoved() {
         return model.getMaxNumOfPlayers() + 1;
     }
 
+    /**
+     * Get the next acting player following current phase order
+     *
+     * @return a reference of type {@link Player} referring to the next acting player, null if there is no next player
+     */
     public Player getNextPlayer() {
         List<Player> turns = currentGameState == GameState.PLANNING ?
                 planningPhaseOrder :
@@ -370,15 +461,43 @@ public class GameLobby implements NetworkObserver {
         else return turns.get(turns.indexOf(currentPlayer) + 1);
     }
 
+    /**
+     * Get order of the players in the current game phase
+     *
+     * @return a {@link List<Player>} containing all acting players in this phase in order
+     */
     public List<Player> getOrder() {
         return currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder;
     }
 
+    /**
+     * Set the playing order for the planning phase and the next action phase
+     *
+     * @param actionOrder A {@link List<Player>} containing the reference to the players in the action phase order
+     */
+    public void setOrder(List<Player> actionOrder) {
+        actionPhaseOrder = new ArrayList<>(actionOrder);
+        nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
+        Collections.reverse(nextPlanningPhaseOrder);
+    }
+
+    /**
+     * Check if the current player is the last one in this phase
+     *
+     * @param players the player to check
+     * @return true if the specified player is the last one, false otherwise
+     */
     public boolean isLastPlayer(List<Player> players) {
         int index = players.indexOf(currentPlayer);
         return index == players.size() - 1;
     }
 
+    /**
+     * Performs all actions needed to switch to the next turn:
+     * - deactivate all characters and reset default strategies
+     * - reset game phase to planning and set the next planning order
+     * - get the new firs player
+     */
     public void nextTurn() {
         // Reset defaults before turn start
         model.setActiveCharacterEffect(null);
@@ -396,28 +515,49 @@ public class GameLobby implements NetworkObserver {
         turnProgress = 1;
     }
 
+    /**
+     * Get the {@link GameModel} associated to this lobby
+     *
+     * @return {@link GameLobby#model}
+     */
     public GameModel getModel() {
         return model;
     }
 
-    public void setOrder(List<Player> actionOrder) {
-        actionPhaseOrder = new ArrayList<>(actionOrder);
-        nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
-        Collections.reverse(nextPlanningPhaseOrder);
-    }
-
+    /**
+     * Check if the command sent by the player is referring to the wrong phase
+     *
+     * @param gameState the {@link GameState} the game should be in to accept the command
+     * @return true if the game is NOT in the specified state, false otherwise
+     */
     public boolean wrongState(GameState gameState) {
         return !this.getCurrentGameState().equals(gameState);
     }
 
+    /**
+     * Check if the player who sent a command is the one who should act at the moment
+     *
+     * @param player a reference to the player who is sending the command
+     * @return true if the command does NOT come from the expected player, false otherwise
+     */
     public boolean wrongPlayer(Player player) {
         return !this.getCurrentPlayer().equals(player);
     }
 
+    /**
+     * The current strategy to resolve islands
+     *
+     * @return a reference to {@link ResolveIsland} pointing to the current strategy to resolve islands
+     */
     public ResolveIsland getResolveIsland() {
         return resolveIsland;
     }
 
+    /**
+     * Get the game over instance
+     *
+     * @return a reference to this lobby game over instance
+     */
     public GameOver getGameOver() {
         return gameOver;
     }

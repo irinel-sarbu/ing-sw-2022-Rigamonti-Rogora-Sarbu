@@ -8,6 +8,12 @@ import util.GameState;
 
 public class GameOver {
 
+    /**
+     * Determine the player with less towers or more professors on school board to declare winner
+     *
+     * @param tempLobby current game
+     */
+    // TODO: still does not performs any action to declare the winner
     public void selectWinner(GameLobby tempLobby) {
         try {
             GameModel tempGame = tempLobby.getModel();
