@@ -11,6 +11,7 @@ import util.CharacterType;
 import util.Color;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * When the client activates a character effect, the event handler will call one of the methods Below.
@@ -78,7 +79,7 @@ public class CharacterEffectHandler {
     // CLIENT checks that size is at most 3
     // the arrayLists are as follows (example 2 students exchanged): eS [13][45]  jS[87][24] containing
     // student IDS, 13 is exchanged with 87 and 45 is exchanged with 24
-    public void jesterEffect(GameLobby tempLobby, ArrayList<Integer> entranceStudents, ArrayList<Integer> jesterStudents) throws LengthMismatchException {
+    public void jesterEffect(GameLobby tempLobby, List<Integer> entranceStudents, List<Integer> jesterStudents) throws LengthMismatchException {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.JESTER);
@@ -98,7 +99,7 @@ public class CharacterEffectHandler {
     }
 
     // CLIENT checks that size is at most 2
-    public void minstrelEffect(GameLobby tempLobby, ArrayList<Integer> entranceStudents, ArrayList<Color> diningStudents) {
+    public void minstrelEffect(GameLobby tempLobby, List<Integer> entranceStudents, List<Color> diningStudents) {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MINSTREL);

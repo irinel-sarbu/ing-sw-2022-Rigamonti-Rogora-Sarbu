@@ -331,10 +331,14 @@ public class GameLobby implements NetworkObserver {
             return true;
         }
 
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
         switch (event.getCharacterType()) {
-            case POSTMAN -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
-                CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+            case MONK -> {
+                //Casting of EUseCharacterEffect -> EUseMonkEffect, Objects which type is EUseMonkEffect have studentID and islandPos Attributes.
+                EUseMonkEffect monkEvent = (EUseMonkEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.MONK);
 
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
@@ -342,15 +346,193 @@ public class GameLobby implements NetworkObserver {
                     client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
+                model.getCoinSupply().addCoins(card.getCost());
 
+                characterEffectHandler.monkEffect(this, monkEvent.getStudentID(), monkEvent.getIslandPos());
+                model.setActiveCharacterEffect(CharacterType.MONK);
+            }
+            case FARMER -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.FARMER);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.farmerEffect(this);
+                model.setActiveCharacterEffect(CharacterType.FARMER);
+                studentMovement = new FarmerStudentMovement();
+            }
+            case HERALD -> {
+                //Casting of EUseCharacterEffect -> EUseHeraldEffect
+                EUseHeraldEffect heraldEvent = (EUseHeraldEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.HERALD);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.heraldEffect(this, heraldEvent.getIslandGroupID());
+                model.setActiveCharacterEffect(CharacterType.HERALD);
+            }
+            case POSTMAN -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
                 model.getCoinSupply().addCoins(card.getCost());
 
                 characterEffectHandler.postmanEffect(this);
                 model.setActiveCharacterEffect(CharacterType.POSTMAN);
                 motherNatureMovement = new PostmanMotherNatureMovement();
             }
-        }
+            case GRANNY_HERBS -> {
+                //Casting of EUseCharacterEffect -> EUseGrannyEffect
+                EUseGrannyEffect grannyEvent = (EUseGrannyEffect) event;
 
+                CharacterCard card = model.getCharacterByType(CharacterType.GRANNY_HERBS);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.grannyHerbsEffect(this, grannyEvent.getIslandID());
+                model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
+            }
+            case CENTAUR -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.CENTAUR);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.centaurEffect(this);
+                model.setActiveCharacterEffect(CharacterType.CENTAUR);
+                resolveIsland = new CentaurResolveIsland();
+            }
+            case JESTER -> {
+                //Casting of EUseCharacterEffect -> EUseJesterEffect
+                EUseJesterEffect jesterEvent = (EUseJesterEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.JESTER);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.jesterEffect(this, jesterEvent.getEntranceStudents(), jesterEvent.getJesterStudents());
+                model.setActiveCharacterEffect(CharacterType.JESTER);
+            }
+            case MINSTREL -> {
+                //Casting of EUseCharacterEffect -> EUseMinstrelEffect
+                EUseMinstrelEffect minstrelEvent = (EUseMinstrelEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.MINSTREL);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.minstrelEffect(this, minstrelEvent.getEntranceStudents(), minstrelEvent.getDiningStudents());
+                model.setActiveCharacterEffect(CharacterType.MINSTREL);
+            }
+            case KNIGHT -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.KNIGHT);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.knightEffect(this);
+                model.setActiveCharacterEffect(CharacterType.KNIGHT);
+                resolveIsland = new KnightResolveIsland();
+            }
+            case PRINCESS -> {
+                //Casting of EUseCharacterEffect -> EUsePrincessEffect
+                EUsePrincessEffect princessEvent = (EUsePrincessEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.PRINCESS);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.princessEffect(this, princessEvent.getStudentID());
+                model.setActiveCharacterEffect(CharacterType.PRINCESS);
+            }
+            case MUSHROOM_FANATIC -> {
+                //Casting of EUseCharacterEffect -> EUseFanaticEffect
+                EUseFanaticEffect fanaticEvent = (EUseFanaticEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.mushroomFanaticEffect(this, fanaticEvent.getColor());
+                model.setActiveCharacterEffect(CharacterType.MUSHROOM_FANATIC);
+                resolveIsland = new MushroomFanaticResolveIsland();
+            }
+            case THIEF -> {
+                //Casting of EUseCharacterEffect -> EUseThiefEffect
+                EUseThiefEffect thiefEvent = (EUseThiefEffect) event;
+
+                CharacterCard card = model.getCharacterByType(CharacterType.THIEF);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.thiefEffect(this, thiefEvent.getColor());
+                model.setActiveCharacterEffect(CharacterType.THIEF);
+            }
+        }
+        client.asyncSend(new Message(Messages.EFFECT_USED));
         return true;
     }
 
