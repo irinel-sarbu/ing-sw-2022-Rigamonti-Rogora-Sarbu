@@ -6,6 +6,7 @@ public enum EventType {
     CREATE_LOBBY_REQUEST,
     JOIN_LOBBY_REQUEST,
     WIZARD_CHOSEN,
+    PLAYER_CHOOSING,
 
     // Handled on client, Sent by server
     LOBBY_JOINED,
@@ -14,6 +15,7 @@ public enum EventType {
 
     CHOOSE_WIZARD,
     WIZARD_NOT_AVAILABLE,
+    USE_CHARACTER_EFFECT,
 
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,

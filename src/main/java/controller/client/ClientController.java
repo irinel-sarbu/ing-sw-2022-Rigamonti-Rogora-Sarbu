@@ -25,11 +25,14 @@ public class ClientController implements Observer {
         EventDispatcher dp = new EventDispatcher(event);
 
         // Server events
+        dp.dispatch(EventType.PING, (Event e) -> onPing((Ping) e));
         dp.dispatch(EventType.MESSAGE, (Event e) -> onMessage((Message) e));
 
         dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((ELobbyJoined) e));
         dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((EPlayerJoined) e));
         dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((EPlayerDisconnected) e));
+
+        dp.dispatch(EventType.PLAYER_CHOOSING, (Event e) -> onPlayerChoosing((EPlayerChoosing) e));
 
         dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
         dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
@@ -39,6 +42,15 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
         dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
+
+        if (!event.isHandled()) {
+            view.displayError("Unhandled event " + event);
+        }
+    }
+
+    private boolean onPing(Ping ping) {
+        // Do nothing, just a check by the server
+        return true;
     }
 
     private boolean onMessage(Message message) {
@@ -61,6 +73,12 @@ public class ClientController implements Observer {
                 view.displayError("Player name already taken. Try again.");
                 view.chooseCreateOrJoin();
             }
+            case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
+
+            default -> {
+                return false;
+            }
+
         }
 
         return true;
@@ -104,6 +122,7 @@ public class ClientController implements Observer {
     private boolean onLobbyJoined(ELobbyJoined event) {
         this.lobbyCode = event.getCode();
         view.displayMessage("Joined lobby " + event.getCode());
+        view.displayMessage("Waiting for other players to connect...");
         return true;
     }
 
@@ -116,10 +135,18 @@ public class ClientController implements Observer {
     }
 
     /**
-     * A new Client connected to the same Lobby
+     * Client disconnected from lobby
      */
     private boolean onPlayerDisconnected(EPlayerDisconnected event) {
         view.displayMessage(event.getPlayerName() + " left the Lobby!");
+        return true;
+    }
+
+    private boolean onPlayerChoosing(EPlayerChoosing event) {
+        switch(event.getChoiceType()) {
+            case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
+        }
+
         return true;
     }
 

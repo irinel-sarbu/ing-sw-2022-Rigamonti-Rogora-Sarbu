@@ -24,4 +24,9 @@ public class Tuple<K, V> implements Entry<K, V> {
         this.value = value;
         return oldValue;
     }
+
+    @Override
+    public String toString() {
+        return "{ " + key + ", " + value + " }";
+    }
 }

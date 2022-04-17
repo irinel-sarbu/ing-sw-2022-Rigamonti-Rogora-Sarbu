@@ -59,10 +59,15 @@ public class Logger {
         System.out.println("\t" + msg);
     }
 
+    private static String getCallerClassName() {
+        StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
+        return ste.getClassName();
+    }
+
     public static void debug(String... msg) {
         if (LoggerLevel.DEBUG.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_WHITE_UNDERLINED + "DEBUG" + ANSI_RESET + "   - " + msg[0]);
+            get().print(date + " - " + TEXT_WHITE_UNDERLINED + "DEBUG" + ANSI_RESET + "   - " + getCallerClassName() + " - " + msg[0]);
             for (int i = 1; i < msg.length; i++) {
                 get().printIndented(msg[i]);
             }
@@ -72,7 +77,7 @@ public class Logger {
     public static void info(String... msg) {
         if (LoggerLevel.INFO.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
-            get().print(date + " - INFO    - " + msg[0]);
+            get().print(date + " - INFO    - " + getCallerClassName() + " - " + msg[0]);
             for (int i = 1; i < msg.length; i++) {
                 get().printIndented(msg[i]);
             }
@@ -82,7 +87,7 @@ public class Logger {
     public static void warning(String... msg) {
         if (LoggerLevel.WARNING.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_YELLOW + "WARNING" + ANSI_RESET + " - " + msg[0]);
+            get().print(date + " - " + TEXT_YELLOW + "WARNING" + ANSI_RESET + " - " + getCallerClassName() + " - " + msg[0]);
             for (int i = 1; i < msg.length; i++) {
                 get().printIndented(msg[i]);
             }
@@ -92,7 +97,7 @@ public class Logger {
     public static void error(String... msg) {
         if (LoggerLevel.ERROR.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_RED + "ERROR" + ANSI_RESET + "   - " + msg[0]);
+            get().print(date + " - " + TEXT_RED + "ERROR" + ANSI_RESET + "   - " + getCallerClassName() + " - " + msg[0]);
             for (int i = 1; i < msg.length; i++) {
                 get().printIndented(msg[i]);
             }
@@ -102,7 +107,7 @@ public class Logger {
     public static void severe(String... msg) {
         if (LoggerLevel.SEVERE.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
-            get().print(date + " - " + TEXT_RED_BOLD + "SEVERE" + ANSI_RESET + "  - " + msg[0]);
+            get().print(date + " - " + TEXT_RED_BOLD + "SEVERE" + ANSI_RESET + "  - " + getCallerClassName() + " - " + msg[0]);
             for (int i = 1; i < msg.length; i++) {
                 get().printIndented(msg[i]);
             }

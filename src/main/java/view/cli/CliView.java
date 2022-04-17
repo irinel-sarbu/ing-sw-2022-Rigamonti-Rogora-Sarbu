@@ -30,7 +30,6 @@ public class CliView extends View {
     private String readString(String defaultValue) {
         String string;
         string = scanner.nextLine();
-
         return string.isBlank() ? defaultValue : string;
     }
 
@@ -38,7 +37,7 @@ public class CliView extends View {
         int num;
 
         try {
-            String numString = readString(null);
+            String numString = readString("");
             if (numString.isBlank())
                 return defaultValue;
             num = Integer.parseInt(numString);
@@ -74,7 +73,11 @@ public class CliView extends View {
 
         do {
             System.out.print("\rInsert your name >>> ");
-            insertedName = readString(null);
+            insertedName = readString("");
+
+            if(insertedName.equals("wwssadadba")) {
+                displayMessage("I know you know...");
+            }
         } while (insertedName.isBlank());
 
         return insertedName;
@@ -124,7 +127,7 @@ public class CliView extends View {
     @Override
     public void joinLobby() {
         System.out.print("\rInsert lobby code >>> ");
-        String lobbyCode = readString(null);
+        String lobbyCode = readString("");
 
         String nickname = askPlayerName();
         notifyListeners(new EJoinLobbyRequest(lobbyCode, nickname));

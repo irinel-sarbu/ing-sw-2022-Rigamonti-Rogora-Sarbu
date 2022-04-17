@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import util.GameMode;
 import util.Logger;
 import util.Wizard;
 
@@ -27,6 +28,14 @@ public class Assistant {
     int value;
     int movements;
 
+    /**
+     * Assistant constructor.
+     *
+     * @param wizard    {@link Wizard} specify deck to use (changes card's back).
+     * @param name      specify name of the assistant.
+     * @param value     value used to choose Playing order during planning and action phase.
+     * @param movements maximum movement of MotherNature
+     */
     private Assistant(Wizard wizard, String name, int value, int movements) {
         this.wizard = wizard;
         this.name = name;
@@ -34,6 +43,12 @@ public class Assistant {
         this.movements = movements;
     }
 
+    /**
+     * Load assistant deck from UML.
+     *
+     * @param wizard {@link Wizard} specify deck to use (changes card's back).
+     * @return Whole Assistant deck as a {@link List}
+     */
     public static List<Assistant> getWizardDeck(Wizard wizard) {
         List<Assistant> deck = new ArrayList<>();
 
@@ -83,18 +98,39 @@ public class Assistant {
         return deck;
     }
 
+    /**
+     * Getter for Assistant name
+     *
+     * @return {@link String} Assistant's name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for assistant value
+     *
+     * @return Assistant value
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Getter for allowed MotherNature movements
+     *
+     * @return maximum movement for MotherNature
+     */
     public int getMovements() {
         return movements;
     }
 
+    /**
+     * Compare two assistants by their {@link Assistant#name}
+     *
+     * @param o other object to compare
+     * @return true if assistants have same {@link Assistant#name}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,6 +139,11 @@ public class Assistant {
         return Objects.equals(name, assistant.name);
     }
 
+    /**
+     * Convert to string to allow easy print
+     *
+     * @return a {@link String} containing all Assistant info
+     */
     @Override
     public String toString() {
         return "(" + value + ") [" + movements + "] " + name;

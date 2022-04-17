@@ -1,9 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public enum CharacterType {
     HERALD(3, "Herald"),
     KNIGHT(2, "Knight"),

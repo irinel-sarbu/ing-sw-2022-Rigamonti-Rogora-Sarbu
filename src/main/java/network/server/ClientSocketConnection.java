@@ -17,6 +17,8 @@ import util.Tuple;
 
 public class ClientSocketConnection extends Thread implements ClientConnection {
     private boolean isInLobby;
+    private boolean isReady;
+
     private String lobbyCode;
 
     private final Timer pingTimer;
@@ -32,6 +34,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         this.socket = socket;
 
         this.isInLobby = false;
+        this.isReady = false;
 
         this.pingTimer = new Timer();
     }
@@ -59,6 +62,14 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         } catch (IOException | ClassNotFoundException e) {
             closeConnection();
         }
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady() {
+        isReady = true;
     }
 
     public boolean isInLobby() {

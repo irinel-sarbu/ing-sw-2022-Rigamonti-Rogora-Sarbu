@@ -20,6 +20,10 @@ public abstract class Event implements Serializable {
         return type;
     }
 
+    public boolean isHandled() {
+        return handled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
