@@ -17,6 +17,9 @@ public enum EventType {
     WIZARD_NOT_AVAILABLE,
     USE_CHARACTER_EFFECT,
 
+    UPDATE_SCHOOLBOARD,
+    UPDATE_CLOUD_TILES,
+
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,
 

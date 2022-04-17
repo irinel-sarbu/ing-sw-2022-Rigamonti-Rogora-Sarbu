@@ -6,10 +6,14 @@ import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import events.types.serverToClient.Message;
+import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
+import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
 import exceptions.PlayerNotFoundException;
 import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
+import model.board.CloudTile;
+import model.board.SchoolBoard;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
@@ -112,16 +116,12 @@ public class GameLobby implements NetworkObserver {
 
     @Override
     public void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
-        EventDispatcher dp = new EventDispatcher(networkEvent);
-
         switch (lobbyState) {
             case INIT -> initState(networkEvent);
             case PRE_GAME -> preGameState(networkEvent);
             case IN_GAME -> inGameState(networkEvent);
             case END -> endGameState(networkEvent);
         }
-
-        dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
     }
 
     // LOBBY STATES
@@ -146,7 +146,8 @@ public class GameLobby implements NetworkObserver {
     }
 
     private void inGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
-
+        EventDispatcher dp = new EventDispatcher(networkEvent);
+        dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
     }
 
     private void endGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
@@ -300,6 +301,14 @@ public class GameLobby implements NetworkObserver {
             setGameState(GameState.PLANNING);
             planningPhase.refillEmptyClouds(this);
 
+            for (Player player : model.getPlayers()) {
+                broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+            }
+            List<CloudTile> cloudTiles = new ArrayList<>();
+            for (int id = 0; id < model.getNumOfCloudTiles(); id++) {
+                cloudTiles.add(model.getCloudTile(id));
+            }
+            broadcast(new EUpdateCloudTiles(cloudTiles));
             /* TODO:
              * Send to each client
              * - general
