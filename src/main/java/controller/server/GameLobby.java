@@ -121,7 +121,6 @@ public class GameLobby implements NetworkObserver {
             case END -> endGameState(networkEvent);
         }
 
-        dp.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
         dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
     }
 
@@ -137,10 +136,12 @@ public class GameLobby implements NetworkObserver {
         // If the only player in lobby disconnects, lobby is destroyed
         EventDispatcher initDispatcher = new EventDispatcher(networkEvent);
 
-
+        // TODO: i think this can be deleted - irinel
     }
 
     private void preGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
+        EventDispatcher preGameDispatcher = new EventDispatcher(networkEvent);
+        preGameDispatcher.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
 
     }
 
@@ -204,7 +205,7 @@ public class GameLobby implements NetworkObserver {
         if (clientList.size() == maxPlayers) {
             broadcast(new Message(Messages.ALL_CLIENTS_CONNECTED));
             setLobbyState(LobbyState.PRE_GAME);
-            Logger.debug("Lobby " + getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
+            Logger.debug(getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
         }
 
@@ -283,7 +284,43 @@ public class GameLobby implements NetworkObserver {
     // TODO: rename this section
 
     private void setupPreGame() {
+        ClientSocketConnection currentClient = null;
+        for(ClientSocketConnection client : clientList.values()) {
+            if (!client.isReady()) {
+                currentClient = client;
+                break;
+            }
+        }
 
+        if(currentClient == null) {
+            setLobbyState(LobbyState.IN_GAME);
+            Logger.debug(getLobbyCode() + " - " + "All players are ready. Switching state to " + getLobbyState());
+            broadcast(new Message(Messages.GAME_STARTED));
+
+            setGameState(GameState.PLANNING);
+            planningPhase.refillEmptyClouds(this);
+
+            /* TODO:
+             * Send to each client
+             * - general
+             *  1 - schoolBoards of all players
+             *  2 - cloud tiles
+             *  3 - islands
+             *  4 - if EXPERT general coin supply
+             *  5 - if EXPERT drawn characters
+             *  6 - if EXPERT active character effect
+             *
+             * - different for each
+             *  1 - assistant cards
+             *  2 - if EXPERT personal coin supply
+             */
+
+            return;
+        }
+
+        currentClient.asyncSend(new EChooseWizard(availableWizards));
+        String currentPlayerName = getClientBySocket(currentClient);
+        broadcastExceptOne(new EPlayerChoosing(currentPlayerName, ChoiceType.WIZARD), currentPlayerName);
     }
 
     // Handlers
@@ -304,11 +341,12 @@ public class GameLobby implements NetworkObserver {
         }
 
         String playerName = getClientBySocket(client);
-        Logger.info("Lobby " + getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
+        Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
         model.addPlayer(new Player(playerName, choice, TowerColor.BLACK));
         availableWizards.remove(choice);
 
-        checkReadyPlayers();
+        client.setReady();
+        setupPreGame();
         return true;
     }
 

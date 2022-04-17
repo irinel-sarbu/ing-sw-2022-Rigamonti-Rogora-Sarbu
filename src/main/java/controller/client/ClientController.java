@@ -32,6 +32,8 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((EPlayerJoined) e));
         dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((EPlayerDisconnected) e));
 
+        dp.dispatch(EventType.PLAYER_CHOOSING, (Event e) -> onPlayerChoosing((EPlayerChoosing) e));
+
         dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
         dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
 
@@ -76,6 +78,7 @@ public class ClientController implements Observer {
             default -> {
                 return false;
             }
+
         }
 
         return true;
@@ -136,6 +139,14 @@ public class ClientController implements Observer {
      */
     private boolean onPlayerDisconnected(EPlayerDisconnected event) {
         view.displayMessage(event.getPlayerName() + " left the Lobby!");
+        return true;
+    }
+
+    private boolean onPlayerChoosing(EPlayerChoosing event) {
+        switch(event.getChoiceType()) {
+            case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
+        }
+
         return true;
     }
 

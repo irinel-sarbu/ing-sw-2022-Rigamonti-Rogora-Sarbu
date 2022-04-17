@@ -8,7 +8,6 @@ import events.types.serverToClient.EPlayerDisconnected;
 import exceptions.LobbyNotFoundException;
 import network.server.ClientSocketConnection;
 import network.server.Server;
-import observer.NetworkObservable;
 import observer.NetworkObserver;
 import util.*;
 
