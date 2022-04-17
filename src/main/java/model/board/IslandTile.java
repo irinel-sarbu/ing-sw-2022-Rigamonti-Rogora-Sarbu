@@ -1,13 +1,16 @@
 package model.board;
 
-import java.util.*;
+import util.Color;
+import util.TowerColor;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import exceptions.TowersIsEmptyException;
-import util.TowerColor;
-import util.Color;
-
-public class IslandTile implements Comparable<IslandTile> {
+public class IslandTile implements Comparable<IslandTile>, Serializable {
     private final List<Student> students;
     private Tower tower;
     private final int islandID;

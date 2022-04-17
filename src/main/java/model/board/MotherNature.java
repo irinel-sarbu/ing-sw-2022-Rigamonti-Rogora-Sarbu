@@ -1,11 +1,12 @@
 package model.board;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Represents Mother Nature.
  */
-public class MotherNature {
+public class MotherNature implements Serializable {
     private int position;
 
     /**

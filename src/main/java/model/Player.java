@@ -6,12 +6,15 @@ import model.board.SchoolBoard;
 import util.TowerColor;
 import util.Wizard;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Player Class represents each player inside the model.
  */
-public class Player implements Comparator<Player>, Comparable<Player> {
+public class Player implements Comparator<Player>, Comparable<Player>, Serializable {
     private final String name;
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;

@@ -2,12 +2,13 @@ package model.board;
 
 import exceptions.TooManyStudentsException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CloudTile {
+public class CloudTile implements Serializable {
     private final int cloudTileID;
     private final List<Student> studentList;
     private final int maxSize;

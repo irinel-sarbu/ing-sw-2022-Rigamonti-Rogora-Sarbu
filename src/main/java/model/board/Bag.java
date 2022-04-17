@@ -3,10 +3,11 @@ package model.board;
 import exceptions.EmptyStudentListException;
 import util.Color;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Bag {
+public class Bag implements Serializable {
     private final List<Student> studentList;
     private int studentIdCount = 0;
 

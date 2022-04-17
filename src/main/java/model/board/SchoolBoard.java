@@ -1,18 +1,22 @@
 package model.board;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import exceptions.*;
 import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
 import util.TowerColor;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
+
 /**
  * Represents the School Board. Is identified by the Player where it is created on.
  */
-public class SchoolBoard {
+public class SchoolBoard implements Serializable {
     private final static int maxEntranceSize = 9;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;

@@ -1,11 +1,13 @@
 package controller.server;
 
 import controller.server.states.*;
-import events.*;
+import events.ChoiceType;
+import events.Event;
+import events.EventDispatcher;
+import events.EventType;
 import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
-import events.types.serverToClient.Message;
 import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
 import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
 import exceptions.PlayerNotFoundException;
@@ -13,7 +15,6 @@ import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
 import model.board.CloudTile;
-import model.board.SchoolBoard;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
@@ -68,23 +69,19 @@ public class GameLobby implements NetworkObserver {
         this.gameMode = gameMode;
         this.clientList = new HashMap<>();
 
+        this.currentGameState = GameState.SETUP;
         setLobbyState(LobbyState.INIT);
 
         this.model = new GameModel(maxPlayers, this.gameMode);
         this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
 
         // TODO: ERROR At this point there are 0 players in lobby -> move to create lobby function
-//        try {
-//            this.currentPlayer = model.getPlayerByID(0);
-//        } catch (PlayerNotFoundException e) {
-//            Logger.warning("Game lobby <" + code + "> is empty");
-//        }
-//        this.studentsMoved = 0;
-//        this.currentGameState = GameState.SETUP;
-//        this.planningPhaseOrder = gameModel.getPlayers();
-//        this.actionPhaseOrder = null;
-//        this.nextPlanningPhaseOrder = null;
-//        this.turnProgress = 1;
+        this.studentsMoved = 0;
+        this.currentGameState = GameState.SETUP;
+        this.planningPhaseOrder = new ArrayList<>();
+        this.actionPhaseOrder = null;
+        this.nextPlanningPhaseOrder = null;
+        this.turnProgress = 1;
 
         //states
         this.epilogue = new TurnEpilogue();
@@ -321,8 +318,11 @@ public class GameLobby implements NetworkObserver {
              *
              * - different for each
              *  1 - assistant cards
-             *  2 - if EXPERT personal coin supply
+             *
+             * Implement update method for each element of the list
+             * Each update is called after respective element is modified
              */
+
 
             return;
         }
@@ -351,7 +351,10 @@ public class GameLobby implements NetworkObserver {
 
         String playerName = getClientBySocket(client);
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
-        model.addPlayer(new Player(playerName, choice, TowerColor.BLACK));
+        // TODO: change tower color
+        Player player = new Player(playerName, choice, TowerColor.BLACK);
+        model.addPlayer(player);
+        planningPhaseOrder.add(player);
         availableWizards.remove(choice);
 
         client.setReady();

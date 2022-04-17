@@ -1,15 +1,20 @@
 package model.board;
 
-import exceptions.*;
-import model.Player;
+import exceptions.EmptyNoEntryListException;
+import exceptions.IllegalIslandGroupJoinException;
+import exceptions.NullIslandGroupException;
 import model.expert.NoEntryTile;
 import util.Color;
 import util.TowerColor;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
-public class IslandGroup {
+public class IslandGroup implements Serializable {
     private int islandGroupID;
     private final List<IslandTile> islands;
     private final Stack<NoEntryTile> noEntry;

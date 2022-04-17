@@ -4,8 +4,10 @@ import exceptions.EmptyNoEntryListException;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
-import util.*;
+import util.CharacterType;
+import util.Color;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +16,7 @@ import java.util.Stack;
 /**
  * Represents the Character of a game. If it needs additional tiles on it, it initializes them.
  */
-public class CharacterCard {
+public class CharacterCard implements Serializable {
     private int cost;
     private final CharacterType character;
     private List<Student> students;
