@@ -11,6 +11,7 @@ public class MotherNatureTest {
     @BeforeEach
     public void setUp() {
         motherNature = new MotherNature();
+        motherNature.setPosition(0);
     }
 
     @Test

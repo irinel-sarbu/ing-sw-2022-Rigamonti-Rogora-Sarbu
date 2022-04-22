@@ -329,13 +329,14 @@ public class GameModel extends Observable {
         int left = (position - 1 + islandGroups.size()) % (islandGroups.size());
         //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
         //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
         try {
             islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
             islandGroups.remove(right);
             if (right < position) {
                 position = (position - 1 + islandGroups.size()) % (islandGroups.size());
                 left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-                getMotherNature().progress(-1, islandGroups.size());
+                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
             } else {
                 if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
             }
@@ -354,13 +355,15 @@ public class GameModel extends Observable {
                 position = (position - 1 + islandGroups.size()) % (islandGroups.size());
                 left = (left - 1 + islandGroups.size()) % (islandGroups.size());
                 if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
-                getMotherNature().progress(-1, islandGroups.size());
+                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
             }
             updateIslandGroupsID();
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
         //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
         //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
+
     }
 
     /**
@@ -368,6 +371,10 @@ public class GameModel extends Observable {
      */
     private void updateIslandGroupsID() {
         for (int i = 0; i < islandGroups.size(); i++) {
+            //Updates mother nature position
+            if (islandGroups.get(i).getIslandGroupID() == motherNature.getPosition()) {
+                motherNature.setPosition(i);
+            }
             islandGroups.get(i).setIslandGroupID(i);
         }
     }

@@ -312,9 +312,8 @@ public class GameLobby implements NetworkObserver {
              *  1 - schoolBoards of all players
              *  2 - cloud tiles
              *  3 - islands
-             *  4 - if EXPERT general coin supply
-             *  5 - if EXPERT drawn characters
-             *  6 - if EXPERT active character effect
+             *  4 - if EXPERT drawn characters
+             *  5 - if EXPERT active character effect
              *
              * - different for each
              *  1 - assistant cards

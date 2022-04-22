@@ -25,6 +25,13 @@ public class MotherNature implements Serializable {
     }
 
     /**
+     * Setter for the attribute {@link MotherNature#position}
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    /**
      * Adds the selected number of steps to {@link MotherNature#position} in (mod N) as N=Number of remaining IslandGroups.
      *
      * @param steps   Is the selected number of steps.
