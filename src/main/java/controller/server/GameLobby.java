@@ -9,12 +9,14 @@ import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
+import events.types.serverToClient.gameStateEvents.EUpdateIslands;
 import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
 import exceptions.PlayerNotFoundException;
 import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
 import model.board.CloudTile;
+import model.board.IslandGroup;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
@@ -306,6 +308,11 @@ public class GameLobby implements NetworkObserver {
                 cloudTiles.add(model.getCloudTile(id));
             }
             broadcast(new EUpdateCloudTiles(cloudTiles));
+            List<IslandGroup> islandGroups = new ArrayList<>();
+            for (int id = 0; id < model.getRemainingIslandGroups(); id++) {
+                islandGroups.add(model.getIslandGroupByID(id));
+            }
+            broadcast(new EUpdateIslands(islandGroups, model.getMotherNature().getPosition()));
             /* TODO:
              * Send to each client
              * - general
@@ -792,8 +799,4 @@ public class GameLobby implements NetworkObserver {
     public GameOver getGameOver() {
         return gameOver;
     }
-
-    // TODO : in the event dispatcher that calls knightEffect, centaurEffect, mushroomFanaticEffect create a
-    //  new ResolveIsland of the specific Type.
-    // TODO : Do the same exact thing for StudentMovement and MotherNatureMovement.
 }

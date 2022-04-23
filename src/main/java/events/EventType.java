@@ -19,6 +19,7 @@ public enum EventType {
 
     UPDATE_SCHOOLBOARD,
     UPDATE_CLOUD_TILES,
+    UPDATE_ISLANDS,
 
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,
