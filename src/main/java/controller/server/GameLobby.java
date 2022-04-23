@@ -8,6 +8,7 @@ import events.EventType;
 import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
+import events.types.serverToClient.gameStateEvents.ELightModelSetup;
 import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
 import events.types.serverToClient.gameStateEvents.EUpdateIslands;
 import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
@@ -299,6 +300,8 @@ public class GameLobby implements NetworkObserver {
 
             setGameState(GameState.PLANNING);
             planningPhase.refillEmptyClouds(this);
+
+            broadcast(new ELightModelSetup(model.getCharacters()));
 
             for (Player player : model.getPlayers()) {
                 broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
