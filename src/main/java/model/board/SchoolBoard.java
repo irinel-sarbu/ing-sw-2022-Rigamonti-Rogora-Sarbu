@@ -303,7 +303,7 @@ public class SchoolBoard implements Serializable {
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
         //SchoolBoard will be identified by the previous print of a numbered player.
-        return "SchoolBoard of " + owner.getName() + " entr:" + entranceString + diningRoomString +
+        return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
                 "\n\tCoins: " + coins +
                 "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
     }

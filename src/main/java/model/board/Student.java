@@ -43,6 +43,6 @@ public class Student implements Serializable {
      */
     @Override
     public String toString() {
-        return color.toString();
+        return color.toString() + "(" + ID + ")";
     }
 }

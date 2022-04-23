@@ -177,4 +177,22 @@ public class CharacterCard implements Serializable {
     public int hashCode() {
         return Objects.hash(character);
     }
+
+    /**
+     * Overrides toString.
+     */
+    @Override
+    public String toString() {
+        switch (getCharacter()) {
+            case MONK, PRINCESS, JESTER -> {
+                return getCharacter().toString() + ": cost = " + getCost() + ", students: " + getStudents().toString();
+            }
+            case GRANNY_HERBS -> {
+                return getCharacter().toString() + ": cost = " + getCost() + ", noEntryTiles: " + getNoEntryTiles().size();
+            }
+            default -> {
+                return getCharacter().toString() + ": cost = " + getCost();
+            }
+        }
+    }
 }

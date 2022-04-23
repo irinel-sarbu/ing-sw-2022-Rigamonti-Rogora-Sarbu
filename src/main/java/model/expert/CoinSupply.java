@@ -63,6 +63,9 @@ public class CoinSupply implements Serializable {
         return numOfCoins;
     }
 
+    /**
+     * Overrides toString.
+     */
     @Override
     public String toString() {
         return Integer.toString(getNumOfCoins());

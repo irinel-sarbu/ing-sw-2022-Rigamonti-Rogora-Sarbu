@@ -18,6 +18,11 @@ public class EUpdateCharacterEffect extends Event {
 
     @Override
     public String toString() {
-        return "EUpdateCharacterEffect { ActiveCharcater: " + characterType.toString() + " }";
+
+        if (characterType != null) {
+            return "EUpdateCharacterEffect { ActiveCharcater: " + characterType.toString() + " }";
+        } else {
+            return "EUpdateCharacterEffect { ActiveCharcater: none }";
+        }
     }
 }

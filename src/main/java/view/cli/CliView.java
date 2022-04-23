@@ -166,7 +166,11 @@ public class CliView extends View {
 
         if (model.getCharacters() != null) {
             System.out.println("- extracted characters: " + model.getCharacters());
-            System.out.println("- active character effect: " + model.getActiveCharacterEffect());
+            if (model.getActiveCharacterEffect() != null) {
+                System.out.println("- active character effect: " + model.getActiveCharacterEffect());
+            } else {
+                System.out.println("- active character effect: none");
+            }
         }
 
         System.out.println("- deck: " + model.getDeck());

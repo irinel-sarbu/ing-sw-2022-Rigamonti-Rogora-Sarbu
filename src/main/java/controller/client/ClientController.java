@@ -9,10 +9,7 @@ import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
 import events.types.serverToClient.*;
-import events.types.serverToClient.gameStateEvents.EUpdateAssistantDeck;
-import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
-import events.types.serverToClient.gameStateEvents.EUpdateIslands;
-import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
+import events.types.serverToClient.gameStateEvents.*;
 import network.LightModel;
 import network.client.Client;
 import observer.Observer;
@@ -52,6 +49,8 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.UPDATE_CLOUD_TILES, (Event e) -> onUpdateCloudTiles((EUpdateCloudTiles) e));
         dp.dispatch(EventType.UPDATE_ISLANDS, (Event e) -> onUpdateIslands((EUpdateIslands) e));
         dp.dispatch(EventType.UPDATE_ASSISTANT_DECK, (Event e) -> onUpdateAssistantDeck((EUpdateAssistantDeck) e));
+        dp.dispatch(EventType.UPDATE_CHARACTER_EFFECT, (Event e) -> onUpdateCharacterEffect((EUpdateCharacterEffect) e));
+        dp.dispatch(EventType.LIGHT_MODEL_SETUP, (Event e) -> onLightModelSetup((ELightModelSetup) e));
 
         // View Events
         dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
@@ -212,6 +211,16 @@ public class ClientController implements Observer {
 
     private boolean onUpdateAssistantDeck(EUpdateAssistantDeck event) {
         model.setDeck(event.getAssistants());
+        return true;
+    }
+
+    private boolean onUpdateCharacterEffect(EUpdateCharacterEffect event) {
+        model.setActiveCharacterEffect(event.getCharacterType());
+        return true;
+    }
+
+    private boolean onLightModelSetup(ELightModelSetup event) {
+        model.setCharacters(event.getCharacterCards());
         return true;
     }
 
