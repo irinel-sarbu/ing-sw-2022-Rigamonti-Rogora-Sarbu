@@ -162,7 +162,7 @@ public class GameLobby implements NetworkObserver {
     public void broadcast(Event event) {
         for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
             ClientSocketConnection client = entry.getValue();
-            client.asyncSend(event);
+            client.send(event);
         }
     }
 
@@ -177,7 +177,7 @@ public class GameLobby implements NetworkObserver {
         for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
             if (entry.getKey() != null && !entry.getKey().equals(excludedClient)) {
                 ClientSocketConnection client = entry.getValue();
-                client.asyncSend(event);
+                client.send(event);
             }
         }
     }
@@ -201,7 +201,7 @@ public class GameLobby implements NetworkObserver {
         clientList.put(name, client);
         client.joinLobby(getLobbyCode());
 
-        client.asyncSend(new ELobbyJoined(lobbyCode));
+        client.send(new ELobbyJoined(lobbyCode));
         broadcastExceptOne(new EPlayerJoined(name), name);
 
         if (clientList.size() == maxPlayers) {
@@ -214,7 +214,7 @@ public class GameLobby implements NetworkObserver {
         // TODO: Resilience to disconnections
 
 //        if (model.getPlayerSize() >= maxPlayers) {
-//            client.asyncSend(new Message(Messages.LOBBY_FULL));
+//            client.send(new Message(Messages.LOBBY_FULL));
 //            Logger.warning("Player " + name + " trying to connect but lobby is full.");
 //        }
 //
@@ -227,16 +227,16 @@ public class GameLobby implements NetworkObserver {
 //                broadcastExceptOne(new EPlayerJoined(name), name);
 //                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
 //            } else {
-//                client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+//                client.send(new Message(Messages.NAME_NOT_AVAILABLE));
 //                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
 //            }
 //        } catch (PlayerNotFoundException e) {
 //            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
 //            clientList.put(name, client);
 //            client.joinLobby(lobbyCode);
-//            client.asyncSend(new ELobbyJoined(lobbyCode));
+//            client.send(new ELobbyJoined(lobbyCode));
 //            broadcastExceptOne(new EPlayerJoined(name), name);
-//            client.asyncSend(new EChooseWizard(new ArrayList<>(availableWizards)));
+//            client.send(new EChooseWizard(new ArrayList<>(availableWizards)));
 //        }
     }
 
@@ -327,7 +327,7 @@ public class GameLobby implements NetworkObserver {
             for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
                 ClientSocketConnection client = entry.getValue();
                 try {
-                    client.asyncSend(new EUpdateAssistantDeck(model.getPlayerByName(entry.getKey()).getAssistants()));
+                    client.send(new EUpdateAssistantDeck(model.getPlayerByName(entry.getKey()).getAssistants()));
                 } catch (PlayerNotFoundException e) {
                     Logger.error(e.getMessage());
                 }
@@ -339,7 +339,7 @@ public class GameLobby implements NetworkObserver {
             return;
         }
 
-        currentClient.asyncSend(new EChooseWizard(availableWizards));
+        currentClient.send(new EChooseWizard(availableWizards));
         String currentPlayerName = getClientBySocket(currentClient);
         broadcastExceptOne(new EPlayerChoosing(currentPlayerName, ChoiceType.WIZARD), currentPlayerName);
     }
@@ -357,7 +357,7 @@ public class GameLobby implements NetworkObserver {
         Wizard choice = event.getWizard();
 
         if (!availableWizards.contains(choice)) {
-            client.asyncSend(new EWizardNotAvailable(availableWizards));
+            client.send(new EWizardNotAvailable(availableWizards));
             return true;
         }
 
@@ -385,12 +385,12 @@ public class GameLobby implements NetworkObserver {
      */
     public boolean playerHasActivatedEffect(EUseCharacterEffect event, ClientSocketConnection client) {
         if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
-            client.asyncSend(new Message(Messages.WRONG_PHASE));
+            client.send(new Message(Messages.WRONG_PHASE));
             return true;
         }
 
         if (model.getActiveCharacterEffect() != null) {
-            client.asyncSend(new Message(Messages.ANOTHER_EFFECT_IS_ACTIVE));
+            client.send(new Message(Messages.ANOTHER_EFFECT_IS_ACTIVE));
             return true;
         }
 
@@ -406,7 +406,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -420,7 +420,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -438,7 +438,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -452,7 +452,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -470,7 +470,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -484,7 +484,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -502,7 +502,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -519,7 +519,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -533,7 +533,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -551,7 +551,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -568,7 +568,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -586,7 +586,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.asyncSend(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new Message(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -595,7 +595,7 @@ public class GameLobby implements NetworkObserver {
                 model.setActiveCharacterEffect(CharacterType.THIEF);
             }
         }
-        client.asyncSend(new Message(Messages.EFFECT_USED));
+        client.send(new Message(Messages.EFFECT_USED));
         return true;
     }
 

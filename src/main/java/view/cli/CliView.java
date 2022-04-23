@@ -154,7 +154,10 @@ public class CliView extends View {
 
     @Override
     public void update(LightModel model) {
-        System.out.println("\033\143BOARD\n");
+        // Clear screen - doesn't work in intellij terminal
+        System.out.print("\033[H\033[2J");
+
+        System.out.println("BOARD");
         System.out.println("- islands:\n" + model.getIslandGroups());
         System.out.println("- mother nature position: " + model.getMotherNaturePosition());
 

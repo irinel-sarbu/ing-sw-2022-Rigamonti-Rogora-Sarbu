@@ -4,5 +4,6 @@ import events.Event;
 
 public interface ClientConnection {
     void closeConnection();
-    void asyncSend(Event event);
+
+    void send(Event event);
 }

@@ -1,15 +1,21 @@
 package controller.server;
 
-import events.*;
+import events.Event;
+import events.EventDispatcher;
+import events.EventType;
 import events.types.Messages;
-import events.types.clientToServer.*;
-import events.types.serverToClient.Message;
+import events.types.clientToServer.ECreateLobbyRequest;
+import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.serverToClient.EPlayerDisconnected;
+import events.types.serverToClient.Message;
 import exceptions.LobbyNotFoundException;
 import network.server.ClientSocketConnection;
 import network.server.Server;
 import observer.NetworkObserver;
-import util.*;
+import util.GameMode;
+import util.Logger;
+import util.Tuple;
+import util.Utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -147,7 +153,7 @@ public class ServerController implements NetworkObserver {
             lobby = getLobbyByCode(event.getLobbyCode());
         } catch (LobbyNotFoundException e) {
             Logger.warning(e.getMessage());
-            client.asyncSend(new Message(Messages.LOBBY_NOT_FOUND));
+            client.send(new Message(Messages.LOBBY_NOT_FOUND));
             return true;
         }
 
@@ -155,7 +161,7 @@ public class ServerController implements NetworkObserver {
             case INIT -> {
                 if (lobby.getClientByName(event.getPlayerName()) != null) {
                     Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
-                    client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+                    client.send(new Message(Messages.NAME_NOT_AVAILABLE));
                     return true;
                 }
 
@@ -163,7 +169,7 @@ public class ServerController implements NetworkObserver {
             }
 
             case PRE_GAME, IN_GAME, END -> {
-                client.asyncSend(new Message(Messages.LOBBY_FULL));
+                client.send(new Message(Messages.LOBBY_FULL));
                 Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
             }
         }

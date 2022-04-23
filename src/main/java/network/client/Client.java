@@ -1,14 +1,14 @@
 package network.client;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import events.*;
+import events.Event;
 import events.types.Messages;
 import events.types.serverToClient.Message;
 import observer.Observable;
 import util.Logger;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Client extends Observable implements Runnable {
 
@@ -56,6 +56,6 @@ public class Client extends Observable implements Runnable {
     }
 
     public void sendToServer(Event obj) {
-        server.asyncSend(obj);
+        server.send(obj);
     }
 }

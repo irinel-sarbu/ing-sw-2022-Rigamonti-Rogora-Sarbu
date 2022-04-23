@@ -22,6 +22,7 @@ public class ClientApp {
             }
         }
 
+        cliEnabled = true;
         if (run) {
             View view = cliEnabled ? new CliView() : new GuiView();
 

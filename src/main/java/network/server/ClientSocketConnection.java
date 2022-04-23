@@ -1,12 +1,5 @@
 package network.server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import events.Event;
 import events.EventType;
 import events.types.Messages;
@@ -15,6 +8,14 @@ import events.types.serverToClient.Ping;
 import util.Logger;
 import util.Tuple;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class ClientSocketConnection extends Thread implements ClientConnection {
     private boolean isInLobby;
     private boolean isReady;
@@ -22,6 +23,8 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     private String lobbyCode;
 
     private final Timer pingTimer;
+
+    private final LinkedBlockingQueue<Event> events;
 
     ObjectInputStream in;
     ObjectOutputStream out;
@@ -37,6 +40,8 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         this.isReady = false;
 
         this.pingTimer = new Timer();
+
+        events = new LinkedBlockingQueue<>();
     }
 
     @Override
@@ -85,7 +90,8 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         this.isInLobby = true;
     }
 
-    private synchronized void send(Event event) {
+    @Override
+    public synchronized void send(Event event) {
         try {
             if (event.getType() != EventType.PING)
                 Logger.info("Sending event " + event + " to " + socketToString());
@@ -111,11 +117,6 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
 
     private String socketToString() {
         return socket.getInetAddress() + ":" + socket.getPort();
-    }
-
-    @Override
-    public synchronized void asyncSend(Event event) {
-        new Thread(() -> send(event)).start();
     }
 
     @Override
