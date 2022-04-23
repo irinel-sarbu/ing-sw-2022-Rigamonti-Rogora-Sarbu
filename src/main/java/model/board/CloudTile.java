@@ -76,6 +76,6 @@ public class CloudTile implements Serializable {
         String students = studentList.stream()
                 .map(Student::toString)
                 .collect(Collectors.joining(" ", "[", "]"));
-        return "Cloud " + cloudTileID + students;
+        return "Cloud_" + cloudTileID + ": " + students;
     }
 }

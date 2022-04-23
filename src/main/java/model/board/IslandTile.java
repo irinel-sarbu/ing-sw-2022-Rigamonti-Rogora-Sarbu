@@ -121,13 +121,13 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
      */
     @Override
     public String toString() {
-        String stringID = String.format("%2s", islandID);
+        String stringID = String.format("%2s", islandID).replace(' ', '0');
         String stringContent = students.stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
                 .entrySet().stream()
                 .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
                 .collect(Collectors.joining(" ", "[", "]"));
-        return "Island" + stringID + stringContent + (tower != null ? tower.toString() : "X");
+        return "Island_" + stringID + ": " + stringContent + (tower != null ? tower.toString() : "X");
     }
 }

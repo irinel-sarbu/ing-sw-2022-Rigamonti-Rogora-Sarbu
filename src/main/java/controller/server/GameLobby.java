@@ -301,16 +301,20 @@ public class GameLobby implements NetworkObserver {
             setGameState(GameState.PLANNING);
             planningPhase.refillEmptyClouds(this);
 
-            broadcast(new ELightModelSetup(model.getCharacters()));
+            if (gameMode == GameMode.EXPERT) {
+                broadcast(new ELightModelSetup(model.getCharacters()));
+            }
 
             for (Player player : model.getPlayers()) {
                 broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
             }
+
             List<CloudTile> cloudTiles = new ArrayList<>();
             for (int id = 0; id < model.getNumOfCloudTiles(); id++) {
                 cloudTiles.add(model.getCloudTile(id));
             }
             broadcast(new EUpdateCloudTiles(cloudTiles));
+
             List<IslandGroup> islandGroups = new ArrayList<>();
             for (int id = 0; id < model.getRemainingIslandGroups(); id++) {
                 islandGroups.add(model.getIslandGroupByID(id));
@@ -331,7 +335,6 @@ public class GameLobby implements NetworkObserver {
              * Implement update method for each element of the list
              * Each update is called after respective element is modified
              */
-
 
             return;
         }

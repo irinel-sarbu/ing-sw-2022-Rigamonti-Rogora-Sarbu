@@ -1,9 +1,6 @@
 package network;
 
-import model.board.Assistant;
-import model.board.CloudTile;
-import model.board.IslandGroup;
-import model.board.SchoolBoard;
+import model.board.*;
 import model.expert.CharacterCard;
 import util.CharacterType;
 
@@ -16,6 +13,7 @@ public class LightModel {
     private Map<String, SchoolBoard> schoolBoardMap;
     private List<CloudTile> cloudTiles;
     private List<IslandGroup> islandGroups;
+    private MotherNature motherNature;
 
     private List<Assistant> deck;
 

@@ -199,10 +199,10 @@ public class IslandGroup implements Serializable {
      */
     @Override
     public String toString() {
-        String header = "IslandGroup " + String.format("%2s", islandGroupID);
+        String header = "IslandGroup_" + String.format("%2s", islandGroupID).replace(' ', '0');
         StringBuilder body = new StringBuilder();
         for (IslandTile islandTile : islands) {
-            body.append("\n\t").append(islandTile);
+            body.append(": ").append(islandTile);
         }
         return header + body;
     }

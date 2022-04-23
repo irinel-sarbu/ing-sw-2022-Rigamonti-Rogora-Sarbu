@@ -1,10 +1,18 @@
 package controller.client;
 
-import events.*;
+import events.Event;
+import events.EventDispatcher;
+import events.EventType;
 import events.types.Messages;
-import events.types.clientToClient.*;
-import events.types.clientToServer.*;
+import events.types.clientToClient.EUpdateServerInfo;
+import events.types.clientToServer.ECreateLobbyRequest;
+import events.types.clientToServer.EJoinLobbyRequest;
+import events.types.clientToServer.EWizardChosen;
 import events.types.serverToClient.*;
+import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
+import events.types.serverToClient.gameStateEvents.EUpdateIslands;
+import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
+import network.LightModel;
 import network.client.Client;
 import observer.Observer;
 import view.View;
@@ -13,6 +21,7 @@ public class ClientController implements Observer {
     private final View view;
 
     private Client client;
+    private LightModel model;
     private String nickname;
     private String lobbyCode;
 
@@ -35,7 +44,12 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.PLAYER_CHOOSING, (Event e) -> onPlayerChoosing((EPlayerChoosing) e));
 
         dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
+        // TODO: remove this function
         dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
+
+        dp.dispatch(EventType.UPDATE_SCHOOLBOARD, (Event e) -> onUpdateSchoolboard((EUpdateSchoolBoard) e));
+        dp.dispatch(EventType.UPDATE_CLOUD_TILES, (Event e) -> onUpdateCloudTiles((EUpdateCloudTiles) e));
+        dp.dispatch(EventType.UPDATE_ISLANDS, (Event e) -> onUpdateIslands((EUpdateIslands) e));
 
         // View Events
         dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
@@ -75,6 +89,8 @@ public class ClientController implements Observer {
             }
             case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
 
+            case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
+
             default -> {
                 return false;
             }
@@ -102,6 +118,8 @@ public class ClientController implements Observer {
         view.displayMessage("Creating Lobby...");
         this.nickname = event.getPlayerName();
         client.sendToServer(new ECreateLobbyRequest(event.getGameMode(), event.getNumOfPlayers(), nickname));
+
+        createClientModel(nickname);
         return true;
     }
 
@@ -112,7 +130,13 @@ public class ClientController implements Observer {
         this.nickname = event.getPlayerName();
         this.lobbyCode = event.getLobbyCode();
         client.sendToServer(new EJoinLobbyRequest(lobbyCode, nickname));
+
+        createClientModel(nickname);
         return true;
+    }
+
+    private void createClientModel(String nickname) {
+        this.model = new LightModel(nickname);
     }
 
     /**
@@ -143,7 +167,7 @@ public class ClientController implements Observer {
     }
 
     private boolean onPlayerChoosing(EPlayerChoosing event) {
-        switch(event.getChoiceType()) {
+        switch (event.getChoiceType()) {
             case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
         }
 
@@ -165,4 +189,21 @@ public class ClientController implements Observer {
         client.sendToServer(new EWizardChosen(event.getWizard()));
         return true;
     }
+
+    private boolean onUpdateSchoolboard(EUpdateSchoolBoard event) {
+        model.setPlayerSchoolBoard(event.getPlayerName(), event.getSchoolBoard());
+        return true;
+    }
+
+    private boolean onUpdateCloudTiles(EUpdateCloudTiles event) {
+        model.setCloudTiles(event.getCloudTiles());
+        return true;
+    }
+
+    private boolean onUpdateIslands(EUpdateIslands event) {
+        model.setIslandGroups(event.getIslandGroups());
+        return true;
+    }
+
+    // Planning phase
 }
