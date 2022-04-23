@@ -163,6 +163,7 @@ public class GameLobby implements NetworkObserver {
         }
     }
 
+    //FIXME: problem with async, remove?
     /**
      * Broadcast Event to all clients connected to lobby, except sender
      *
