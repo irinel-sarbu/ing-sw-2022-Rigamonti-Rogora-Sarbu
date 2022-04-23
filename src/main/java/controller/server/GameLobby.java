@@ -34,6 +34,7 @@ public class GameLobby implements NetworkObserver {
     private final Map<String, ClientSocketConnection> clientList;
 
     private final List<Wizard> availableWizards;
+    private final Stack<TowerColor> availableTowerColors;
 
     private final GameModel model;
 
@@ -74,6 +75,8 @@ public class GameLobby implements NetworkObserver {
 
         this.model = new GameModel(maxPlayers, this.gameMode);
         this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
+        this.availableTowerColors = new Stack<TowerColor>();
+        for (TowerColor color : TowerColor.values()) availableTowerColors.push(color);
 
         // TODO: ERROR At this point there are 0 players in lobby -> move to create lobby function
         this.studentsMoved = 0;
@@ -360,9 +363,9 @@ public class GameLobby implements NetworkObserver {
 
         String playerName = getClientBySocket(client);
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
-        // TODO: change tower color
 
-        Player player = new Player(playerName, choice, TowerColor.BLACK, model.getGameMode());
+        TowerColor color = availableTowerColors.pop();
+        Player player = new Player(playerName, choice, color, model.getGameMode());
         model.addPlayer(player);
         planningPhaseOrder.add(player);
         availableWizards.remove(choice);
