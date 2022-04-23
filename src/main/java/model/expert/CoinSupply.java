@@ -62,4 +62,9 @@ public class CoinSupply implements Serializable {
         this.numOfCoins -= numOfCoins;
         return numOfCoins;
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(getNumOfCoins());
+    }
 }

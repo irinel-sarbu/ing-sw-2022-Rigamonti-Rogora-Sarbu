@@ -17,7 +17,6 @@ import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
-import network.client.Client;
 import network.server.ClientSocketConnection;
 import observer.NetworkObserver;
 import util.*;
@@ -291,6 +290,7 @@ public class GameLobby implements NetworkObserver {
             }
         }
 
+        // All players have chosen wizard. STATE -> IN_GAME
         if(currentClient == null) {
             setLobbyState(LobbyState.IN_GAME);
             Logger.debug(getLobbyCode() + " - " + "All players are ready. Switching state to " + getLobbyState());
@@ -323,15 +323,15 @@ public class GameLobby implements NetworkObserver {
             for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
                 ClientSocketConnection client = entry.getValue();
                 try {
-                    client.asyncSend(new EUpdateAssistantDeck(model.getPlayerByName(client.getName()).getAssistants()));
+                    client.asyncSend(new EUpdateAssistantDeck(model.getPlayerByName(entry.getKey()).getAssistants()));
                 } catch (PlayerNotFoundException e) {
-                    e.printStackTrace();
+                    Logger.error(e.getMessage());
                 }
             }
 
-            /* TODO: Each update is called after respective element is modified
-             */
+            // TODO: Each update is called after respective element is modified
 
+            broadcast(new Message(Messages.UPDATE_VIEW));
             return;
         }
 

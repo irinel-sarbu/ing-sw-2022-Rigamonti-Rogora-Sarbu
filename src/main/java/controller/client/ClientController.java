@@ -9,6 +9,7 @@ import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
 import events.types.serverToClient.*;
+import events.types.serverToClient.gameStateEvents.EUpdateAssistantDeck;
 import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
 import events.types.serverToClient.gameStateEvents.EUpdateIslands;
 import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
@@ -50,6 +51,7 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.UPDATE_SCHOOLBOARD, (Event e) -> onUpdateSchoolboard((EUpdateSchoolBoard) e));
         dp.dispatch(EventType.UPDATE_CLOUD_TILES, (Event e) -> onUpdateCloudTiles((EUpdateCloudTiles) e));
         dp.dispatch(EventType.UPDATE_ISLANDS, (Event e) -> onUpdateIslands((EUpdateIslands) e));
+        dp.dispatch(EventType.UPDATE_ASSISTANT_DECK, (Event e) -> onUpdateAssistantDeck((EUpdateAssistantDeck) e));
 
         // View Events
         dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
@@ -90,6 +92,8 @@ public class ClientController implements Observer {
             case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
 
             case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
+
+            case Messages.UPDATE_VIEW -> view.update(model);
 
             default -> {
                 return false;
@@ -202,6 +206,12 @@ public class ClientController implements Observer {
 
     private boolean onUpdateIslands(EUpdateIslands event) {
         model.setIslandGroups(event.getIslandGroups());
+        model.setMotherNaturePosition(event.getMotherNaturePos());
+        return true;
+    }
+
+    private boolean onUpdateAssistantDeck(EUpdateAssistantDeck event) {
+        model.setDeck(event.getAssistants());
         return true;
     }
 

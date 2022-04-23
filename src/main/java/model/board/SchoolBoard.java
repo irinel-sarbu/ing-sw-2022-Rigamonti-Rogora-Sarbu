@@ -33,6 +33,7 @@ public class SchoolBoard implements Serializable {
      *
      * @param player Is the owner of this {@link SchoolBoard}.
      */
+    // FIXME: coins only if expert mode
     public SchoolBoard(Player player) {
         this.coins = new CoinSupply(0);
         this.entrance = new ArrayList<>();
@@ -303,7 +304,7 @@ public class SchoolBoard implements Serializable {
         }
         //SchoolBoard will be identified by the previous print of a numbered player.
         return "SchoolBoard of " + owner.getName() + " entr:" + entranceString + diningRoomString +
-                " Coins: " + coins +
-                "\n    " + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+                "\n\tCoins: " + coins +
+                "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
     }
 }

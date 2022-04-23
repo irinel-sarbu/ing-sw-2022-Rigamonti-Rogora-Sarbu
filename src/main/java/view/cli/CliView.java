@@ -4,11 +4,14 @@ import events.types.clientToClient.EUpdateServerInfo;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
+import model.board.SchoolBoard;
+import network.LightModel;
 import util.GameMode;
 import util.Wizard;
 import view.View;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CliView extends View {
@@ -75,7 +78,7 @@ public class CliView extends View {
             System.out.print("\rInsert your name >>> ");
             insertedName = readString("");
 
-            if(insertedName.equals("wwssadadba")) {
+            if (insertedName.equals("wwssadadba")) {
                 displayMessage("I know you know...");
             }
         } while (insertedName.isBlank());
@@ -147,5 +150,25 @@ public class CliView extends View {
         } while (choice < 0 || choice >= availableWizards.size());
 
         notifyListeners(new EWizardChosen(availableWizards.get(choice)));
+    }
+
+    @Override
+    public void update(LightModel model) {
+        System.out.println("\033\143BOARD\n");
+        System.out.println("- islands:\n" + model.getIslandGroups());
+        System.out.println("- mother nature position: " + model.getMotherNaturePosition());
+
+        System.out.println("- cloud tiles: " + model.getCloudTiles());
+
+        for (Map.Entry<String, SchoolBoard> entry : model.getSchoolBoardMap().entrySet()) {
+            System.out.println("- schoolBoard of " + entry.getKey() + ":\n" + entry.getValue());
+        }
+
+        if (model.getCharacters() != null) {
+            System.out.println("- extracted characters: " + model.getCharacters());
+            System.out.println("- active character effect: " + model.getActiveCharacterEffect());
+        }
+
+        System.out.println("- deck: " + model.getDeck());
     }
 }

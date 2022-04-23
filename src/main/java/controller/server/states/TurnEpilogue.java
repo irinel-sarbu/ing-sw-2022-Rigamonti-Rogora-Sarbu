@@ -43,7 +43,7 @@ public class TurnEpilogue {
 
         thisGame.getModel().moveFromCloudTileToEntrance(thisGame.getModel().getCloudTile(cloudTilePos), thisGame.getCurrentPlayer());
 
-        /**
+        /*
          * Sets next player.
          * If there is a next player restart the action phase with STUDENT_MOVEMENT state
          * Else checks if game is over and goes in GAME_OVER state

@@ -1,5 +1,6 @@
 package view;
 
+import network.LightModel;
 import observer.Observable;
 import util.Wizard;
 
@@ -16,9 +17,14 @@ public abstract class View extends Observable {
     }
 
     public abstract void askServerInfo();
+
     public abstract void createLobby();
+
     public abstract void joinLobby();
+
     public abstract void chooseCreateOrJoin();
 
     public abstract void chooseWizard(List<Wizard> availableWizards);
+
+    public abstract void update(LightModel model);
 }

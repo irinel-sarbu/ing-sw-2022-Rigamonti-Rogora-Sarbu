@@ -1,5 +1,6 @@
 package view.gui;
 
+import network.LightModel;
 import util.Wizard;
 import view.View;
 
@@ -33,6 +34,11 @@ public class GuiView extends View {
 
     @Override
     public void chooseWizard(List<Wizard> availableWizards) {
+
+    }
+
+    @Override
+    public void update(LightModel model) {
 
     }
 }

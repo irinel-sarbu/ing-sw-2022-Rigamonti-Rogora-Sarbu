@@ -1,6 +1,9 @@
 package network;
 
-import model.board.*;
+import model.board.Assistant;
+import model.board.CloudTile;
+import model.board.IslandGroup;
+import model.board.SchoolBoard;
 import model.expert.CharacterCard;
 import util.CharacterType;
 
@@ -13,7 +16,7 @@ public class LightModel {
     private Map<String, SchoolBoard> schoolBoardMap;
     private List<CloudTile> cloudTiles;
     private List<IslandGroup> islandGroups;
-    private MotherNature motherNature;
+    private int motherNaturePosition;
 
     private List<Assistant> deck;
 
@@ -41,6 +44,10 @@ public class LightModel {
 
     public void setIslandGroups(List<IslandGroup> updatedIslandGroups) {
         this.islandGroups = updatedIslandGroups;
+    }
+
+    public void setMotherNaturePosition(int updatedPosition) {
+        this.motherNaturePosition = updatedPosition;
     }
 
     public void setDeck(List<Assistant> updatedDeck) {
@@ -77,5 +84,9 @@ public class LightModel {
 
     public CharacterType getActiveCharacterEffect() {
         return activeCharacterEffect;
+    }
+
+    public int getMotherNaturePosition() {
+        return motherNaturePosition;
     }
 }
