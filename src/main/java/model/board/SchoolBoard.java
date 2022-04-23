@@ -4,6 +4,7 @@ import exceptions.*;
 import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
+import util.GameMode;
 import util.TowerColor;
 
 import java.io.Serializable;
@@ -25,7 +26,7 @@ public class SchoolBoard implements Serializable {
     private final List<Student> entrance;
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
-    private CoinSupply coins;
+    private final CoinSupply coins;
     private final Player owner;
 
     /**
@@ -35,7 +36,11 @@ public class SchoolBoard implements Serializable {
      */
     // FIXME: coins only if expert mode
     public SchoolBoard(Player player) {
-        this.coins = new CoinSupply(0);
+        if (player.getGameMode() == GameMode.EXPERT) {
+            this.coins = new CoinSupply(0);
+        } else {
+            this.coins = null;
+        }
         this.entrance = new ArrayList<>();
         this.diningRoom = new ArrayList<>();
         for (int i = 0; i < Color.values().length; i++) {
@@ -303,8 +308,13 @@ public class SchoolBoard implements Serializable {
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
         //SchoolBoard will be identified by the previous print of a numbered player.
-        return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
-                "\n\tCoins: " + coins +
-                "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        if (owner.getGameMode() == GameMode.EXPERT) {
+            return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
+                    "\n\tCoins: " + getCoinSupply() +
+                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        } else {
+            return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
+                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        }
     }
 }

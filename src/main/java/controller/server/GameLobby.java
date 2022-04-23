@@ -361,7 +361,8 @@ public class GameLobby implements NetworkObserver {
         String playerName = getClientBySocket(client);
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
         // TODO: change tower color
-        Player player = new Player(playerName, choice, TowerColor.BLACK);
+
+        Player player = new Player(playerName, choice, TowerColor.BLACK, model.getGameMode());
         model.addPlayer(player);
         planningPhaseOrder.add(player);
         availableWizards.remove(choice);

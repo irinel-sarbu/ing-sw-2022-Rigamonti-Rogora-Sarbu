@@ -3,6 +3,7 @@ package model;
 import exceptions.AssistantNotInDeckException;
 import model.board.Assistant;
 import model.board.SchoolBoard;
+import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
@@ -21,6 +22,7 @@ public class Player implements Comparator<Player>, Comparable<Player>, Serializa
     private Assistant foldCard;
     private final TowerColor color;
     private boolean disconnected;
+    private final GameMode gameMode;
 
     /**
      * Player constructor, initializes all attributes.
@@ -29,13 +31,21 @@ public class Player implements Comparator<Player>, Comparable<Player>, Serializa
      * @param wizard     Unique {@link Wizard} passed to the constructor.
      * @param towerColor Unique {@link TowerColor} passed to the constructor.
      */
-    public Player(String name, Wizard wizard, TowerColor towerColor) {
+    public Player(String name, Wizard wizard, TowerColor towerColor, GameMode gameMode) {
+        this.gameMode = gameMode;
         this.name = name;
         this.schoolBoard = new SchoolBoard(this);
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
         this.color = towerColor;
         this.disconnected = false;
+    }
+
+    /**
+     * Getter for {@link Player#gameMode attribute}
+     */
+    public GameMode getGameMode() {
+        return gameMode;
     }
 
     /**

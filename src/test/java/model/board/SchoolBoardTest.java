@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Color;
+import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
@@ -21,7 +22,7 @@ public class SchoolBoardTest {
 
     @BeforeEach
     public void setUp() {
-        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE);
+        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.EXPERT);
         schoolBoard = new SchoolBoard(marco);
         for (int i = 0; i < 7; i++) {
             try {

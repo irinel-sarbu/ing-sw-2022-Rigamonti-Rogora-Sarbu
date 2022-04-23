@@ -22,7 +22,7 @@ public class NoEntryTileTest {
     @BeforeAll
     public static void setUp() {
         game = new GameModel(3, GameMode.EXPERT);
-        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
+        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));
         grannyHerbs = new CharacterCard(CharacterType.GRANNY_HERBS);
         for (int i = 0; i < 4; i++) grannyHerbs.addNoEntryTile(new NoEntryTile());
         try {

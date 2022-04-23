@@ -15,8 +15,8 @@ public class GameModelExpertTest {
     public static void setUp() {
         game = new GameModel(3, GameMode.EXPERT);
 
-        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
-        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
+        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));
+        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE, game.getGameMode()));
     }
 
     /*
@@ -163,15 +163,15 @@ public class GameModelExpertTest {
     public void resetModel() {
         game = new GameModel(3, GameMode.EXPERT);
 
-        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK));
-        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE));
+        game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));
+        game.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE, game.getGameMode()));
 
     }
 
     @Test
     public void addPlayer() {
 
-        game.addPlayer(new Player("giacomo", Wizard.WIZARD_4, TowerColor.GRAY));
+        game.addPlayer(new Player("giacomo", Wizard.WIZARD_4, TowerColor.GRAY, game.getGameMode()));
         try {
             assertNotNull(game.getPlayerByName("giacomo"));
         } catch (PlayerNotFoundException e) {
