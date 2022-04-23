@@ -26,6 +26,6 @@ public class EUpdateIslands extends Event {
 
     @Override
     public String toString() {
-        return "EUpdateIslands { islandGroups: " + islandGroups.toString() + "\n MotherNature Position: " + motherNaturePos + "}";
+        return "EUpdateIslands { islandGroups: " + islandGroups.toString() + "\n MotherNature Position: " + motherNaturePos + " }";
     }
 }

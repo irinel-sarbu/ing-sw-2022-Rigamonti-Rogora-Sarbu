@@ -20,6 +20,6 @@ public class ELightModelSetup extends Event {
 
     @Override
     public String toString() {
-        return "ELightModelSetup { ExtractedCharacters: " + characterCards.toString() + "}";
+        return "ELightModelSetup { ExtractedCharacters: " + characterCards.toString() + " }";
     }
 }

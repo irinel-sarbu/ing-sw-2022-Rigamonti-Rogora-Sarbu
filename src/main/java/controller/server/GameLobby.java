@@ -8,10 +8,7 @@ import events.EventType;
 import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
-import events.types.serverToClient.gameStateEvents.ELightModelSetup;
-import events.types.serverToClient.gameStateEvents.EUpdateCloudTiles;
-import events.types.serverToClient.gameStateEvents.EUpdateIslands;
-import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
+import events.types.serverToClient.gameStateEvents.*;
 import exceptions.PlayerNotFoundException;
 import exceptions.supplyEmptyException;
 import model.GameModel;
@@ -20,6 +17,7 @@ import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
+import network.client.Client;
 import network.server.ClientSocketConnection;
 import observer.NetworkObserver;
 import util.*;
@@ -303,6 +301,7 @@ public class GameLobby implements NetworkObserver {
 
             if (gameMode == GameMode.EXPERT) {
                 broadcast(new ELightModelSetup(model.getCharacters()));
+                broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
             }
 
             for (Player player : model.getPlayers()) {
@@ -320,20 +319,17 @@ public class GameLobby implements NetworkObserver {
                 islandGroups.add(model.getIslandGroupByID(id));
             }
             broadcast(new EUpdateIslands(islandGroups, model.getMotherNature().getPosition()));
-            /* TODO:
-             * Send to each client
-             * - general
-             *  1 - schoolBoards of all players
-             *  2 - cloud tiles
-             *  3 - islands
-             *  4 - if EXPERT drawn characters
-             *  5 - if EXPERT active character effect
-             *
-             * - different for each
-             *  1 - assistant cards
-             *
-             * Implement update method for each element of the list
-             * Each update is called after respective element is modified
+
+            for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+                ClientSocketConnection client = entry.getValue();
+                try {
+                    client.asyncSend(new EUpdateAssistantDeck(model.getPlayerByName(client.getName()).getAssistants()));
+                } catch (PlayerNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            /* TODO: Each update is called after respective element is modified
              */
 
             return;
