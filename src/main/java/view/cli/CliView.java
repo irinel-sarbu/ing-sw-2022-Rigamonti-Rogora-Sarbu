@@ -9,6 +9,7 @@ import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
 import model.board.*;
 import network.LightModel;
 import util.GameMode;
+import util.Logger;
 import util.Wizard;
 import view.View;
 
@@ -173,6 +174,7 @@ public class CliView extends View {
 
     @Override
     public void startTurn(LightModel model, String client) {
+        Logger.severe(List.of(model.getSchoolBoardMap().get(client).getEntranceStudents()).toString());
         Menu main = new Menu("Action phase menu");
         Menu activateCharacter = new Menu("Activate character card menu");
         Menu moveStudent = new Menu("Student movement menu");
@@ -239,22 +241,24 @@ public class CliView extends View {
 
     private void selectStudentToDining(LightModel model, String client) {
         int choice;
+        List<Student> studentList = model.getSchoolBoardMap().get(client).getEntranceStudents();
+        printEntrance(studentList);
         do {
-            System.out.print("\rInsert student>>> ");
+            System.out.print("\rInsert student >>> ");
             choice = readInt(-1);
-        } while (choice < 0 || doesNotContain(model.getSchoolBoardMap().get(client), choice));
-        notifyListeners(new EStudentMovementToDining(choice));
+        } while (choice < 0 || choice >= studentList.size());
+        notifyListeners(new EStudentMovementToDining(studentList.get(choice).getID()));
     }
 
     private void selectStudentToIsland() {
 
     }
 
-    private boolean doesNotContain(SchoolBoard schoolBoard, int studentID) {
-        for (Student student : schoolBoard.getEntranceStudents()) {
-            if (student.getID() == studentID) return false;
+    private void printEntrance(List<Student> entrance) {
+        System.out.println("Students in entrance:");
+        for (int i = 0; i < entrance.size(); i++) {
+            System.out.printf("\t%2d - %s%n\n", i, entrance.get(i));
         }
-        return true;
     }
 
     @Override

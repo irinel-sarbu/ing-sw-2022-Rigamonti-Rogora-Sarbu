@@ -20,7 +20,7 @@ public abstract class StudentMovement {
     protected void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
         Player player = thisGame.getCurrentPlayer();
-        thisGame.getClientByName(player.getName()).send(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
         if (thisGame.getStudentsMoved() == thisGame.getMaxStudentsMoved()) {
             thisGame.resetStudentsMoved();
             thisGame.setGameState(GameState.MOTHERNATURE_MOVEMENT);
@@ -119,7 +119,7 @@ public abstract class StudentMovement {
         thisGame.getModel().getIslandTileByID(islandID).addStudent(movingStudent);
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
-        thisGame.getClientByName(player.getName()).send(new EUpdateIslands(thisGame.getModel().getIslandGroups(), thisGame.getModel().getMotherNature().getPosition()));
+        thisGame.broadcast(new EUpdateIslands(thisGame.getModel().getIslandGroups(), thisGame.getModel().getMotherNature().getPosition()));
         movementEpilogue(thisGame);
     }
 }
