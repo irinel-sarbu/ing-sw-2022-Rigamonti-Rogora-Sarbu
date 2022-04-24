@@ -19,6 +19,7 @@ public class Messages {
 
     public static final String GAME_STARTED = "Game started";
     public static final String UPDATE_VIEW = "Update view";
+    public static final String INVALID_ASSISTANT = "This assistant was already chosen";
 
     public static final String CHOOSE_ASSISTANT = "Choose assistant";
 }

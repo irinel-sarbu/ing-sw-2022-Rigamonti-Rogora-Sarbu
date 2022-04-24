@@ -622,9 +622,9 @@ public class GameLobby implements NetworkObserver {
 
     public boolean playerHasChosenAssistant(EAssistantChosen event, ClientSocketConnection client) {
         try {
-            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameByClient(client)), event.getAssistant());
-        } catch (Exception e) {
-            e.printStackTrace();
+            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameByClient(client)), event.getAssistant(), client);
+        } catch (Exception others) {
+            others.printStackTrace();
         }
         if (currentGameState == GameState.PLANNING) {
             sendChooseAssistantEvent();

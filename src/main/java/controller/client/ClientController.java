@@ -58,7 +58,11 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
         dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
+
+        // Game Events
         dp.dispatch(EventType.ASSISTANT_CHOSEN, (Event e) -> onAssistantChosen((EAssistantChosen) e));
+        dp.dispatch(EventType.PLAYER_CHOSE_ASSISTANT, (Event e) -> onPlayerChoseAssistant((EPlayerChoseAssistant) e));
+
 
         if (!event.isHandled()) {
             view.displayError("Unhandled event " + event);
@@ -97,6 +101,8 @@ public class ClientController implements Observer {
             case Messages.CHOOSE_ASSISTANT -> view.chooseAssistant(model.getDeck());
 
             case Messages.UPDATE_VIEW -> view.update(model);
+
+            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
             default -> {
                 return false;
@@ -237,5 +243,9 @@ public class ClientController implements Observer {
         return true;
     }
 
+    private boolean onPlayerChoseAssistant(EPlayerChoseAssistant event) {
+        view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
+        return true;
+    }
     // Planning phase
 }
