@@ -38,7 +38,6 @@ public class SchoolBoardTest {
     public void getEntrance() {
         assertEquals(7, schoolBoard.getEntranceStudents().size());
         try {
-            assertEquals(0, schoolBoard.getEntranceStudent(0).getID());
             assertSame(schoolBoard.getEntranceStudent(0).getColor(), Color.BLUE);
             assertNotNull(schoolBoard.getEntranceStudent(0));
         } catch (StudentNotFoundException e) {

@@ -63,12 +63,19 @@ public class SchoolBoard implements Serializable {
     /**
      * Getter for a selected student on the {@link SchoolBoard#entrance}.
      *
-     * @param studentPosition Is the position of the {@link SchoolBoard#entrance} correspondent to the selected student.
+     * @param studentID Is the ID of the student in entrance {@link SchoolBoard#entrance} correspondent to the selected student.
      * @return The selected student.
      * @throws StudentNotFoundException If there is no Student on the given Position.
      */
-    public Student getEntranceStudent(int studentPosition) throws StudentNotFoundException {
-        Student student = entrance.get(studentPosition);
+    public Student getEntranceStudent(int studentID) throws StudentNotFoundException {
+        Student student = null;
+        for (int i = 0; i < entrance.size(); i++) {
+            if (entrance.get(i).getID() == studentID) {
+                student = entrance.get(i);
+                break;
+            }
+        }
+
         if (student == null) throw new StudentNotFoundException();
         return student;
     }
