@@ -62,6 +62,7 @@ public class ClientController implements Observer {
         // Game Events
         dp.dispatch(EventType.ASSISTANT_CHOSEN, (Event e) -> onAssistantChosen((EAssistantChosen) e));
         dp.dispatch(EventType.PLAYER_CHOSE_ASSISTANT, (Event e) -> onPlayerChoseAssistant((EPlayerChoseAssistant) e));
+        dp.dispatch(EventType.PLAYER_TURN_STARTED, (Event e) -> onPlayerTurnStarted((EPlayerTurnStarted) e));
 
 
         if (!event.isHandled()) {
