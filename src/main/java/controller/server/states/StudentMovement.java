@@ -5,13 +5,8 @@ import exceptions.*;
 import model.Player;
 import model.board.SchoolBoard;
 import model.board.Student;
-import model.expert.CharacterCard;
-import util.CharacterType;
 import util.Color;
 import util.GameState;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class StudentMovement {
 
@@ -121,6 +116,5 @@ public abstract class StudentMovement {
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
         movementEpilogue(thisGame);
-
     }
 }

@@ -257,7 +257,7 @@ public class GameLobby implements NetworkObserver {
 
     /**
      * Get client by name
-     * Inverse of {@link GameLobby#getClientBySocket(ClientSocketConnection)}
+     * Inverse of {@link GameLobby#getPlayerNameBySocket(ClientSocketConnection)}
      *
      * @param name player nickname to search for
      * @return instance of the client associated to the specified name
@@ -273,16 +273,7 @@ public class GameLobby implements NetworkObserver {
      * @param clientSocket socket to search for associated name
      * @return nickname of the player associated to the socket
      */
-    public String getClientBySocket(ClientSocketConnection clientSocket) {
-        for (Map.Entry<String, ClientSocketConnection> client : clientList.entrySet()) {
-            if (client.getValue().equals(clientSocket)) {
-                return client.getKey();
-            }
-        }
-        return null;
-    }
-
-    public String getPlayerNameByClient(ClientSocketConnection clientSocket) {
+    public String getPlayerNameBySocket(ClientSocketConnection clientSocket) {
         for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
             if (entry.getValue().equals(clientSocket)) {
                 return entry.getKey();
@@ -354,7 +345,7 @@ public class GameLobby implements NetworkObserver {
         }
 
         currentClient.send(new EChooseWizard(availableWizards));
-        String currentPlayerName = getClientBySocket(currentClient);
+        String currentPlayerName = getPlayerNameBySocket(currentClient);
         broadcastExceptOne(new EPlayerChoosing(currentPlayerName, ChoiceType.WIZARD), currentPlayerName);
     }
 
@@ -388,7 +379,7 @@ public class GameLobby implements NetworkObserver {
             return true;
         }
 
-        String playerName = getClientBySocket(client);
+        String playerName = getPlayerNameBySocket(client);
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
 
         TowerColor color = availableTowerColors.pop();
@@ -628,7 +619,7 @@ public class GameLobby implements NetworkObserver {
 
     public boolean playerHasChosenAssistant(EAssistantChosen event, ClientSocketConnection client) {
         try {
-            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameByClient(client)), event.getAssistant(), client);
+            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
         } catch (Exception others) {
             others.printStackTrace();
         }

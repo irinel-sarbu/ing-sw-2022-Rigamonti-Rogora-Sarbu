@@ -2,7 +2,6 @@ package controller.server.states;
 
 import controller.server.GameLobby;
 import events.types.Messages;
-import events.types.clientToServer.EAssistantChosen;
 import events.types.serverToClient.EPlayerChoseAssistant;
 import events.types.serverToClient.Message;
 import events.types.serverToClient.gameStateEvents.EUpdateAssistantDeck;
@@ -58,7 +57,7 @@ public class PlanningPhase {
         client.send(new EUpdateAssistantDeck(thisGame.getCurrentPlayer().getAssistants()));
         playedAssistants.add(assistantCard);
 
-        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameByClient(client), assistantCard), thisGame.getPlayerNameByClient(client));
+        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
         if (!thisGame.setNextPlayer()) {
             computeNext(thisGame);
             playedAssistants.clear();

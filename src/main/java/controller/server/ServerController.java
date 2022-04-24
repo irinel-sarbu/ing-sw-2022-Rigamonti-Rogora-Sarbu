@@ -110,7 +110,7 @@ public class ServerController implements NetworkObserver {
                     return true;
 
                 GameLobby lobby = games.get(client.getLobbyCode());
-                String playerName = lobby.getClientBySocket(client);
+                String playerName = lobby.getPlayerNameBySocket(client);
 
                 lobby.broadcastExceptOne(new EPlayerDisconnected(playerName), playerName);
                 lobby.removeClientFromLobbyByName(playerName);
