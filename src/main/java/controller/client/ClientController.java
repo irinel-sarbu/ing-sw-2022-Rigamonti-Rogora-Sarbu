@@ -103,7 +103,10 @@ public class ClientController implements Observer {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT ->
+                    view.displayMessage("Invalid Assistant card. Please select a valid one:");
+
+            case Messages.START_TURN -> view.startTurn(model);
 
             default -> {
                 return false;

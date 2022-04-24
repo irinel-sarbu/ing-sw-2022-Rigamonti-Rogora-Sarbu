@@ -44,6 +44,11 @@ public class GuiView extends View {
     }
 
     @Override
+    public void startTurn(LightModel model) {
+
+    }
+
+    @Override
     public void update(LightModel model) {
 
     }

@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 public class CliView extends View {
     Scanner scanner;
+    Menu currentMenu;
 
     @Override
     public void run() {
@@ -167,6 +168,68 @@ public class CliView extends View {
         } while (choice < 0 || choice >= deck.size());
 
         notifyListeners(new EAssistantChosen(deck.get(choice)));
+    }
+
+    @Override
+    public void startTurn(LightModel model) {
+        Menu main = new Menu("Action phase menu");
+        Menu activateCharacter = new Menu("Activate character card menu");
+        Menu moveStudent = new Menu("Student movement menu");
+        Menu moveStudentToDiningRoom = new Menu("Move students to dining room menu");
+        Menu moveStudentToIsland = new Menu("Move students to island menu");
+
+        main.putAction("Activate character card", () -> {
+            switchMenu(activateCharacter);
+            return true;
+        });
+        main.putAction("Move student", () -> {
+            switchMenu(moveStudent);
+            return true;
+        });
+
+        activateCharacter.putAction("Return to main menu", () -> {
+            switchMenu(main);
+            return true;
+        });
+
+        moveStudent.putAction("Move student from entrance to island", () -> {
+            switchMenu(moveStudentToIsland);
+            return true;
+        });
+        moveStudent.putAction("Move student from entrance to dining room", () -> {
+            switchMenu(moveStudentToDiningRoom);
+            return true;
+        });
+        moveStudent.putAction("Return to main menu", () -> {
+            switchMenu(main);
+            return true;
+        });
+
+        moveStudentToDiningRoom.putAction("Return to movement menu", () -> {
+            switchMenu(moveStudent);
+            return true;
+        });
+
+        moveStudentToIsland.putAction("Return to movement menu", () -> {
+            switchMenu(moveStudent);
+            return true;
+        });
+        // TODO create custom menu for characters
+
+
+        switchMenu(main);
+    }
+
+    private void switchMenu(Menu newMenu) {
+        currentMenu = newMenu;
+        currentMenu.show();
+        boolean sleep = false;
+
+        while (!sleep) {
+            System.out.print("\rChoose action >>> ");
+            int actionNumber = readInt(-1);
+            sleep = currentMenu.executeAction(actionNumber);
+        }
     }
 
     @Override

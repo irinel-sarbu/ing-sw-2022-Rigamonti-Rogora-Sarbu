@@ -22,12 +22,13 @@ public abstract class View extends Observable {
     public abstract void createLobby();
 
     public abstract void joinLobby();
-
     public abstract void chooseCreateOrJoin();
 
     public abstract void chooseWizard(List<Wizard> availableWizards);
 
     public abstract void chooseAssistant(List<Assistant> deck);
+
+    public abstract void startTurn(LightModel model);
 
     public abstract void update(LightModel model);
 }
