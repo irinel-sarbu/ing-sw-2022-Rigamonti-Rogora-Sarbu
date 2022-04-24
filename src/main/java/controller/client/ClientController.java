@@ -5,6 +5,7 @@ import events.EventDispatcher;
 import events.EventType;
 import events.types.Messages;
 import events.types.clientToClient.EUpdateServerInfo;
+import events.types.clientToServer.EAssistantChosen;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
@@ -57,6 +58,7 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
         dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
+        dp.dispatch(EventType.ASSISTANT_CHOSEN, (Event e) -> onAssistantChosen((EAssistantChosen) e));
 
         if (!event.isHandled()) {
             view.displayError("Unhandled event " + event);
@@ -91,6 +93,8 @@ public class ClientController implements Observer {
             case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
 
             case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
+
+            case Messages.CHOOSE_ASSISTANT -> view.chooseAssistant(model.getDeck());
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
@@ -194,6 +198,11 @@ public class ClientController implements Observer {
 
     private boolean onWizardChosen(EWizardChosen event) {
         client.sendToServer(new EWizardChosen(event.getWizard()));
+        return true;
+    }
+
+    private boolean onAssistantChosen(EAssistantChosen event) {
+        client.sendToServer(new EAssistantChosen(event.getAssistant()));
         return true;
     }
 

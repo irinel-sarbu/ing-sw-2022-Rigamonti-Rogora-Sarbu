@@ -1,13 +1,11 @@
 package view.cli;
 
 import events.types.clientToClient.EUpdateServerInfo;
+import events.types.clientToServer.EAssistantChosen;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
-import model.board.CloudTile;
-import model.board.IslandGroup;
-import model.board.IslandTile;
-import model.board.SchoolBoard;
+import model.board.*;
 import network.LightModel;
 import util.GameMode;
 import util.Wizard;
@@ -143,16 +141,32 @@ public class CliView extends View {
     public void chooseWizard(List<Wizard> availableWizards) {
         System.out.println("Choose your wizard:");
         for (int i = 0; i < availableWizards.size(); i++) {
-            System.out.println(" [" + i + "] " + availableWizards.get(i));
+            System.out.println(" id " + i + " - " + availableWizards.get(i));
         }
 
         int choice;
         do {
-            System.out.print("\rInsert your choice >>> ");
+            System.out.print("\rInsert wizard id >>> ");
             choice = readInt(-1);
         } while (choice < 0 || choice >= availableWizards.size());
 
         notifyListeners(new EWizardChosen(availableWizards.get(choice)));
+    }
+
+    @Override
+    public void chooseAssistant(List<Assistant> deck) {
+        System.out.println("Choose an assistant from your deck:");
+        for (int i = 0; i < deck.size(); i++) {
+            System.out.println(" id " + i + " - " + deck.get(i));
+        }
+
+        int choice;
+        do {
+            System.out.print("\rInsert assistant id >>> ");
+            choice = readInt(-1);
+        } while (choice < 0 || choice >= deck.size());
+
+        notifyListeners(new EAssistantChosen(deck.get(choice)));
     }
 
     @Override

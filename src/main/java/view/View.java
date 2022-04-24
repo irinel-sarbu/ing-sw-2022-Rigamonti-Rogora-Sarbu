@@ -1,5 +1,6 @@
 package view;
 
+import model.board.Assistant;
 import network.LightModel;
 import observer.Observable;
 import util.Wizard;
@@ -25,6 +26,8 @@ public abstract class View extends Observable {
     public abstract void chooseCreateOrJoin();
 
     public abstract void chooseWizard(List<Wizard> availableWizards);
+
+    public abstract void chooseAssistant(List<Assistant> deck);
 
     public abstract void update(LightModel model);
 }

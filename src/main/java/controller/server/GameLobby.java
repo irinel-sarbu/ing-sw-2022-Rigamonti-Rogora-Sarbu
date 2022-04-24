@@ -9,7 +9,8 @@ import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
-import exceptions.*;
+import exceptions.PlayerNotFoundException;
+import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
 import model.board.CloudTile;
@@ -278,6 +279,16 @@ public class GameLobby implements NetworkObserver {
                 return client.getKey();
             }
         }
+        return null;
+    }
+
+    public String getPlayerNameByClient(ClientSocketConnection clientSocket) {
+        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+            if (entry.getValue().equals(clientSocket)) {
+                return entry.getKey();
+            }
+        }
+
         return null;
     }
 
@@ -611,7 +622,7 @@ public class GameLobby implements NetworkObserver {
 
     public boolean playerHasChosenAssistant(EAssistantChosen event, ClientSocketConnection client) {
         try {
-            planningPhase.playCard(this, model.getPlayerByName(client.getName()), event.getAssistant());
+            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameByClient(client)), event.getAssistant());
         } catch (Exception e) {
             e.printStackTrace();
         }
