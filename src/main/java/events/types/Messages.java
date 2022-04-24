@@ -14,8 +14,6 @@ public class Messages {
 
     public static final String WRONG_PHASE = "Wrong phase";
     public static final String ANOTHER_EFFECT_IS_ACTIVE = "Another effect is already active";
-    public static final String INSUFFICIENT_COINS = "Insufficient coins";
-    public static final String EFFECT_USED = "Effect used successfully";
 
     public static final String GAME_STARTED = "Game started";
     public static final String UPDATE_VIEW = "Update view";
@@ -23,4 +21,6 @@ public class Messages {
 
     public static final String CHOOSE_ASSISTANT = "Choose assistant";
     public static final String START_TURN = "Start turn";
+    public static final String INSUFFICIENT_COINS = "Insufficient coins";
+    public static final String EFFECT_USED = "Effect used successfully";
 }

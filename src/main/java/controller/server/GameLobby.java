@@ -7,10 +7,11 @@ import events.EventDispatcher;
 import events.EventType;
 import events.types.Messages;
 import events.types.clientToServer.*;
+import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
+import events.types.clientToServer.actionPhaseRelated.EStudentMovementToIsland;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
-import exceptions.PlayerNotFoundException;
-import exceptions.supplyEmptyException;
+import exceptions.*;
 import model.GameModel;
 import model.Player;
 import model.board.CloudTile;
@@ -148,6 +149,8 @@ public class GameLobby implements NetworkObserver {
         EventDispatcher dp = new EventDispatcher(networkEvent);
         dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
         dp.dispatch(EventType.ASSISTANT_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenAssistant((EAssistantChosen) t.getKey(), t.getValue()));
+        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_DINING, (Tuple<Event, ClientSocketConnection> t) -> playerHasMovedToDining((EStudentMovementToDining) t.getKey(), t.getValue()));
+        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_ISLAND, (Tuple<Event, ClientSocketConnection> t) -> playerHasMovedToIsland((EStudentMovementToIsland) t.getKey(), t.getValue()));
     }
 
     private void endGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
@@ -631,7 +634,33 @@ public class GameLobby implements NetworkObserver {
         return true;
     }
 
+    public boolean playerHasMovedToDining(EStudentMovementToDining event, ClientSocketConnection client) {
+        try {
+            studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (currentGameState == GameState.STUDENT_MOVEMENT) {
+            sendStartTurn();
+        } else {
+            //TODO: insert motherNatureMovement message
+        }
+        return true;
+    }
 
+    public boolean playerHasMovedToIsland(EStudentMovementToIsland event, ClientSocketConnection client) {
+        try {
+            studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (currentGameState == GameState.STUDENT_MOVEMENT) {
+            sendStartTurn();
+        } else {
+            //TODO: insert motherNatureMovement message
+        }
+        return true;
+    }
     // State functions
 
     /**

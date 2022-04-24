@@ -27,6 +27,8 @@ public enum EventType {
     UPDATE_ASSISTANT_DECK,
     PLAYER_CHOSE_ASSISTANT,
     PLAYER_TURN_STARTED,
+    STUDENT_MOVEMENT_TO_DINING,
+    STUDENT_MOVEMENT_TO_ISLAND,
 
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,
