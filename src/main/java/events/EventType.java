@@ -26,6 +26,7 @@ public enum EventType {
 
     UPDATE_ASSISTANT_DECK,
     PLAYER_CHOSE_ASSISTANT,
+    PLAYER_TURN_STARTED,
 
     // handled on client, Sent by client
     UPDATE_SERVER_INFO,

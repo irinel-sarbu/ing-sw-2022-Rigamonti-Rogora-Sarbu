@@ -247,5 +247,10 @@ public class ClientController implements Observer {
         view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
         return true;
     }
+
+    private boolean onPlayerTurnStarted(EPlayerTurnStarted event) {
+        view.displayMessage("Player " + event.getPlayer() + " has started the action phase");
+        return true;
+    }
     // Planning phase
 }

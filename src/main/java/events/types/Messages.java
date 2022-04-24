@@ -22,4 +22,5 @@ public class Messages {
     public static final String INVALID_ASSISTANT = "This assistant was already chosen";
 
     public static final String CHOOSE_ASSISTANT = "Choose assistant";
+    public static final String START_TURN = "Start turn";
 }

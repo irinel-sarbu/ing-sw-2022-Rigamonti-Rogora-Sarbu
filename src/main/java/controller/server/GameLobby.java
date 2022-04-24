@@ -364,6 +364,12 @@ public class GameLobby implements NetworkObserver {
         broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
     }
 
+    private void sendStartTurn() {
+        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        currentPlayerClient.send(new Message(Messages.START_TURN));
+        broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
+    }
+
 
     // Handlers
 
@@ -629,7 +635,7 @@ public class GameLobby implements NetworkObserver {
         if (currentGameState == GameState.PLANNING) {
             sendChooseAssistantEvent();
         } else {
-            //TODO: Call the first event of action phase
+            sendStartTurn();
         }
         return true;
     }
