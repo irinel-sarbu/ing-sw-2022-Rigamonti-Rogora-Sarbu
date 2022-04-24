@@ -9,8 +9,7 @@ import events.types.Messages;
 import events.types.clientToServer.*;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
-import exceptions.PlayerNotFoundException;
-import exceptions.supplyEmptyException;
+import exceptions.*;
 import model.GameModel;
 import model.Player;
 import model.board.CloudTile;
@@ -123,7 +122,7 @@ public class GameLobby implements NetworkObserver {
         }
     }
 
-    // LOBBY STATES
+    // LOBBY STATES (where dispatchers are declared)
 
     /**
      * Handling of lobby init state
@@ -147,6 +146,7 @@ public class GameLobby implements NetworkObserver {
     private void inGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
         EventDispatcher dp = new EventDispatcher(networkEvent);
         dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
+        dp.dispatch(EventType.ASSISTANT_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenAssistant((EAssistantChosen) t.getKey(), t.getValue()));
     }
 
     private void endGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
@@ -164,8 +164,6 @@ public class GameLobby implements NetworkObserver {
             client.send(event);
         }
     }
-
-    //FIXME: problem with async, remove?
 
     /**
      * Broadcast Event to all clients connected to lobby, except sender
@@ -283,7 +281,7 @@ public class GameLobby implements NetworkObserver {
         return null;
     }
 
-    // TODO: rename this section
+    // Event Senders:
 
     private void setupPreGame() {
         ClientSocketConnection currentClient = null;
@@ -339,9 +337,8 @@ public class GameLobby implements NetworkObserver {
             setGameState(GameState.PLANNING);
 
             // First turn starts now
-            ClientSocketConnection firstPlayerClient = clientList.get(currentPlayer.getName());
-            firstPlayerClient.send(new Message(Messages.CHOOSE_ASSISTANT));
-            broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
+            sendChooseAssistantEvent();
+
             return;
         }
 
@@ -349,6 +346,13 @@ public class GameLobby implements NetworkObserver {
         String currentPlayerName = getClientBySocket(currentClient);
         broadcastExceptOne(new EPlayerChoosing(currentPlayerName, ChoiceType.WIZARD), currentPlayerName);
     }
+
+    private void sendChooseAssistantEvent() {
+        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        currentPlayerClient.send(new Message(Messages.CHOOSE_ASSISTANT));
+        broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
+    }
+
 
     // Handlers
 
@@ -605,8 +609,22 @@ public class GameLobby implements NetworkObserver {
         return true;
     }
 
-    // TODO: rename block of functions with something more accurate
-    // Other functions
+    public boolean playerHasChosenAssistant(EAssistantChosen event, ClientSocketConnection client) {
+        try {
+            planningPhase.playCard(this, model.getPlayerByName(client.getName()), event.getAssistant());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (currentGameState == GameState.PLANNING) {
+            sendChooseAssistantEvent();
+        } else {
+            //TODO: Call the first event of action phase
+        }
+        return true;
+    }
+
+
+    // State functions
 
     /**
      * Notify game start when the lobby is full
