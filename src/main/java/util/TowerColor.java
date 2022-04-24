@@ -1,9 +1,9 @@
 package util;
 
 public enum TowerColor {
-    WHITE(0, "White"),
+    GRAY(0, "Gray"),
     BLACK(1, "Black"),
-    GRAY(2, "Gray");
+    WHITE(2, "White");
 
     private final int ID;
     private final String string;

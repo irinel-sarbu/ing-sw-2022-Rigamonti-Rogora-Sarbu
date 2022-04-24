@@ -75,10 +75,9 @@ public class GameLobby implements NetworkObserver {
 
         this.model = new GameModel(maxPlayers, this.gameMode);
         this.availableWizards = new ArrayList<>(Arrays.asList(Wizard.values()));
-        this.availableTowerColors = new Stack<TowerColor>();
+        this.availableTowerColors = new Stack<>();
         for (TowerColor color : TowerColor.values()) availableTowerColors.push(color);
 
-        // TODO: ERROR At this point there are 0 players in lobby -> move to create lobby function
         this.studentsMoved = 0;
         this.currentGameState = GameState.SETUP;
         this.planningPhaseOrder = new ArrayList<>();
@@ -167,6 +166,7 @@ public class GameLobby implements NetworkObserver {
     }
 
     //FIXME: problem with async, remove?
+
     /**
      * Broadcast Event to all clients connected to lobby, except sender
      *
@@ -287,7 +287,7 @@ public class GameLobby implements NetworkObserver {
 
     private void setupPreGame() {
         ClientSocketConnection currentClient = null;
-        for(ClientSocketConnection client : clientList.values()) {
+        for (ClientSocketConnection client : clientList.values()) {
             if (!client.isReady()) {
                 currentClient = client;
                 break;
@@ -295,7 +295,7 @@ public class GameLobby implements NetworkObserver {
         }
 
         // All players have chosen wizard. STATE -> IN_GAME
-        if(currentClient == null) {
+        if (currentClient == null) {
             setLobbyState(LobbyState.IN_GAME);
             Logger.debug(getLobbyCode() + " - " + "All players are ready. Switching state to " + getLobbyState());
             broadcast(new Message(Messages.GAME_STARTED));
@@ -336,6 +336,12 @@ public class GameLobby implements NetworkObserver {
             // TODO: Each update is called after respective element is modified
 
             broadcast(new Message(Messages.UPDATE_VIEW));
+            setGameState(GameState.PLANNING);
+
+            // First turn starts now
+            ClientSocketConnection firstPlayerClient = clientList.get(currentPlayer.getName());
+            firstPlayerClient.send(new Message(Messages.CHOOSE_ASSISTANT));
+            broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
             return;
         }
 
@@ -699,9 +705,7 @@ public class GameLobby implements NetworkObserver {
      * @return a reference of type {@link Player} referring to the next acting player, null if there is no next player
      */
     public Player getNextPlayer() {
-        List<Player> turns = currentGameState == GameState.PLANNING ?
-                planningPhaseOrder :
-                actionPhaseOrder;
+        List<Player> turns = currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder;
         if (isLastPlayer(turns)) return null;
         else return turns.get(turns.indexOf(currentPlayer) + 1);
     }

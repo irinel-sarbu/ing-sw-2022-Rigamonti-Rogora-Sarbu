@@ -1,8 +1,10 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import exceptions.*;
-import model.GameModel;
+import exceptions.AssistantNotInDeckException;
+import exceptions.NotPlayableAssistantException;
+import exceptions.WrongPhaseException;
+import exceptions.WrongPlayerException;
 import model.Player;
 import model.board.Assistant;
 import util.GameState;
@@ -81,5 +83,4 @@ public class PlanningPhase {
 
         thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
-
 }

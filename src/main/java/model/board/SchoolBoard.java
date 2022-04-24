@@ -309,11 +309,11 @@ public class SchoolBoard implements Serializable {
         }
         //SchoolBoard will be identified by the previous print of a numbered player.
         if (owner.getGameMode() == GameMode.EXPERT) {
-            return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
+            return "\tEntrance:" + entranceString + diningRoomString +
                     "\n\tCoins: " + getCoinSupply() +
                     "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
         } else {
-            return "SchoolBoard of " + owner.getName() + " entrance:" + entranceString + diningRoomString +
+            return "\tEntrance:" + entranceString + diningRoomString +
                     "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
         }
     }

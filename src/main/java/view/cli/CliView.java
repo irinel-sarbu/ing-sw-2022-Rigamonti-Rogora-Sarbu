@@ -4,6 +4,9 @@ import events.types.clientToClient.EUpdateServerInfo;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
+import model.board.CloudTile;
+import model.board.IslandGroup;
+import model.board.IslandTile;
 import model.board.SchoolBoard;
 import network.LightModel;
 import util.GameMode;
@@ -158,10 +161,14 @@ public class CliView extends View {
         System.out.print("\033[H\033[2J");
 
         System.out.println("BOARD");
-        System.out.println("- islands:\n" + model.getIslandGroups());
+
+        System.out.println("- islands:");
+        printIslands(model.getIslandGroups());
+
         System.out.println("- mother nature position: " + model.getMotherNaturePosition());
 
-        System.out.println("- cloud tiles: " + model.getCloudTiles());
+        System.out.println("- cloud tiles: ");
+        printCloudTiles(model.getCloudTiles());
 
         for (Map.Entry<String, SchoolBoard> entry : model.getSchoolBoardMap().entrySet()) {
             System.out.println("- schoolBoard of " + entry.getKey() + ":\n" + entry.getValue());
@@ -176,6 +183,24 @@ public class CliView extends View {
             }
         }
 
-        System.out.println("- deck: " + model.getDeck());
+        System.out.println("- assistants: " + model.getDeck());
+    }
+
+    private void printIslands(List<IslandGroup> islandGroups) {
+        for (IslandGroup group : islandGroups) {
+            String islandGroupName = "IslandGroup_" + String.format("%2s", group.getIslandGroupID()).replace(' ', '0');
+            System.out.println("\t" + islandGroupName + ":");
+            for (IslandTile island : group.getIslands()) {
+                System.out.println("\t\t" + island);
+            }
+        }
+        System.out.println();
+    }
+
+    private void printCloudTiles(List<CloudTile> cloudTiles) {
+        for (CloudTile cloudTile : cloudTiles) {
+            System.out.println("\t" + cloudTile);
+        }
+        System.out.println();
     }
 }

@@ -172,6 +172,10 @@ public class ClientController implements Observer {
     private boolean onPlayerChoosing(EPlayerChoosing event) {
         switch (event.getChoiceType()) {
             case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
+            case ASSISTANT -> view.displayMessage(event.getPlayerName() + " is choosing assistant.");
+            default -> {
+                return false;
+            }
         }
 
         return true;
