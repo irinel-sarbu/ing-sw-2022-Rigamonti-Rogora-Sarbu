@@ -315,17 +315,9 @@ public class GameLobby implements NetworkObserver {
                 broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
             }
 
-            List<CloudTile> cloudTiles = new ArrayList<>();
-            for (int id = 0; id < model.getNumOfCloudTiles(); id++) {
-                cloudTiles.add(model.getCloudTile(id));
-            }
-            broadcast(new EUpdateCloudTiles(cloudTiles));
+            broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
 
-            List<IslandGroup> islandGroups = new ArrayList<>();
-            for (int id = 0; id < model.getRemainingIslandGroups(); id++) {
-                islandGroups.add(model.getIslandGroupByID(id));
-            }
-            broadcast(new EUpdateIslands(islandGroups, model.getMotherNature().getPosition()));
+            broadcast(new EUpdateIslands(model.getIslandGroups(), model.getMotherNature().getPosition()));
 
             for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
                 ClientSocketConnection client = entry.getValue();

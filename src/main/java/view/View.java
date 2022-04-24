@@ -28,7 +28,7 @@ public abstract class View extends Observable {
 
     public abstract void chooseAssistant(List<Assistant> deck);
 
-    public abstract void startTurn(LightModel model);
+    public abstract void startTurn(LightModel model, String client);
 
     public abstract void update(LightModel model);
 }

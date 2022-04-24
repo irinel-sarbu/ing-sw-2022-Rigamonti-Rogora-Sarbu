@@ -9,6 +9,7 @@ import events.types.clientToServer.EAssistantChosen;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
+import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
 import network.LightModel;
@@ -58,6 +59,7 @@ public class ClientController implements Observer {
         dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
         dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
         dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
+        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_DINING, (Event e) -> onStudentMovementToDining((EStudentMovementToDining) e));
 
         // Game Events
         dp.dispatch(EventType.ASSISTANT_CHOSEN, (Event e) -> onAssistantChosen((EAssistantChosen) e));
@@ -106,7 +108,7 @@ public class ClientController implements Observer {
             case Messages.INVALID_ASSISTANT ->
                     view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
-            case Messages.START_TURN -> view.startTurn(model);
+            case Messages.START_TURN -> view.startTurn(model, nickname);
 
             default -> {
                 return false;
@@ -257,4 +259,9 @@ public class ClientController implements Observer {
         return true;
     }
     // Planning phase
+
+    private boolean onStudentMovementToDining(EStudentMovementToDining event) {
+        client.sendToServer(new EStudentMovementToDining(event.getStudentID()));
+        return true;
+    }
 }

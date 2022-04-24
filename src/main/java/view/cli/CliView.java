@@ -5,6 +5,7 @@ import events.types.clientToServer.EAssistantChosen;
 import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
+import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
 import model.board.*;
 import network.LightModel;
 import util.GameMode;
@@ -171,7 +172,7 @@ public class CliView extends View {
     }
 
     @Override
-    public void startTurn(LightModel model) {
+    public void startTurn(LightModel model, String client) {
         Menu main = new Menu("Action phase menu");
         Menu activateCharacter = new Menu("Activate character card menu");
         Menu moveStudent = new Menu("Student movement menu");
@@ -216,6 +217,10 @@ public class CliView extends View {
         });
         // TODO create custom menu for characters
 
+        moveStudentToDiningRoom.putAction("Select Student to move to the Dining Room", () -> {
+            selectStudentToDining(model, client);
+            return true;
+        });
 
         switchMenu(main);
     }
@@ -230,6 +235,26 @@ public class CliView extends View {
             int actionNumber = readInt(-1);
             sleep = currentMenu.executeAction(actionNumber);
         }
+    }
+
+    private void selectStudentToDining(LightModel model, String client) {
+        int choice;
+        do {
+            System.out.print("\rInsert student>>> ");
+            choice = readInt(-1);
+        } while (choice < 0 || doesNotContain(model.getSchoolBoardMap().get(client), choice));
+        notifyListeners(new EStudentMovementToDining(choice));
+    }
+
+    private void selectStudentToIsland() {
+
+    }
+
+    private boolean doesNotContain(SchoolBoard schoolBoard, int studentID) {
+        for (Student student : schoolBoard.getEntranceStudents()) {
+            if (student.getID() == studentID) return false;
+        }
+        return true;
     }
 
     @Override

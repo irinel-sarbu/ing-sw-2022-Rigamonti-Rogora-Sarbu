@@ -547,4 +547,22 @@ public class GameModel extends Observable {
     public boolean checkForToFewIslands() {
         return getRemainingIslandGroups() <= 3;
     }
+
+    /**
+     * Getter for {@link GameModel#islandGroups}.
+     *
+     * @return a List.
+     */
+    public List<IslandGroup> getIslandGroups() {
+        return islandGroups;
+    }
+
+    /**
+     * Getter for {@link GameModel#cloudTiles}.
+     *
+     * @return a List.
+     */
+    public List<CloudTile> getCloudTiles() {
+        return cloudTiles;
+    }
 }
