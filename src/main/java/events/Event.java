@@ -36,4 +36,8 @@ public abstract class Event implements Serializable {
     public int hashCode() {
         return Objects.hash(uuid);
     }
+
+    public UUID getUuid() {
+        return uuid;
+    }
 }

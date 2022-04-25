@@ -9,7 +9,6 @@ import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
 import model.board.*;
 import network.LightModel;
 import util.GameMode;
-import util.Logger;
 import util.Wizard;
 import view.View;
 
@@ -174,7 +173,6 @@ public class CliView extends View {
 
     @Override
     public void startTurn(LightModel model, String client) {
-        Logger.severe(List.of(model.getSchoolBoardMap().get(client).getEntranceStudents()).toString());
         Menu main = new Menu("Action phase menu");
         Menu activateCharacter = new Menu("Activate character card menu");
         Menu moveStudent = new Menu("Student movement menu");

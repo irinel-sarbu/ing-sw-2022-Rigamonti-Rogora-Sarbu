@@ -1,7 +1,6 @@
 package network.server;
 
 import events.Event;
-import events.EventType;
 import events.types.Messages;
 import events.types.serverToClient.Message;
 import events.types.serverToClient.Ping;
@@ -93,9 +92,9 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     @Override
     public synchronized void send(Event event) {
         try {
-            if (event.getType() != EventType.PING)
-                Logger.info("Sending event " + event + " to " + socketToString());
             out.writeObject(event);
+            out.flush();
+            out.reset();
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
