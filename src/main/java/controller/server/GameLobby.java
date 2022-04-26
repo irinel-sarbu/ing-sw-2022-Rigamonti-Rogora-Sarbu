@@ -642,7 +642,7 @@ public class GameLobby implements NetworkObserver {
 
     public boolean playerHasMovedToIsland(EStudentMovementToIsland event, ClientSocketConnection client) {
         try {
-            studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
+            studentMovement.moveStudentToIsland(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID(), event.getIslandID());
         } catch (Exception e) {
             e.printStackTrace();
         }

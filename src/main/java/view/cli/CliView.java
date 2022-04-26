@@ -6,6 +6,7 @@ import events.types.clientToServer.ECreateLobbyRequest;
 import events.types.clientToServer.EJoinLobbyRequest;
 import events.types.clientToServer.EWizardChosen;
 import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
+import events.types.clientToServer.actionPhaseRelated.EStudentMovementToIsland;
 import model.board.*;
 import network.LightModel;
 import util.GameMode;
@@ -193,6 +194,11 @@ public class CliView extends View {
             return true;
         });
 
+        moveStudent.putAction("Return to main menu", () -> {
+            switchMenu(main);
+            return true;
+        });
+
         moveStudent.putAction("Move student from entrance to island", () -> {
             switchMenu(moveStudentToIsland);
             return true;
@@ -201,13 +207,14 @@ public class CliView extends View {
             switchMenu(moveStudentToDiningRoom);
             return true;
         });
-        moveStudent.putAction("Return to main menu", () -> {
-            switchMenu(main);
-            return true;
-        });
 
         moveStudentToDiningRoom.putAction("Return to movement menu", () -> {
             switchMenu(moveStudent);
+            return true;
+        });
+
+        moveStudentToDiningRoom.putAction("Select Student to move to the Dining Room", () -> {
+            selectStudentToDining(model, client);
             return true;
         });
 
@@ -215,12 +222,15 @@ public class CliView extends View {
             switchMenu(moveStudent);
             return true;
         });
-        // TODO create custom menu for characters
 
-        moveStudentToDiningRoom.putAction("Select Student to move to the Dining Room", () -> {
-            selectStudentToDining(model, client);
+        moveStudentToIsland.putAction("Select Student to move to the island and Select island", () -> {
+            selectStudentToIsland(model, client);
             return true;
         });
+
+        // TODO create custom menu for characters
+
+
 
         switchMenu(main);
     }
@@ -248,8 +258,23 @@ public class CliView extends View {
         notifyListeners(new EStudentMovementToDining(studentList.get(choice).getID()));
     }
 
-    private void selectStudentToIsland() {
+    private void selectStudentToIsland(LightModel model, String client) {
+        int choice1, choice2;
+        List<Student> studentList = model.getSchoolBoardMap().get(client).getEntranceStudents();
+        printEntrance(studentList);
+        do {
+            System.out.print("\rInsert student >>> ");
+            choice1 = readInt(-1);
+        } while (choice1 < 0 || choice1 >= studentList.size());
 
+        List<IslandGroup> islands = model.getIslandGroups();
+        printIslands(islands);
+        do {
+            System.out.print("\rInsert which island TILE >>> ");
+            choice2 = readInt(-1);
+        } while (choice2 < 0 || choice2 >= 11); //Hardcoded 12 = max number of islandtiles
+
+        notifyListeners(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
     }
 
     private void printEntrance(List<Student> entrance) {
