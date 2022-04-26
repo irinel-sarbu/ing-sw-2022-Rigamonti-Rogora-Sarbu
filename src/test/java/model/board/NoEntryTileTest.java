@@ -12,7 +12,8 @@ import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class NoEntryTileTest {
@@ -20,7 +21,7 @@ public class NoEntryTileTest {
     private static CharacterCard grannyHerbs;
 
     @BeforeAll
-    public static void setUp() {
+    public static void setup() {
         game = new GameModel(3, GameMode.EXPERT);
         game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));
         grannyHerbs = new CharacterCard(CharacterType.GRANNY_HERBS);

@@ -1,10 +1,15 @@
 package model;
 
-import observer.Observable;
 import exceptions.*;
 import model.board.*;
-import model.expert.*;
-import util.*;
+import model.expert.CharacterCard;
+import model.expert.CoinSupply;
+import model.expert.NoEntryTile;
+import observer.Observable;
+import util.CharacterType;
+import util.Color;
+import util.GameMode;
+import util.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -171,7 +176,7 @@ public class GameModel extends Observable {
     public void addPlayer(Player player) {
         players.add(player);
         moveFromBagToEntrance(player);
-        player.getSchoolBoard().setUpTowers(player.getColor(), maxNumOfPlayers);
+        player.getSchoolBoard().setupTowers(player.getColor(), maxNumOfPlayers);
     }
 
     /**
@@ -181,7 +186,7 @@ public class GameModel extends Observable {
      * @param name Is the unique name correspondent to the selected player that needs to be removed.
      * @return True if the operation succeeded, False otherwise.
      */
-    public boolean removePlayerByName(String name) {
+    public void removePlayerByName(String name) {
         Player player;
         try {
             player = getPlayerByName(name);
@@ -190,7 +195,7 @@ public class GameModel extends Observable {
             Logger.warning(e.getMessage());
         }
 
-        return players.remove(player);
+        players.remove(player);
     }
 
     /**

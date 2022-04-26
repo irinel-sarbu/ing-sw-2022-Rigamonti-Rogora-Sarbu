@@ -1,5 +1,6 @@
 package network.client;
 
+import eventSystem.EventManager;
 import events.Event;
 import events.types.Messages;
 import events.types.serverToClient.Message;
@@ -33,22 +34,27 @@ public class Client extends Observable implements Runnable {
             server = new ServerConnection(this, socket);
         } catch (IOException e) {
             notifyListeners(new Message(Messages.CONNECTION_REFUSED));
+            EventManager.notify(new Message(Messages.CONNECTION_REFUSED));
             return;
         }
 
         server.start();
 
+        notifyListeners(new Message(Messages.CONNECTION_OK));
+        EventManager.notify(new Message(Messages.CONNECTION_OK));
+
+        // Event digestion
         new Thread(() -> {
             while (!socket.isClosed()) {
                 try {
-                    notifyListeners(eventQueue.take());
+                    Event event = eventQueue.take();
+                    notifyListeners(event);
+                    EventManager.notify(event);
                 } catch (InterruptedException e) {
                     Logger.error(e.getMessage());
                 }
             }
         }).start();
-
-        notifyListeners(new Message(Messages.CONNECTION_OK));
     }
 
     public synchronized void pushEvent(Event event) {

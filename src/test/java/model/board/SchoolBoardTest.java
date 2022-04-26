@@ -3,16 +3,12 @@ package model.board;
 
 import exceptions.*;
 import model.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Color;
 import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +17,7 @@ public class SchoolBoardTest {
     SchoolBoard schoolBoard;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.EXPERT);
         schoolBoard = new SchoolBoard(marco);
         for (int i = 0; i < 7; i++) {
@@ -107,7 +103,7 @@ public class SchoolBoardTest {
 
     @Test
     public void testTowers() {
-        schoolBoard.setUpTowers(TowerColor.BLACK, 2);
+        schoolBoard.setupTowers(TowerColor.BLACK, 2);
         assertEquals(8, schoolBoard.getTowers().size());
         try {
             schoolBoard.removeTower();

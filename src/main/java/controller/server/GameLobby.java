@@ -11,11 +11,10 @@ import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
 import events.types.clientToServer.actionPhaseRelated.EStudentMovementToIsland;
 import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
-import exceptions.*;
+import exceptions.PlayerNotFoundException;
+import exceptions.supplyEmptyException;
 import model.GameModel;
 import model.Player;
-import model.board.CloudTile;
-import model.board.IslandGroup;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
@@ -635,7 +634,7 @@ public class GameLobby implements NetworkObserver {
         if (currentGameState == GameState.STUDENT_MOVEMENT) {
             sendStartTurn();
         } else {
-            //TODO: insert motherNatureMovement message
+            // TODO: insert motherNatureMovement message
         }
         return true;
     }

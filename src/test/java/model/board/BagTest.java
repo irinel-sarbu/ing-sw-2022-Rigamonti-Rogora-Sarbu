@@ -18,7 +18,7 @@ public class BagTest {
     private static Bag emptyBag;
 
     @BeforeAll
-    public static void Bag() {
+    public static void setup() {
         defaultBag = new Bag(5);
         customBag = new Bag(0, 1, 2, 3, 4);
         emptyBag = new Bag(0);

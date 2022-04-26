@@ -1,5 +1,6 @@
 package view.cli;
 
+import eventSystem.EventManager;
 import events.types.clientToClient.EUpdateServerInfo;
 import events.types.clientToServer.EAssistantChosen;
 import events.types.clientToServer.ECreateLobbyRequest;
@@ -72,7 +73,7 @@ public class CliView extends View {
         System.out.print("\rInsert server PORT [" + defaultPort + "] >>> ");
         port = readInt(defaultPort);
 
-        notifyListeners(new EUpdateServerInfo(address, port));
+        EventManager.notify(new EUpdateServerInfo(address, port));
     }
 
     private String askPlayerName() {
@@ -128,7 +129,7 @@ public class CliView extends View {
         } while ((numOfPlayers != 2) && (numOfPlayers != 3));
 
         String nickname = askPlayerName();
-        notifyListeners(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers, nickname));
+        EventManager.notify(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers, nickname));
     }
 
     @Override
@@ -137,7 +138,7 @@ public class CliView extends View {
         String lobbyCode = readString("");
 
         String nickname = askPlayerName();
-        notifyListeners(new EJoinLobbyRequest(lobbyCode, nickname));
+        EventManager.notify(new EJoinLobbyRequest(lobbyCode, nickname));
     }
 
     @Override
@@ -153,7 +154,7 @@ public class CliView extends View {
             choice = readInt(-1);
         } while (choice < 0 || choice >= availableWizards.size());
 
-        notifyListeners(new EWizardChosen(availableWizards.get(choice)));
+        EventManager.notify(new EWizardChosen(availableWizards.get(choice)));
     }
 
     @Override
@@ -169,7 +170,7 @@ public class CliView extends View {
             choice = readInt(-1);
         } while (choice < 0 || choice >= deck.size());
 
-        notifyListeners(new EAssistantChosen(deck.get(choice)));
+        EventManager.notify(new EAssistantChosen(deck.get(choice)));
     }
 
     @Override
@@ -255,7 +256,7 @@ public class CliView extends View {
             System.out.print("\rInsert student >>> ");
             choice = readInt(-1);
         } while (choice < 0 || choice >= studentList.size());
-        notifyListeners(new EStudentMovementToDining(studentList.get(choice).getID()));
+        EventManager.notify(new EStudentMovementToDining(studentList.get(choice).getID()));
     }
 
     private void selectStudentToIsland(LightModel model, String client) {
@@ -274,7 +275,7 @@ public class CliView extends View {
             choice2 = readInt(-1);
         } while (choice2 < 0 || choice2 >= 11); //Hardcoded 12 = max number of islandtiles
 
-        notifyListeners(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
+        EventManager.notify(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
     }
 
     private void printEntrance(List<Student> entrance) {

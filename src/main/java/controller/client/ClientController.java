@@ -1,8 +1,7 @@
 package controller.client;
 
-import events.Event;
-import events.EventDispatcher;
-import events.EventType;
+import eventSystem.EventManager;
+import eventSystem.annotations.EventHandler;
 import events.types.Messages;
 import events.types.clientToClient.EUpdateServerInfo;
 import events.types.clientToServer.EAssistantChosen;
@@ -15,10 +14,9 @@ import events.types.serverToClient.*;
 import events.types.serverToClient.gameStateEvents.*;
 import network.LightModel;
 import network.client.Client;
-import observer.Observer;
 import view.View;
 
-public class ClientController implements Observer {
+public class ClientController {
     private final View view;
 
     private Client client;
@@ -28,58 +26,11 @@ public class ClientController implements Observer {
 
     public ClientController(View view) {
         this.view = view;
+        EventManager.get().register(this);
     }
 
-    @Override
-    public void onEvent(Event event) {
-        EventDispatcher dp = new EventDispatcher(event);
-
-        // Server events
-        dp.dispatch(EventType.PING, (Event e) -> onPing((Ping) e));
-        dp.dispatch(EventType.MESSAGE, (Event e) -> onMessage((Message) e));
-
-        dp.dispatch(EventType.LOBBY_JOINED, (Event e) -> onLobbyJoined((ELobbyJoined) e));
-        dp.dispatch(EventType.PLAYER_JOINED, (Event e) -> onPlayerConnected((EPlayerJoined) e));
-        dp.dispatch(EventType.PLAYER_DISCONNECTED, (Event e) -> onPlayerDisconnected((EPlayerDisconnected) e));
-
-        dp.dispatch(EventType.PLAYER_CHOOSING, (Event e) -> onPlayerChoosing((EPlayerChoosing) e));
-
-        dp.dispatch(EventType.CHOOSE_WIZARD, (Event e) -> onChooseWizard((EChooseWizard) e));
-        // TODO: remove this function
-        dp.dispatch(EventType.WIZARD_NOT_AVAILABLE, (Event e) -> onWizardNoMoreAvailable((EWizardNotAvailable) e));
-
-        dp.dispatch(EventType.UPDATE_SCHOOLBOARD, (Event e) -> onUpdateSchoolboard((EUpdateSchoolBoard) e));
-        dp.dispatch(EventType.UPDATE_CLOUD_TILES, (Event e) -> onUpdateCloudTiles((EUpdateCloudTiles) e));
-        dp.dispatch(EventType.UPDATE_ISLANDS, (Event e) -> onUpdateIslands((EUpdateIslands) e));
-        dp.dispatch(EventType.UPDATE_ASSISTANT_DECK, (Event e) -> onUpdateAssistantDeck((EUpdateAssistantDeck) e));
-        dp.dispatch(EventType.UPDATE_CHARACTER_EFFECT, (Event e) -> onUpdateCharacterEffect((EUpdateCharacterEffect) e));
-        dp.dispatch(EventType.LIGHT_MODEL_SETUP, (Event e) -> onLightModelSetup((ELightModelSetup) e));
-
-        // View Events
-        dp.dispatch(EventType.UPDATE_SERVER_INFO, (Event e) -> onUpdateServerInfo((EUpdateServerInfo) e));
-        dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Event e) -> onCreateLobbyRequest((ECreateLobbyRequest) e));
-        dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Event e) -> onJoinLobbyRequest((EJoinLobbyRequest) e));
-        dp.dispatch(EventType.WIZARD_CHOSEN, (Event e) -> onWizardChosen((EWizardChosen) e));
-        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_DINING, (Event e) -> onStudentMovementToDining((EStudentMovementToDining) e));
-        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_ISLAND, (Event e) -> onStudentMovementToIsland((EStudentMovementToIsland) e));
-
-        // Game Events
-        dp.dispatch(EventType.ASSISTANT_CHOSEN, (Event e) -> onAssistantChosen((EAssistantChosen) e));
-        dp.dispatch(EventType.PLAYER_CHOSE_ASSISTANT, (Event e) -> onPlayerChoseAssistant((EPlayerChoseAssistant) e));
-        dp.dispatch(EventType.PLAYER_TURN_STARTED, (Event e) -> onPlayerTurnStarted((EPlayerTurnStarted) e));
-
-
-        if (!event.isHandled()) {
-            view.displayError("Unhandled event " + event);
-        }
-    }
-
-    private boolean onPing(Ping ping) {
-        // Do nothing, just a check by the server
-        return true;
-    }
-
-    private boolean onMessage(Message message) {
+    @EventHandler
+    public boolean onMessage(Message message) {
         switch (message.getMsg()) {
             case Messages.CONNECTION_OK -> view.chooseCreateOrJoin();
             case Messages.CONNECTION_REFUSED -> {
@@ -124,9 +75,9 @@ public class ClientController implements Observer {
     /**
      * Client inserted server info
      */
-    private boolean onUpdateServerInfo(EUpdateServerInfo event) {
+    @EventHandler
+    public boolean onUpdateServerInfo(EUpdateServerInfo event) {
         client = new Client(event.getIP(), event.getPort());
-        client.registerListener(this);
         Thread clientThread = new Thread(client);
         clientThread.start();
         return true;
@@ -135,7 +86,8 @@ public class ClientController implements Observer {
     /**
      * Client tries to create a Lobby
      */
-    private boolean onCreateLobbyRequest(ECreateLobbyRequest event) {
+    @EventHandler
+    public boolean onCreateLobbyRequest(ECreateLobbyRequest event) {
         view.displayMessage("Creating Lobby...");
         this.nickname = event.getPlayerName();
         client.sendToServer(new ECreateLobbyRequest(event.getGameMode(), event.getNumOfPlayers(), nickname));
@@ -147,7 +99,8 @@ public class ClientController implements Observer {
     /**
      * Client tries to connect to a Lobby.
      */
-    private boolean onJoinLobbyRequest(EJoinLobbyRequest event) {
+    @EventHandler
+    public boolean onJoinLobbyRequest(EJoinLobbyRequest event) {
         this.nickname = event.getPlayerName();
         this.lobbyCode = event.getLobbyCode();
         client.sendToServer(new EJoinLobbyRequest(lobbyCode, nickname));
@@ -164,7 +117,8 @@ public class ClientController implements Observer {
      * If Lobby creation was successful, Client connects to Lobby.
      * This event can also be triggered by the Client when Event <code>JoinLobby</code> is successful.
      */
-    private boolean onLobbyJoined(ELobbyJoined event) {
+    @EventHandler
+    public boolean onLobbyJoined(ELobbyJoined event) {
         this.lobbyCode = event.getCode();
         view.displayMessage("Joined lobby " + event.getCode());
         view.displayMessage("Waiting for other players to connect...");
@@ -174,7 +128,8 @@ public class ClientController implements Observer {
     /**
      * A new Client connected to the same Lobby
      */
-    private boolean onPlayerConnected(EPlayerJoined event) {
+    @EventHandler
+    public boolean onPlayerConnected(EPlayerJoined event) {
         view.displayMessage(event.getPlayerName() + " connected to Lobby!");
         return true;
     }
@@ -182,12 +137,14 @@ public class ClientController implements Observer {
     /**
      * Client disconnected from lobby
      */
-    private boolean onPlayerDisconnected(EPlayerDisconnected event) {
+    @EventHandler
+    public boolean onPlayerDisconnected(EPlayerDisconnected event) {
         view.displayMessage(event.getPlayerName() + " left the Lobby!");
         return true;
     }
 
-    private boolean onPlayerChoosing(EPlayerChoosing event) {
+    @EventHandler
+    public boolean onPlayerChoosing(EPlayerChoosing event) {
         switch (event.getChoiceType()) {
             case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
             case ASSISTANT -> view.displayMessage(event.getPlayerName() + " is choosing assistant.");
@@ -199,75 +156,89 @@ public class ClientController implements Observer {
         return true;
     }
 
-    private boolean onChooseWizard(EChooseWizard event) {
+    @EventHandler
+    public boolean onChooseWizard(EChooseWizard event) {
         view.chooseWizard(event.getAvailableWizards());
         return true;
     }
 
-    private boolean onWizardNoMoreAvailable(EWizardNotAvailable event) {
+    @EventHandler
+    public boolean onWizardNoMoreAvailable(EWizardNotAvailable event) {
         view.displayError("Wizard is no longer available. Choose another one.");
         view.chooseWizard(event.getAvailableWizards());
         return true;
     }
 
-    private boolean onWizardChosen(EWizardChosen event) {
+    @EventHandler
+    public boolean onWizardChosen(EWizardChosen event) {
         client.sendToServer(new EWizardChosen(event.getWizard()));
         return true;
     }
 
-    private boolean onAssistantChosen(EAssistantChosen event) {
+    @EventHandler
+    public boolean onAssistantChosen(EAssistantChosen event) {
         client.sendToServer(new EAssistantChosen(event.getAssistant()));
         return true;
     }
 
-    private boolean onUpdateSchoolboard(EUpdateSchoolBoard event) {
+    @EventHandler
+    public boolean onUpdateSchoolboard(EUpdateSchoolBoard event) {
         model.setPlayerSchoolBoard(event.getPlayerName(), event.getSchoolBoard());
         return true;
     }
 
-    private boolean onUpdateCloudTiles(EUpdateCloudTiles event) {
+    @EventHandler
+    public boolean onUpdateCloudTiles(EUpdateCloudTiles event) {
         model.setCloudTiles(event.getCloudTiles());
         return true;
     }
 
-    private boolean onUpdateIslands(EUpdateIslands event) {
+    @EventHandler
+    public boolean onUpdateIslands(EUpdateIslands event) {
         model.setIslandGroups(event.getIslandGroups());
         model.setMotherNaturePosition(event.getMotherNaturePos());
         return true;
     }
 
-    private boolean onUpdateAssistantDeck(EUpdateAssistantDeck event) {
+    @EventHandler
+    public boolean onUpdateAssistantDeck(EUpdateAssistantDeck event) {
         model.setDeck(event.getAssistants());
         return true;
     }
 
-    private boolean onUpdateCharacterEffect(EUpdateCharacterEffect event) {
+    @EventHandler
+    public boolean onUpdateCharacterEffect(EUpdateCharacterEffect event) {
         model.setActiveCharacterEffect(event.getCharacterType());
         return true;
     }
 
-    private boolean onLightModelSetup(ELightModelSetup event) {
+    @EventHandler
+    public boolean onLightModelSetup(ELightModelSetup event) {
         model.setCharacters(event.getCharacterCards());
         return true;
     }
 
-    private boolean onPlayerChoseAssistant(EPlayerChoseAssistant event) {
+    @EventHandler
+    public boolean onPlayerChoseAssistant(EPlayerChoseAssistant event) {
         view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
         return true;
     }
 
-    private boolean onPlayerTurnStarted(EPlayerTurnStarted event) {
+    @EventHandler
+    public boolean onPlayerTurnStarted(EPlayerTurnStarted event) {
         view.displayMessage("Player " + event.getPlayer() + " has started the action phase");
         return true;
     }
     // Planning phase
 
-    private boolean onStudentMovementToDining(EStudentMovementToDining event) {
+    @EventHandler
+    public boolean onStudentMovementToDining(EStudentMovementToDining event) {
         client.sendToServer(new EStudentMovementToDining(event.getStudentID()));
         return true;
     }
 
-    private boolean onStudentMovementToIsland(EStudentMovementToIsland event) {
+    @EventHandler
+    public boolean onStudentMovementToIsland(EStudentMovementToIsland event) {
         client.sendToServer(new EStudentMovementToIsland(event.getStudentID(), event.getIslandID()));
         return true;
     }

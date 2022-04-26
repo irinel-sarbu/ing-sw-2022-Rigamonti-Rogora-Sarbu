@@ -252,7 +252,7 @@ public class SchoolBoard implements Serializable {
      * @param color           Is the color of the New towers that needs to be created.
      * @param maxNumOfPlayers Is the number of players that allows to pick the correct number of towers.
      */
-    public void setUpTowers(TowerColor color, int maxNumOfPlayers) {
+    public void setupTowers(TowerColor color, int maxNumOfPlayers) {
         int numOfTowers;
         if (maxNumOfPlayers == 2) numOfTowers = 8;
         else numOfTowers = 6;

@@ -1,14 +1,14 @@
 package eventSystem;
 
 import eventSystem.annotations.EventHandler;
-import eventSystem.events.Event;
+import eventSystem.annotations.NetworkEvent;
+import events.Event;
 import util.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventManager {
@@ -29,15 +29,21 @@ public class EventManager {
     }
 
     public void register(final Object listenerInstance) {
-        System.out.println("Registering event handlers for class " + listenerInstance.getClass().getName());
+        Logger.info("Registering event handlers for class " + listenerInstance.getClass().getName());
         for (Method method : listenerInstance.getClass().getMethods()) {
             if (!method.isAnnotationPresent(EventHandler.class)) {
-                System.out.println("> Skipping method " + method.getName() + ", no annotation present");
+                Logger.warning("Ignoring method " + method.getName(), "No annotation found");
                 continue;
             }
 
-            if (method.getParameterCount() != 1) {
-                Logger.error("Ignoring event handler " + method.getName(), "Wrong number of arguments (required 1)");
+            int parameterCount = 1;
+
+            if (method.isAnnotationPresent(NetworkEvent.class)) {
+                parameterCount = 2;
+            }
+
+            if (method.getParameterCount() != parameterCount) {
+                Logger.error("Ignoring event handler " + method.getName(), "Wrong number of arguments (required " + parameterCount + ")");
                 continue;
             }
 
@@ -47,11 +53,9 @@ public class EventManager {
             }
 
             Class<?> eventType = method.getParameterTypes()[0];
-            String scope = method.getAnnotation(EventHandler.class).value();
+            Logger.debug("Registering callback function " + method.getName() + " for " + eventType.getName());
 
-            System.out.println("> Registering callback function " + method.getName() + " for " + eventType.getName());
-
-            addListener(eventType, new EventListener(listenerInstance, method, scope));
+            addListener(eventType, new EventListener(listenerInstance, method));
         }
     }
 
@@ -80,17 +84,13 @@ public class EventManager {
     }
 
     public static void notify(final Event event) {
-        System.out.println("> notify: " + event.getScope() + ", " + event);
-        get().dispatch(event.getScope(), event);
+        get().dispatch(event);
     }
 
-    private synchronized void dispatch(final String scope, final Event event) {
+    private synchronized void dispatch(final Event event) {
         CopyOnWriteArrayList<EventListener> listeners = listenersMap.get(event.getClass());
         if (listeners != null) {
             for (EventListener listener : listeners) {
-                if (!Objects.equals(listener.scope, scope))
-                    continue;
-
                 try {
                     listener.callbackMethod.setAccessible(true);
                     listener.callbackMethod.invoke(listener.listenerInstance, event);
@@ -103,15 +103,6 @@ public class EventManager {
         }
     }
 
-    private static class EventListener {
-        private final Object listenerInstance;
-        private final Method callbackMethod;
-        private final String scope;
-
-        private EventListener(final Object listenerInstance, final Method callbackMethod, final String eventScope) {
-            this.listenerInstance = listenerInstance;
-            this.callbackMethod = callbackMethod;
-            this.scope = eventScope;
-        }
+    private record EventListener(Object listenerInstance, Method callbackMethod) {
     }
 }

@@ -3,13 +3,13 @@ package model.board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MotherNatureTest {
     MotherNature motherNature;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         motherNature = new MotherNature();
         motherNature.setPosition(0);
     }

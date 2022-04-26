@@ -1,14 +1,18 @@
 package eventSystem.events;
 
+import network.server.ClientSocketConnection;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Event implements Serializable {
     private final UUID uuid;
+    private ClientSocketConnection client;
 
     protected Event() {
         this.uuid = UUID.randomUUID();
+        this.client = null;
     }
 
     @Override
@@ -25,4 +29,12 @@ public abstract class Event implements Serializable {
     }
 
     public abstract String getScope();
+
+    public void setClient(ClientSocketConnection client) {
+        this.client = client;
+    }
+
+    public ClientSocketConnection getClient() {
+        return client;
+    }
 }

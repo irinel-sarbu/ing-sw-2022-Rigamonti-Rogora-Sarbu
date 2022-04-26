@@ -1,6 +1,9 @@
 package model;
 
-import exceptions.*;
+import exceptions.CharacterCardNotFound;
+import exceptions.PlayerNotFoundException;
+import exceptions.ProfessorNotFoundException;
+import exceptions.StudentNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +15,7 @@ public class GameModelExpertTest {
     private static GameModel game;
 
     @BeforeAll
-    public static void setUp() {
+    public static void setup() {
         game = new GameModel(3, GameMode.EXPERT);
 
         game.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));

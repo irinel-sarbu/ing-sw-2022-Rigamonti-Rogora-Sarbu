@@ -19,7 +19,7 @@ public class PlayerTest {
     private static Player empty;
 
     @BeforeAll
-    public static void Player() {
+    public static void setup() {
         try {
             alberto = new Player("alberto", Wizard.WIZARD_1, TowerColor.BLACK, GameMode.EXPERT);
             alberto.pushFoldDeck(alberto.removeCard(alberto.getAssistants().get(0)));

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.TowerColor;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class TowerTest {
     private Tower tower1, tower2;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         tower1 = new Tower(TowerColor.BLACK);
         tower2 = new Tower(TowerColor.WHITE);
     }

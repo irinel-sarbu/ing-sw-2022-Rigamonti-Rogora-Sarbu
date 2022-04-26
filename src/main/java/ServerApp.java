@@ -5,7 +5,7 @@ import util.Logger;
 public class ServerApp {
 	static public void main(String[] args) {
 		Server server = new Server();
-		ServerController controller = new ServerController(server);
+        ServerController controller = new ServerController();
 
 		server.registerListener(controller);
 

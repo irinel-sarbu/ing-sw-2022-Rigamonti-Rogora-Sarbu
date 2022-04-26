@@ -10,7 +10,6 @@ import events.types.serverToClient.EPlayerDisconnected;
 import events.types.serverToClient.Message;
 import exceptions.LobbyNotFoundException;
 import network.server.ClientSocketConnection;
-import network.server.Server;
 import observer.NetworkObserver;
 import util.GameMode;
 import util.Logger;
@@ -22,16 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController implements NetworkObserver {
     private final Map<String, GameLobby> games;
-    private final Server server;
 
     /**
      * Main controller class constructor
-     *
-     * @param server server instance to connect this controller to
      */
-    public ServerController(Server server) {
+    public ServerController() {
         this.games = new ConcurrentHashMap<>();
-        this.server = server;
     }
 
     /**

@@ -15,7 +15,7 @@ public class CharacterCardTest {
     private CharacterCard card1, card2, card3, card4;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         card1 = new CharacterCard(CharacterType.GRANNY_HERBS);
         card2 = new CharacterCard(CharacterType.MONK);
         card3 = new CharacterCard(CharacterType.JESTER);

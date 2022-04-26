@@ -6,13 +6,14 @@ import model.expert.CoinSupply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CoinSupplyTest {
     private CoinSupply coinSupply1, coinSupply2;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         coinSupply1 = new CoinSupply();
         coinSupply2 = new CoinSupply(30);
     }

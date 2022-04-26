@@ -7,7 +7,8 @@ import util.Wizard;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class AssistantTest {
 
@@ -15,7 +16,7 @@ public class AssistantTest {
     private static List<Assistant> deck2;
 
     @BeforeAll
-    public static void AssistantTest() {
+    public static void setup() {
         deck1 = Assistant.getWizardDeck(Wizard.WIZARD_1);
         deck2 = Assistant.getWizardDeck(Wizard.WIZARD_2);
         for (Assistant assistant : deck1) {

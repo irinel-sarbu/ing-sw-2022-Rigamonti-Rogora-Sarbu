@@ -15,7 +15,7 @@ public class CloudTileTest {
     private static CloudTile empty;
 
     @BeforeAll
-    public static void CloudTile() {
+    public static void setup() {
         full = new CloudTile(0, 4);
         try {
             full.put(

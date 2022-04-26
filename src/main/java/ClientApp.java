@@ -1,10 +1,13 @@
 import controller.client.ClientController;
+import util.Logger;
 import view.View;
 import view.cli.CliView;
 import view.gui.GuiView;
 
 public class ClientApp {
     static public void main(String[] args) {
+        Logger.setLevel(Logger.LoggerLevel.DISABLED);
+
         boolean run = true;
         boolean cliEnabled = false;
 
@@ -27,8 +30,6 @@ public class ClientApp {
             View view = cliEnabled ? new CliView() : new GuiView();
 
             ClientController controller = new ClientController(view);
-
-            view.registerListener(controller);
 
             view.run();
         }
