@@ -38,6 +38,8 @@ public class ServerConnection extends Thread {
     public synchronized void send(Event event) {
         try {
             out.writeObject(event);
+            out.flush();
+            out.reset();
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
