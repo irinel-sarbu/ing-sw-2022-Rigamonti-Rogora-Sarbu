@@ -29,7 +29,7 @@ public class ClientController implements EventListener {
 
     public ClientController(View view) {
         this.view = view;
-        EventManager.get().register(this, null);
+        EventManager.register(this, null);
     }
 
     @EventHandler

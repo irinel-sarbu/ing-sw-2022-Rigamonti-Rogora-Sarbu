@@ -104,7 +104,7 @@ public class ServerController implements EventListener {
     private GameLobby createLobby(int numOfPlayers, GameMode gameMode) {
         String code = generateLobbyCode();
         GameLobby newGameLobby = new GameLobby(numOfPlayers, gameMode, code, server);
-        EventManager.get().register(newGameLobby, new Filter(code));
+        EventManager.register(newGameLobby, new Filter(code));
         games.put(code, newGameLobby);
 
         return games.get(code);

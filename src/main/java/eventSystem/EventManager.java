@@ -19,7 +19,7 @@ public class EventManager {
         this.listenersMap = new HashMap<>();
     }
 
-    public synchronized static EventManager get() {
+    private synchronized static EventManager get() {
         if (eventManagerInstance == null) {
             eventManagerInstance = new EventManager();
         }
@@ -27,7 +27,7 @@ public class EventManager {
         return eventManagerInstance;
     }
 
-    public void register(final EventListener listenerInstance, Filter filter) {
+    public static synchronized void register(EventListener listenerInstance, Filter filter) {
         Logger.info("Registering event handlers for class " + listenerInstance.getClass().getName());
         for (Method method : listenerInstance.getClass().getMethods()) {
             if (!method.isAnnotationPresent(EventHandler.class)) {
@@ -48,12 +48,12 @@ public class EventManager {
             Class<?> eventType = method.getParameterTypes()[0];
             Logger.debug("Registering callback function " + method.getName() + " for " + eventType.getName());
 
-            addListener(eventType, new EventListenerRecord(listenerInstance, method, filter));
+            get().addListener(eventType, new EventListenerRecord(listenerInstance, method, filter));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Event> void addListener(final Class<?> eventType, final EventListenerRecord listener) {
+    private synchronized <T extends Event> void addListener(Class<?> eventType, EventListenerRecord listener) {
         if (!listenersMap.containsKey(eventType)) {
             listenersMap.put((Class<T>) eventType, new CopyOnWriteArrayList<>());
         }
@@ -61,8 +61,8 @@ public class EventManager {
         listenersMap.get(eventType).add(listener);
     }
 
-    public void unregisterListener(final EventListener listener) {
-        for (CopyOnWriteArrayList<EventListenerRecord> listenerList : listenersMap.values()) {
+    public static synchronized void unregisterListener(final EventListener listener) {
+        for (CopyOnWriteArrayList<EventListenerRecord> listenerList : get().listenersMap.values()) {
             for (int i = 0; i < listenerList.size(); i++) {
                 if (listenerList.get(i).listenerInstance == listener) {
                     listenerList.remove(i);
@@ -72,8 +72,8 @@ public class EventManager {
         }
     }
 
-    public <T extends Event> void unregisterListenersOfEvent(final Class<T> eventType) {
-        listenersMap.get(eventType).clear();
+    public static synchronized <T extends Event> void unregisterListenersOfEvent(Class<T> eventType) {
+        get().listenersMap.get(eventType).clear();
     }
 
     public static void notify(final Event event) {
@@ -92,9 +92,9 @@ public class EventManager {
                     listener.callbackMethod.setAccessible(true);
                     listener.callbackMethod.invoke(listener.listenerInstance, event);
                 } catch (InvocationTargetException e) {
-                    Logger.error("Could not dispatch event to handler:", e.getMessage());
+                    Logger.error("Could not dispatch event to handler: ", e.getMessage());
                 } catch (IllegalAccessException e) {
-                    Logger.warning("Could not access event handler method:", e.getMessage());
+                    Logger.warning("Could not access event handler method: ", e.getMessage());
                 }
             }
         }
