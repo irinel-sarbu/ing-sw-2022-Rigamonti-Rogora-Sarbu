@@ -72,12 +72,11 @@
                 <version>0.8.7</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/network/**/*</exclude>
-                        <exclude>**/view/**/*</exclude>
-                        <exclude>**/observer/**/*</exclude>
-                        <exclude>**/events/**/*</exclude>
+                        <exclude>**/eventSystem/**/*</exclude>
                         <exclude>**/exceptions/**/*</exclude>
+                        <exclude>**/network/**/*</exclude>
                         <exclude>**/util/**/*</exclude>
+                        <exclude>**/view/**/*</exclude>
                         <exclude>**/*App.*</exclude>
                     </excludes>
                 </configuration>
