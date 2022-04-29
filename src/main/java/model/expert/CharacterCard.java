@@ -42,17 +42,6 @@ public class CharacterCard implements Serializable {
     }
 
     /**
-     * Advanced constructor. Initializes all needed Attributes and sets a cost different from the base cost.
-     *
-     * @param cost      Is the selected Cost.
-     * @param character Is the {@link CharacterType} of the {@link CharacterCard}.
-     */
-    public CharacterCard(int cost, CharacterType character) {
-        this.cost = cost;
-        this.character = character;
-    }
-
-    /**
      * Getter for the attribute {@link CharacterCard#color}.
      */
     public Color getColor() {
@@ -168,14 +157,6 @@ public class CharacterCard implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         CharacterCard that = (CharacterCard) o;
         return character == that.character;
-    }
-
-    /**
-     * Overrides hashCode.
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(character);
     }
 
     /**

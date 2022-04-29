@@ -6,8 +6,7 @@ import model.expert.CoinSupply;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CoinSupplyTest {
     private CoinSupply coinSupply1, coinSupply2;
@@ -22,6 +21,8 @@ public class CoinSupplyTest {
     public void GetCoins() {
         assertEquals(20, coinSupply1.getNumOfCoins());
         assertEquals(30, coinSupply2.getNumOfCoins());
+        assertTrue(coinSupply1.toString().length() != 0);
+        assertTrue(coinSupply2.toString().length() != 0);
     }
 
     @Test
@@ -40,5 +41,6 @@ public class CoinSupplyTest {
             fail();
         }
         assertEquals(18, coinSupply1.getNumOfCoins());
+        assertThrows(supplyEmptyException.class, () -> coinSupply1.removeCoins(200));
     }
 }
