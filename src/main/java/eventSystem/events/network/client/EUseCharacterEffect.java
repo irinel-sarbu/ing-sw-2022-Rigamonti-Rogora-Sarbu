@@ -3,10 +3,10 @@ package eventSystem.events.network.client;
 import eventSystem.events.network.NetworkEvent;
 import util.CharacterType;
 
-public abstract class EUseCharacterEffect extends NetworkEvent {
+public class EUseCharacterEffect extends NetworkEvent {
     private final CharacterType characterType;
 
-    protected EUseCharacterEffect(CharacterType characterType) {
+    public EUseCharacterEffect(CharacterType characterType) {
         this.characterType = characterType;
     }
 

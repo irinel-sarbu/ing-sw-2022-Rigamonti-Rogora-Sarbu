@@ -6,10 +6,7 @@ import eventSystem.annotations.EventHandler;
 import eventSystem.events.local.EUpdateServerInfo;
 import eventSystem.events.network.EConnectionAccepted;
 import eventSystem.events.network.Messages;
-import eventSystem.events.network.client.EAssistantChosen;
-import eventSystem.events.network.client.ECreateLobbyRequest;
-import eventSystem.events.network.client.EJoinLobbyRequest;
-import eventSystem.events.network.client.EWizardChosen;
+import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
@@ -60,10 +57,20 @@ public class ClientController implements EventListener {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT ->
-                    view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
             case Messages.START_TURN -> view.startTurn(model, nickname);
+
+            case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
+
+            case Messages.INSUFFICIENT_COINS -> {
+                view.displayMessage("Not Enough Coins.");
+                view.startTurn(model, nickname);
+            }
+            case Messages.EFFECT_USED -> {
+                view.displayMessage("An effect has already been used. You can't use another.");
+                view.startTurn(model, nickname);
+            }
         }
     }
 
@@ -214,5 +221,51 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onStudentMovementToIsland(EStudentMovementToIsland event) {
         client.sendToServer(new EStudentMovementToIsland(event.getStudentID(), event.getIslandID()));
+    }
+
+    //CharacterEffect Events
+    @EventHandler
+    public void onEUseMonkEffect(EUseMonkEffect event) {
+        client.sendToServer(new EUseMonkEffect(event.getStudentID(), event.getIslandPos()));
+    }
+
+    @EventHandler
+    public void onEUseCharacterEffect(EUseCharacterEffect event) {
+        client.sendToServer(new EUseCharacterEffect(event.getCharacterType()));
+    }
+
+    @EventHandler
+    public void onEUseHeraldEffect(EUseHeraldEffect event) {
+        client.sendToServer(new EUseHeraldEffect(event.getIslandGroupID()));
+    }
+
+    @EventHandler
+    public void onEUseGrannyEffect(EUseGrannyEffect event) {
+        client.sendToServer(new EUseGrannyEffect(event.getIslandID()));
+    }
+
+    @EventHandler
+    public void onEUseJesterEffect(EUseJesterEffect event) {
+        client.sendToServer(new EUseJesterEffect(event.getEntranceStudents(), event.getJesterStudents()));
+    }
+
+    @EventHandler
+    public void onEUseMinstrelEffect(EUseMinstrelEffect event) {
+        client.sendToServer(new EUseMinstrelEffect(event.getEntranceStudents(), event.getDiningStudents()));
+    }
+
+    @EventHandler
+    public void onEUsePrincessEffect(EUsePrincessEffect event) {
+        client.sendToServer(new EUsePrincessEffect(event.getStudentID()));
+    }
+
+    @EventHandler
+    public void onEUseFanaticEffect(EUseFanaticEffect event) {
+        client.sendToServer(new EUseFanaticEffect(event.getColor()));
+    }
+
+    @EventHandler
+    public void onEUseThiefEffect(EUseThiefEffect event) {
+        client.sendToServer(new EUseThiefEffect(event.getColor()));
     }
 }

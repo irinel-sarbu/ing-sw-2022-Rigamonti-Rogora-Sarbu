@@ -1,11 +1,13 @@
 package network;
 
+import model.GameModel;
 import model.board.Assistant;
 import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.board.SchoolBoard;
 import model.expert.CharacterCard;
 import util.CharacterType;
+import util.GameMode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,5 +90,10 @@ public class LightModel {
 
     public int getMotherNaturePosition() {
         return motherNaturePosition;
+    }
+
+    public GameMode getGameMode() {
+        if (characters == null) return GameMode.NORMAL;
+        else return GameMode.EXPERT;
     }
 }

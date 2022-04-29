@@ -10,7 +10,7 @@ public final class EUseMinstrelEffect extends EUseCharacterEffect {
     private final List<Integer> entranceStudents;
     private final List<Color> diningStudents;
 
-    public EUseMinstrelEffect(ArrayList<Integer> entranceStudents, ArrayList<Color> diningStudents) {
+    public EUseMinstrelEffect(List<Integer> entranceStudents, List<Color> diningStudents) {
         super(CharacterType.MINSTREL);
         this.entranceStudents = entranceStudents;
         this.diningStudents = diningStudents;

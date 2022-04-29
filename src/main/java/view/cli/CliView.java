@@ -2,21 +2,17 @@ package view.cli;
 
 import eventSystem.EventManager;
 import eventSystem.events.local.EUpdateServerInfo;
-import eventSystem.events.network.client.EAssistantChosen;
-import eventSystem.events.network.client.ECreateLobbyRequest;
-import eventSystem.events.network.client.EJoinLobbyRequest;
-import eventSystem.events.network.client.EWizardChosen;
+import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import model.board.*;
+import model.expert.CharacterCard;
 import network.LightModel;
-import util.GameMode;
-import util.Wizard;
+import util.*;
 import view.View;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import javax.swing.plaf.ColorUIResource;
+import java.util.*;
 
 public class CliView extends View {
     Scanner scanner;
@@ -181,17 +177,10 @@ public class CliView extends View {
         Menu moveStudentToDiningRoom = new Menu("Move students to dining room menu");
         Menu moveStudentToIsland = new Menu("Move students to island menu");
 
-        main.putAction("Activate character card", () -> {
-            switchMenu(activateCharacter);
-            return true;
-        });
+        //TODO: put if to modify the menu relative tho the GAME_STATE
+
         main.putAction("Move student", () -> {
             switchMenu(moveStudent);
-            return true;
-        });
-
-        activateCharacter.putAction("Return to main menu", () -> {
-            switchMenu(main);
             return true;
         });
 
@@ -229,10 +218,32 @@ public class CliView extends View {
             return true;
         });
 
-        // TODO create custom menu for characters
+        if (model.getGameMode() == GameMode.EXPERT) {
+            main.putAction("Activate character card", () -> {
+                switchMenu(activateCharacter);
+                return true;
+            });
 
+            activateCharacter.putAction("Return to main menu", () -> {
+                switchMenu(main);
+                return true;
+            });
 
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(0), () -> {
+                activateEffect(model.getCharacters().get(0), model, client);
+                return true;
+            });
 
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(1), () -> {
+                activateEffect(model.getCharacters().get(1), model, client);
+                return true;
+            });
+
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(2), () -> {
+                activateEffect(model.getCharacters().get(2), model, client);
+                return true;
+            });
+        }
         switchMenu(main);
     }
 
@@ -284,6 +295,173 @@ public class CliView extends View {
             System.out.printf("\t%2d - %s%n\n", i, entrance.get(i));
         }
     }
+
+    //TODO: TEST INTENSELY
+
+    private void activateEffect(CharacterCard character, LightModel model, String client) {
+        int coins = model.getSchoolBoardMap().get(client).getCoinSupply().getNumOfCoins();
+        System.out.println("\rYour Coins: " + coins);
+        switch (character.getCharacter()) {
+            case MONK -> {
+                int choice1, choice2;
+                List<IslandGroup> islands = model.getIslandGroups();
+                printIslands(islands);
+                do {
+                    System.out.print("\rInsert which island TILE >>> ");
+                    choice1 = readInt(-1);
+                } while (choice1 < 0 || choice1 >= 11); //Hardcoded 12 = max number of islandtiles
+                List<Student> students = character.getStudents();
+                printStudents(students);
+                do {
+                    System.out.print("\rInsert which Student >>> ");
+                    choice2 = readInt(-1);
+                } while (choice2 < 0 || choice2 >= 3); //Hardcoded 3 = max number of students on MONK
+
+                EventManager.notify(new EUseMonkEffect(students.get(choice2).getID(), choice1));
+            }
+            case CENTAUR, POSTMAN, FARMER, KNIGHT -> {
+                EventManager.notify(new EUseCharacterEffect(character.getCharacter()));
+            }
+            case HERALD -> {
+                int choice;
+                List<IslandGroup> islands = model.getIslandGroups();
+                printIslandGroups(islands);
+                do {
+                    System.out.print("\rInsert which island to resolve>>> ");
+                    choice = readInt(-1);
+                } while (choice < 0 || choice >= islands.size() - 1);
+                EventManager.notify(new EUseHeraldEffect(choice));
+            }
+            case GRANNY_HERBS -> {
+                int choice;
+                List<IslandGroup> islands = model.getIslandGroups();
+                printIslands(islands);
+                do {
+                    System.out.print("\rInsert which island Tile to Add the No Entry Tiles to>> ");
+                    choice = readInt(-1);
+                } while (choice < 0 || choice >= 11); //Hardcoded 12 = max number of islandtiles
+                EventManager.notify(new EUseGrannyEffect(choice));
+            }
+            case JESTER -> {
+                int choice;
+                List<Integer> jesterIDs = new ArrayList<>(), entranceIDs = new ArrayList<>();
+                List<Student> jesterStudents = character.getStudents(), entranceStudents = model.getSchoolBoardMap().get(client).getEntranceStudents();
+
+                System.out.println("Select 3 students from Jester:");
+                for (int i = 0; i < 3; i++) {
+                    printStudents(jesterStudents);
+                    do {
+                        System.out.print("\rInsert Student number " + i + " >>> ");
+                        choice = readInt(-1);
+                    } while (choice < 0 || choice >= jesterStudents.size() - 1);
+                    jesterIDs.add(jesterStudents.remove(choice).getID());
+                }
+
+                System.out.println("Select 3 students from Entrance to switch them with:");
+                for (int i = 0; i < 3; i++) {
+                    printEntrance(entranceStudents);
+                    do {
+                        System.out.print("\rInsert Student number " + i + " >>> ");
+                        choice = readInt(-1);
+                    } while (choice < 0 || choice >= entranceStudents.size() - 1);
+                    entranceIDs.add(entranceStudents.remove(choice).getID());
+                }
+
+                EventManager.notify(new EUseJesterEffect(entranceIDs, jesterIDs));
+            }
+            case MINSTREL -> {
+                int choice;
+                List<Integer> entranceIDs = new ArrayList<>();
+                List<Color> diningColors = new ArrayList<>();
+                List<Student> entranceStudents = model.getSchoolBoardMap().get(client).getEntranceStudents();
+
+                System.out.println("Select 3 students from Entrance to switch:");
+                for (int i = 0; i < 2; i++) {
+                    printEntrance(entranceStudents);
+                    do {
+                        System.out.print("\rInsert Student number " + i + " >>> ");
+                        choice = readInt(-1);
+                    } while (choice < 0 || choice >= entranceStudents.size() - 1);
+                    entranceIDs.add(entranceStudents.remove(choice).getID());
+                }
+
+                System.out.println("Select 3 students color from dining room to switch:");
+                printDiningRoom(model.getSchoolBoardMap().get(client));
+                for (int i = 0; i < 2; i++) {
+                    do {
+                        System.out.print("\rInsert color ID number " + i + " >>> ");
+                        choice = readInt(-1);
+                    } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                    diningColors.add(Color.values()[choice]);
+                }
+
+                EventManager.notify(new EUseMinstrelEffect(entranceIDs, diningColors));
+            }
+            case PRINCESS -> {
+                int choice;
+                List<Student> students = character.getStudents();
+                printStudents(students);
+                do {
+                    System.out.print("\rInsert which Student >>> ");
+                    choice = readInt(-1);
+                } while (choice < 0 || choice >= 3); //Hardcoded 3 = max number of students on Princess
+
+                EventManager.notify(new EUsePrincessEffect(choice));
+            }
+            case MUSHROOM_FANATIC -> {
+                int choice;
+                System.out.println("Choose a color from:");
+                for (Color color : Color.values()) {
+                    System.out.printf("\t%2d - %s\n", color.getValue(), color);
+                }
+                do {
+                    System.out.print("\rInsert color ID >>> ");
+                    choice = readInt(-1);
+                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+
+                EventManager.notify(new EUseFanaticEffect(Color.values()[choice]));
+            }
+            case THIEF -> {
+                int choice;
+                System.out.println("Choose a color from:");
+                for (Color color : Color.values()) {
+                    System.out.printf("\t%2d - %s\n", color.getValue(), color);
+                }
+                do {
+                    System.out.print("\rInsert color ID >>> ");
+                    choice = readInt(-1);
+                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+
+                EventManager.notify(new EUseThiefEffect(Color.values()[choice]));
+            }
+            default -> {
+                Logger.warning("Stuck.. Missing Selected Character type");
+            }
+        }
+
+    }
+
+    private void printStudents(List<Student> students) {
+        System.out.println("Select one student from:");
+        for (int i = 0; i < students.size(); i++) {
+            System.out.printf("\t%2d - %s%n\n", i, students.get(i));
+        }
+    }
+
+    private void printIslandGroups(List<IslandGroup> islandGroups) {
+        System.out.println("Select one Island Group From:");
+        for (int i = 0; i < islandGroups.size(); i++) {
+            System.out.printf("\t%2d - %s%n\n", i, islandGroups.get(i));
+        }
+    }
+
+    private void printDiningRoom(SchoolBoard schoolBoard) {
+        System.out.println("Select 3 colors from:");
+        for (Color color : Color.values()) {
+            System.out.printf("\t%2d - %s students are %2d\n", color.getValue(), color, schoolBoard.getStudentsOfColor(color));
+        }
+    }
+
 
     @Override
     public void update(LightModel model) {

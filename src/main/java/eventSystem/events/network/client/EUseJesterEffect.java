@@ -9,7 +9,7 @@ import java.util.List;
 public final class EUseJesterEffect extends EUseCharacterEffect {
     private final List<Integer> entranceStudents, jesterStudents;
 
-    public EUseJesterEffect(ArrayList<Integer> entranceStudents, ArrayList<Integer> jesterStudents) {
+    public EUseJesterEffect(List<Integer> entranceStudents, List<Integer> jesterStudents) {
         super(CharacterType.JESTER);
         this.entranceStudents = entranceStudents;
         this.jesterStudents = jesterStudents;
