@@ -15,12 +15,11 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <sonar.exclusions>
-            **/network/**/*,
-            **/view/**/*,
-            **/observer/**/*,
-            **/events/**/*,
+            **/eventSystem/**/*,
             **/exceptions/**/*,
+            **/network/**/*,
             **/util/**/*,
+            **/view/**/*,
             **/*App.*
         </sonar.exclusions>
     </properties>
