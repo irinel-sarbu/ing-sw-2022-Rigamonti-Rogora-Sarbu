@@ -107,6 +107,7 @@ public class CloudTileTest {
 
     @Test
     public void getAndRemoveStudents() {
+        assertTrue(full.toString().length() != 0);
         assertEquals(4, full.getAndRemoveStudents().size());
         assertEquals(0, full.getStudents().size());
     }

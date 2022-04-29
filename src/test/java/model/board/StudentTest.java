@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Color;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class StudentTest {
     Student student1, student2;
@@ -17,9 +17,10 @@ public class StudentTest {
 
     @Test
     public void getStudent() {
-        assertTrue(student1.getID() == 0);
-        assertTrue(student2.getID() == 1);
-        assertTrue(student1.getColor() == Color.RED);
-        assertTrue(student2.getColor() == Color.BLUE);
+        assertEquals(0, student1.getID());
+        assertEquals(1, student2.getID());
+        assertSame(student1.getColor(), Color.RED);
+        assertSame(student2.getColor(), Color.BLUE);
+        assertTrue(student2.toString().length() != 0);
     }
 }

@@ -91,20 +91,6 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
     }
 
     /**
-     * Tells which color is the most frequent on the island
-     *
-     * @return a {@link Color} representing the student color most frequent on the island
-     */
-    @Deprecated
-    public Color getMostNumerous() {
-        return students.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
-                .entrySet().stream().max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).orElse(null);
-    }
-
-    /**
      * Compare two island tiles by their ID
      *
      * @param other the other island to compare to the current

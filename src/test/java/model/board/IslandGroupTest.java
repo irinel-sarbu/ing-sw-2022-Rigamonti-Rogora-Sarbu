@@ -51,6 +51,7 @@ public class IslandGroupTest {
         assertEquals(0, singleIslandGroup.getIslands().get(0).getIslandID());
         assertEquals(1, doubleIslandGroup.getIslands().get(0).getIslandID());
         assertEquals(2, doubleIslandGroup.getIslands().get(1).getIslandID());
+        assertTrue(singleIslandGroup.toString().length() != 0);
     }
 
     @Test

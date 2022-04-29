@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import util.TowerColor;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TowerTest {
     private Tower tower1, tower2;
@@ -20,5 +21,6 @@ public class TowerTest {
     public void getColor() {
         assertSame(tower1.getColor(), TowerColor.BLACK);
         assertSame(tower2.getColor(), TowerColor.WHITE);
+        assertTrue(tower1.toString().length() != 0);
     }
 }

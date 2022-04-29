@@ -7,8 +7,7 @@ import util.Wizard;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AssistantTest {
 
@@ -37,6 +36,7 @@ public class AssistantTest {
             assertEquals(i + 1, deck1.get(i).getValue());
             assertEquals(i / 2 + 1, deck1.get(i).getMovements());
         }
+        assertTrue(deck1.get(0).toString().length() != 0);
     }
 
     @Test
@@ -44,6 +44,7 @@ public class AssistantTest {
         assertEquals(deck1.get(0), deck1.get(0));
         assertEquals(deck1.get(0), deck2.get(0));
         assertNotEquals(deck1.get(0), deck2.get(1));
+        assertNotEquals(deck1.get(0), null);
     }
 
     @AfterEach

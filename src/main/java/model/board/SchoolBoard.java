@@ -5,6 +5,7 @@ import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
 import util.GameMode;
+import util.Logger;
 import util.TowerColor;
 
 import java.io.Serializable;
@@ -242,8 +243,8 @@ public class SchoolBoard implements Serializable {
      * @throws TowersIsEmptyException If {@link SchoolBoard#towers} is already empty.
      */
     public void removeTower() throws TowersIsEmptyException {
-        boolean success = towers.remove(0) != null;
-        if (!success) throw new TowersIsEmptyException();
+        if (towers.size() == 0) throw new TowersIsEmptyException();
+        towers.remove(0);
     }
 
     /**
@@ -261,7 +262,7 @@ public class SchoolBoard implements Serializable {
                 addTower(new Tower(color));
             }
         } catch (TowersFullException e) {
-            e.printStackTrace();
+            Logger.warning("Can't setup towers, there are already some towers");
         }
     }
 
