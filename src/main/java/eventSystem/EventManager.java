@@ -1,8 +1,7 @@
 package eventSystem;
 
 import eventSystem.annotations.EventHandler;
-import eventSystem.annotations.NetworkEvent;
-import events.Event;
+import eventSystem.events.Event;
 import util.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EventManager {
-    private final Map<Class<? extends Event>, CopyOnWriteArrayList<EventListener>> listenersMap;
+    private final Map<Class<? extends Event>, CopyOnWriteArrayList<EventListenerRecord>> listenersMap;
 
     private static EventManager eventManagerInstance;
 
@@ -28,20 +27,14 @@ public class EventManager {
         return eventManagerInstance;
     }
 
-    public void register(final Object listenerInstance) {
+    public void register(final EventListener listenerInstance, Filter filter) {
         Logger.info("Registering event handlers for class " + listenerInstance.getClass().getName());
         for (Method method : listenerInstance.getClass().getMethods()) {
             if (!method.isAnnotationPresent(EventHandler.class)) {
-                Logger.warning("Ignoring method " + method.getName(), "No annotation found");
                 continue;
             }
 
             int parameterCount = 1;
-
-            if (method.isAnnotationPresent(NetworkEvent.class)) {
-                parameterCount = 2;
-            }
-
             if (method.getParameterCount() != parameterCount) {
                 Logger.error("Ignoring event handler " + method.getName(), "Wrong number of arguments (required " + parameterCount + ")");
                 continue;
@@ -55,12 +48,12 @@ public class EventManager {
             Class<?> eventType = method.getParameterTypes()[0];
             Logger.debug("Registering callback function " + method.getName() + " for " + eventType.getName());
 
-            addListener(eventType, new EventListener(listenerInstance, method));
+            addListener(eventType, new EventListenerRecord(listenerInstance, method, filter));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends Event> void addListener(final Class<?> eventType, final EventListener listener) {
+    private <T extends Event> void addListener(final Class<?> eventType, final EventListenerRecord listener) {
         if (!listenersMap.containsKey(eventType)) {
             listenersMap.put((Class<T>) eventType, new CopyOnWriteArrayList<>());
         }
@@ -68,8 +61,8 @@ public class EventManager {
         listenersMap.get(eventType).add(listener);
     }
 
-    public void unregisterListener(final Object listener) {
-        for (CopyOnWriteArrayList<EventListener> listenerList : listenersMap.values()) {
+    public void unregisterListener(final EventListener listener) {
+        for (CopyOnWriteArrayList<EventListenerRecord> listenerList : listenersMap.values()) {
             for (int i = 0; i < listenerList.size(); i++) {
                 if (listenerList.get(i).listenerInstance == listener) {
                     listenerList.remove(i);
@@ -88,9 +81,13 @@ public class EventManager {
     }
 
     private synchronized void dispatch(final Event event) {
-        CopyOnWriteArrayList<EventListener> listeners = listenersMap.get(event.getClass());
+        CopyOnWriteArrayList<EventListenerRecord> listeners = listenersMap.get(event.getClass());
         if (listeners != null) {
-            for (EventListener listener : listeners) {
+            for (EventListenerRecord listener : listeners) {
+                if (listener.filter != null && !listener.filter.getScope().equals(event.getScope())) {
+                    continue;
+                }
+
                 try {
                     listener.callbackMethod.setAccessible(true);
                     listener.callbackMethod.invoke(listener.listenerInstance, event);
@@ -103,6 +100,6 @@ public class EventManager {
         }
     }
 
-    private record EventListener(Object listenerInstance, Method callbackMethod) {
+    private record EventListenerRecord(Object listenerInstance, Method callbackMethod, Filter filter) {
     }
 }

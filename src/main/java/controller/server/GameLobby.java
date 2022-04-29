@@ -1,16 +1,15 @@
 package controller.server;
 
 import controller.server.states.*;
-import events.ChoiceType;
-import events.Event;
-import events.EventDispatcher;
-import events.EventType;
-import events.types.Messages;
-import events.types.clientToServer.*;
-import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
-import events.types.clientToServer.actionPhaseRelated.EStudentMovementToIsland;
-import events.types.serverToClient.*;
-import events.types.serverToClient.gameStateEvents.*;
+import eventSystem.EventListener;
+import eventSystem.annotations.EventHandler;
+import eventSystem.events.Event;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
+import eventSystem.events.network.server.*;
+import eventSystem.events.network.server.gameStateEvents.*;
 import exceptions.PlayerNotFoundException;
 import exceptions.supplyEmptyException;
 import model.GameModel;
@@ -18,12 +17,13 @@ import model.Player;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientSocketConnection;
-import observer.NetworkObserver;
+import network.server.Server;
 import util.*;
 
 import java.util.*;
 
-public class GameLobby implements NetworkObserver {
+public class GameLobby implements EventListener {
+    private final Server server;
 
     private final String lobbyCode;
     private final int maxPlayers;
@@ -63,7 +63,8 @@ public class GameLobby implements NetworkObserver {
      * @param gameMode     Game mode
      * @param code         Unique identifier of each lobby
      */
-    public GameLobby(int numOfPlayers, GameMode gameMode, String code) {
+    public GameLobby(int numOfPlayers, GameMode gameMode, String code, Server server) {
+        this.server = server;
 
         this.lobbyCode = code;
         this.maxPlayers = numOfPlayers;
@@ -111,49 +112,6 @@ public class GameLobby implements NetworkObserver {
      */
     public LobbyState getLobbyState() {
         return this.lobbyState;
-    }
-
-    @Override
-    public void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
-        switch (lobbyState) {
-            case INIT -> initState(networkEvent);
-            case PRE_GAME -> preGameState(networkEvent);
-            case IN_GAME -> inGameState(networkEvent);
-            case END -> endGameState(networkEvent);
-        }
-    }
-
-    // LOBBY STATES (where dispatchers are declared)
-
-    /**
-     * Handling of lobby init state
-     *
-     * @param networkEvent Event from active player
-     */
-    private void initState(Tuple<Event, ClientSocketConnection> networkEvent) {
-        // In this state a player can disconnect at any time (if players are 3)
-        // If the only player in lobby disconnects, lobby is destroyed
-        EventDispatcher initDispatcher = new EventDispatcher(networkEvent);
-
-        // TODO: i think this can be deleted - irinel
-    }
-
-    private void preGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
-        EventDispatcher preGameDispatcher = new EventDispatcher(networkEvent);
-        preGameDispatcher.dispatch(EventType.WIZARD_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenWizard((EWizardChosen) t.getKey(), t.getValue()));
-
-    }
-
-    private void inGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
-        EventDispatcher dp = new EventDispatcher(networkEvent);
-        dp.dispatch(EventType.USE_CHARACTER_EFFECT, (Tuple<Event, ClientSocketConnection> t) -> playerHasActivatedEffect((EUseCharacterEffect) t.getKey(), t.getValue()));
-        dp.dispatch(EventType.ASSISTANT_CHOSEN, (Tuple<Event, ClientSocketConnection> t) -> playerHasChosenAssistant((EAssistantChosen) t.getKey(), t.getValue()));
-        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_DINING, (Tuple<Event, ClientSocketConnection> t) -> playerHasMovedToDining((EStudentMovementToDining) t.getKey(), t.getValue()));
-        dp.dispatch(EventType.STUDENT_MOVEMENT_TO_ISLAND, (Tuple<Event, ClientSocketConnection> t) -> playerHasMovedToIsland((EStudentMovementToIsland) t.getKey(), t.getValue()));
-    }
-
-    private void endGameState(Tuple<Event, ClientSocketConnection> networkEvent) {
-
     }
 
     /**
@@ -206,7 +164,7 @@ public class GameLobby implements NetworkObserver {
         broadcastExceptOne(new EPlayerJoined(name), name);
 
         if (clientList.size() == maxPlayers) {
-            broadcast(new Message(Messages.ALL_CLIENTS_CONNECTED));
+            broadcast(new ServerMessage(Messages.ALL_CLIENTS_CONNECTED));
             setLobbyState(LobbyState.PRE_GAME);
             Logger.debug(getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
@@ -300,7 +258,7 @@ public class GameLobby implements NetworkObserver {
         if (currentClient == null) {
             setLobbyState(LobbyState.IN_GAME);
             Logger.debug(getLobbyCode() + " - " + "All players are ready. Switching state to " + getLobbyState());
-            broadcast(new Message(Messages.GAME_STARTED));
+            broadcast(new ServerMessage(Messages.GAME_STARTED));
 
             setGameState(GameState.PLANNING);
             planningPhase.refillEmptyClouds(this);
@@ -329,7 +287,7 @@ public class GameLobby implements NetworkObserver {
 
             // TODO: Each update is called after respective element is modified
 
-            broadcast(new Message(Messages.UPDATE_VIEW));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
             setGameState(GameState.PLANNING);
 
             // First turn starts now
@@ -345,33 +303,28 @@ public class GameLobby implements NetworkObserver {
 
     private void sendChooseAssistantEvent() {
         ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
-        currentPlayerClient.send(new Message(Messages.CHOOSE_ASSISTANT));
+        currentPlayerClient.send(new ServerMessage(Messages.CHOOSE_ASSISTANT));
         broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
     }
 
     private void sendStartTurn() {
         ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
-        currentPlayerClient.send(new Message(Messages.START_TURN));
+        currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
     }
 
-
-    // Handlers
-
     /**
-     * Add player to the current game with the selected wizard back if available, otherwise respond with an {@link EWizardNotAvailable} event
+     * Add player to the current game with the selected wizard back if available
      *
-     * @param event  event to react to
-     * @param client client sending the message
+     * @param event event to react to
      * @return true
      */
-    public boolean playerHasChosenWizard(EWizardChosen event, ClientSocketConnection client) {
-        Wizard choice = event.getWizard();
+    @EventHandler
+    public boolean playerHasChosenWizard(EWizardChosen event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
 
-        if (!availableWizards.contains(choice)) {
-            client.send(new EWizardNotAvailable(availableWizards));
-            return true;
-        }
+        Wizard choice = event.getWizard();
 
         String playerName = getPlayerNameBySocket(client);
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
@@ -392,17 +345,20 @@ public class GameLobby implements NetworkObserver {
      * performs respective actions when an active character is activated
      *
      * @param event  event to react to
-     * @param client client sending the event
      * @return true
      */
-    public boolean playerHasActivatedEffect(EUseCharacterEffect event, ClientSocketConnection client) {
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseCharacterEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
         if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
-            client.send(new Message(Messages.WRONG_PHASE));
+            client.send(new ServerMessage(Messages.WRONG_PHASE));
             return true;
         }
 
         if (model.getActiveCharacterEffect() != null) {
-            client.send(new Message(Messages.ANOTHER_EFFECT_IS_ACTIVE));
+            client.send(new ServerMessage(Messages.ANOTHER_EFFECT_IS_ACTIVE));
             return true;
         }
 
@@ -418,7 +374,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -432,7 +388,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -450,7 +406,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -464,7 +420,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -482,7 +438,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -496,7 +452,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -514,7 +470,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -531,7 +487,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -545,7 +501,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -563,7 +519,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -580,7 +536,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -598,7 +554,7 @@ public class GameLobby implements NetworkObserver {
                 try {
                     playerCoinSupply.removeCoins(card.getCost());
                 } catch (supplyEmptyException e) {
-                    client.send(new Message(Messages.INSUFFICIENT_COINS));
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
                     return true;
                 }
                 model.getCoinSupply().addCoins(card.getCost());
@@ -607,11 +563,15 @@ public class GameLobby implements NetworkObserver {
                 model.setActiveCharacterEffect(CharacterType.THIEF);
             }
         }
-        client.send(new Message(Messages.EFFECT_USED));
+        client.send(new ServerMessage(Messages.EFFECT_USED));
         return true;
     }
 
-    public boolean playerHasChosenAssistant(EAssistantChosen event, ClientSocketConnection client) {
+    @EventHandler
+    public boolean playerHasChosenAssistant(EAssistantChosen event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
         try {
             planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
         } catch (Exception others) {
@@ -625,7 +585,11 @@ public class GameLobby implements NetworkObserver {
         return true;
     }
 
-    public boolean playerHasMovedToDining(EStudentMovementToDining event, ClientSocketConnection client) {
+    @EventHandler
+    public boolean playerHasMovedToDining(EStudentMovementToDining event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
         try {
             studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
         } catch (Exception e) {
@@ -639,7 +603,11 @@ public class GameLobby implements NetworkObserver {
         return true;
     }
 
-    public boolean playerHasMovedToIsland(EStudentMovementToIsland event, ClientSocketConnection client) {
+    @EventHandler
+    public boolean playerHasMovedToIsland(EStudentMovementToIsland event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
         try {
             studentMovement.moveStudentToIsland(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID(), event.getIslandID());
         } catch (Exception e) {
@@ -652,16 +620,8 @@ public class GameLobby implements NetworkObserver {
         }
         return true;
     }
-    // State functions
 
-    /**
-     * Notify game start when the lobby is full
-     */
-    private void checkReadyPlayers() {
-        if (model.getPlayerSize() == maxPlayers) {
-            broadcast(new Message(Messages.GAME_STARTED));
-        }
-    }
+    // State functions
 
     /**
      * Get the current game state

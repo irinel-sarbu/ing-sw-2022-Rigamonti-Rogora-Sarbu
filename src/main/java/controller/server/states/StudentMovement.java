@@ -1,8 +1,8 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import events.types.serverToClient.gameStateEvents.EUpdateIslands;
-import events.types.serverToClient.gameStateEvents.EUpdateSchoolBoard;
+import eventSystem.events.network.server.gameStateEvents.EUpdateIslands;
+import eventSystem.events.network.server.gameStateEvents.EUpdateSchoolBoard;
 import exceptions.*;
 import model.Player;
 import model.board.SchoolBoard;

@@ -2,13 +2,14 @@ package view;
 
 import model.board.Assistant;
 import network.LightModel;
-import observer.Observable;
 import util.Wizard;
 
 import java.util.List;
 
-public abstract class View extends Observable {
+public abstract class View {
+
     public abstract void run();
+
     public void displayMessage(String message) {
         System.out.println("> " + message);
     }

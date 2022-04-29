@@ -16,11 +16,7 @@ public class ServerControllerTest {
     @BeforeAll
     public static void setup() {
         server = new Server();
-        controller = new ServerController();
-
-        server.registerListener(controller);
-
-        new Thread(server).start();
+        controller = new ServerController(server);
     }
 
     @Test

@@ -1,18 +1,23 @@
 package eventSystem.events;
 
-import network.server.ClientSocketConnection;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Event implements Serializable {
     private final UUID uuid;
-    private ClientSocketConnection client;
+    private String scope;
 
     protected Event() {
         this.uuid = UUID.randomUUID();
-        this.client = null;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
+    public String getScope() {
+        return scope;
     }
 
     @Override
@@ -26,15 +31,5 @@ public abstract class Event implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(uuid);
-    }
-
-    public abstract String getScope();
-
-    public void setClient(ClientSocketConnection client) {
-        this.client = client;
-    }
-
-    public ClientSocketConnection getClient() {
-        return client;
     }
 }

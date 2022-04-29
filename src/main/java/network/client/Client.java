@@ -1,19 +1,22 @@
 package network.client;
 
 import eventSystem.EventManager;
-import events.Event;
-import events.types.Messages;
-import events.types.serverToClient.Message;
-import observer.Observable;
+import eventSystem.events.Event;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.NetworkEvent;
+import eventSystem.events.network.server.ServerMessage;
 import util.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Client extends Observable implements Runnable {
-
+public class Client implements Runnable {
     private final LinkedBlockingQueue<Event> eventQueue;
+
+    private UUID cliendIdentifier;
+    private String lobbyId;
 
     private ServerConnection server;
     private Socket socket;
@@ -33,22 +36,17 @@ public class Client extends Observable implements Runnable {
             socket = new Socket(IPAddress, port);
             server = new ServerConnection(this, socket);
         } catch (IOException e) {
-            notifyListeners(new Message(Messages.CONNECTION_REFUSED));
-            EventManager.notify(new Message(Messages.CONNECTION_REFUSED));
+            EventManager.notify(new ServerMessage(Messages.CONNECTION_REFUSED));
             return;
         }
 
         server.start();
-
-        notifyListeners(new Message(Messages.CONNECTION_OK));
-        EventManager.notify(new Message(Messages.CONNECTION_OK));
 
         // Event digestion
         new Thread(() -> {
             while (!socket.isClosed()) {
                 try {
                     Event event = eventQueue.take();
-                    notifyListeners(event);
                     EventManager.notify(event);
                 } catch (InterruptedException e) {
                     Logger.error(e.getMessage());
@@ -61,7 +59,20 @@ public class Client extends Observable implements Runnable {
         eventQueue.add(event);
     }
 
-    public void sendToServer(Event obj) {
-        server.send(obj);
+    public void sendToServer(NetworkEvent event) {
+        event.setClientId(cliendIdentifier);
+        if (lobbyId != null) {
+            event.setScope(lobbyId);
+        }
+
+        server.send(event);
+    }
+
+    public void setClientIdentifier(UUID identifier) {
+        this.cliendIdentifier = identifier;
+    }
+
+    public void setLobbyId(String lobbyId) {
+        this.lobbyId = lobbyId;
     }
 }

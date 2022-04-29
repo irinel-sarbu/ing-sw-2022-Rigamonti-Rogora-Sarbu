@@ -1,22 +1,26 @@
 package network.server;
 
+import eventSystem.EventManager;
+import eventSystem.events.Event;
+import util.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import events.*;
-import observer.NetworkObservable;
-import util.Logger;
-import util.Tuple;
-
-public class Server extends NetworkObservable implements Runnable {
+public class Server implements Runnable {
+    private final Map<UUID, ClientSocketConnection> clientMap;
 
     private final int PORT = 5000;
     private ServerSocket serverSocket;
-    private final LinkedBlockingQueue<Tuple<Event, ClientSocketConnection>> eventQueue;
+    private final LinkedBlockingQueue<Event> eventQueue;
 
     public Server() {
+        this.clientMap = new ConcurrentHashMap<>();
         this.eventQueue = new LinkedBlockingQueue<>();
     }
 
@@ -33,8 +37,8 @@ public class Server extends NetworkObservable implements Runnable {
         new Thread(() -> {
             while (!serverSocket.isClosed()) {
                 try {
-                    Tuple<Event, ClientSocketConnection> networkEvent = eventQueue.take();
-                    notifyListeners(networkEvent);
+                    Event networkEvent = eventQueue.take();
+                    EventManager.notify(networkEvent);
                 } catch (InterruptedException e) {
                     Logger.error(e.getMessage());
                 }
@@ -44,16 +48,23 @@ public class Server extends NetworkObservable implements Runnable {
         while (!serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                ClientSocketConnection clientConnection = new ClientSocketConnection(this, clientSocket);
+
+                UUID newClientUUID = UUID.randomUUID();
+                ClientSocketConnection clientConnection = new ClientSocketConnection(this, clientSocket, newClientUUID);
                 clientConnection.start();
 
+                clientMap.put(newClientUUID, clientConnection);
             } catch (IOException e) {
                 Logger.error(e.getMessage());
             }
         }
     }
 
-    public synchronized void pushEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
-        eventQueue.add(networkEvent);
+    public ClientSocketConnection getClientById(UUID clientId) {
+        return clientMap.get(clientId);
+    }
+
+    public synchronized void pushEvent(Event event) {
+        eventQueue.add(event);
     }
 }

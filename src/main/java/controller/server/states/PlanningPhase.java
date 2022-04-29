@@ -1,10 +1,10 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import events.types.Messages;
-import events.types.serverToClient.EPlayerChoseAssistant;
-import events.types.serverToClient.Message;
-import events.types.serverToClient.gameStateEvents.EUpdateAssistantDeck;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.server.EPlayerChoseAssistant;
+import eventSystem.events.network.server.ServerMessage;
+import eventSystem.events.network.server.gameStateEvents.EUpdateAssistantDeck;
 import exceptions.AssistantNotInDeckException;
 import exceptions.WrongPhaseException;
 import exceptions.WrongPlayerException;
@@ -48,7 +48,7 @@ public class PlanningPhase {
         if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
         if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
         if (checkIfAssistantPlayed(actingPlayer, assistantCard)) {
-            client.send(new Message(Messages.INVALID_ASSISTANT));
+            client.send(new ServerMessage(Messages.INVALID_ASSISTANT));
             return;
         }
 

@@ -5,7 +5,6 @@ import model.board.*;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import model.expert.NoEntryTile;
-import observer.Observable;
 import util.CharacterType;
 import util.Color;
 import util.GameMode;

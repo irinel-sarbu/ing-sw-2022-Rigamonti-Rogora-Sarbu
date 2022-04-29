@@ -1,6 +1,6 @@
 package network.client;
 
-import events.Event;
+import eventSystem.events.Event;
 import util.Logger;
 
 import java.io.IOException;

@@ -1,11 +1,11 @@
 package network.server;
 
-import events.Event;
-import events.types.Messages;
-import events.types.serverToClient.Message;
-import events.types.serverToClient.Ping;
+import eventSystem.events.Event;
+import eventSystem.events.network.EConnectionAccepted;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.server.Ping;
+import eventSystem.events.network.server.ServerMessage;
 import util.Logger;
-import util.Tuple;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,9 +13,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ClientSocketConnection extends Thread implements ClientConnection {
+public class ClientSocketConnection extends Thread {
+    private final UUID clientIdentifier;
+
     private boolean isInLobby;
     private boolean isReady;
 
@@ -30,10 +33,11 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
     Server server;
     Socket socket;
 
-    ClientSocketConnection(Server server, Socket socket) throws IOException {
+    ClientSocketConnection(Server server, Socket socket, UUID clientIdentifier) throws IOException {
         Logger.info("New client connected " + socket);
         this.server = server;
         this.socket = socket;
+        this.clientIdentifier = clientIdentifier;
 
         this.isInLobby = false;
         this.isReady = false;
@@ -49,6 +53,8 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             this.in = new ObjectInputStream(socket.getInputStream());
             this.out = new ObjectOutputStream(socket.getOutputStream());
 
+            send(new EConnectionAccepted(clientIdentifier));
+
             TimerTask ping = new TimerTask() {
                 @Override
                 public void run() {
@@ -61,7 +67,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
                 Logger.info("New event " + event + " from " + socketToString());
-                server.pushEvent(new Tuple<>(event, this));
+                server.pushEvent(event);
             }
         } catch (IOException | ClassNotFoundException e) {
             closeConnection();
@@ -89,7 +95,6 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         this.isInLobby = true;
     }
 
-    @Override
     public synchronized void send(Event event) {
         try {
             out.writeObject(event);
@@ -100,7 +105,6 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
         }
     }
 
-    @Override
     public void closeConnection() {
         try {
             in.close();
@@ -108,7 +112,7 @@ public class ClientSocketConnection extends Thread implements ClientConnection {
             socket.close();
             pingTimer.cancel();
             Logger.info("Connection with client " + socketToString() + " closed...");
-            server.pushEvent(new Tuple<>(new Message(Messages.CLIENT_DISCONNECTED), this));
+            server.pushEvent(new ServerMessage(Messages.CLIENT_DISCONNECTED));
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }

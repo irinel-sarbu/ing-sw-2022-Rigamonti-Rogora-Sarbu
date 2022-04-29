@@ -1,13 +1,13 @@
 package view.cli;
 
 import eventSystem.EventManager;
-import events.types.clientToClient.EUpdateServerInfo;
-import events.types.clientToServer.EAssistantChosen;
-import events.types.clientToServer.ECreateLobbyRequest;
-import events.types.clientToServer.EJoinLobbyRequest;
-import events.types.clientToServer.EWizardChosen;
-import events.types.clientToServer.actionPhaseRelated.EStudentMovementToDining;
-import events.types.clientToServer.actionPhaseRelated.EStudentMovementToIsland;
+import eventSystem.events.local.EUpdateServerInfo;
+import eventSystem.events.network.client.EAssistantChosen;
+import eventSystem.events.network.client.ECreateLobbyRequest;
+import eventSystem.events.network.client.EJoinLobbyRequest;
+import eventSystem.events.network.client.EWizardChosen;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import model.board.*;
 import network.LightModel;
 import util.GameMode;
