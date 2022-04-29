@@ -33,7 +33,7 @@ public class ClientSocketConnection extends Thread {
     Server server;
     Socket socket;
 
-    ClientSocketConnection(Server server, Socket socket, UUID clientIdentifier) throws IOException {
+    public ClientSocketConnection(Server server, Socket socket, UUID clientIdentifier) throws IOException {
         Logger.info("New client connected " + socket);
         this.server = server;
         this.socket = socket;

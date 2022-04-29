@@ -43,10 +43,12 @@ public class PlanningPhase {
      * @throws WrongPlayerException        the player doesn't have right to play at the moment
      * @throws AssistantNotInDeckException the selected assistant does not exist in the player's hand deck
      */
-    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientSocketConnection client)
+    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientSocketConnection client, boolean debug)
             throws WrongPhaseException, WrongPlayerException, AssistantNotInDeckException {
-        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
-        if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
+        if (thisGame.wrongState(GameState.PLANNING))
+            throw new WrongPhaseException();
+        if (thisGame.wrongPlayer(actingPlayer))
+            throw new WrongPlayerException();
         if (checkIfAssistantPlayed(actingPlayer, assistantCard)) {
             client.send(new ServerMessage(Messages.INVALID_ASSISTANT));
             return;
@@ -54,24 +56,25 @@ public class PlanningPhase {
 
         thisGame.getCurrentPlayer().pushFoldDeck(
                 thisGame.getCurrentPlayer().removeCard(assistantCard));
-        client.send(new EUpdateAssistantDeck(thisGame.getCurrentPlayer().getAssistants()));
         playedAssistants.add(assistantCard);
 
-        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
+        Player playing = thisGame.getCurrentPlayer();
+
         if (!thisGame.setNextPlayer()) {
             computeNext(thisGame);
             playedAssistants.clear();
         }
+        if (debug) return;
+        client.send(new EUpdateAssistantDeck(playing.getAssistants()));
+        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
     }
 
     /**
      * Compute next phase order and switch phase to student movement
      *
      * @param thisGame current game lobby
-     * @throws WrongPhaseException the game is not in the current phase (should never happen)
      */
-    private void computeNext(GameLobby thisGame) throws WrongPhaseException {
-        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
+    public void computeNext(GameLobby thisGame) {
         /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO: in case of disconnection prevent game progress
                 thisGame.getOrder().size()) throw new WrongPhaseException(); */
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());

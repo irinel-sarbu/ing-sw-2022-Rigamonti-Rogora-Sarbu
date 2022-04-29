@@ -573,7 +573,7 @@ public class GameLobby implements EventListener {
         ClientSocketConnection client = server.getClientById(clientId);
 
         try {
-            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
+            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client, false);
         } catch (Exception others) {
             others.printStackTrace();
         }
@@ -732,6 +732,7 @@ public class GameLobby implements EventListener {
      */
     public void setOrder(List<Player> actionOrder) {
         actionPhaseOrder = new ArrayList<>(actionOrder);
+        planningPhaseOrder = new ArrayList<>(actionOrder);          // small fix to avoid errors
         nextPlanningPhaseOrder = new ArrayList<>(actionOrder);
         Collections.reverse(nextPlanningPhaseOrder);
     }
