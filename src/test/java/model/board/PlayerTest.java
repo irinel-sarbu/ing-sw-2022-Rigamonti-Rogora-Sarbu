@@ -62,7 +62,6 @@ public class PlayerTest {
             assertEquals(Assistant.getWizardDeck(Wizard.WIZARD_4).stream()
                     .filter(a -> a.equals(sa)).count(), 1);
         }
-
     }
 
     @Test
@@ -82,6 +81,7 @@ public class PlayerTest {
         assertEquals("alberto", alberto.getName());
         assertEquals("irinel", irinel.getName());
         assertEquals("matteo", matteo.getName());
+        assertNotEquals(matteo, null);
     }
 
     @Test
@@ -94,6 +94,8 @@ public class PlayerTest {
         assertEquals(1, alberto.compareTo(irinel));
         assertEquals(-1, irinel.compareTo(matteo));
         assertEquals(0, matteo.compareTo(empty));
+        alberto.pushFoldDeck(null);
+        assertEquals(1, alberto.compareTo(irinel));
     }
 
     @AfterEach
@@ -140,6 +142,7 @@ public class PlayerTest {
     @Test
     public void removeCard() {
         Assistant removed = matteo.getAssistants().get(0);
+        final Assistant removed2;
         int deckSize = matteo.getAssistants().size();
 
         try {
@@ -153,6 +156,7 @@ public class PlayerTest {
         assertFalse(matteo.getAssistants().contains(removed));
 
         removed = alberto.getAssistants().get(0);
+        removed2 = removed;
         try {
             alberto.removeCard(0);
         } catch (AssistantNotInDeckException e) {
@@ -168,5 +172,17 @@ public class PlayerTest {
         } catch (AssistantNotInDeckException e) {
             assertEquals(deckSize, alberto.getAssistants().size());
         }
+        assertThrows(AssistantNotInDeckException.class, () -> alberto.removeCard(removed2));
+        assertThrows(AssistantNotInDeckException.class, () -> matteo.removeCard(100));
+
+    }
+
+    @Test
+
+    public void testDisconnected() {
+        alberto.setDisconnected(true);
+        assertTrue(alberto.isDisconnected());
+        alberto.setDisconnected(false);
+        assertFalse(alberto.isDisconnected());
     }
 }

@@ -116,10 +116,9 @@ public class GameModel extends Observable {
      * @throws PlayerNotFoundException If there is no Player with the given ID.
      */
     public Player getPlayerByID(int id) throws PlayerNotFoundException {
-        Player ret = players.get(id);
-        if (ret == null)
+        if (id >= players.size() || id < 0)
             throw new PlayerNotFoundException();
-
+        Player ret = players.get(id);
         return ret;
     }
 
@@ -395,7 +394,7 @@ public class GameModel extends Observable {
         try {
             player.getSchoolBoard().addToEntrance(cloudTile.getAndRemoveStudents());
         } catch (EntranceFullException e) {
-            e.printStackTrace();
+            Logger.warning("The entrance is already full, can't move more students from cloud tile");
         }
     }
 
@@ -481,9 +480,9 @@ public class GameModel extends Observable {
      * @throws CharacterCardNotFound If there is no Character in {@link GameModel#characters} with the given ID.
      */
     public CharacterCard getCharacterById(int id) throws CharacterCardNotFound {
-        CharacterCard ret = characters.get(id);
-        if (ret == null)
+        if (id < 0 || id >= 3)
             throw new CharacterCardNotFound();
+        CharacterCard ret = characters.get(id);
         return ret;
     }
 
@@ -539,7 +538,7 @@ public class GameModel extends Observable {
                     return true;
                 }
             } catch (PlayerNotFoundException e) {
-                e.printStackTrace();
+                Logger.warning("Trying to check remaining rooks for an invalid player");
             }
         }
         return false;

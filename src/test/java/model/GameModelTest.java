@@ -1,9 +1,7 @@
 package model;
 
-import exceptions.CharacterCardNotFound;
-import exceptions.PlayerNotFoundException;
-import exceptions.ProfessorNotFoundException;
-import exceptions.StudentNotFoundException;
+import exceptions.*;
+import model.board.Student;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,8 +9,9 @@ import util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameModelExpertTest {
+public class GameModelTest {
     private static GameModel game;
+    private static GameModel normalGame;
 
     @BeforeAll
     public static void setup() {
@@ -33,11 +32,14 @@ public class GameModelExpertTest {
     @Test
     public void getMotherNature() {
         assertNotNull(game.getMotherNature());
+        game.moveMotherNature(3);
+        assertNotNull(game.getMotherNature());
     }
 
     @Test
     public void getNumOfPlayers() {
         assertTrue(game.getPlayerSize() != 0);
+        assertEquals(3, game.getMaxNumOfPlayers());
     }
 
     @Test
@@ -55,6 +57,7 @@ public class GameModelExpertTest {
         } catch (PlayerNotFoundException e) {
             fail();
         }
+        assertThrows(PlayerNotFoundException.class, () -> game.getPlayerByID(3));
     }
 
     @Test
@@ -85,6 +88,7 @@ public class GameModelExpertTest {
         } catch (PlayerNotFoundException e) {
             fail();
         }
+        assertThrows(PlayerNotFoundException.class, () -> game.getPlayerByName("giorgio"));
         System.out.println("------------->Player 1 marco found");
     }
 
@@ -97,6 +101,7 @@ public class GameModelExpertTest {
     public void getIslandTileByID() {
         assertTrue(game.getIslandGroupByID(0).getSize() != 0);
         assertNotNull(game.getIslandTileByID(0));
+        assertThrows(IslandNotFoundException.class, () -> game.getIslandTileByID(13));
     }
 
     @Test
@@ -134,6 +139,7 @@ public class GameModelExpertTest {
         } catch (CharacterCardNotFound e) {
             fail();
         }
+        assertThrows(CharacterCardNotFound.class, () -> game.getCharacterById(4));
     }
 
     @Test
@@ -147,6 +153,23 @@ public class GameModelExpertTest {
             } catch (CharacterCardNotFound e) {
                 fail();
             }
+        }
+        try {
+            assertNotNull(game.getCharacterByType(game.getCharacterById(0).getCharacter()));
+        } catch (CharacterCardNotFound e) {
+            fail();
+        }
+        for (CharacterType type : CharacterType.values()) {
+            CharacterType typeTester1 = null, typeTester2 = null, typeTester3 = null;
+            try {
+                typeTester1 = game.getCharacterById(0).getCharacter();
+                typeTester2 = game.getCharacterById(1).getCharacter();
+                typeTester3 = game.getCharacterById(2).getCharacter();
+            } catch (CharacterCardNotFound e) {
+                fail();
+            }
+            if (type != typeTester1 && type != typeTester2 && type != typeTester3)
+                assertNull(game.getCharacterByType(type));
         }
     }
 
@@ -193,6 +216,8 @@ public class GameModelExpertTest {
             fail();
         }
         System.out.println("------------->Removed marco successfully");
+        System.out.println("------------->Trying to remove a non existing player: ");
+        game.removePlayerByName("giorgio");
     }
 
     @Test
@@ -366,6 +391,13 @@ public class GameModelExpertTest {
             fail();
         }
         System.out.println("------------->Moving students cloud->entrance done successfully");
+
+        try {
+            System.out.println("------------->Trying to move to an already full entrance");
+            game.moveFromCloudTileToEntrance(game.getCloudTile(2), game.getPlayerByID(0));
+        } catch (PlayerNotFoundException e) {
+            fail();
+        }
     }
 
     @Test
@@ -378,6 +410,7 @@ public class GameModelExpertTest {
         }
         assertTrue(size != game.getUnassignedProfessors().size());
         assertEquals(4, game.getUnassignedProfessors().size());
+        assertThrows(ProfessorNotFoundException.class, () -> game.removeProfessor(Color.BLUE));
     }
 
     //DrawThreeCharacters and getRandomCharacter already tested
@@ -390,6 +423,12 @@ public class GameModelExpertTest {
     @Test
     public void checkForRooksEmpty() {
         assertFalse(game.checkForRooksEmpty());
+        try {
+            for (int i = 0; i < 6; i++) game.getPlayerByID(0).getSchoolBoard().removeTower();
+        } catch (PlayerNotFoundException | TowersIsEmptyException e) {
+            fail();
+        }
+        assertTrue(game.checkForRooksEmpty());
     }
 
     @Test
@@ -397,6 +436,31 @@ public class GameModelExpertTest {
         assertNull(game.getActiveCharacterEffect());
         game.setActiveCharacterEffect(CharacterType.CENTAUR);
         assertSame(game.getActiveCharacterEffect(), CharacterType.CENTAUR);
+    }
+
+    @Test
+    public void testNormal() {
+        normalGame = new GameModel(3, GameMode.NORMAL);
+        normalGame.addPlayer(new Player("marco", Wizard.WIZARD_1, TowerColor.BLACK, game.getGameMode()));
+        normalGame.addPlayer(new Player("pietro", Wizard.WIZARD_2, TowerColor.WHITE, game.getGameMode()));
+    }
+
+    @Test
+    public void refillCloudTiles() {
+        game.refillCloudTile(0);
+        int rem = game.getBag().getRemainingStudents();
+        for (int i = 0; i < rem; i++) game.getBag().pull();
+        try {
+            game.moveFromBagToCloudTile(game.getCloudTile(0));
+        } catch (TooManyStudentsException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void additionalGetters() {
+        assertNotNull(game.getIslandGroups());
+        assertNotNull(game.getCloudTiles());
     }
 
 }
