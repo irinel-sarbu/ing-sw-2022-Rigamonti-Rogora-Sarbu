@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.CharacterType;
 import util.Color;
+import util.Wizard;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,5 +99,11 @@ public class CharacterCardTest {
         }
         assertThrows(EmptyNoEntryListException.class, () -> card1.removeNoEntryTile());
         assertEquals(0, card1.getNoEntryTiles().size());
+    }
+
+    @Test
+    public void equals() {
+        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(null));
+        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(new Student(1000, Color.BLUE)));
     }
 }

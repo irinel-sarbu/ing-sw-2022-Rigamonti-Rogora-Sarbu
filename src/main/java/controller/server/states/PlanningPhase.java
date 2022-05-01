@@ -43,7 +43,7 @@ public class PlanningPhase {
      * @throws WrongPlayerException        the player doesn't have right to play at the moment
      * @throws AssistantNotInDeckException the selected assistant does not exist in the player's hand deck
      */
-    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientSocketConnection client, boolean debug)
+    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientSocketConnection client)
             throws WrongPhaseException, WrongPlayerException, AssistantNotInDeckException {
         if (thisGame.wrongState(GameState.PLANNING))
             throw new WrongPhaseException();
@@ -64,7 +64,6 @@ public class PlanningPhase {
             computeNext(thisGame);
             playedAssistants.clear();
         }
-        if (debug) return;
         client.send(new EUpdateAssistantDeck(playing.getAssistants()));
         thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
     }
@@ -84,11 +83,14 @@ public class PlanningPhase {
         thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
-    private boolean checkIfAssistantPlayed(Player player, Assistant assistant) {
-        if (player.getAssistants().size() <= playedAssistants.size()) return false;
-        for (Assistant assistantCard : playedAssistants) {
-            if (assistantCard.equals(assistant)) return true;
+    public boolean checkIfAssistantPlayed(Player player, Assistant assistant) {
+
+        if (playedAssistants.contains(assistant)) {                                                          // check if card has already been played
+            for (Assistant playerAssistant : player.getAssistants()) {                                       // check other cards in deck
+                if ((!playerAssistant.equals(assistant)) && (!playedAssistants.contains(playerAssistant)))   // other cards has not been played
+                    return true;
+            }
         }
-        return false;
+        return false;    // no conflicting cards
     }
 }

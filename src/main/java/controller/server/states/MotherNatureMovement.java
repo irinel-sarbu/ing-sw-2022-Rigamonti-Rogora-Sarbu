@@ -29,7 +29,7 @@ public abstract class MotherNatureMovement {
             } else {
                 tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
             }
-            if (tempGame.checkForRooksEmpty() || tempGame.checkForToFewIslands()) {
+            if (tempGame.checkForRooksEmpty() || tempGame.checkForTooFewIslands()) {
                 tempLobby.getGameOver().selectWinner(tempLobby);
             } else {
                 tempLobby.setGameState(GameState.TURN_EPILOGUE);

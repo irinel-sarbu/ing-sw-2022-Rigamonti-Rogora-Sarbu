@@ -85,9 +85,10 @@ public class PlanningPhaseTest {
     @Test
     public void playCard() {
 
+            //  test wrong phase
         gameLobby.setGameState(GameState.MOTHERNATURE_MOVEMENT);
         try {
-            planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection, true);
+            planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection);
             System.err.println("WrongPhaseException expected");
             fail();
         } catch (WrongPhaseException e) {
@@ -96,10 +97,12 @@ public class PlanningPhaseTest {
             System.err.println("Expected WrongPhaseException, raised: " + e);
             fail();
         }
+
+        //  test wrong player
         gameLobby.setGameState(GameState.PLANNING);
         gameLobby.setCurrentPlayer(player.get(0));
         try {
-            planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(0), clientSocketConnection, true);
+            planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(0), clientSocketConnection);
             System.err.println("Expected WrongPlayerException, none raised");
             fail();
         } catch (WrongPlayerException e) {
@@ -108,16 +111,29 @@ public class PlanningPhaseTest {
             System.err.println("Expected WrongPlayerException, raised: " + e);
             fail();
         }
+
+        //  test correct play
         try {
-            planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection, true);
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection));
         } catch (Exception e) {
             System.err.println("Player 0 playing");
             System.err.println(e + " raising not expected");
             fail();
         }
+
+        //  test assistant played
+        int preSize = player.get(1).getAssistants().size();
         try {
-            planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection, true);
-            planningPhase.playCard(gameLobby, player.get(2), player.get(2).getAssistants().get(2), clientSocketConnection, true);
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(0), clientSocketConnection));
+            assertEquals(preSize, player.get(1).getAssistants().size());
+        } catch (Exception e) {
+            System.err.println(e + "not expected");
+            fail();
+        }
+        assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection));
+
+        try {
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(2), player.get(2).getAssistants().get(2), clientSocketConnection));
 
             assertEquals(GameState.STUDENT_MOVEMENT, gameLobby.getCurrentGameState());
 
@@ -150,7 +166,29 @@ public class PlanningPhaseTest {
     }
 
     @Test
-    public void checkIfAssistantPlayed() {
+    public void canBePlayedFirst() {
+        //  use some cards
+        int size = player.get(0).getAssistants().size();
+        for (int i = 3; i < size; i++) {
+            try {
+                for (Player value : player) {
+                    value.removeCard(0);
+                }
+            } catch (AssistantNotInDeckException e) {
+                System.err.println(e + " not expected");
+                fail();
+            }
+        }
 
+        try {
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection));
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection));
+            assertTrue(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
+            assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(2)));
+            player.get(2).removeCard(2);
+            assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
+        } catch (Exception e) {
+            System.err.println(e + "not expected");
+        }
     }
 }

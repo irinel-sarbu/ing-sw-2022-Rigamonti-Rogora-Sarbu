@@ -353,7 +353,7 @@ public class GameLobby implements EventListener {
         ClientSocketConnection client = server.getClientById(clientId);
 
         try {
-            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client, false);
+            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
         } catch (Exception others) {
             others.printStackTrace();
         }

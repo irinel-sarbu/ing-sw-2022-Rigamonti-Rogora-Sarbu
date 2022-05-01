@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import util.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameModelTest {
@@ -58,6 +61,7 @@ public class GameModelTest {
             fail();
         }
         assertThrows(PlayerNotFoundException.class, () -> game.getPlayerByID(3));
+        assertThrows(PlayerNotFoundException.class, () -> game.getPlayerByID(-1));
     }
 
     @Test
@@ -95,6 +99,7 @@ public class GameModelTest {
     @Test
     public void getIslandGroupByID() {
         assertNotNull(game.getIslandGroupByID(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> game.getIslandGroupByID(13));
     }
 
     @Test
@@ -140,6 +145,7 @@ public class GameModelTest {
             fail();
         }
         assertThrows(CharacterCardNotFound.class, () -> game.getCharacterById(4));
+        assertThrows(CharacterCardNotFound.class, () -> game.getCharacterById(-1));
     }
 
     @Test
@@ -417,7 +423,17 @@ public class GameModelTest {
 
     @Test
     public void checkForTooFewIsland() {
-        assertFalse(game.checkForToFewIslands());
+        assertFalse(game.checkForTooFewIslands());
+
+        // join all adjacent and checkForTooFewIslands
+        for (int i = 0; i < game.getIslandGroups().size(); i++) {
+            game.getIslandGroups().get(i).setTowersColor(TowerColor.BLACK);
+        }
+        while (game.getIslandGroups().size() > 3) {
+            System.out.println("Islands: " + game.getIslandGroups().size());
+            game.joinAdjacent(0);
+        }
+        assertTrue(game.checkForTooFewIslands());
     }
 
     @Test

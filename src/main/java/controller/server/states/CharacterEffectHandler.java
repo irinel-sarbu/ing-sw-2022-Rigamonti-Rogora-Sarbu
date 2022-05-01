@@ -48,7 +48,7 @@ public class CharacterEffectHandler {
         tempCharacter.setCost(tempCharacter.getCost() + 1);
         // calls solveIsland method in TmpResolveIsland Class of GameController, passing the island to solve
         tempLobby.getResolveIsland().solveIsland(tempLobby, islandGroupID);
-        if (tempGame.checkForRooksEmpty() || tempGame.checkForToFewIslands()) {
+        if (tempGame.checkForRooksEmpty() || tempGame.checkForTooFewIslands()) {
             tempLobby.getGameOver().selectWinner(tempLobby);
         }
     }

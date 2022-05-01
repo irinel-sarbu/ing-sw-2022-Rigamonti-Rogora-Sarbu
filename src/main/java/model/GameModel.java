@@ -241,8 +241,9 @@ public class GameModel extends Observable {
      * @return The selected IslandGroup.
      * @throws IslandGroupNotFoundException If there is no IslandGroup with the given ID.
      */
-    public IslandGroup getIslandGroupByID(int id) throws IslandGroupNotFoundException {
-        if (islandGroups.get(id) == null) throw new IslandGroupNotFoundException();
+    public IslandGroup getIslandGroupByID(int id) /* throws IslandGroupNotFoundException */ {
+        /*if (islandGroups.get(id) == null)
+            throw new IslandGroupNotFoundException();*/
         return islandGroups.get(id);
     }
 
@@ -547,7 +548,7 @@ public class GameModel extends Observable {
      * Calls {@link GameModel#getRemainingIslandGroups()}.
      * Returns True if the result is <=3, otherwise False.
      */
-    public boolean checkForToFewIslands() {
+    public boolean checkForTooFewIslands() {
         return getRemainingIslandGroups() <= 3;
     }
 
