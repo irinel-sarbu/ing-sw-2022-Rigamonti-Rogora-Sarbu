@@ -15,6 +15,7 @@ public abstract class ResolveIsland {
      * @param islandGroupID ID of the island group to resolve
      */
     public void solveIsland(GameLobby tempLobby, int islandGroupID) {
+        // TODO: check if in correct game phase
         try {
             GameModel tempGame = tempLobby.getModel();
             int[] islandSum;
@@ -50,7 +51,8 @@ public abstract class ResolveIsland {
      */
     protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException;
 
-    // Have no idea what this function does
+    // LEGACY: Have no idea what this function does
+    // get ID of the player with most influence on the group, using computed island sum
     protected int playerID(int[] islandSum) {
         int max1 = 0, max2 = 0;
         int pos = 0;

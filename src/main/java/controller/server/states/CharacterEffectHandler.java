@@ -30,7 +30,8 @@ public class CharacterEffectHandler {
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MONK);
             tempCharacter.setCost(tempCharacter.getCost() + 1);
             tempGame.getIslandTileByID(islandPos).addStudent(tempCharacter.removeStudent(studentID));
-            if (tempGame.getBag().getRemainingStudents() != 0) tempCharacter.addStudent(tempGame.getBag().pull());
+            if (!tempGame.getBag().isEmpty())   // previously was: tempGame.getBag().getRemainingStudents() != 0
+                tempCharacter.addStudent(tempGame.getBag().pull());
         } catch (StudentNotFoundException e) {
             // TODO : write a line of text that notify the issue
         }
@@ -113,7 +114,8 @@ public class CharacterEffectHandler {
                 tempSchoolBoard.addToEntrance(tempStudent);
             }
 
-        } catch (DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException | EntranceFullException e) {
+        } catch (DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException |
+                 EntranceFullException e) {
             // TODO : write a line of text that notify the issue
         }
     }
