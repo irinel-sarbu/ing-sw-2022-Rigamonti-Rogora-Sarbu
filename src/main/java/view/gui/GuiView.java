@@ -44,7 +44,7 @@ public class GuiView extends View {
     }
 
     @Override
-    public void showFirstMenu(LightModel model, String client) {
+    public void showMenu(LightModel model, String client) {
 
     }
 

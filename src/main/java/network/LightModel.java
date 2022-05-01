@@ -8,6 +8,7 @@ import model.board.SchoolBoard;
 import model.expert.CharacterCard;
 import util.CharacterType;
 import util.GameMode;
+import util.GameState;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ public class LightModel {
 
     private List<CharacterCard> characters;
     private CharacterType activeCharacterEffect;
+    private GameState gameState;
 
     public LightModel(String playerName) {
         this.playerName = playerName;
@@ -31,7 +33,7 @@ public class LightModel {
         this.cloudTiles = null;
         this.islandGroups = null;
         this.deck = null;
-
+        this.gameState = GameState.SETUP;
         this.characters = null;
         this.activeCharacterEffect = null;
     }
@@ -62,6 +64,10 @@ public class LightModel {
 
     public void setActiveCharacterEffect(CharacterType activeCharacterEffect) {
         this.activeCharacterEffect = activeCharacterEffect;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public Map<String, SchoolBoard> getSchoolBoardMap() {
@@ -95,5 +101,9 @@ public class LightModel {
     public GameMode getGameMode() {
         if (characters == null) return GameMode.NORMAL;
         else return GameMode.EXPERT;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }

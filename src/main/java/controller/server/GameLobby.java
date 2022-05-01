@@ -261,6 +261,8 @@ public class GameLobby implements EventListener {
             broadcast(new ServerMessage(Messages.GAME_STARTED));
 
             setGameState(GameState.PLANNING);
+            broadcast(new EUpdateGameState(getCurrentGameState()));
+
             planningPhase.refillEmptyClouds(this);
 
             if (gameMode == GameMode.EXPERT) {
@@ -358,6 +360,7 @@ public class GameLobby implements EventListener {
         if (currentGameState == GameState.PLANNING) {
             sendChooseAssistantEvent();
         } else {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
             sendStartTurn();
         }
         return true;
@@ -682,6 +685,7 @@ public class GameLobby implements EventListener {
         if (currentGameState == GameState.STUDENT_MOVEMENT) {
             sendContinueTurn();
         } else {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
             // TODO: insert motherNatureMovement message
         }
         return true;
@@ -700,6 +704,7 @@ public class GameLobby implements EventListener {
         if (currentGameState == GameState.STUDENT_MOVEMENT) {
             sendContinueTurn();
         } else {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
             //TODO: insert motherNatureMovement message
         }
         return true;
