@@ -1,14 +1,11 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import eventSystem.events.network.server.gameStateEvents.EUpdateCharacterEffect;
 import exceptions.*;
 import model.Player;
 import util.GameState;
 
 public class TurnEpilogue {
-
-    // FIXME: may be GameOver should be called at the end of the next turn, not this one if bag is empty after the full students replacement
 
     /**
      * Check if game over should be called, conditions are:
@@ -56,7 +53,7 @@ public class TurnEpilogue {
             if (checkGameOver(thisGame)) {
                 thisGame.getGameOver().selectWinner(thisGame);
             } else {
-                thisGame.nextTurn();
+                thisGame.nextRound();
             }
         }
     }

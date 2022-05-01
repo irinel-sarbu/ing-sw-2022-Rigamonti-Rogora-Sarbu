@@ -6,9 +6,7 @@ import exceptions.WrongPhaseException;
 import exceptions.WrongPlayerException;
 import model.GameModel;
 import model.Player;
-import model.board.Assistant;
 import model.board.Bag;
-import model.board.CloudTile;
 import network.server.ClientSocketConnection;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,7 +139,7 @@ public class PlanningPhaseTest {
                 assertEquals(player.get(i), gameLobby.getOrder().get(i));
             }
 
-            gameLobby.nextTurn();
+            gameLobby.nextRound();
             assertEquals(GameState.PLANNING, gameLobby.getCurrentGameState());
             Collections.reverse(player);
             for (int i = 0; i < 3; i++) {

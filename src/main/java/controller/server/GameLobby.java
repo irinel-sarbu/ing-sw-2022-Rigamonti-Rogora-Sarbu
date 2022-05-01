@@ -902,20 +902,21 @@ public class GameLobby implements EventListener {
     }
 
     /**
-     * Performs all actions needed to switch to the next turn:
+     * Performs all actions needed to switch to the next round:
      * - deactivate all characters and reset default strategies
      * - reset game phase to planning and set the next planning order
      * - get the new firs player
      */
-    public void nextTurn() {
+    public void nextRound() {
         // Reset defaults before turn start
+        //TODO:MoveToSetNextPlayer
         model.setActiveCharacterEffect(null);
         studentMovement = new DefaultStudentMovement();
         motherNatureMovement = new DefaultMotherNatureMovement();
         resolveIsland = new DefaultResolveIsland();
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
 
-        // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextTurn
+        // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextRound
         setGameState(GameState.PLANNING);
         planningPhaseOrder = nextPlanningPhaseOrder;
         setCurrentPlayer(planningPhaseOrder.get(0));
