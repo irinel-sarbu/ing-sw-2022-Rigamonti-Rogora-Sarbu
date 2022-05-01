@@ -170,7 +170,7 @@ public class CliView extends View {
     }
 
     @Override
-    public void startTurn(LightModel model, String client) {
+    public void showFirstMenu(LightModel model, String client) {
         Menu main = new Menu("Action phase menu");
         Menu activateCharacter = new Menu("Activate character card menu");
         Menu moveStudent = new Menu("Student movement menu");

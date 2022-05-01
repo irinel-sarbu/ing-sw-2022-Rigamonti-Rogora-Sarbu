@@ -29,7 +29,7 @@ public abstract class View {
 
     public abstract void chooseAssistant(List<Assistant> deck);
 
-    public abstract void startTurn(LightModel model, String client);
+    public abstract void showFirstMenu(LightModel model, String client);
 
     public abstract void update(LightModel model);
 }

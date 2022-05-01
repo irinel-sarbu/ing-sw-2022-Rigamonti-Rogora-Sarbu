@@ -313,6 +313,11 @@ public class GameLobby implements EventListener {
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
     }
 
+    private void sendContinueTurn() {
+        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
+    }
+
     /**
      * Add player to the current game with the selected wizard back if available
      *
@@ -340,233 +345,6 @@ public class GameLobby implements EventListener {
         return true;
     }
 
-    /**
-     * When a player activate a character effect check its status as active for this turn if it's a passive character,
-     * performs respective actions when an active character is activated
-     *
-     * @param event  event to react to
-     * @return true
-     */
-    @EventHandler
-    public boolean playerHasActivatedEffect(EUseCharacterEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
-
-        if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
-            client.send(new ServerMessage(Messages.WRONG_PHASE));
-            return true;
-        }
-
-        if (model.getActiveCharacterEffect() != null) {
-            client.send(new ServerMessage(Messages.ANOTHER_EFFECT_IS_ACTIVE));
-            return true;
-        }
-
-        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
-
-        switch (event.getCharacterType()) {
-            case MONK -> {
-                //Casting of EUseCharacterEffect -> EUseMonkEffect, Objects which type is EUseMonkEffect have studentID and islandPos Attributes.
-                EUseMonkEffect monkEvent = (EUseMonkEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.MONK);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.monkEffect(this, monkEvent.getStudentID(), monkEvent.getIslandPos());
-                model.setActiveCharacterEffect(CharacterType.MONK);
-            }
-            case FARMER -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.FARMER);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.farmerEffect(this);
-                model.setActiveCharacterEffect(CharacterType.FARMER);
-                studentMovement = new FarmerStudentMovement();
-            }
-            case HERALD -> {
-                //Casting of EUseCharacterEffect -> EUseHeraldEffect
-                EUseHeraldEffect heraldEvent = (EUseHeraldEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.HERALD);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.heraldEffect(this, heraldEvent.getIslandGroupID());
-                model.setActiveCharacterEffect(CharacterType.HERALD);
-            }
-            case POSTMAN -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.postmanEffect(this);
-                model.setActiveCharacterEffect(CharacterType.POSTMAN);
-                motherNatureMovement = new PostmanMotherNatureMovement();
-            }
-            case GRANNY_HERBS -> {
-                //Casting of EUseCharacterEffect -> EUseGrannyEffect
-                EUseGrannyEffect grannyEvent = (EUseGrannyEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.GRANNY_HERBS);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.grannyHerbsEffect(this, grannyEvent.getIslandID());
-                model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
-            }
-            case CENTAUR -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.CENTAUR);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.centaurEffect(this);
-                model.setActiveCharacterEffect(CharacterType.CENTAUR);
-                resolveIsland = new CentaurResolveIsland();
-            }
-            case JESTER -> {
-                //Casting of EUseCharacterEffect -> EUseJesterEffect
-                EUseJesterEffect jesterEvent = (EUseJesterEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.JESTER);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.jesterEffect(this, jesterEvent.getEntranceStudents(), jesterEvent.getJesterStudents());
-                model.setActiveCharacterEffect(CharacterType.JESTER);
-            }
-            case MINSTREL -> {
-                //Casting of EUseCharacterEffect -> EUseMinstrelEffect
-                EUseMinstrelEffect minstrelEvent = (EUseMinstrelEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.MINSTREL);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.minstrelEffect(this, minstrelEvent.getEntranceStudents(), minstrelEvent.getDiningStudents());
-                model.setActiveCharacterEffect(CharacterType.MINSTREL);
-            }
-            case KNIGHT -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.KNIGHT);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.knightEffect(this);
-                model.setActiveCharacterEffect(CharacterType.KNIGHT);
-                resolveIsland = new KnightResolveIsland();
-            }
-            case PRINCESS -> {
-                //Casting of EUseCharacterEffect -> EUsePrincessEffect
-                EUsePrincessEffect princessEvent = (EUsePrincessEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.PRINCESS);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.princessEffect(this, princessEvent.getStudentID());
-                model.setActiveCharacterEffect(CharacterType.PRINCESS);
-            }
-            case MUSHROOM_FANATIC -> {
-                //Casting of EUseCharacterEffect -> EUseFanaticEffect
-                EUseFanaticEffect fanaticEvent = (EUseFanaticEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.mushroomFanaticEffect(this, fanaticEvent.getColor());
-                model.setActiveCharacterEffect(CharacterType.MUSHROOM_FANATIC);
-                resolveIsland = new MushroomFanaticResolveIsland();
-            }
-            case THIEF -> {
-                //Casting of EUseCharacterEffect -> EUseThiefEffect
-                EUseThiefEffect thiefEvent = (EUseThiefEffect) event;
-
-                CharacterCard card = model.getCharacterByType(CharacterType.THIEF);
-
-                try {
-                    playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
-
-                characterEffectHandler.thiefEffect(this, thiefEvent.getColor());
-                model.setActiveCharacterEffect(CharacterType.THIEF);
-            }
-        }
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        return true;
-    }
-
     @EventHandler
     public boolean playerHasChosenAssistant(EAssistantChosen event) {
         UUID clientId = event.getClientId();
@@ -585,6 +363,312 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * When a player activate a character effect check its status as active for this turn if it's a passive character,
+     * performs respective actions when an active character is activated
+     *
+     * @param event event to react to
+     * @return true
+     */
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseCharacterEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        switch (event.getCharacterType()) {
+            case FARMER -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.FARMER);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.farmerEffect(this);
+                model.setActiveCharacterEffect(CharacterType.FARMER);
+                studentMovement = new FarmerStudentMovement();
+            }
+            case POSTMAN -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.postmanEffect(this);
+                model.setActiveCharacterEffect(CharacterType.POSTMAN);
+                motherNatureMovement = new PostmanMotherNatureMovement();
+            }
+            case CENTAUR -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.CENTAUR);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.centaurEffect(this);
+                model.setActiveCharacterEffect(CharacterType.CENTAUR);
+                resolveIsland = new CentaurResolveIsland();
+            }
+            case KNIGHT -> {
+                CharacterCard card = model.getCharacterByType(CharacterType.KNIGHT);
+
+                try {
+                    playerCoinSupply.removeCoins(card.getCost());
+                } catch (supplyEmptyException e) {
+                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+                    return true;
+                }
+                model.getCoinSupply().addCoins(card.getCost());
+
+                characterEffectHandler.knightEffect(this);
+                model.setActiveCharacterEffect(CharacterType.KNIGHT);
+                resolveIsland = new KnightResolveIsland();
+            }
+            default -> {
+                Logger.warning("wrong Effect type");
+            }
+        }
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseFanaticEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.mushroomFanaticEffect(this, event.getColor());
+        model.setActiveCharacterEffect(CharacterType.MUSHROOM_FANATIC);
+        resolveIsland = new MushroomFanaticResolveIsland();
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseGrannyEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.GRANNY_HERBS);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.grannyHerbsEffect(this, event.getIslandID());
+        model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseHeraldEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.HERALD);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.heraldEffect(this, event.getIslandGroupID());
+        model.setActiveCharacterEffect(CharacterType.HERALD);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseJesterEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.JESTER);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.jesterEffect(this, event.getEntranceStudents(), event.getJesterStudents());
+        model.setActiveCharacterEffect(CharacterType.JESTER);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseMinstrelEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.MINSTREL);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.minstrelEffect(this, event.getEntranceStudents(), event.getDiningStudents());
+        model.setActiveCharacterEffect(CharacterType.MINSTREL);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseMonkEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.MONK);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.monkEffect(this, event.getStudentID(), event.getIslandPos());
+        model.setActiveCharacterEffect(CharacterType.MONK);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUsePrincessEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.PRINCESS);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.princessEffect(this, event.getStudentID());
+        model.setActiveCharacterEffect(CharacterType.PRINCESS);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasActivatedEffect(EUseThiefEffect event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        if (effectActivationCheck(client)) return true;
+
+        CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+
+        CharacterCard card = model.getCharacterByType(CharacterType.THIEF);
+
+        try {
+            playerCoinSupply.removeCoins(card.getCost());
+        } catch (supplyEmptyException e) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
+            return true;
+        }
+        model.getCoinSupply().addCoins(card.getCost());
+
+        characterEffectHandler.thiefEffect(this, event.getColor());
+        model.setActiveCharacterEffect(CharacterType.THIEF);
+
+        client.send(new ServerMessage(Messages.EFFECT_USED));
+        return true;
+    }
+
+    private boolean effectActivationCheck(ClientSocketConnection client) {
+        if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
+            client.send(new ServerMessage(Messages.WRONG_PHASE));
+            return true;
+        }
+        if (model.getActiveCharacterEffect() != null) {
+            client.send(new ServerMessage(Messages.ANOTHER_EFFECT_IS_ACTIVE));
+            return true;
+        }
+        return false;
+    }
+
     @EventHandler
     public boolean playerHasMovedToDining(EStudentMovementToDining event) {
         UUID clientId = event.getClientId();
@@ -596,7 +680,7 @@ public class GameLobby implements EventListener {
             e.printStackTrace();
         }
         if (currentGameState == GameState.STUDENT_MOVEMENT) {
-            sendStartTurn();
+            sendContinueTurn();
         } else {
             // TODO: insert motherNatureMovement message
         }
@@ -614,7 +698,7 @@ public class GameLobby implements EventListener {
             e.printStackTrace();
         }
         if (currentGameState == GameState.STUDENT_MOVEMENT) {
-            sendStartTurn();
+            sendContinueTurn();
         } else {
             //TODO: insert motherNatureMovement message
         }

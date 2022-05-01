@@ -59,17 +59,17 @@ public class ClientController implements EventListener {
 
             case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
-            case Messages.START_TURN -> view.startTurn(model, nickname);
+            case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showFirstMenu(model, nickname);
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
-                view.startTurn(model, nickname);
+                view.showFirstMenu(model, nickname);
             }
             case Messages.EFFECT_USED -> {
                 view.displayMessage("An effect has already been used. You can't use another.");
-                view.startTurn(model, nickname);
+                view.showFirstMenu(model, nickname);
             }
         }
     }
@@ -209,7 +209,7 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onPlayerTurnStarted(EPlayerTurnStarted event) {
-        view.displayMessage("Player " + event.getPlayer() + " has started the action phase");
+        view.displayMessage("Player " + event.getPlayer() + " has started his turn");
     }
     // Planning phase
 
