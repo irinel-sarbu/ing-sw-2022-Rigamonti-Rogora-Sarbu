@@ -7,6 +7,7 @@ import eventSystem.events.local.EUpdateServerInfo;
 import eventSystem.events.network.EConnectionAccepted;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
@@ -62,6 +63,8 @@ public class ClientController implements EventListener {
             case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, nickname);
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
+
+            case Messages.ILLEGAL_STEPS -> view.displayMessage("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
@@ -273,4 +276,10 @@ public class ClientController implements EventListener {
     public void onEUseThiefEffect(EUseThiefEffect event) {
         client.sendToServer(new EUseThiefEffect(event.getColor()));
     }
+
+    @EventHandler
+    public void onEMoveMotherNature(EMoveMotherNature event) {
+        client.sendToServer((new EMoveMotherNature(event.getSteps())));
+    }
 }
+

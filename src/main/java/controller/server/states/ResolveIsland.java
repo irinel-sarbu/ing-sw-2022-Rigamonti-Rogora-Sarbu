@@ -23,7 +23,7 @@ public abstract class ResolveIsland {
 
             // calculates the influence of each player and stores it in islandSum in the relative position
 
-            islandSum = checkMostInfluence(tempLobby, tempGame, tempIslandGroup, tempIslandGroup.getIslandTileByID(0).getHasTower());
+            islandSum = checkMostInfluence(tempLobby, tempGame, tempIslandGroup, tempIslandGroup.getTowersColor() != null);
 
             // check which player has the most influence and, if there is one, changes island's tower to his color
             playerPosition = playerID(islandSum);

@@ -6,10 +6,12 @@ import eventSystem.annotations.EventHandler;
 import eventSystem.events.Event;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
 import eventSystem.events.network.server.gameStateEvents.*;
+import exceptions.IllegalMovementException;
 import exceptions.PlayerNotFoundException;
 import exceptions.supplyEmptyException;
 import model.GameModel;
@@ -682,12 +684,10 @@ public class GameLobby implements EventListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (currentGameState == GameState.STUDENT_MOVEMENT) {
-            sendContinueTurn();
-        } else {
+        if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
-            // TODO: insert motherNatureMovement message
         }
+        sendContinueTurn();
         return true;
     }
 
@@ -701,11 +701,35 @@ public class GameLobby implements EventListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (currentGameState == GameState.STUDENT_MOVEMENT) {
-            sendContinueTurn();
-        } else {
+        if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
-            //TODO: insert motherNatureMovement message
+        }
+        sendContinueTurn();
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasMovedMotherNature(EMoveMotherNature event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+
+        try {
+            motherNatureMovement.moveMotherNature(this, event.getSteps());
+        } catch (IllegalMovementException e) {
+            client.send(new ServerMessage(Messages.ILLEGAL_STEPS));
+            sendContinueTurn();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        broadcast(new EUpdateIslands(model.getIslandGroups(), model.getMotherNature().getPosition()));
+        broadcast(new EUpdateSchoolBoard(getCurrentPlayer().getSchoolBoard(), getCurrentPlayer().getName()));
+
+        if (currentGameState != GameState.MOTHERNATURE_MOVEMENT) {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
+            //TODO: add function that switches to turn epilogue
         }
         return true;
     }

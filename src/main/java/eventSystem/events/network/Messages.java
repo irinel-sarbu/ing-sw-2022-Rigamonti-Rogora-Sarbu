@@ -21,6 +21,7 @@ public class Messages {
     public static final String START_TURN = "Start turn";
     public static final String CONTINUE_TURN = "Continue Turn";
     public static final String TURN_OVER = "Turn over";
+    public static final String ILLEGAL_STEPS = "Illegal movement due to too many steps";
     public static final String INSUFFICIENT_COINS = "Insufficient coins";
     public static final String EFFECT_USED = "Effect used successfully";
 }

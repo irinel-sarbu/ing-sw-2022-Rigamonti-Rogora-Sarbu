@@ -3,6 +3,7 @@ package view.cli;
 import eventSystem.EventManager;
 import eventSystem.events.local.EUpdateServerInfo;
 import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import model.board.*;
@@ -172,53 +173,9 @@ public class CliView extends View {
     @Override
     public void showMenu(LightModel model, String client) {
         Menu main = new Menu("Action phase menu");
-        Menu activateCharacter = new Menu("Activate character card menu");
-        Menu moveStudent = new Menu("Student movement menu");
-        Menu moveStudentToDiningRoom = new Menu("Move students to dining room menu");
-        Menu moveStudentToIsland = new Menu("Move students to island menu");
-
-        //TODO: put if to modify the menu relative tho the GAME_STATE
-
-        main.putAction("Move student", () -> {
-            switchMenu(moveStudent);
-            return true;
-        });
-
-        moveStudent.putAction("Return to main menu", () -> {
-            switchMenu(main);
-            return true;
-        });
-
-        moveStudent.putAction("Move student from entrance to island", () -> {
-            switchMenu(moveStudentToIsland);
-            return true;
-        });
-        moveStudent.putAction("Move student from entrance to dining room", () -> {
-            switchMenu(moveStudentToDiningRoom);
-            return true;
-        });
-
-        moveStudentToDiningRoom.putAction("Return to movement menu", () -> {
-            switchMenu(moveStudent);
-            return true;
-        });
-
-        moveStudentToDiningRoom.putAction("Select Student to move to the Dining Room", () -> {
-            selectStudentToDining(model, client);
-            return true;
-        });
-
-        moveStudentToIsland.putAction("Return to movement menu", () -> {
-            switchMenu(moveStudent);
-            return true;
-        });
-
-        moveStudentToIsland.putAction("Select Student to move to the island and Select island", () -> {
-            selectStudentToIsland(model, client);
-            return true;
-        });
 
         if (model.getGameMode() == GameMode.EXPERT) {
+            Menu activateCharacter = new Menu("Activate character card menu");
             main.putAction("Activate character card", () -> {
                 switchMenu(activateCharacter);
                 return true;
@@ -244,6 +201,71 @@ public class CliView extends View {
                 return true;
             });
         }
+
+        if (model.getGameState() == GameState.STUDENT_MOVEMENT) {
+            Menu moveStudent = new Menu("Student movement menu");
+            Menu moveStudentToDiningRoom = new Menu("Move students to dining room menu");
+            Menu moveStudentToIsland = new Menu("Move students to island menu");
+
+            main.putAction("Move student", () -> {
+                switchMenu(moveStudent);
+                return true;
+            });
+
+            moveStudent.putAction("Return to main menu", () -> {
+                switchMenu(main);
+                return true;
+            });
+
+            moveStudent.putAction("Move student from entrance to island", () -> {
+                switchMenu(moveStudentToIsland);
+                return true;
+            });
+            moveStudent.putAction("Move student from entrance to dining room", () -> {
+                switchMenu(moveStudentToDiningRoom);
+                return true;
+            });
+
+            moveStudentToDiningRoom.putAction("Return to movement menu", () -> {
+                switchMenu(moveStudent);
+                return true;
+            });
+
+            moveStudentToDiningRoom.putAction("Select Student to move to the Dining Room", () -> {
+                selectStudentToDining(model, client);
+                return true;
+            });
+
+            moveStudentToIsland.putAction("Return to movement menu", () -> {
+                switchMenu(moveStudent);
+                return true;
+            });
+
+            moveStudentToIsland.putAction("Select Student to move to the island and Select island", () -> {
+                selectStudentToIsland(model, client);
+                return true;
+            });
+        }
+
+        if (model.getGameState() == GameState.MOTHERNATURE_MOVEMENT) {
+            Menu motherNatureMenu = new Menu("Mother Nature movement menu");
+            main.putAction("Move Mother Nature", () -> {
+                switchMenu(motherNatureMenu);
+                return true;
+            });
+
+            motherNatureMenu.putAction("Return to main menu", () -> {
+                switchMenu(main);
+                return true;
+            });
+
+            motherNatureMenu.putAction("Move Mother Nature and Resolve Island", () -> {
+                selectMotherNatureMovement(model, client);
+                return true;
+            });
+        }
+
+
         switchMenu(main);
     }
 
@@ -294,6 +316,18 @@ public class CliView extends View {
         for (int i = 0; i < entrance.size(); i++) {
             System.out.printf("\t%2d - %s%n\n", i, entrance.get(i));
         }
+    }
+
+    private void selectMotherNatureMovement(LightModel model, String client) {
+        int choice;
+        List<IslandGroup> islands = model.getIslandGroups();
+        printIslandGroups(islands);
+        System.out.println("- mother nature position: " + model.getMotherNaturePosition());
+        do {
+            System.out.print("\rInsert How many steps should Mother Nature make >>> ");
+            choice = readInt(-1);
+        } while (choice < 0 || choice >= 8); //Hardcoded 7 = max movement of mother nature (with postman)
+        EventManager.notify(new EMoveMotherNature(choice));
     }
 
     //TODO: TEST INTENSELY
@@ -449,7 +483,7 @@ public class CliView extends View {
     }
 
     private void printIslandGroups(List<IslandGroup> islandGroups) {
-        System.out.println("Select one Island Group From:");
+        System.out.println("Island Groups:");
         for (int i = 0; i < islandGroups.size(); i++) {
             System.out.printf("\t%2d - %s%n\n", i, islandGroups.get(i));
         }
