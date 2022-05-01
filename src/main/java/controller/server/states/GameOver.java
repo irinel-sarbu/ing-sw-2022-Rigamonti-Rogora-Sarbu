@@ -1,6 +1,7 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
+import eventSystem.events.network.server.gameStateEvents.EDeclareWinner;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.board.SchoolBoard;
@@ -18,7 +19,7 @@ public class GameOver {
         try {
             GameModel tempGame = tempLobby.getModel();
 
-            int playerId, numOfTowers = 100, numOfProfessor = 0;
+            int playerId = 0, numOfTowers = 100, numOfProfessor = 0;
 
             for (int i = 0; i < tempGame.getPlayers().size(); i++) {
                 SchoolBoard tempSchoolBoard = tempGame.getPlayerByID(i).getSchoolBoard();
@@ -30,7 +31,9 @@ public class GameOver {
             }
 
             tempLobby.setGameState(GameState.GAME_OVER);
-            // TODO : create a function that broadcast the player indicised by playerId
+
+            //Broadcast del player
+            tempLobby.broadcast(new EDeclareWinner(tempGame.getPlayerByID(playerId).getName()));
 
         } catch (PlayerNotFoundException e) {
             e.printStackTrace();

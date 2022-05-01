@@ -7,6 +7,7 @@ import eventSystem.events.Event;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
+import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
@@ -315,11 +316,15 @@ public class GameLobby implements EventListener {
         ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
+        Logger.info("Current player " + currentPlayer.getName());
+        Logger.info("Planning order " + planningPhaseOrder);
+        Logger.info("Action order " + actionPhaseOrder);
     }
 
     private void sendContinueTurn() {
         ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
+        ;
     }
 
     /**
@@ -450,6 +455,7 @@ public class GameLobby implements EventListener {
             }
         }
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -477,6 +483,7 @@ public class GameLobby implements EventListener {
         resolveIsland = new MushroomFanaticResolveIsland();
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -503,6 +510,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -529,6 +537,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.HERALD);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -555,6 +564,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.JESTER);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -581,6 +591,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.MINSTREL);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -607,6 +618,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.MONK);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -633,6 +645,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.PRINCESS);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -659,6 +672,7 @@ public class GameLobby implements EventListener {
         model.setActiveCharacterEffect(CharacterType.THIEF);
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         return true;
     }
 
@@ -686,6 +700,7 @@ public class GameLobby implements EventListener {
         }
         if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
         }
         sendContinueTurn();
         return true;
@@ -703,6 +718,7 @@ public class GameLobby implements EventListener {
         }
         if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
         }
         sendContinueTurn();
         return true;
@@ -729,7 +745,31 @@ public class GameLobby implements EventListener {
         if (currentGameState != GameState.MOTHERNATURE_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
             broadcast(new ServerMessage(Messages.UPDATE_VIEW));
-            //TODO: add function that switches to turn epilogue
+        }
+        sendContinueTurn();
+        return true;
+    }
+
+    @EventHandler
+    public boolean playerHasSelectedRefillCloud(ESelectRefillCloud event) {
+        UUID clientId = event.getClientId();
+        ClientSocketConnection client = server.getClientById(clientId);
+        try {
+            epilogue.refillFromCloudTile(this, currentPlayer, event.getCloudID());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
+        broadcast(new EUpdateSchoolBoard(getCurrentPlayer().getSchoolBoard(), getCurrentPlayer().getName()));
+
+        if (currentGameState != GameState.TURN_EPILOGUE) {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
+        }
+        if (currentGameState != GameState.GAME_OVER) {
+            //TODO: doesn't change player --> check SetNextPlayer()
+            sendStartTurn();
         }
         return true;
     }
@@ -873,6 +913,7 @@ public class GameLobby implements EventListener {
         studentMovement = new DefaultStudentMovement();
         motherNatureMovement = new DefaultMotherNatureMovement();
         resolveIsland = new DefaultResolveIsland();
+        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
 
         // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextTurn
         setGameState(GameState.PLANNING);
@@ -882,6 +923,8 @@ public class GameLobby implements EventListener {
         actionPhaseOrder = null;
         turnCounter++;
         turnProgress = 1;
+
+        //calls the next player Menu
     }
 
     /**

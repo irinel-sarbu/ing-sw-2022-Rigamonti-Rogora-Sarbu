@@ -8,6 +8,7 @@ import eventSystem.events.network.EConnectionAccepted;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
+import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
@@ -279,7 +280,17 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onEMoveMotherNature(EMoveMotherNature event) {
-        client.sendToServer((new EMoveMotherNature(event.getSteps())));
+        client.sendToServer(new EMoveMotherNature(event.getSteps()));
+    }
+
+    @EventHandler
+    public void onSelectRefillCloud(ESelectRefillCloud event) {
+        client.sendToServer(new ESelectRefillCloud(event.getCloudID()));
+    }
+
+    @EventHandler
+    public void onDeclareWinner(EDeclareWinner event) {
+        view.displayMessage("Player " + event.getPlayer() + " Won!!");
     }
 }
 

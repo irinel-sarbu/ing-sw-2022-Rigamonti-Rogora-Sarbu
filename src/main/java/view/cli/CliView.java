@@ -4,6 +4,7 @@ import eventSystem.EventManager;
 import eventSystem.events.local.EUpdateServerInfo;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
+import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import model.board.*;
@@ -265,6 +266,24 @@ public class CliView extends View {
             });
         }
 
+        if (model.getGameState() == GameState.TURN_EPILOGUE) {
+            Menu cloudMenu = new Menu("Cloud refill menu");
+            main.putAction("Cloud selection", () -> {
+                switchMenu(cloudMenu);
+                return true;
+            });
+
+            cloudMenu.putAction("Return to main menu", () -> {
+                switchMenu(main);
+                return true;
+            });
+
+            cloudMenu.putAction("Select the cloud", () -> {
+                selectCloud(model, client);
+                return true;
+            });
+        }
+
 
         switchMenu(main);
     }
@@ -330,6 +349,17 @@ public class CliView extends View {
         EventManager.notify(new EMoveMotherNature(choice));
     }
 
+    private void selectCloud(LightModel model, String client) {
+        int choice;
+        List<CloudTile> clouds = model.getCloudTiles();
+        printCloudTiles(clouds);
+        do {
+            System.out.print("\rInsert which cloud tile to take students from (not empty) >>> ");
+            choice = readInt(-1);
+        } while (choice < 0 || choice >= clouds.size() || clouds.get(choice).getStudents().size() == 0); //Hardcoded 7 = max movement of mother nature (with postman)
+        EventManager.notify(new ESelectRefillCloud(choice));
+    }
+
     //TODO: TEST INTENSELY
 
     private void activateEffect(CharacterCard character, LightModel model, String client) {
@@ -363,7 +393,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert which island to resolve>>> ");
                     choice = readInt(-1);
-                } while (choice < 0 || choice >= islands.size() - 1);
+                } while (choice < 0 || choice >= islands.size());
                 EventManager.notify(new EUseHeraldEffect(choice));
             }
             case GRANNY_HERBS -> {
@@ -387,7 +417,7 @@ public class CliView extends View {
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
                         choice = readInt(-1);
-                    } while (choice < 0 || choice >= jesterStudents.size() - 1);
+                    } while (choice < 0 || choice >= jesterStudents.size());
                     jesterIDs.add(jesterStudents.remove(choice).getID());
                 }
 
@@ -397,7 +427,7 @@ public class CliView extends View {
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
                         choice = readInt(-1);
-                    } while (choice < 0 || choice >= entranceStudents.size() - 1);
+                    } while (choice < 0 || choice >= entranceStudents.size());
                     entranceIDs.add(entranceStudents.remove(choice).getID());
                 }
 
@@ -415,7 +445,7 @@ public class CliView extends View {
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
                         choice = readInt(-1);
-                    } while (choice < 0 || choice >= entranceStudents.size() - 1);
+                    } while (choice < 0 || choice >= entranceStudents.size());
                     entranceIDs.add(entranceStudents.remove(choice).getID());
                 }
 
