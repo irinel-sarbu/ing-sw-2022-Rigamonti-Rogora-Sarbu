@@ -924,8 +924,6 @@ public class GameLobby implements EventListener {
         actionPhaseOrder = null;
         turnCounter++;
         turnProgress = 1;
-
-        //calls the next player Menu
     }
 
     /**
