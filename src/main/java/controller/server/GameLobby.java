@@ -316,9 +316,6 @@ public class GameLobby implements EventListener {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
-        Logger.info("Current player " + currentPlayer.getName());
-        Logger.info("Planning order " + planningPhaseOrder);
-        Logger.info("Action order " + actionPhaseOrder);
     }
 
     private void sendContinueTurn() {
@@ -794,8 +791,10 @@ public class GameLobby implements EventListener {
      * @param nextGameState the game state to enter
      */
     public void setGameState(GameState nextGameState) {
+        boolean resetPlayer = currentGameState == GameState.PLANNING;
         this.currentGameState = nextGameState;
-        currentPlayer = (currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder).get(0);
+        if (resetPlayer)
+            currentPlayer = getOrder().get(0);
     }
 
     /**
@@ -877,9 +876,8 @@ public class GameLobby implements EventListener {
      * @return a reference of type {@link Player} referring to the next acting player, null if there is no next player
      */
     public Player getNextPlayer() {
-        List<Player> turns = currentGameState == GameState.PLANNING ? planningPhaseOrder : actionPhaseOrder;
-        if (isLastPlayer(turns)) return null;
-        else return turns.get(turns.indexOf(currentPlayer) + 1);
+        if (isLastPlayer(getOrder())) return null;
+        else return getOrder().get(getOrder().indexOf(currentPlayer) + 1);
     }
 
     /**
@@ -921,8 +919,6 @@ public class GameLobby implements EventListener {
      * - get the new firs player
      */
     public void nextRound() {
-        // Reset defaults before turn start
-        //TODO:MoveToSetNextPlayer
 
         // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextRound
 
@@ -933,7 +929,7 @@ public class GameLobby implements EventListener {
         planningPhaseOrder = nextPlanningPhaseOrder;
 
         // get new first player
-        setCurrentPlayer(planningPhaseOrder.get(0));
+        setCurrentPlayer(getOrder().get(0));
         nextPlanningPhaseOrder = null;
         actionPhaseOrder = null;
         turnCounter++;
