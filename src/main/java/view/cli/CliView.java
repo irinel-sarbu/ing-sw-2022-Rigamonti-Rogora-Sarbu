@@ -1,6 +1,7 @@
 package view.cli;
 
 import eventSystem.EventManager;
+import eventSystem.events.local.EUpdateNickname;
 import eventSystem.events.local.EUpdateServerInfo;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
@@ -13,130 +14,140 @@ import network.LightModel;
 import util.*;
 import view.View;
 
-import javax.swing.plaf.ColorUIResource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CliView extends View {
-    Scanner scanner;
+    CliHelper cmd;
     Menu currentMenu;
 
     @Override
     public void run() {
-        this.scanner = new Scanner(System.in);
+        this.cmd = new CliHelper();
 
-        System.out.println("Eriantys #LOGO TODO");
-        askServerInfo();
-    }
-
-    public void closeScanner() {
-        scanner.close();
-        scanner = new Scanner(System.in);
-    }
-
-    private String readString(String defaultValue) {
-        String string;
-        string = scanner.nextLine();
-        return string.isBlank() ? defaultValue : string;
-    }
-
-    private int readInt(int defaultValue) {
-        int num;
-
-        try {
-            String numString = readString("");
-            if (numString.isBlank())
-                return defaultValue;
-            num = Integer.parseInt(numString);
-        } catch (NumberFormatException e) {
-            System.err.print("Please insert a number and not a String >>> ");
-            num = readInt(defaultValue);
-        }
-
-        return num;
+        cmd.resetScreen();
+        cmd.drawBox(CliHelper.ANSI_LIGHT_BLUE, "Connection");
+        setupConnection();
     }
 
     @Override
-    public void askServerInfo() {
+    public void setupConnection() {
         final int defaultPort = 5000;
         final String defaultAddress = "localhost";
 
         String address;
         int port;
 
-        System.out.println("> Please specify the following settings. The default value is shown between brackets.");
+        System.out.println("Please specify the following settings. The default value is shown between brackets.");
 
-        System.out.print("\rInsert server ADDRESS [localhost] >>> ");
-        address = readString(defaultAddress);
+        System.out.print("\rServer IP [localhost] > ");
+        address = cmd.readString(defaultAddress);
 
-        System.out.print("\rInsert server PORT [" + defaultPort + "] >>> ");
-        port = readInt(defaultPort);
+        System.out.print("\rServer PORT [" + defaultPort + "] > ");
+        port = cmd.readInt(defaultPort);
 
         EventManager.notify(new EUpdateServerInfo(address, port));
     }
 
-    private String askPlayerName() {
+    @Override
+    public void askNickname() {
+        final String NICKNAME_REGEX = "[a-zA-Z\\d]{1,15}";
+        boolean nicknameMatchesRegex = false;
         String insertedName;
 
         do {
-            System.out.print("\rInsert your name >>> ");
-            insertedName = readString("");
+            System.out.print("Insert your name > ");
+            insertedName = cmd.readString("");
+            nicknameMatchesRegex = insertedName.matches(NICKNAME_REGEX);
 
-            if (insertedName.equals("wwssadadba")) {
-                displayMessage("I know you know...");
+            if (!nicknameMatchesRegex) {
+                clearLines(1);
+                displayError("Incorrect nickname format. Nickname max length is 15 and can only contain letters or numbers.");
             }
-        } while (insertedName.isBlank());
+        } while (!nicknameMatchesRegex);
 
-        return insertedName;
+        EventManager.notify(new EUpdateNickname(insertedName));
     }
 
     @Override
     public void chooseCreateOrJoin() {
-        int selection;
+        final GameMode[] selectedGameMode = new GameMode[1];
 
-        System.out.println("Choose between:");
-        System.out.println(" [1] Create lobby");
-        System.out.println(" [2] Join lobby");
+        Menu mainMenu = new Menu("Choose between create or join lobby");
+        Menu createLobbyMode = new Menu("Lobby creation", "Choose game mode");
+        Menu createLobbyNumOfPlayers = new Menu("Lobby creation", "Choose number of players");
 
-        do {
-            System.out.print("\rInsert your choice [1 or 2] >>> ");
-            selection = readInt(0);
-        } while ((selection != 1) && (selection != 2));
+        cmd.resetScreen();
+        cmd.drawBox(CliHelper.ANSI_LIGHT_BLUE, "Main menu");
 
-        switch (selection) {
-            case 1 -> createLobby();
-            case 2 -> joinLobby();
-        }
+        mainMenu.putAction("Create lobby", () -> {
+            clearLines(mainMenu.getSize());
+            switchMenu(createLobbyMode);
+            return true;
+        });
+        mainMenu.putAction("Join lobby", () -> {
+            joinLobby();
+            return true;
+        });
+
+        createLobbyMode.putAction("Return to previous menu", () -> {
+            clearLines(createLobbyMode.getSize());
+            switchMenu(mainMenu);
+            return true;
+        });
+        createLobbyMode.putAction("NORMAL", () -> {
+            clearLines(createLobbyMode.getSize());
+            selectedGameMode[0] = GameMode.NORMAL;
+            switchMenu(createLobbyNumOfPlayers);
+            return true;
+        });
+        createLobbyMode.putAction("EXPERT", () -> {
+            clearLines(createLobbyMode.getSize());
+            selectedGameMode[0] = GameMode.EXPERT;
+            switchMenu(createLobbyNumOfPlayers);
+            return true;
+        });
+
+        createLobbyNumOfPlayers.putAction("Return to previous menu", () -> {
+            clearLines(createLobbyNumOfPlayers.getSize());
+            switchMenu(createLobbyMode);
+            return true;
+        });
+        createLobbyNumOfPlayers.putAction("2 players", () -> {
+            EventManager.notify(new ECreateLobbyRequest(selectedGameMode[0], 2));
+            return true;
+        });
+        createLobbyNumOfPlayers.putAction("3 players", () -> {
+            EventManager.notify(new ECreateLobbyRequest(selectedGameMode[0], 3));
+            return true;
+        });
+
+        switchMenu(mainMenu);
     }
 
     @Override
     public void createLobby() {
-        System.out.println("Choose between:");
-        System.out.println(" [1] NORMAL");
-        System.out.println(" [2] EXPERT");
-
         int gameMode;
         do {
             System.out.print("\rInsert your choice [1 or 2] >>> ");
-            gameMode = readInt(0);
+            gameMode = cmd.readInt(0);
         } while ((gameMode != 1) && (gameMode != 2));
 
         int numOfPlayers;
         do {
             System.out.print("\rInsert how many players are going to play [2 or 3] >>> ");
-            numOfPlayers = readInt(0);
+            numOfPlayers = cmd.readInt(0);
         } while ((numOfPlayers != 2) && (numOfPlayers != 3));
 
-        String nickname = askPlayerName();
-        EventManager.notify(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers, nickname));
+        EventManager.notify(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers));
     }
 
     @Override
     public void joinLobby() {
-        System.out.print("\rInsert lobby code >>> ");
-        String lobbyCode = readString("");
-
-        String nickname = askPlayerName();
-        EventManager.notify(new EJoinLobbyRequest(lobbyCode, nickname));
+        System.out.print("\rInsert lobby code > ");
+        String lobbyCode = cmd.readString("");
+        EventManager.notify(new EJoinLobbyRequest(lobbyCode));
     }
 
     @Override
@@ -149,7 +160,7 @@ public class CliView extends View {
         int choice;
         do {
             System.out.print("\rInsert wizard id >>> ");
-            choice = readInt(-1);
+            choice = cmd.readInt(-1);
         } while (choice < 0 || choice >= availableWizards.size());
 
         EventManager.notify(new EWizardChosen(availableWizards.get(choice)));
@@ -165,7 +176,7 @@ public class CliView extends View {
         int choice;
         do {
             System.out.print("\rInsert assistant id >>> ");
-            choice = readInt(-1);
+            choice = cmd.readInt(-1);
         } while (choice < 0 || choice >= deck.size());
 
         EventManager.notify(new EAssistantChosen(deck.get(choice)));
@@ -294,8 +305,8 @@ public class CliView extends View {
         boolean sleep = false;
 
         while (!sleep) {
-            System.out.print("\rChoose action >>> ");
-            int actionNumber = readInt(-1);
+            System.out.print("Choose action > ");
+            int actionNumber = cmd.readInt(-1);
             sleep = currentMenu.executeAction(actionNumber);
         }
     }
@@ -306,7 +317,7 @@ public class CliView extends View {
         printEntrance(studentList);
         do {
             System.out.print("\rInsert student >>> ");
-            choice = readInt(-1);
+            choice = cmd.readInt(-1);
         } while (choice < 0 || choice >= studentList.size());
         EventManager.notify(new EStudentMovementToDining(studentList.get(choice).getID()));
     }
@@ -317,14 +328,14 @@ public class CliView extends View {
         printEntrance(studentList);
         do {
             System.out.print("\rInsert student >>> ");
-            choice1 = readInt(-1);
+            choice1 = cmd.readInt(-1);
         } while (choice1 < 0 || choice1 >= studentList.size());
 
         List<IslandGroup> islands = model.getIslandGroups();
         printIslands(islands);
         do {
             System.out.print("\rInsert which island TILE >>> ");
-            choice2 = readInt(-1);
+            choice2 = cmd.readInt(-1);
         } while (choice2 < 0 || choice2 >= 11); //Hardcoded 12 = max number of islandtiles
 
         EventManager.notify(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
@@ -344,7 +355,7 @@ public class CliView extends View {
         System.out.println("- mother nature position: " + model.getMotherNaturePosition());
         do {
             System.out.print("\rInsert How many steps should Mother Nature make >>> ");
-            choice = readInt(-1);
+            choice = cmd.readInt(-1);
         } while (choice < 0 || choice >= 8); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new EMoveMotherNature(choice));
     }
@@ -355,7 +366,7 @@ public class CliView extends View {
         printCloudTiles(clouds);
         do {
             System.out.print("\rInsert which cloud tile to take students from (not empty) >>> ");
-            choice = readInt(-1);
+            choice = cmd.readInt(-1);
         } while (choice < 0 || choice >= clouds.size() || clouds.get(choice).getStudents().size() == 0); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new ESelectRefillCloud(choice));
     }
@@ -372,13 +383,13 @@ public class CliView extends View {
                 printIslands(islands);
                 do {
                     System.out.print("\rInsert which island TILE >>> ");
-                    choice1 = readInt(-1);
+                    choice1 = cmd.readInt(-1);
                 } while (choice1 < 0 || choice1 >= 11); //Hardcoded 12 = max number of islandtiles
                 List<Student> students = character.getStudents();
                 printStudents(students);
                 do {
                     System.out.print("\rInsert which Student >>> ");
-                    choice2 = readInt(-1);
+                    choice2 = cmd.readInt(-1);
                 } while (choice2 < 0 || choice2 >= 3); //Hardcoded 3 = max number of students on MONK
 
                 EventManager.notify(new EUseMonkEffect(students.get(choice2).getID(), choice1));
@@ -392,7 +403,7 @@ public class CliView extends View {
                 printIslandGroups(islands);
                 do {
                     System.out.print("\rInsert which island to resolve>>> ");
-                    choice = readInt(-1);
+                    choice = cmd.readInt(-1);
                 } while (choice < 0 || choice >= islands.size());
                 EventManager.notify(new EUseHeraldEffect(choice));
             }
@@ -402,7 +413,7 @@ public class CliView extends View {
                 printIslands(islands);
                 do {
                     System.out.print("\rInsert which island Tile to Add the No Entry Tiles to>> ");
-                    choice = readInt(-1);
+                    choice = cmd.readInt(-1);
                 } while (choice < 0 || choice >= 11); //Hardcoded 12 = max number of islandtiles
                 EventManager.notify(new EUseGrannyEffect(choice));
             }
@@ -416,7 +427,7 @@ public class CliView extends View {
                     printStudents(jesterStudents);
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
-                        choice = readInt(-1);
+                        choice = cmd.readInt(-1);
                     } while (choice < 0 || choice >= jesterStudents.size());
                     jesterIDs.add(jesterStudents.remove(choice).getID());
                 }
@@ -426,7 +437,7 @@ public class CliView extends View {
                     printEntrance(entranceStudents);
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
-                        choice = readInt(-1);
+                        choice = cmd.readInt(-1);
                     } while (choice < 0 || choice >= entranceStudents.size());
                     entranceIDs.add(entranceStudents.remove(choice).getID());
                 }
@@ -444,7 +455,7 @@ public class CliView extends View {
                     printEntrance(entranceStudents);
                     do {
                         System.out.print("\rInsert Student number " + i + " >>> ");
-                        choice = readInt(-1);
+                        choice = cmd.readInt(-1);
                     } while (choice < 0 || choice >= entranceStudents.size());
                     entranceIDs.add(entranceStudents.remove(choice).getID());
                 }
@@ -454,7 +465,7 @@ public class CliView extends View {
                 for (int i = 0; i < 2; i++) {
                     do {
                         System.out.print("\rInsert color ID number " + i + " >>> ");
-                        choice = readInt(-1);
+                        choice = cmd.readInt(-1);
                     } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
                     diningColors.add(Color.values()[choice]);
                 }
@@ -467,7 +478,7 @@ public class CliView extends View {
                 printStudents(students);
                 do {
                     System.out.print("\rInsert which Student >>> ");
-                    choice = readInt(-1);
+                    choice = cmd.readInt(-1);
                 } while (choice < 0 || choice >= 3); //Hardcoded 3 = max number of students on Princess
 
                 EventManager.notify(new EUsePrincessEffect(choice));
@@ -480,7 +491,7 @@ public class CliView extends View {
                 }
                 do {
                     System.out.print("\rInsert color ID >>> ");
-                    choice = readInt(-1);
+                    choice = cmd.readInt(-1);
                 } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseFanaticEffect(Color.values()[choice]));
@@ -493,7 +504,7 @@ public class CliView extends View {
                 }
                 do {
                     System.out.print("\rInsert color ID >>> ");
-                    choice = readInt(-1);
+                    choice = cmd.readInt(-1);
                 } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseThiefEffect(Color.values()[choice]));

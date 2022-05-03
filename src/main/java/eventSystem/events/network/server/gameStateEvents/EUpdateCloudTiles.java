@@ -9,7 +9,6 @@ public class EUpdateCloudTiles extends Event {
     private final List<CloudTile> cloudTiles;
 
     public EUpdateCloudTiles(List<CloudTile> cloudTiles) {
-        super();
         this.cloudTiles = cloudTiles;
     }
 

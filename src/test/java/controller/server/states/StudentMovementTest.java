@@ -4,16 +4,14 @@ import controller.server.GameLobby;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
-import model.board.Professor;
 import model.board.Student;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.*;
 
 import java.io.IOException;
-import java.net.CookieHandler;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public class StudentMovementTest {
     private static Server server;
     private static Socket socket;
     private static UUID uuid;
-    private static ClientSocketConnection clientSocketConnection;
+    private static ClientHandler clientSocketConnection;
 
     public int firstOf(int i) {
         return player.get(i).getSchoolBoard().getEntranceStudents().get(0).getID();
@@ -37,16 +35,15 @@ public class StudentMovementTest {
 
     @BeforeEach
     public void StudentMovement() {
-        server = new Server();
+        server = new Server(5000);
         socket = new Socket();
-        uuid = UUID.randomUUID();
         try {
-            clientSocketConnection = new ClientSocketConnection(server, socket, uuid);
+            clientSocketConnection = new ClientHandler(server, socket);
         } catch (IOException e) {
             System.out.println("cacca");
         }
 
-        gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server());
+        gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server(5000));
 
         gameModel = gameLobby.getModel();
         for (int i = 0; i < 3; i++) {

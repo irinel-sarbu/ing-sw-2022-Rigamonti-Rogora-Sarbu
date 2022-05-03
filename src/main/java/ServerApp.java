@@ -5,12 +5,13 @@ import util.Logger;
 
 public class ServerApp {
 	static public void main(String[] args) {
-		Server server = new Server();
-		ServerController controller = new ServerController(server);
-		EventManager.register(controller, null);
+            Server server = new Server(5000);
 
-		Logger.setLevel(Logger.LoggerLevel.ALL);
+            ServerController controller = new ServerController(server);
+            EventManager.register(controller, null);
 
-		new Thread(server).start();
-	}
+            Logger.setLevel(Logger.LoggerLevel.ALL);
+
+            new Thread(server).start();
+    }
 }

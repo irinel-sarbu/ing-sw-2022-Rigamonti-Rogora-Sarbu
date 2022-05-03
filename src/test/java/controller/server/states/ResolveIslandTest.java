@@ -3,14 +3,11 @@ package controller.server.states;
 import controller.server.GameLobby;
 import exceptions.EntranceFullException;
 import exceptions.StudentNotFoundException;
-import exceptions.WrongPhaseException;
-import exceptions.WrongPlayerException;
 import model.GameModel;
 import model.Player;
 import model.board.IslandGroup;
-import model.board.IslandTile;
 import model.board.Student;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +30,7 @@ public class ResolveIslandTest {
     private static Server server;
     private static Socket socket;
     private static UUID uuid;
-    private static ClientSocketConnection clientSocketConnection;
+    private static ClientHandler clientSocketConnection;
 
     private static IslandGroup someIslandGroup;
 
@@ -56,16 +53,16 @@ public class ResolveIslandTest {
 
     @BeforeEach
     public void StudentMovement() {
-        server = new Server();
+        server = new Server(5000);
         socket = new Socket();
         uuid = UUID.randomUUID();
         try {
-            clientSocketConnection = new ClientSocketConnection(server, socket, uuid);
+            clientSocketConnection = new ClientHandler(server, socket);
         } catch (IOException e) {
             System.out.println("cacca");
         }
 
-        gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server());
+        gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server(5000));
 
         gameModel = gameLobby.getModel();
         for (int i = 0; i < 3; i++) {

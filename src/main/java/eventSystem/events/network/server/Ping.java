@@ -4,7 +4,6 @@ import eventSystem.events.Event;
 
 public final class Ping extends Event {
     public Ping() {
-        super();
     }
 
     @Override

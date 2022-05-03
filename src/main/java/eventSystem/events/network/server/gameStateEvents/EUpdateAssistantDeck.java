@@ -9,7 +9,6 @@ public class EUpdateAssistantDeck extends Event {
     private final List<Assistant> assistants;
 
     public EUpdateAssistantDeck(List<Assistant> assistants) {
-        super();
         this.assistants = assistants;
     }
 

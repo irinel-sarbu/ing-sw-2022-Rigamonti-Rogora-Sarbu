@@ -1,23 +1,18 @@
 package controller.server;
 
-import eventSystem.EventManager;
-import network.server.Server;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class ServerControllerTest {
-    private static Server server;
-    private static ServerController controller;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    @BeforeAll
-    public static void setup() {
-        server = new Server();
-        controller = new ServerController(server);
-        EventManager.register(controller, null);
+public class ServerControllerTest {
+
+    @Test
+    public static void serverControllerTest() {
+        assertTrue(true);
     }
 
     @Test
-    public static void clientConnectionTest() {
+    public static void createServerController() {
 
     }
 }

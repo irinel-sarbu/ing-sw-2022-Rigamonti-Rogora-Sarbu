@@ -7,6 +7,7 @@ import util.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -93,6 +94,7 @@ public class EventManager {
                     listener.callbackMethod.invoke(listener.listenerInstance, event);
                 } catch (InvocationTargetException e) {
                     Logger.error("Could not dispatch event to handler: ", e.getMessage());
+                    Logger.error("EventHandlers: ", List.of(listener).toString());
                 } catch (IllegalAccessException e) {
                     Logger.warning("Could not access event handler method: ", e.getMessage());
                 }

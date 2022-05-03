@@ -7,7 +7,7 @@ import exceptions.WrongPlayerException;
 import model.GameModel;
 import model.Player;
 import model.board.Bag;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,23 +32,22 @@ public class PlanningPhaseTest {
     private static Server server;
     private static Socket socket;
     private static UUID uuid;
-    private static ClientSocketConnection clientSocketConnection;
+    private static ClientHandler clientSocketConnection;
 
     private static PlanningPhase planningPhase;
 
     @BeforeEach
     public void planningPhase() {
 
-        server = new Server();
+        server = new Server(5000);
         socket = new Socket();
-        uuid = UUID.randomUUID();
         try {
-            clientSocketConnection = new ClientSocketConnection(server, socket, uuid);
+            clientSocketConnection = new ClientHandler(server, socket);
         } catch (IOException e) {
             System.out.println("cacca");
         }
 
-        gameLobby = new GameLobby(3, GameMode.NORMAL, "00000", new Server());
+        gameLobby = new GameLobby(3, GameMode.NORMAL, "00000", new Server(5000));
 
         gameModel = gameLobby.getModel();
         for (int i = 0; i < 3; i++) {

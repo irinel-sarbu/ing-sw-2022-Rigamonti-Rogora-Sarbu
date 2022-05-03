@@ -8,7 +8,6 @@ public class EUpdateSchoolBoard extends Event {
     private final String playerName;
 
     public EUpdateSchoolBoard(SchoolBoard schoolBoard, String playerName) {
-        super();
         this.schoolBoard = schoolBoard;
         this.playerName = playerName;
     }

@@ -6,7 +6,6 @@ public class EDeclareWinner extends Event {
     public final String player;
 
     public EDeclareWinner(String player) {
-        super();
         this.player = player;
     }
 

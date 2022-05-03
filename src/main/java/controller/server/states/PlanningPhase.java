@@ -10,7 +10,7 @@ import exceptions.WrongPhaseException;
 import exceptions.WrongPlayerException;
 import model.Player;
 import model.board.Assistant;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import util.GameState;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class PlanningPhase {
      * @throws WrongPlayerException        the player doesn't have right to play at the moment
      * @throws AssistantNotInDeckException the selected assistant does not exist in the player's hand deck
      */
-    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientSocketConnection client)
+    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientHandler client)
             throws WrongPhaseException, WrongPlayerException, AssistantNotInDeckException {
         if (thisGame.wrongState(GameState.PLANNING))
             throw new WrongPhaseException();

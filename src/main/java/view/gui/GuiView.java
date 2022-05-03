@@ -14,8 +14,12 @@ public class GuiView extends View {
     }
 
     @Override
-    public void askServerInfo() {
+    public void setupConnection() {
 
+    }
+
+    @Override
+    public void askNickname() {
     }
 
     @Override

@@ -7,7 +7,6 @@ public class EUpdateGameState extends Event {
     private final GameState gameState;
 
     public EUpdateGameState(GameState gameState) {
-        super();
         this.gameState = gameState;
     }
 

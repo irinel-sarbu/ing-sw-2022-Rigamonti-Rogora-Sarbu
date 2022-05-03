@@ -10,7 +10,6 @@ public class EUpdateIslands extends Event {
     private final int motherNaturePos;
 
     public EUpdateIslands(List<IslandGroup> islandGroups, int motherNaturePos) {
-        super();
         this.islandGroups = islandGroups;
         this.motherNaturePos = motherNaturePos;
     }

@@ -11,14 +11,13 @@ import eventSystem.events.network.client.EJoinLobbyRequest;
 import eventSystem.events.network.server.EPlayerDisconnected;
 import eventSystem.events.network.server.ServerMessage;
 import exceptions.LobbyNotFoundException;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
 import util.GameMode;
 import util.Logger;
 import util.Utils;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController implements EventListener {
@@ -63,8 +62,8 @@ public class ServerController implements EventListener {
 
     @EventHandler
     public void onMessage(ClientMessage message) {
-        UUID clientId = message.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = message.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         switch (message.getMsg()) {
             case Messages.CLIENT_DISCONNECTED -> {
@@ -72,10 +71,10 @@ public class ServerController implements EventListener {
                     return;
 
                 GameLobby lobby = games.get(client.getLobbyCode());
-                String playerName = lobby.getPlayerNameBySocket(client);
+                String disconnectedPlayer = lobby.getPlayerNameBySocket(client);
 
-                lobby.broadcastExceptOne(new EPlayerDisconnected(playerName), playerName);
-                lobby.removeClientFromLobbyByName(playerName);
+                lobby.broadcastExceptOne(new EPlayerDisconnected(disconnectedPlayer), disconnectedPlayer);
+                lobby.removeClientFromLobbyByName(disconnectedPlayer);
             }
         }
     }
@@ -87,11 +86,11 @@ public class ServerController implements EventListener {
      */
     @EventHandler
     public void onCreateLobbyRequest(ECreateLobbyRequest event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         GameLobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
-        createdLobby.addClientToLobby(event.getPlayerName(), client);
+        createdLobby.addClientToLobby(playerName, client);
     }
 
     /**
@@ -115,10 +114,10 @@ public class ServerController implements EventListener {
      */
     @EventHandler
     public boolean onJoinLobbyRequest(EJoinLobbyRequest event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
-        GameLobby lobby = null;
+        GameLobby lobby;
         try {
             lobby = getLobbyByCode(event.getLobbyCode());
         } catch (LobbyNotFoundException e) {
@@ -129,18 +128,18 @@ public class ServerController implements EventListener {
 
         switch (lobby.getLobbyState()) {
             case INIT -> {
-                if (lobby.getClientByName(event.getPlayerName()) != null) {
-                    Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
+                if (lobby.getClientByName(playerName) != null) {
+                    Logger.warning("Player " + playerName + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
                     client.send(new ServerMessage(Messages.NAME_NOT_AVAILABLE));
                     return true;
                 }
 
-                lobby.addClientToLobby(event.getPlayerName(), client);
+                lobby.addClientToLobby(playerName, client);
             }
 
             case PRE_GAME, IN_GAME, END -> {
                 client.send(new ServerMessage(Messages.LOBBY_FULL));
-                Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
+                Logger.warning("Player " + playerName + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
             }
         }
 

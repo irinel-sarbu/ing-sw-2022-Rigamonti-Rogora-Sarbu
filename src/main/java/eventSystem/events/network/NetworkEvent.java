@@ -2,16 +2,14 @@ package eventSystem.events.network;
 
 import eventSystem.events.Event;
 
-import java.util.UUID;
-
 public abstract class NetworkEvent extends Event {
-    private UUID clientIdentifier;
+    private String nickname;
 
-    public void setClientId(UUID clientId) {
-        this.clientIdentifier = clientId;
+    public void setClientNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public UUID getClientId() {
-        return clientIdentifier;
+    public String getClientNickname() {
+        return nickname;
     }
 }

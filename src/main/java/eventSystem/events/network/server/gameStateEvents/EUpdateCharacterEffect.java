@@ -7,7 +7,6 @@ public class EUpdateCharacterEffect extends Event {
     private final CharacterType characterType;
 
     public EUpdateCharacterEffect(CharacterType characterType) {
-        super();
         this.characterType = characterType;
     }
 

@@ -2,6 +2,7 @@ package view;
 
 import model.board.Assistant;
 import network.LightModel;
+import util.CliHelper;
 import util.Wizard;
 
 import java.util.List;
@@ -10,19 +11,42 @@ public abstract class View {
 
     public abstract void run();
 
+    public void displayMessage(String color, String message) {
+        System.out.println(color + message + CliHelper.ANSI_RESET);
+    }
+
     public void displayMessage(String message) {
-        System.out.println("> " + message);
+        System.out.println(message);
     }
 
     public void displayError(String errorMessage) {
-        System.out.println("ERROR > " + errorMessage);
+        System.out.println(CliHelper.ANSI_RED + "ERROR " + errorMessage + CliHelper.ANSI_RESET);
     }
 
-    public abstract void askServerInfo();
+    public void clearLines(int numOfLines) {
+        if (numOfLines <= 0) return;
+        for (int i = 0; i < numOfLines; i++) {
+            // Set cursor at start line
+            System.out.print("\r");
+            // Clear line
+            System.out.print("\033[2K");
+            // Move up by one
+            System.out.printf("\033[%dA", 1);
+            // Clear line
+            System.out.print("\033[2K");
+
+            System.out.print("Cleared " + numOfLines);
+        }
+    }
+
+    public abstract void setupConnection();
+
+    public abstract void askNickname();
 
     public abstract void createLobby();
 
     public abstract void joinLobby();
+
     public abstract void chooseCreateOrJoin();
 
     public abstract void chooseWizard(List<Wizard> availableWizards);

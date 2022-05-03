@@ -3,16 +3,10 @@ package eventSystem.events.network.client;
 import eventSystem.events.network.NetworkEvent;
 
 public final class EJoinLobbyRequest extends NetworkEvent {
-    private final String name;
     private final String lobbyCode;
 
-    public EJoinLobbyRequest(String lobbyCode, String playerName) {
+    public EJoinLobbyRequest(String lobbyCode) {
         this.lobbyCode = lobbyCode;
-        this.name = playerName;
-    }
-
-    public String getPlayerName() {
-        return name;
     }
 
     public String getLobbyCode() {
@@ -21,6 +15,6 @@ public final class EJoinLobbyRequest extends NetworkEvent {
 
     @Override
     public String toString() {
-        return "EJoinLobbyRequest { name: '" + name + "'; lobbyCode: '" + lobbyCode + "' }";
+        return "EJoinLobbyRequest { lobbyCode: '" + lobbyCode + "' }";
     }
 }

@@ -2,6 +2,7 @@ package network.client;
 
 import eventSystem.EventManager;
 import eventSystem.events.Event;
+import eventSystem.events.network.ERegister;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.NetworkEvent;
 import eventSystem.events.network.server.ServerMessage;
@@ -15,7 +16,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Client implements Runnable {
     private final LinkedBlockingQueue<Event> eventQueue;
 
-    private UUID cliendIdentifier;
+    private UUID clientId;
+    private String nickname;
     private String lobbyId;
 
     private ServerConnection server;
@@ -53,6 +55,8 @@ public class Client implements Runnable {
                 }
             }
         }).start();
+
+        EventManager.notify(new ServerMessage(Messages.CONNECTION_OK));
     }
 
     public synchronized void pushEvent(Event event) {
@@ -60,7 +64,7 @@ public class Client implements Runnable {
     }
 
     public void sendToServer(NetworkEvent event) {
-        event.setClientId(cliendIdentifier);
+        event.setClientNickname(nickname);
         if (lobbyId != null) {
             event.setScope(lobbyId);
         }
@@ -68,8 +72,20 @@ public class Client implements Runnable {
         server.send(event);
     }
 
-    public void setClientIdentifier(UUID identifier) {
-        this.cliendIdentifier = identifier;
+    public void register(ERegister event) {
+        server.send(event);
+    }
+
+    public void setClientId(UUID id) {
+        this.clientId = id;
+    }
+
+    public void setClientNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public void setLobbyId(String lobbyId) {

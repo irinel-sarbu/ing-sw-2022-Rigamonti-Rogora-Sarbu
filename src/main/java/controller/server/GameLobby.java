@@ -19,7 +19,7 @@ import model.GameModel;
 import model.Player;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
 import util.*;
 
@@ -34,7 +34,7 @@ public class GameLobby implements EventListener {
     private LobbyState lobbyState;
 
     private final GameMode gameMode;
-    private final Map<String, ClientSocketConnection> clientList;
+    private final Map<String, ClientHandler> clientList;
 
     private final List<Wizard> availableWizards;
     private final Stack<TowerColor> availableTowerColors;
@@ -123,8 +123,8 @@ public class GameLobby implements EventListener {
      * @param event Event to broadcast
      */
     public void broadcast(Event event) {
-        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
-            ClientSocketConnection client = entry.getValue();
+        for (Map.Entry<String, ClientHandler> entry : clientList.entrySet()) {
+            ClientHandler client = entry.getValue();
             client.send(event);
         }
     }
@@ -136,9 +136,9 @@ public class GameLobby implements EventListener {
      * @param excludedClient Client to exclude
      */
     public void broadcastExceptOne(Event event, String excludedClient) {
-        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+        for (Map.Entry<String, ClientHandler> entry : clientList.entrySet()) {
             if (entry.getKey() != null && !entry.getKey().equals(excludedClient)) {
-                ClientSocketConnection client = entry.getValue();
+                ClientHandler client = entry.getValue();
                 client.send(event);
             }
         }
@@ -159,7 +159,7 @@ public class GameLobby implements EventListener {
      * @param name   nickname of the player to add to the game lobby
      * @param client reference to the client connection to attach to this lobby
      */
-    public void addClientToLobby(String name, ClientSocketConnection client) {
+    public void addClientToLobby(String name, ClientHandler client) {
         clientList.put(name, client);
         client.joinLobby(getLobbyCode());
 
@@ -220,12 +220,12 @@ public class GameLobby implements EventListener {
 
     /**
      * Get client by name
-     * Inverse of {@link GameLobby#getPlayerNameBySocket(ClientSocketConnection)}
+     * Inverse of {@link GameLobby#getPlayerNameBySocket(ClientHandler)}
      *
      * @param name player nickname to search for
      * @return instance of the client associated to the specified name
      */
-    public ClientSocketConnection getClientByName(String name) {
+    public ClientHandler getClientByName(String name) {
         return clientList.get(name);
     }
 
@@ -236,8 +236,8 @@ public class GameLobby implements EventListener {
      * @param clientSocket socket to search for associated name
      * @return nickname of the player associated to the socket
      */
-    public String getPlayerNameBySocket(ClientSocketConnection clientSocket) {
-        for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
+    public String getPlayerNameBySocket(ClientHandler clientSocket) {
+        for (Map.Entry<String, ClientHandler> entry : clientList.entrySet()) {
             if (entry.getValue().equals(clientSocket)) {
                 return entry.getKey();
             }
@@ -249,8 +249,8 @@ public class GameLobby implements EventListener {
     // Event Senders:
 
     private void setupPreGame() {
-        ClientSocketConnection currentClient = null;
-        for (ClientSocketConnection client : clientList.values()) {
+        ClientHandler currentClient = null;
+        for (ClientHandler client : clientList.values()) {
             if (!client.isReady()) {
                 currentClient = client;
                 break;
@@ -281,8 +281,8 @@ public class GameLobby implements EventListener {
 
             broadcast(new EUpdateIslands(model.getIslandGroups(), model.getMotherNature().getPosition()));
 
-            for (Map.Entry<String, ClientSocketConnection> entry : clientList.entrySet()) {
-                ClientSocketConnection client = entry.getValue();
+            for (Map.Entry<String, ClientHandler> entry : clientList.entrySet()) {
+                ClientHandler client = entry.getValue();
                 try {
                     client.send(new EUpdateAssistantDeck(model.getPlayerByName(entry.getKey()).getAssistants()));
                 } catch (PlayerNotFoundException e) {
@@ -307,13 +307,13 @@ public class GameLobby implements EventListener {
     }
 
     private void sendChooseAssistantEvent() {
-        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CHOOSE_ASSISTANT));
         broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
     }
 
     private void sendStartTurn() {
-        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
         Logger.info("Current player " + currentPlayer.getName());
@@ -322,7 +322,7 @@ public class GameLobby implements EventListener {
     }
 
     private void sendContinueTurn() {
-        ClientSocketConnection currentPlayerClient = clientList.get(currentPlayer.getName());
+        ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
         ;
     }
@@ -335,12 +335,12 @@ public class GameLobby implements EventListener {
      */
     @EventHandler
     public boolean playerHasChosenWizard(EWizardChosen event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         Wizard choice = event.getWizard();
 
-        String playerName = getPlayerNameBySocket(client);
+
         Logger.info(getLobbyCode() + " - Adding " + playerName + " [" + choice + "] to board.");
 
         TowerColor color = availableTowerColors.pop();
@@ -356,8 +356,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasChosenAssistant(EAssistantChosen event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         try {
             planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
@@ -380,10 +380,12 @@ public class GameLobby implements EventListener {
      * @param event event to react to
      * @return true
      */
+    // TODO fix not entering, move to per character type function
     @EventHandler
-    public boolean playerHasActivatedEffect(EUseCharacterEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+    public <T extends EUseCharacterEffect> boolean playerHasActivatedEffect(T event) {
+        Logger.severe("playerHasActivatedEffect " + event);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -461,8 +463,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseFanaticEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -489,8 +491,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseGrannyEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -516,8 +518,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseHeraldEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -543,8 +545,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseJesterEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -570,8 +572,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseMinstrelEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -597,8 +599,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseMonkEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -624,8 +626,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUsePrincessEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -651,8 +653,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasActivatedEffect(EUseThiefEffect event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
@@ -676,7 +678,7 @@ public class GameLobby implements EventListener {
         return true;
     }
 
-    private boolean effectActivationCheck(ClientSocketConnection client) {
+    private boolean effectActivationCheck(ClientHandler client) {
         if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
             client.send(new ServerMessage(Messages.WRONG_PHASE));
             return true;
@@ -690,8 +692,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasMovedToDining(EStudentMovementToDining event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         try {
             studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
@@ -708,8 +710,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasMovedToIsland(EStudentMovementToIsland event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         try {
             studentMovement.moveStudentToIsland(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID(), event.getIslandID());
@@ -726,8 +728,8 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasMovedMotherNature(EMoveMotherNature event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
         try {
             motherNatureMovement.moveMotherNature(this, event.getSteps());
@@ -752,14 +754,15 @@ public class GameLobby implements EventListener {
 
     @EventHandler
     public boolean playerHasSelectedRefillCloud(ESelectRefillCloud event) {
-        UUID clientId = event.getClientId();
-        ClientSocketConnection client = server.getClientById(clientId);
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
         try {
             epilogue.refillFromCloudTile(this, currentPlayer, event.getCloudID());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
         broadcast(new EUpdateSchoolBoard(getCurrentPlayer().getSchoolBoard(), getCurrentPlayer().getName()));
 

@@ -8,27 +8,29 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server implements Runnable {
-    private final Map<UUID, ClientSocketConnection> clientMap;
+    private final Map<String, ClientHandler> clientMap;
 
-    private final int PORT = 5000;
     private ServerSocket serverSocket;
     private final LinkedBlockingQueue<Event> eventQueue;
 
-    public Server() {
+    private final int port;
+
+    public Server(int port) {
+        this.port = port;
         this.clientMap = new ConcurrentHashMap<>();
+
         this.eventQueue = new LinkedBlockingQueue<>();
     }
 
     @Override
     public void run() {
         try {
-            serverSocket = new ServerSocket(PORT);
-            Logger.info("Server started on port " + PORT, "Waiting for clients...");
+            serverSocket = new ServerSocket(port);
+            Logger.info("Server started on port " + port, "Waiting for clients...");
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
@@ -48,20 +50,24 @@ public class Server implements Runnable {
         while (!serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
-
-                UUID newClientUUID = UUID.randomUUID();
-                ClientSocketConnection clientConnection = new ClientSocketConnection(this, clientSocket, newClientUUID);
+                ClientHandler clientConnection = new ClientHandler(this, clientSocket);
                 clientConnection.start();
-
-                clientMap.put(newClientUUID, clientConnection);
             } catch (IOException e) {
                 Logger.error(e.getMessage());
             }
         }
     }
 
-    public ClientSocketConnection getClientById(UUID clientId) {
-        return clientMap.get(clientId);
+    public boolean checkPlayerIsRegistered(String nickname) {
+        return clientMap.get(nickname.toLowerCase()) != null;
+    }
+
+    public void register(String nickname, ClientHandler client) {
+        clientMap.put(nickname, client);
+    }
+
+    public ClientHandler getClientByNickname(String nickname) {
+        return clientMap.get(nickname.toLowerCase());
     }
 
     public synchronized void pushEvent(Event event) {

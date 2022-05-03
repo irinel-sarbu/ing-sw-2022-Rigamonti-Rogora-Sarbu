@@ -36,6 +36,7 @@ public class ServerConnection extends Thread {
     }
 
     public synchronized void send(Event event) {
+        Logger.debug("Sending " + event + " to server");
         try {
             out.writeObject(event);
             out.flush();

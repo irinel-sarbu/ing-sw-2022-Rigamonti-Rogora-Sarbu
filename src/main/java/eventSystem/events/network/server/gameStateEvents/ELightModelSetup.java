@@ -9,7 +9,6 @@ public class ELightModelSetup extends Event {
     private final List<CharacterCard> characterCards;
 
     public ELightModelSetup(List<CharacterCard> characterCards) {
-        super();
         this.characterCards = characterCards;
     }
 

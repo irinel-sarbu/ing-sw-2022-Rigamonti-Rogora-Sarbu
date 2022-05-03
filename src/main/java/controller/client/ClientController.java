@@ -3,8 +3,9 @@ package controller.client;
 import eventSystem.EventListener;
 import eventSystem.EventManager;
 import eventSystem.annotations.EventHandler;
+import eventSystem.events.local.EUpdateNickname;
 import eventSystem.events.local.EUpdateServerInfo;
-import eventSystem.events.network.EConnectionAccepted;
+import eventSystem.events.network.ERegister;
 import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
@@ -15,7 +16,7 @@ import eventSystem.events.network.server.*;
 import eventSystem.events.network.server.gameStateEvents.*;
 import network.LightModel;
 import network.client.Client;
-import util.Logger;
+import util.CliHelper;
 import view.View;
 
 public class ClientController implements EventListener {
@@ -23,8 +24,9 @@ public class ClientController implements EventListener {
 
     private Client client;
     private LightModel model;
-    private String nickname;
     private String lobbyCode;
+
+    private int numOfConsecutiveErrors = 0;
 
     public ClientController(View view) {
         this.view = view;
@@ -34,9 +36,37 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onMessage(ServerMessage message) {
         switch (message.getMsg()) {
+            case Messages.CONNECTION_OK -> {
+                numOfConsecutiveErrors = 0;
+                view.displayMessage(CliHelper.ANSI_LIGHT_GREEN, "Connection established!");
+                view.askNickname();
+            }
+
             case Messages.CONNECTION_REFUSED -> {
+                if (numOfConsecutiveErrors > 0)
+                    view.clearLines(4);
+                else
+                    view.clearLines(3);
+
                 view.displayError(Messages.CONNECTION_REFUSED);
-                view.askServerInfo();
+                view.setupConnection();
+                numOfConsecutiveErrors++;
+            }
+
+            case Messages.REGISTRATION_OK -> {
+                numOfConsecutiveErrors = 0;
+                view.chooseCreateOrJoin();
+            }
+
+            case Messages.NAME_NOT_AVAILABLE -> {
+                if (numOfConsecutiveErrors > 0)
+                    view.clearLines(2);
+                else
+                    view.clearLines(1);
+
+                view.displayError("Player name '" + client.getNickname() + "' already taken. Try again.");
+                view.askNickname();
+                numOfConsecutiveErrors++;
             }
 
             case Messages.LOBBY_NOT_FOUND -> {
@@ -47,10 +77,7 @@ public class ClientController implements EventListener {
                 view.displayError("Lobby with ID " + lobbyCode + " is full!");
                 view.chooseCreateOrJoin();
             }
-            case Messages.NAME_NOT_AVAILABLE -> {
-                view.displayError("Player name already taken. Try again.");
-                view.chooseCreateOrJoin();
-            }
+
             case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
 
             case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
@@ -59,21 +86,23 @@ public class ClientController implements EventListener {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT ->
+                    view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
-            case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, nickname);
+            case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, client.getNickname());
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
 
-            case Messages.ILLEGAL_STEPS -> view.displayMessage("Too many steps, look at your max steps from the assistant card");
+            case Messages.ILLEGAL_STEPS ->
+                    view.displayMessage("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
-                view.showMenu(model, nickname);
+                view.showMenu(model, client.getNickname());
             }
             case Messages.EFFECT_USED -> {
                 view.displayMessage("An effect has already been used. You can't use another.");
-                view.showMenu(model, nickname);
+                view.showMenu(model, client.getNickname());
             }
         }
     }
@@ -89,10 +118,9 @@ public class ClientController implements EventListener {
     }
 
     @EventHandler
-    public void onConnectionAccepted(EConnectionAccepted event) {
-        Logger.debug("Client uuid: " + event.getId());
-        client.setClientIdentifier(event.getId());
-        view.chooseCreateOrJoin();
+    public void onPlayerNameInserted(EUpdateNickname event) {
+        client.setClientNickname(event.getNickname());
+        client.register(new ERegister(event.getNickname()));
     }
 
     /**
@@ -101,10 +129,9 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onCreateLobbyRequest(ECreateLobbyRequest event) {
         view.displayMessage("Creating Lobby...");
-        this.nickname = event.getPlayerName();
-        client.sendToServer(new ECreateLobbyRequest(event.getGameMode(), event.getNumOfPlayers(), nickname));
+        client.sendToServer(event);
 
-        createClientModel(nickname);
+        createClientModel(client.getNickname());
     }
 
     /**
@@ -112,11 +139,8 @@ public class ClientController implements EventListener {
      */
     @EventHandler
     public void onJoinLobbyRequest(EJoinLobbyRequest event) {
-        this.nickname = event.getPlayerName();
-        this.lobbyCode = event.getLobbyCode();
-        client.sendToServer(new EJoinLobbyRequest(lobbyCode, nickname));
-
-        createClientModel(nickname);
+        client.sendToServer(event);
+        createClientModel(client.getNickname());
     }
 
     private void createClientModel(String nickname) {
