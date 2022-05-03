@@ -910,15 +910,27 @@ public class GameLobby implements EventListener {
     public void nextRound() {
         // Reset defaults before turn start
         //TODO:MoveToSetNextPlayer
+
+        // reset all active character's effect
         model.setActiveCharacterEffect(null);
+
+        // reset all passive character's effect
         studentMovement = new DefaultStudentMovement();
         motherNatureMovement = new DefaultMotherNatureMovement();
         resolveIsland = new DefaultResolveIsland();
+
+        // broadcast all characters' effect reset
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
 
         // CharacterCards.resetEffect() happens in setNextPlayer, always called before nextRound
+
+        // next round always start with planning phase
         setGameState(GameState.PLANNING);
+
+        // get next order
         planningPhaseOrder = nextPlanningPhaseOrder;
+
+        // get new first player
         setCurrentPlayer(planningPhaseOrder.get(0));
         nextPlanningPhaseOrder = null;
         actionPhaseOrder = null;
