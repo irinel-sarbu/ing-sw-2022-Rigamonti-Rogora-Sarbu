@@ -1,7 +1,7 @@
 package model.board;
 
 import java.io.Serializable;
-import java.util.Random;
+import util.Random;
 
 /**
  * Represents Mother Nature.
@@ -13,8 +13,7 @@ public class MotherNature implements Serializable {
      * Constructor of {@link MotherNature}. Initializes {@link MotherNature#position}.
      */
     public MotherNature() {
-        Random rng = new Random();
-        this.position = rng.nextInt(12);
+        this.position = Random.nextInt(12);
     }
 
     /**

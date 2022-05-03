@@ -6,6 +6,7 @@ import util.Color;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+import util.Random;
 
 public class Bag implements Serializable {
     private final List<Student> studentList;
@@ -83,20 +84,12 @@ public class Bag implements Serializable {
     }
 
     /**
-     * Shuffle bag content to randomize student extraction
-     */
-    private void shuffle() {
-        Collections.shuffle(studentList);
-    }
-
-    /**
      * Put given students into bag
      *
      * @param students list of students
      */
     public void put(Student... students) {
         studentList.addAll(Arrays.asList(students));
-        shuffle();
     }
 
     /**
@@ -107,8 +100,7 @@ public class Bag implements Serializable {
      */
     public Student pull() throws EmptyStudentListException {
         if (studentList.size() == 0) throw new EmptyStudentListException();
-        shuffle();
-        return studentList.remove(0);
+        return studentList.remove(Random.nextInt(studentList.size()));
     }
 
     /**

@@ -57,10 +57,5 @@ public class TurnEpilogue {
             }
         }
 
-        // call currentplayer switch, if last player switch round
-        if(!thisGame.setNextPlayer()) {
-            thisGame.nextRound();
-        }
-
     }
 }

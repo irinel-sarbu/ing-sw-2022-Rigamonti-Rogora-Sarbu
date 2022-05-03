@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * GameModel Class represent the model. It is used to communicate with the controller.
  */
-public class GameModel extends Observable {
+public class GameModel {
     private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private final Bag bag;
