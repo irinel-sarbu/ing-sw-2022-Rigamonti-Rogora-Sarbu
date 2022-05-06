@@ -13,7 +13,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ClientHandler extends Thread implements IClientHandler {
     private boolean isInLobby;
@@ -22,8 +21,6 @@ public class ClientHandler extends Thread implements IClientHandler {
     private String lobbyCode;
 
     private final Timer pingTimer;
-
-    private final LinkedBlockingQueue<Event> events;
 
     ObjectInputStream in;
     ObjectOutputStream out;
@@ -39,8 +36,6 @@ public class ClientHandler extends Thread implements IClientHandler {
         this.isReady = false;
 
         this.pingTimer = new Timer();
-
-        events = new LinkedBlockingQueue<>();
     }
 
     @Override

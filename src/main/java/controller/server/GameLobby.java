@@ -768,8 +768,11 @@ public class GameLobby implements EventListener {
             broadcast(new ServerMessage(Messages.UPDATE_VIEW));
         }
         if (currentGameState != GameState.GAME_OVER) {
-            //TODO: doesn't change player --> check SetNextPlayer()
-            sendStartTurn();
+            if (currentGameState == GameState.PLANNING) {
+                sendChooseAssistantEvent();
+            } else {
+                sendStartTurn();
+            }
         }
         return true;
     }
