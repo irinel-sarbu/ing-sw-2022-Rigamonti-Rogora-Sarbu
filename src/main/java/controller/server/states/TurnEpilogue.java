@@ -3,6 +3,7 @@ package controller.server.states;
 import controller.server.GameLobby;
 import exceptions.*;
 import model.Player;
+import model.board.CloudTile;
 import util.GameState;
 
 public class TurnEpilogue {
@@ -47,12 +48,18 @@ public class TurnEpilogue {
          * Else checks if game is over and goes in GAME_OVER state
          * If not game over go to next round AKA PLANNING_PHASE
          */
+        System.err.println("Checking for next player");
         if (thisGame.setNextPlayer()) {
+            System.err.println("nextplayer current round");
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
+            System.err.println("Round ended");
             if (checkGameOver(thisGame)) {
                 thisGame.getGameOver().selectWinner(thisGame);
             } else {
+                System.err.println("stil playing...");
+                for(int i=0; i<thisGame.getModel().getNumOfCloudTiles(); i++)
+                    thisGame.getModel().refillCloudTile(i);
                 thisGame.nextRound();
             }
         }

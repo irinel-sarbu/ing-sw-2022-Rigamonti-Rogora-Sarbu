@@ -52,6 +52,7 @@ public class StudentMovementTest {
         gameLobby.setOrder(gameModel.getPlayers());
         gameLobby.setGameState(GameState.STUDENT_MOVEMENT);
         player = new ArrayList<>(gameLobby.getOrder());
+        gameLobby.setCurrentPlayer(player.get(0));
         studentMovement = new DefaultStudentMovement();
 
         // empty player 0 entrance

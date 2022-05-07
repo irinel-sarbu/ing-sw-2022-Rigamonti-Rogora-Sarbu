@@ -202,8 +202,16 @@ public class IslandGroup implements Serializable {
         String header = "IslandGroup_" + String.format("%2s", islandGroupID).replace(' ', '0');
         StringBuilder body = new StringBuilder();
         for (IslandTile islandTile : islands) {
-            body.append(": ").append(islandTile);
+            body.append("\n\t").append(islandTile);
         }
         return header + body;
+    }
+
+    public static String allToString(List<IslandGroup> islandGroups) {
+        StringBuilder body = new StringBuilder();
+        for(IslandGroup ig : islandGroups) {
+            body.append(ig).append("\n");
+        }
+        return "" + body;
     }
 }

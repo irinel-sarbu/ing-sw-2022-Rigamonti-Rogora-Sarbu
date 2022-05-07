@@ -5,10 +5,8 @@ import model.board.*;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import model.expert.NoEntryTile;
-import util.CharacterType;
-import util.Color;
-import util.GameMode;
-import util.Logger;
+import util.*;
+import util.Random;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -445,7 +443,7 @@ public class GameModel {
     private CharacterCard getRandomCharacter() {
         CharacterCard character;
         do {
-            int pick = new Random().nextInt(CharacterType.values().length);
+            int pick = Random.nextInt(CharacterType.values().length);
             character = new CharacterCard(CharacterType.values()[pick]);
         } while (characters.contains(character));
         switch (character.getCharacter()) {
