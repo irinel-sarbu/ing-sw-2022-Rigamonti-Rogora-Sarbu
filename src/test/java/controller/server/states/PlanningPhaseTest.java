@@ -56,6 +56,7 @@ public class PlanningPhaseTest {
         gameLobby.setOrder(gameModel.getPlayers());
         gameLobby.setGameState(GameState.PLANNING);
         player = new ArrayList<>(gameLobby.getOrder());
+        gameLobby.setCurrentPlayer(player.get(0));
         planningPhase = new PlanningPhase();
     }
 
