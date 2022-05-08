@@ -1,5 +1,6 @@
 package model.board;
 
+import model.Player;
 import util.TowerColor;
 
 import java.io.Serializable;

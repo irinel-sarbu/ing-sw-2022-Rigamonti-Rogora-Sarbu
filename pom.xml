@@ -22,6 +22,10 @@
             **/view/**/*,
             **/*App.*
         </sonar.exclusions>
+        <!-- Matteo Rogora: manually added -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- end -->
     </properties>
 
     <dependencies>
@@ -48,6 +52,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- Matteo Rogora: manually added -->
+                <version>3.10.1</version>
+                <!-- end -->
                 <configuration>
                     <source>17</source>
                     <target>17</target>

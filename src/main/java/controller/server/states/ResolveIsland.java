@@ -31,13 +31,13 @@ public abstract class ResolveIsland {
 
             // calculates the influence of each player and stores it in islandSum in the relative position
 
-            islandSum = checkMostInfluence(tempLobby, tempGame, tempIslandGroup, tempIslandGroup.getTowersColor() != null);
+            islandSum = checkMostInfluence(tempLobby, tempGame, tempIslandGroup);
 
             // check which player has the most influence and, if there is one, changes island's tower to his color
             playerPosition = playerID(islandSum);
 
-            // determine who has the group now (using tower color)
-            TowerColor newColor = tempGame.getPlayerByID(playerPosition).getColor();
+            // determine who has the group now (using tower color) (avoid IndexOutOfBoundsException)
+            TowerColor newColor = (playerPosition != -1) ? tempGame.getPlayerByID(playerPosition).getColor() : null;
 
             // playerPosition == -1 when no player has maximum influence
             if (playerPosition != -1 && (!newColor.equals(oldColor))) {// do this only if the owner has changed
@@ -81,11 +81,10 @@ public abstract class ResolveIsland {
      * @param tempLobby       current gameLobby
      * @param tempGame        current gameModel
      * @param tempIslandGroup island group to resolve
-     * @param computeTowers   // TODO: (should be omitted) specify if towers need to be computed
      * @return a vector containing influence of each player
      * @throws PlayerNotFoundException should never happen
      */
-    protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException;
+    protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup) throws PlayerNotFoundException;
 
     // LEGACY: do not edit
 

@@ -14,12 +14,11 @@ public class MushroomFanaticResolveIsland extends ResolveIsland {
      * @param tempLobby       current gameLobby
      * @param tempGame        current gameModel
      * @param tempIslandGroup island group to resolve
-     * @param computeTowers   // TODO: (should be omitted) specify if towers need to be computed
      * @return a vector containing all players' influence on the specified island group
      * @throws PlayerNotFoundException should never happen
      */
     @Override
-    protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException {
+    protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup) throws PlayerNotFoundException {
         int[] islandSum = new int[tempGame.getPlayers().size()];
         for (int i = 0; i < tempGame.getPlayers().size(); i++) {
             for (Professor professor : tempGame.getPlayerByID(i).getSchoolBoard().getProfessors()) {

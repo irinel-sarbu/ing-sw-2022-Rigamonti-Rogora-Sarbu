@@ -392,6 +392,7 @@ public class GameModel {
         try {
             player.getSchoolBoard().addToEntrance(cloudTile.getAndRemoveStudents());
         } catch (EntranceFullException e) {
+            // should never happen
             Logger.warning("The entrance is already full, can't move more students from cloud tile");
         }
     }

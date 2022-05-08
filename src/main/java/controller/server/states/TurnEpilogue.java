@@ -27,14 +27,12 @@ public class TurnEpilogue {
      * @param thisGame     lobby the action is referring to
      * @param actingPlayer player giving the command
      * @param cloudTilePos index of cloud tile selected to pick student from
-     * @throws WrongPhaseException   the game is not in the proper phase to performs this action
      * @throws WrongPlayerException  the acting player does not have the right to act at this moment
      * @throws NoCloudTileException  the selected cloud tile does not exist
-     * @throws EntranceFullException player's entrance is full
      */
     // TODO: when EntranceFullException is thrown, asks the player to select which students to keep in its entrance
     public void refillFromCloudTile(GameLobby thisGame, Player actingPlayer, int cloudTilePos)
-            throws WrongPhaseException, WrongPlayerException, NoCloudTileException, EntranceFullException {
+            throws WrongPlayerException, NoCloudTileException {
 
         if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
         if (cloudTilePos >= thisGame.getModel().getNumOfCloudTiles()) throw new NoCloudTileException();
@@ -48,16 +46,12 @@ public class TurnEpilogue {
          * Else checks if game is over and goes in GAME_OVER state
          * If not game over go to next round AKA PLANNING_PHASE
          */
-        System.err.println("Checking for next player");
         if (thisGame.setNextPlayer()) {
-            System.err.println("nextplayer current round");
             thisGame.setGameState(GameState.STUDENT_MOVEMENT);
         } else {
-            System.err.println("Round ended");
             if (checkGameOver(thisGame)) {
                 thisGame.getGameOver().selectWinner(thisGame);
             } else {
-                System.err.println("stil playing...");
                 for(int i=0; i<thisGame.getModel().getNumOfCloudTiles(); i++)
                     thisGame.getModel().refillCloudTile(i);
                 thisGame.nextRound();

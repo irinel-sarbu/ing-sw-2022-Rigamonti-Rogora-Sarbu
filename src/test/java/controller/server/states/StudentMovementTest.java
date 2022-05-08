@@ -5,17 +5,13 @@ import exceptions.*;
 import model.GameModel;
 import model.Player;
 import model.board.Student;
-import network.server.ClientHandler;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.*;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,10 +20,6 @@ public class StudentMovementTest {
     private static GameLobby gameLobby;
     private static GameModel gameModel;
     private static List<Player> player;
-    private static Server server;
-    private static Socket socket;
-    private static UUID uuid;
-    private static ClientHandler clientSocketConnection;
 
     public int firstOf(int i) {
         return player.get(i).getSchoolBoard().getEntranceStudents().get(0).getID();
@@ -35,13 +27,6 @@ public class StudentMovementTest {
 
     @BeforeEach
     public void StudentMovement() {
-        server = new Server(5000);
-        socket = new Socket();
-        try {
-            clientSocketConnection = new ClientHandler(server, socket);
-        } catch (IOException e) {
-            System.out.println("cacca");
-        }
 
         gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server(5000));
 
@@ -57,17 +42,19 @@ public class StudentMovementTest {
 
         // empty player 0 entrance
         try {
-            while (true) {
+            for (int i = 0; i < 10; i++) {
                 player.get(0).getSchoolBoard().removeFromEntrance(firstOf(0));
             }
+            fail();
         } catch (IndexOutOfBoundsException e) {
             try {
                 // fill player 0 entrance with blue students only
                 int id = 1000;
-                while (true) {
+                for (int i = 0; i < 10; i++) {
                     player.get(0).getSchoolBoard().addToEntrance(new Student(id, Color.BLUE));
                     id++;
                 }
+                fail();
             } catch (EntranceFullException ex) {
                 // do nothing
             }
