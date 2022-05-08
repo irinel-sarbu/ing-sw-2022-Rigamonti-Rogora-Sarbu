@@ -745,7 +745,9 @@ public class GameLobby implements EventListener {
             broadcast(new EUpdateGameState(getCurrentGameState()));
             broadcast(new ServerMessage(Messages.UPDATE_VIEW));
         }
-        sendContinueTurn();
+        if (currentGameState != GameState.GAME_OVER) {
+            sendContinueTurn();
+        }
         return true;
     }
 

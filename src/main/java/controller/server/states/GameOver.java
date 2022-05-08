@@ -2,6 +2,7 @@ package controller.server.states;
 
 import controller.server.GameLobby;
 import eventSystem.events.network.server.gameStateEvents.EDeclareWinner;
+import eventSystem.events.network.server.gameStateEvents.EUpdateGameState;
 import exceptions.PlayerNotFoundException;
 import model.GameModel;
 import model.board.SchoolBoard;
@@ -31,6 +32,7 @@ public class GameOver {
             }
 
             tempLobby.setGameState(GameState.GAME_OVER);
+            tempLobby.broadcast(new EUpdateGameState(tempLobby.getCurrentGameState()));
 
             //Broadcast del player
             tempLobby.broadcast(new EDeclareWinner(tempGame.getPlayerByID(playerId).getName()));
