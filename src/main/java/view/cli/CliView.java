@@ -359,7 +359,7 @@ public class CliView extends View {
         } while (choice < 0 || choice >= 8); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new EMoveMotherNature(choice));
     }
-
+    //TODO: clouds.get(choice).getStudents().size() == 0 not good for when all clouds are empty and the bag is empty
     private void selectCloud(LightModel model, String client) {
         int choice;
         List<CloudTile> clouds = model.getCloudTiles();

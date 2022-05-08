@@ -9,6 +9,7 @@ import model.board.Student;
 import model.expert.CharacterCard;
 import util.CharacterType;
 import util.Color;
+import util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,12 @@ public class CharacterEffectHandler {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MONK);
-            tempCharacter.setCost(tempCharacter.getCost() + 1);
             tempGame.getIslandTileByID(islandPos).addStudent(tempCharacter.removeStudent(studentID));
+            tempCharacter.setCost(tempCharacter.getCost() + 1);
             if (!tempGame.getBag().isEmpty())   // previously was: tempGame.getBag().getRemainingStudents() != 0
                 tempCharacter.addStudent(tempGame.getBag().pull());
         } catch (StudentNotFoundException e) {
-            // TODO : write a line of text that notify the issue
+            Logger.warning("StudentID input bad, something went wrong");
         }
     }
 

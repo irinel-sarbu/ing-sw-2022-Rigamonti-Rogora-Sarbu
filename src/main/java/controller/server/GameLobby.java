@@ -455,6 +455,7 @@ public class GameLobby implements EventListener {
         }
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -483,6 +484,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -510,6 +512,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -537,6 +540,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -564,6 +568,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -591,6 +596,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -618,6 +624,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -645,6 +652,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -672,6 +680,7 @@ public class GameLobby implements EventListener {
 
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
+        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 

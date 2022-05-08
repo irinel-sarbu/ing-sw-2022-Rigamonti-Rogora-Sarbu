@@ -63,7 +63,7 @@ public class ResolveIslandTest {
         try {
             clientSocketConnection = new ClientHandler(server, socket);
         } catch (IOException e) {
-            System.out.println("cacca");
+            System.out.println("Test");
         }
 
         gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server(5000));
