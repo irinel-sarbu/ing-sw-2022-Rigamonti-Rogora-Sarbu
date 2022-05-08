@@ -770,16 +770,17 @@ public class GameLobby implements EventListener {
             e.printStackTrace();
         }
 
-        broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
-        for (Player player : model.getPlayers()) {
-            broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
-        }
-
-        if (currentGameState != GameState.TURN_EPILOGUE) {
-            broadcast(new EUpdateGameState(getCurrentGameState()));
-            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
-        }
         if (currentGameState != GameState.GAME_OVER) {
+            broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
+            for (Player player : model.getPlayers()) {
+                broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+            }
+
+            if (currentGameState != GameState.TURN_EPILOGUE) {
+                broadcast(new EUpdateGameState(getCurrentGameState()));
+                broadcast(new ServerMessage(Messages.UPDATE_VIEW));
+            }
+
             if (currentGameState == GameState.PLANNING) {
                 sendChooseAssistantEvent();
             } else {
