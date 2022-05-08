@@ -86,7 +86,6 @@ public class CharacterEffectHandler {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.JESTER);
             SchoolBoard tempSchoolBoard = tempLobby.getCurrentPlayer().getSchoolBoard();
-            tempCharacter.setCost(tempCharacter.getCost() + 1);
 
             Student tempStudent;
             if (entranceStudents.size() != jesterStudents.size()) throw new LengthMismatchException();
@@ -95,8 +94,9 @@ public class CharacterEffectHandler {
                 tempSchoolBoard.addToEntrance(tempCharacter.removeStudent(jesterStudents.get(i)));
                 tempCharacter.addStudent(tempStudent);
             }
+            tempCharacter.setCost(tempCharacter.getCost() + 1);
         } catch (StudentNotFoundException | EntranceFullException e) {
-            // TODO : write a line of text that notify the issue
+            Logger.warning("StudentID input bad, something went wrong");
         }
     }
 
@@ -106,7 +106,6 @@ public class CharacterEffectHandler {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MINSTREL);
             SchoolBoard tempSchoolBoard = tempLobby.getCurrentPlayer().getSchoolBoard();
-            tempCharacter.setCost(tempCharacter.getCost() + 1);
 
             Student tempStudent;
             for (int i = 0; i < entranceStudents.size(); i++) {
@@ -114,10 +113,10 @@ public class CharacterEffectHandler {
                 tempSchoolBoard.addToDiningRoom(tempSchoolBoard.removeFromEntrance(entranceStudents.get(i)));
                 tempSchoolBoard.addToEntrance(tempStudent);
             }
-
+            tempCharacter.setCost(tempCharacter.getCost() + 1);
         } catch (DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException |
                  EntranceFullException e) {
-            // TODO : write a line of text that notify the issue
+            Logger.warning("Error with minstrel exchange");
         }
     }
 
@@ -131,11 +130,11 @@ public class CharacterEffectHandler {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.PRINCESS);
-            tempCharacter.setCost(tempCharacter.getCost() + 1);
             tempLobby.getCurrentPlayer().getSchoolBoard().addToDiningRoom(tempCharacter.removeStudent(studentID));
+            tempCharacter.setCost(tempCharacter.getCost() + 1);
             if (tempGame.getBag().getRemainingStudents() != 0) tempCharacter.addStudent(tempGame.getBag().pull());
         } catch (StudentNotFoundException | DiningRoomFullException e) {
-            // TODO : write a line of text that notify the issue
+            Logger.warning("Error with Princess exchange");
         }
     }
 
@@ -150,7 +149,6 @@ public class CharacterEffectHandler {
         try {
             GameModel tempGame = tempLobby.getModel();
             CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.THIEF);
-            tempCharacter.setCost(tempCharacter.getCost() + 1);
             for (int i = 0; i < tempGame.getPlayers().size(); i++) {
                 for (int k = 0; k < 3; k++) {
                     try {
@@ -160,8 +158,9 @@ public class CharacterEffectHandler {
                     }
                 }
             }
+            tempCharacter.setCost(tempCharacter.getCost() + 1);
         } catch (PlayerNotFoundException e) {
-            // TODO : write a line of text that notify the issue
+            Logger.warning("Error with thief exchange");
         }
     }
 }
