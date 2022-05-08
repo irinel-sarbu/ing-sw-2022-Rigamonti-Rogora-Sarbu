@@ -20,6 +20,7 @@
             **/network/**/*,
             **/util/**/*,
             **/view/**/*,
+            **/lobbyStates/**/*,
             **/*App.*
         </sonar.exclusions>
         <!-- Matteo Rogora: manually added -->
@@ -90,6 +91,7 @@
                         <exclude>**/network/**/*</exclude>
                         <exclude>**/util/**/*</exclude>
                         <exclude>**/view/**/*</exclude>
+                        <exclude>**/lobbyStates/**/*</exclude>
                         <exclude>**/*App.*</exclude>
                     </excludes>
                 </configuration>
