@@ -760,7 +760,9 @@ public class GameLobby implements EventListener {
         }
 
         broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
-        broadcast(new EUpdateSchoolBoard(getCurrentPlayer().getSchoolBoard(), getCurrentPlayer().getName()));
+        for (Player player : model.getPlayers()) {
+            broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
 
         if (currentGameState != GameState.TURN_EPILOGUE) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
