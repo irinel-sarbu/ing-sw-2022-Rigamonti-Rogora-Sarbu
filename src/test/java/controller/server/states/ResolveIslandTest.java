@@ -2,9 +2,13 @@ package controller.server.states;
 
 import controller.server.GameLobby;
 import exceptions.EntranceFullException;
+import exceptions.ProfessorFullException;
 import exceptions.StudentNotFoundException;
 import model.GameModel;
 import model.Player;
+import model.board.IslandGroup;
+import model.board.Professor;
+import model.board.SchoolBoard;
 import model.board.Student;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +31,12 @@ public class ResolveIslandTest {
         return player.get(i).getSchoolBoard().getEntranceStudents().get(0).getID();
     }
 
+    private void print() {
+        System.out.println(IslandGroup.allToString(gameModel.getIslandGroups()) + "\n" + SchoolBoard.allToString(gameModel.getPlayers().stream().map(Player::getSchoolBoard).toList()));
+    }
+
     @BeforeEach
-    public void StudentMovement() {
+    public void ResolveIsland() {
         Random.setSeed(0);
 
         gameLobby = new GameLobby(3, GameMode.EXPERT, "00000", new Server(5000));
@@ -194,5 +202,74 @@ public class ResolveIslandTest {
             System.err.println(e + " not expected");
             fail();
         }
+    }
+
+    @Test
+    public void MushroomFanaticResolveIsland() {
+
+        // set resolve method
+        resolveIsland = new MushroomFanaticResolveIsland();
+
+        // set mushroom fanatic color
+        resolveIsland = new MushroomFanaticResolveIsland();
+        assertNotNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC));
+        gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).setColor(Color.RED);
+
+        // assign profesors
+        try {
+            player.get(0).getSchoolBoard().addProfessor(new Professor(Color.GREEN));
+            player.get(0).getSchoolBoard().addProfessor(new Professor(Color.RED));
+        } catch (ProfessorFullException e) {
+            fail();
+        }
+
+        // fill island
+        for (int i = 0; i < 3; i++) {
+            gameModel.getIslandTileByID(1).addStudent(new Student(3000 + i, Color.RED));
+        }
+
+        resolveIsland.solveIsland(gameLobby, 1);
+        assertEquals(player.get(0).getColor(), gameModel.getIslandGroupByID(1).getTowersColor());
+
+        print();
+    }
+
+    @Test
+    public void FullTowersException() {
+
+        // set resolve method
+        resolveIsland = new MushroomFanaticResolveIsland();
+        try {
+            for (int i = 0; i < 7; i++) {
+                player.get(0).getSchoolBoard().removeTower();
+            }
+            fail();
+        } catch (Exception e) {
+            // ok
+        }
+
+        // set mushroom fanatic color
+        resolveIsland = new MushroomFanaticResolveIsland();
+        assertNotNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC));
+        gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).setColor(Color.RED);
+
+        // assign profesors
+        try {
+            player.get(0).getSchoolBoard().addProfessor(new Professor(Color.GREEN));
+            player.get(0).getSchoolBoard().addProfessor(new Professor(Color.RED));
+        } catch (ProfessorFullException e) {
+            fail();
+        }
+
+        // fill island
+        for (int i = 0; i < 3; i++) {
+            gameModel.getIslandTileByID(1).addStudent(new Student(3000 + i, Color.RED));
+        }
+        gameModel.getIslandTileByID(1).addStudent(new Student(4000, Color.GREEN));
+
+        assertThrows(RuntimeException.class, () -> resolveIsland.solveIsland(gameLobby, 1));
+        assertNull(gameModel.getIslandGroupByID(1).getTowersColor());
+
+        print();
     }
 }

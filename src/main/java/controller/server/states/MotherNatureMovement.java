@@ -23,14 +23,16 @@ public abstract class MotherNatureMovement {
     protected void nextState(GameLobby tempLobby) {
         try {
             GameModel tempGame = tempLobby.getModel();
+            int motherNaturePos = tempGame.getMotherNature().getPosition();
             if (tempGame.getGameMode() == GameMode.EXPERT) {
                 CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
-                int motherNaturePos = tempGame.getMotherNature().getPosition();
                 if (tempGame.getIslandGroupByID(motherNaturePos).getNoEntrySize() == 0) {
                     tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
                 } else {
                     tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
                 }
+            } else {
+                tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
             }
 
             if (tempGame.checkForRooksEmpty() || tempGame.checkForTooFewIslands()) {

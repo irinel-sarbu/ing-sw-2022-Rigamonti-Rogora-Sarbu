@@ -8,6 +8,7 @@ import model.GameModel;
 import model.Player;
 import model.board.IslandGroup;
 import model.board.Tower;
+import util.Logger;
 import util.TowerColor;
 
 public abstract class ResolveIsland {
@@ -66,12 +67,9 @@ public abstract class ResolveIsland {
             }
             // joins adjacent islandGroups
             tempGame.joinAdjacent(islandGroupID);
-        } catch (PlayerNotFoundException | TowersIsEmptyException e) {
-            // TODO : write a line of text that notify the issue
-        } catch (TowersFullException e) {
-            // Should never happen (if happens an error in the logic occurred)
-            System.err.println("Error giving back towers to owner: too much towers");
-            throw new RuntimeException("Error giving back towers to owner: too much towers");
+        } catch (PlayerNotFoundException | TowersIsEmptyException | TowersFullException e) {
+            Logger.warning(e.toString());
+            throw new RuntimeException(e);
         }
     }
 

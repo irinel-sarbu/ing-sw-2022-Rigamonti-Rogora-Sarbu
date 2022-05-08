@@ -70,9 +70,9 @@ public class SchoolBoard implements Serializable {
      */
     public Student getEntranceStudent(int studentID) throws StudentNotFoundException {
         Student student = null;
-        for (int i = 0; i < entrance.size(); i++) {
-            if (entrance.get(i).getID() == studentID) {
-                student = entrance.get(i);
+        for (Student value : entrance) {
+            if (value.getID() == studentID) {
+                student = value;
                 break;
             }
         }
@@ -108,9 +108,9 @@ public class SchoolBoard implements Serializable {
     /**
      * Removes a selected student from the {@link SchoolBoard#entrance}.
      *
-     * @param studentID
-     * @return
-     * @throws StudentNotFoundException
+     * @param studentID ID of the student to remove
+     * @return the removed {@link Student}
+     * @throws StudentNotFoundException if the specified student is not found
      */
     public Student removeFromEntrance(int studentID) throws StudentNotFoundException {
         Student removed = null;

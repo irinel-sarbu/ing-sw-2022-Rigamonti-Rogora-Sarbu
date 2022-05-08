@@ -106,7 +106,6 @@ public class Player implements Comparator<Player>, Comparable<Player>, Serializa
     public Assistant removeCard(Assistant assistantCard) throws AssistantNotInDeckException {
         if (!assistantDeck.contains(assistantCard)) throw new AssistantNotInDeckException();
         assistantDeck.remove(assistantCard);
-        //TODO : Check return type
         return assistantCard;
     }
 
@@ -116,9 +115,9 @@ public class Player implements Comparator<Player>, Comparable<Player>, Serializa
      * @param assistantCardID Is the ID correspondent to the selected Assistant which needs to be removed.
      * @throws AssistantNotInDeckException if the selected Assistant is not present.
      */
-    public void removeCard(int assistantCardID) throws AssistantNotInDeckException {
+    public Assistant removeCard(int assistantCardID) throws AssistantNotInDeckException {
         if (assistantCardID >= assistantDeck.size()) throw new AssistantNotInDeckException();
-        assistantDeck.remove(assistantCardID);
+        return assistantDeck.remove(assistantCardID);
     }
 
     /**
