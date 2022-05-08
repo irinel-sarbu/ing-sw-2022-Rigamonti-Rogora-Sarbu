@@ -181,13 +181,16 @@ public class PlanningPhaseTest {
         try {
             assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection));
             assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection));
-            for(Player p : gameModel.getPlayers()) {
-                System.out.println(p.getAssistants());
-            }
+
             assertTrue(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
+            int size1 = player.get(2).getAssistants().size();
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(2), player.get(0).getAssistants().get(0), clientSocketConnection));
+            assertEquals(size1, player.get(2).getAssistants().size());
+
             assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(2)));
             player.get(2).removeCard(2);
             assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
+
         } catch (Exception e) {
             System.err.println(e + "not expected");
         }

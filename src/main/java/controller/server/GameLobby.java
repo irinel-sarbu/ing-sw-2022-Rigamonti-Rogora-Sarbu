@@ -827,11 +827,9 @@ public class GameLobby implements EventListener {
      * @return true if a next player exists in this game phase, false otherwise
      */
     public boolean setNextPlayer() {
-        System.err.println("nextPlayerSettato");
 
         // retrive nex player
         currentPlayer = getNextPlayer();
-        System.err.println("nextPlayer is " + currentPlayer );
         turnProgress++;
 
         // reset all active character's effect

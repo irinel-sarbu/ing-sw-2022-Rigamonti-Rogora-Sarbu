@@ -279,12 +279,11 @@ public class SchoolBoard implements Serializable {
         return false;
     }
 
-    /* Unused ToString.
+    /* Unused ToString.*/
     public static String allToString(List<SchoolBoard> boards) {
         List<String[]> allBoards = boards.stream()
                 .map(SchoolBoard::toString)
-                .map(bs -> bs.split("\n"))
-                .collect(Collectors.toList());
+                .map(bs -> bs.split("\n")).toList();
         StringBuilder boardsString = new StringBuilder();
 
         for (int i = 0; i < allBoards.get(0).length; i++) {
@@ -294,7 +293,7 @@ public class SchoolBoard implements Serializable {
             boardsString.append("\n");
         }
         return new String(boardsString);
-    }*/
+    }
 
     /**
      * Overrides toString.

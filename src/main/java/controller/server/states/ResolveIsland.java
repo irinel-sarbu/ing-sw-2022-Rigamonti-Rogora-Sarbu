@@ -2,9 +2,13 @@ package controller.server.states;
 
 import controller.server.GameLobby;
 import exceptions.PlayerNotFoundException;
+import exceptions.TowersFullException;
 import exceptions.TowersIsEmptyException;
 import model.GameModel;
+import model.Player;
 import model.board.IslandGroup;
+import model.board.Tower;
+import util.TowerColor;
 
 public abstract class ResolveIsland {
 
@@ -22,20 +26,52 @@ public abstract class ResolveIsland {
             IslandGroup tempIslandGroup = tempGame.getIslandGroupByID(islandGroupID);
             int playerPosition;
 
+            // determine who had the group previously (using tower color)
+            TowerColor oldColor = tempIslandGroup.getTowersColor();
+
             // calculates the influence of each player and stores it in islandSum in the relative position
 
             islandSum = checkMostInfluence(tempLobby, tempGame, tempIslandGroup, tempIslandGroup.getTowersColor() != null);
 
             // check which player has the most influence and, if there is one, changes island's tower to his color
             playerPosition = playerID(islandSum);
-            if (playerPosition != -1) {
-                tempIslandGroup.setTowersColor(tempGame.getPlayerByID(playerPosition).getColor());
-                tempGame.getPlayerByID(playerPosition).getSchoolBoard().removeTower();
+
+            // determine who has the group now (using tower color)
+            TowerColor newColor = tempGame.getPlayerByID(playerPosition).getColor();
+
+            // playerPosition == -1 when no player has maximum influence
+            if (playerPosition != -1 && (!newColor.equals(oldColor))) {// do this only if the owner has changed
+
+                // get number of islands in the group
+                int numOfIslands = tempIslandGroup.getIslands().size();
+
+                // get old and new owner of the group
+                Player oldOwner = tempGame.getPlayers().stream().filter(p -> p.getColor().equals(oldColor)).findFirst().orElse(null);
+                Player newOwner = tempGame.getPlayerByID(playerPosition);
+
+                // give back towers to the old owner and remove them from the new owner
+                for (int i = 0; i < numOfIslands; i++) {
+                    // if someone had the group previously give the towers back
+                    if (oldOwner != null) {
+                        oldOwner.getSchoolBoard().addTower(new Tower(oldOwner.getColor()));
+                    }
+
+                    // remove tower from the player who now owns the group
+                    newOwner.getSchoolBoard().removeTower();
+                }
+
+                // renew group's tower color
+                tempIslandGroup.setTowersColor(newColor);
+
             }
             // joins adjacent islandGroups
             tempGame.joinAdjacent(islandGroupID);
         } catch (PlayerNotFoundException | TowersIsEmptyException e) {
             // TODO : write a line of text that notify the issue
+        } catch (TowersFullException e) {
+            // Should never happen (if happens an error in the logic occurred)
+            System.err.println("Error giving back towers to owner: too much towers");
+            throw new RuntimeException("Error giving back towers to owner: too much towers");
         }
     }
 
@@ -51,8 +87,14 @@ public abstract class ResolveIsland {
      */
     protected abstract int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException;
 
-    // LEGACY: Have no idea what this function does
-    // get ID of the player with most influence on the group, using computed island sum
+    // LEGACY: do not edit
+
+    /**
+     * Determine the ID of the player with most influence
+     *
+     * @param islandSum is an array of integers: each values correspond to the influence of each player, in the order of {@link GameModel#getPlayers()}
+     * @return the ID of the {@link Player} with the most influence, -1 if no player has the most influence
+     */
     protected int playerID(int[] islandSum) {
         int max1 = 0, max2 = 0;
         int pos = 0;
