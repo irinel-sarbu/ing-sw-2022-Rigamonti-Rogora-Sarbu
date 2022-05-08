@@ -371,8 +371,6 @@ public class CliView extends View {
         EventManager.notify(new ESelectRefillCloud(choice));
     }
 
-    //TODO: TEST INTENSELY
-
     private void activateEffect(CharacterCard character, LightModel model, String client) {
         int coins = model.getSchoolBoardMap().get(client).getCoinSupply().getNumOfCoins();
         System.out.println("\rYour Coins: " + coins);
