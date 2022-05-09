@@ -2,10 +2,12 @@ package model.board;
 
 import util.Color;
 
+import java.io.Serializable;
+
 /**
  * Represents the Student. ID and Color are not Modifiable.
  */
-public class Student {
+public class Student implements Serializable {
     private final int ID;
     private final Color color;
 
@@ -41,6 +43,6 @@ public class Student {
      */
     @Override
     public String toString() {
-        return color.toString();
+        return color.toString() + "(" + ID + ")";
     }
 }

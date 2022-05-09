@@ -1,15 +1,20 @@
 package model.board;
 
-import exceptions.*;
-import model.Player;
+import exceptions.EmptyNoEntryListException;
+import exceptions.IllegalIslandGroupJoinException;
+import exceptions.NullIslandGroupException;
 import model.expert.NoEntryTile;
 import util.Color;
 import util.TowerColor;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
-public class IslandGroup {
+public class IslandGroup implements Serializable {
     private int islandGroupID;
     private final List<IslandTile> islands;
     private final Stack<NoEntryTile> noEntry;
@@ -194,11 +199,19 @@ public class IslandGroup {
      */
     @Override
     public String toString() {
-        String header = "IslandGroup " + String.format("%2s", islandGroupID);
+        String header = "IslandGroup_" + String.format("%2s", islandGroupID).replace(' ', '0');
         StringBuilder body = new StringBuilder();
         for (IslandTile islandTile : islands) {
             body.append("\n\t").append(islandTile);
         }
         return header + body;
+    }
+
+    public static String allToString(List<IslandGroup> islandGroups) {
+        StringBuilder body = new StringBuilder();
+        for(IslandGroup ig : islandGroups) {
+            body.append(ig).append("\n");
+        }
+        return "" + body;
     }
 }

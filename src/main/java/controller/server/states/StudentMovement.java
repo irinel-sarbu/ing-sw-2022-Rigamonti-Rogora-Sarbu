@@ -1,17 +1,14 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
+import eventSystem.events.network.server.gameStateEvents.EUpdateIslands;
+import eventSystem.events.network.server.gameStateEvents.EUpdateSchoolBoard;
 import exceptions.*;
 import model.Player;
 import model.board.SchoolBoard;
 import model.board.Student;
-import model.expert.CharacterCard;
-import util.CharacterType;
 import util.Color;
 import util.GameState;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class StudentMovement {
 
@@ -22,6 +19,8 @@ public abstract class StudentMovement {
      */
     protected void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
+        Player player = thisGame.getCurrentPlayer();
+        thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
         if (thisGame.getStudentsMoved() == thisGame.getMaxStudentsMoved()) {
             thisGame.resetStudentsMoved();
             thisGame.setGameState(GameState.MOTHERNATURE_MOVEMENT);
@@ -46,7 +45,8 @@ public abstract class StudentMovement {
      */
     protected void stealProfessor(GameLobby thisGame, Color color)
             throws ProfessorFullException {
-        if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color)) return; // prevent from self stealing
+        if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color))
+            return; // prevent from self stealing
         // TODO: may exists another way to check this
         try {
             thisGame.getCurrentPlayer().getSchoolBoard().addProfessor(thisGame.getModel().removeProfessor(color));
@@ -54,7 +54,6 @@ public abstract class StudentMovement {
             SchoolBoard withProfessor = thisGame.getOrder().stream()
                     .map(Player::getSchoolBoard)
                     .filter(sb -> sb.hasProfessor(color)).findFirst().orElse(null);
-            assert withProfessor != null;
             int withProfessorCount = withProfessor.getStudentsOfColor(color);
             SchoolBoard current = thisGame.getCurrentPlayer().getSchoolBoard();
             int currentCount = current.getStudentsOfColor(color);
@@ -80,8 +79,10 @@ public abstract class StudentMovement {
     public void moveStudentToDining(GameLobby thisGame, Player player, int studentID)
             throws WrongPhaseException, WrongPlayerException, StudentNotFoundException, DiningRoomFullException,
             ProfessorFullException {
-        if (thisGame.wrongState(GameState.STUDENT_MOVEMENT)) throw new WrongPhaseException();
-        if (thisGame.wrongPlayer(player)) throw new WrongPlayerException();
+        if (thisGame.wrongState(GameState.STUDENT_MOVEMENT))
+            throw new WrongPhaseException();
+        if (thisGame.wrongPlayer(player))
+            throw new WrongPlayerException();
 
         Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentID);
         if (thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent)) {
@@ -120,7 +121,7 @@ public abstract class StudentMovement {
         thisGame.getModel().getIslandTileByID(islandID).addStudent(movingStudent);
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 
+        thisGame.broadcast(new EUpdateIslands(thisGame.getModel().getIslandGroups(), thisGame.getModel().getMotherNature().getPosition()));
         movementEpilogue(thisGame);
-
     }
 }

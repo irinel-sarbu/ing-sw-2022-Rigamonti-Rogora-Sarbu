@@ -20,7 +20,7 @@ public class IslandGroupTest {
     private static IslandGroup doubleIslandGroup;
 
     @BeforeAll
-    public static void IslandGroup() {
+    public static void setup() {
         singleIslandGroup = new IslandGroup(0);
 
         doubleIslandGroup = new IslandGroup(1);
@@ -51,6 +51,7 @@ public class IslandGroupTest {
         assertEquals(0, singleIslandGroup.getIslands().get(0).getIslandID());
         assertEquals(1, doubleIslandGroup.getIslands().get(0).getIslandID());
         assertEquals(2, doubleIslandGroup.getIslands().get(1).getIslandID());
+        assertTrue(singleIslandGroup.toString().length() != 0);
     }
 
     @Test

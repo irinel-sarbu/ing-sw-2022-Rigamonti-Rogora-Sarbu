@@ -2,14 +2,17 @@ package model.board;
 
 import util.Color;
 
+import java.io.Serializable;
+
 /**
  * Represents the professor. His Color is not Modifiable.
  */
-public class Professor {
+public class Professor implements Serializable {
     private final Color color;
 
     /**
      * Constructor of {@link Professor}. Sets {@link Professor#color} to the selected Color.
+     *
      * @param color Is the selected Color
      */
     public Professor(Color color) {

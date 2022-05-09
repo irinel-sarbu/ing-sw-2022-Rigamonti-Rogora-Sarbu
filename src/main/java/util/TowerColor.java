@@ -1,15 +1,13 @@
 package util;
 
 public enum TowerColor {
-    WHITE(0, "White"),
-    BLACK(1, "Black"),
-    GRAY(2, "Gray");
+    GRAY("Gray"),
+    BLACK("Black"),
+    WHITE("White");
 
-    private final int ID;
     private final String string;
 
-    TowerColor(int ID, String string) {
-        this.ID = ID;
+    TowerColor(String string) {
         this.string = string;
     }
 

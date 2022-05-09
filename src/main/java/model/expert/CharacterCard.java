@@ -4,8 +4,10 @@ import exceptions.EmptyNoEntryListException;
 import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
-import util.*;
+import util.CharacterType;
+import util.Color;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +16,7 @@ import java.util.Stack;
 /**
  * Represents the Character of a game. If it needs additional tiles on it, it initializes them.
  */
-public class CharacterCard {
+public class CharacterCard implements Serializable {
     private int cost;
     private final CharacterType character;
     private List<Student> students;
@@ -37,17 +39,6 @@ public class CharacterCard {
             default -> {
             }
         }
-    }
-
-    /**
-     * Advanced constructor. Initializes all needed Attributes and sets a cost different from the base cost.
-     *
-     * @param cost      Is the selected Cost.
-     * @param character Is the {@link CharacterType} of the {@link CharacterCard}.
-     */
-    public CharacterCard(int cost, CharacterType character) {
-        this.cost = cost;
-        this.character = character;
     }
 
     /**
@@ -162,17 +153,31 @@ public class CharacterCard {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (getClass() != o.getClass())
+            return false;
         CharacterCard that = (CharacterCard) o;
         return character == that.character;
     }
 
     /**
-     * Overrides hashCode.
+     * Overrides toString.
      */
     @Override
-    public int hashCode() {
-        return Objects.hash(character);
+    public String toString() {
+        switch (getCharacter()) {
+            case MONK, PRINCESS, JESTER -> {
+                return getCharacter().toString() + ": cost = " + getCost() + ", students: " + getStudents().toString();
+            }
+            case GRANNY_HERBS -> {
+                return getCharacter().toString() + ": cost = " + getCost() + ", noEntryTiles: " + getNoEntryTiles().size();
+            }
+            default -> {
+                return getCharacter().toString() + ": cost = " + getCost();
+            }
+        }
     }
 }

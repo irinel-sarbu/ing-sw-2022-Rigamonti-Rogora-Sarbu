@@ -3,21 +3,26 @@ package model;
 import exceptions.AssistantNotInDeckException;
 import model.board.Assistant;
 import model.board.SchoolBoard;
+import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Player Class represents each player inside the model.
  */
-public class Player implements Comparator<Player>, Comparable<Player> {
+public class Player implements Comparator<Player>, Comparable<Player>, Serializable {
     private final String name;
     private final SchoolBoard schoolBoard;
     private final List<Assistant> assistantDeck;
     private Assistant foldCard;
     private final TowerColor color;
     private boolean disconnected;
+    private final GameMode gameMode;
 
     /**
      * Player constructor, initializes all attributes.
@@ -26,13 +31,21 @@ public class Player implements Comparator<Player>, Comparable<Player> {
      * @param wizard     Unique {@link Wizard} passed to the constructor.
      * @param towerColor Unique {@link TowerColor} passed to the constructor.
      */
-    public Player(String name, Wizard wizard, TowerColor towerColor) {
+    public Player(String name, Wizard wizard, TowerColor towerColor, GameMode gameMode) {
+        this.gameMode = gameMode;
         this.name = name;
         this.schoolBoard = new SchoolBoard(this);
         this.assistantDeck = Assistant.getWizardDeck(wizard);
         this.foldCard = null;
         this.color = towerColor;
         this.disconnected = false;
+    }
+
+    /**
+     * Getter for {@link Player#gameMode attribute}
+     */
+    public GameMode getGameMode() {
+        return gameMode;
     }
 
     /**
@@ -93,7 +106,6 @@ public class Player implements Comparator<Player>, Comparable<Player> {
     public Assistant removeCard(Assistant assistantCard) throws AssistantNotInDeckException {
         if (!assistantDeck.contains(assistantCard)) throw new AssistantNotInDeckException();
         assistantDeck.remove(assistantCard);
-        //TODO : Check return type
         return assistantCard;
     }
 
@@ -103,9 +115,9 @@ public class Player implements Comparator<Player>, Comparable<Player> {
      * @param assistantCardID Is the ID correspondent to the selected Assistant which needs to be removed.
      * @throws AssistantNotInDeckException if the selected Assistant is not present.
      */
-    public void removeCard(int assistantCardID) throws AssistantNotInDeckException {
+    public Assistant removeCard(int assistantCardID) throws AssistantNotInDeckException {
         if (assistantCardID >= assistantDeck.size()) throw new AssistantNotInDeckException();
-        assistantDeck.remove(assistantCardID);
+        return assistantDeck.remove(assistantCardID);
     }
 
     /**

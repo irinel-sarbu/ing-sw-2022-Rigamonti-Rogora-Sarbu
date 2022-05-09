@@ -6,6 +6,7 @@ import exceptions.IllegalMovementException;
 import model.GameModel;
 import model.expert.CharacterCard;
 import util.CharacterType;
+import util.GameMode;
 import util.GameState;
 
 
@@ -22,14 +23,19 @@ public abstract class MotherNatureMovement {
     protected void nextState(GameLobby tempLobby) {
         try {
             GameModel tempGame = tempLobby.getModel();
-            CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
             int motherNaturePos = tempGame.getMotherNature().getPosition();
-            if (tempGame.getIslandGroupByID(motherNaturePos).getNoEntrySize() == 0) {
-                tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
+            if (tempGame.getGameMode() == GameMode.EXPERT) {
+                CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
+                if (tempGame.getIslandGroupByID(motherNaturePos).getNoEntrySize() == 0) {
+                    tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
+                } else {
+                    tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
+                }
             } else {
-                tempCharacter.addNoEntryTile(tempGame.getIslandGroupByID(motherNaturePos).removeNoEntry());
+                tempLobby.getResolveIsland().solveIsland(tempLobby, motherNaturePos);
             }
-            if (tempGame.checkForRooksEmpty() || tempGame.checkForToFewIslands()) {
+
+            if (tempGame.checkForRooksEmpty() || tempGame.checkForTooFewIslands()) {
                 tempLobby.getGameOver().selectWinner(tempLobby);
             } else {
                 tempLobby.setGameState(GameState.TURN_EPILOGUE);

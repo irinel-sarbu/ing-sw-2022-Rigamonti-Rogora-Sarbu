@@ -3,25 +3,22 @@ package model.board;
 
 import exceptions.*;
 import model.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Color;
+import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SchoolBoardTest {
     Player marco;
-    SchoolBoard schoolBoard;
+    SchoolBoard schoolBoard, normalSchoolboard;
 
     @BeforeEach
-    public void setUp() {
-        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE);
+    public void setup() {
+        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.EXPERT);
         schoolBoard = new SchoolBoard(marco);
         for (int i = 0; i < 7; i++) {
             try {
@@ -37,12 +34,21 @@ public class SchoolBoardTest {
     public void getEntrance() {
         assertEquals(7, schoolBoard.getEntranceStudents().size());
         try {
-            assertEquals(0, schoolBoard.getEntranceStudent(0).getID());
             assertSame(schoolBoard.getEntranceStudent(0).getColor(), Color.BLUE);
             assertNotNull(schoolBoard.getEntranceStudent(0));
         } catch (StudentNotFoundException e) {
             fail();
         }
+        assertTrue(schoolBoard.toString().length() != 0);
+
+        for (int i = 8; i < 10; i++) {
+            try {
+                schoolBoard.addToEntrance(new Student(i, Color.BLUE));
+            } catch (EntranceFullException e) {
+                fail();
+            }
+        }
+        assertThrows(EntranceFullException.class, () -> schoolBoard.addToEntrance(new Student(11, Color.BLUE)));
     }
 
     @Test
@@ -55,6 +61,8 @@ public class SchoolBoardTest {
         }
         assertEquals(0, student.getID());
         assertSame(student.getColor(), Color.BLUE);
+        assertThrows(StudentNotFoundException.class, () -> schoolBoard.removeFromEntrance(0));
+        assertThrows(StudentNotFoundException.class, () -> schoolBoard.getEntranceStudent(0));
     }
 
     @Test
@@ -75,6 +83,16 @@ public class SchoolBoardTest {
         }
         assertEquals(5, schoolBoard.getEntranceStudents().size());
         assertEquals(2, schoolBoard.getStudentsOfColor(Color.BLUE));
+
+        for (int i = 0; i < 10; i++) {
+            try {
+                schoolBoard.addToDiningRoom(new Student(i, Color.YELLOW));
+            } catch (DiningRoomFullException e) {
+                fail();
+            }
+        }
+        assertThrows(DiningRoomFullException.class, () -> schoolBoard.addToDiningRoom(new Student(10, Color.YELLOW)));
+        assertThrows(DiningRoomEmptyException.class, () -> schoolBoard.removeFromDiningRoom(Color.PINK));
     }
 
     @Test
@@ -86,6 +104,7 @@ public class SchoolBoardTest {
         } catch (ProfessorFullException e) {
             fail();
         }
+        assertTrue(schoolBoard.hasProfessor(Color.BLUE));
         assertEquals(1, schoolBoard.getProfessors().size());
         try {
             schoolBoard.addProfessor(professor);
@@ -100,14 +119,17 @@ public class SchoolBoardTest {
         } catch (ProfessorNotFoundException e) {
             fail();
         }
-        assertEquals(false, schoolBoard.hasProfessor(Color.GREEN));
+        assertFalse(schoolBoard.hasProfessor(Color.GREEN));
         //System.out.println("professors: " + schoolBoard.getProfessors().toString());
         assertEquals(0, schoolBoard.getProfessors().size());
+
+        assertThrows(ProfessorNotFoundException.class, () -> schoolBoard.removeProfessor(new Professor(Color.PINK)));
+        assertNull(schoolBoard.removeProfessorByColor(Color.PINK));
     }
 
     @Test
     public void testTowers() {
-        schoolBoard.setUpTowers(TowerColor.BLACK, 2);
+        schoolBoard.setupTowers(TowerColor.BLACK, 2);
         assertEquals(8, schoolBoard.getTowers().size());
         try {
             schoolBoard.removeTower();
@@ -121,5 +143,30 @@ public class SchoolBoardTest {
             fail();
         }
         assertEquals(8, schoolBoard.getTowers().size());
+        assertThrows(TowersFullException.class, () -> schoolBoard.addTower(new Tower(TowerColor.BLACK)));
+        System.out.println("------------->Trying to setup already set up towers");
+        schoolBoard.setupTowers(TowerColor.BLACK, 2);
+        for (int i = 0; i < 8; i++) {
+            try {
+                schoolBoard.removeTower();
+            } catch (TowersIsEmptyException e) {
+                fail();
+            }
+        }
+        assertThrows(TowersIsEmptyException.class, () -> schoolBoard.removeTower());
+    }
+
+    @Test
+    public void TestNormal() {
+        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.NORMAL);
+        normalSchoolboard = new SchoolBoard(marco);
+        for (int i = 0; i < 7; i++) {
+            try {
+                normalSchoolboard.addToEntrance(new Student(i, Color.BLUE));
+            } catch (EntranceFullException e) {
+                fail();
+            }
+        }
+        assertTrue(normalSchoolboard.toString().length() != 0);
     }
 }

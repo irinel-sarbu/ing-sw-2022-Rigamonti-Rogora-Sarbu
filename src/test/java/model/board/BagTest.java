@@ -14,13 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BagTest {
 
     private static Bag defaultBag;
-    private static Bag customBag;
+    private static Bag customBag, customBag2;
     private static Bag emptyBag;
 
     @BeforeAll
-    public static void Bag() {
+    public static void setup() {
         defaultBag = new Bag(5);
         customBag = new Bag(0, 1, 2, 3, 4);
+        customBag2 = new Bag(2, 2, 2, 2, 2);
         emptyBag = new Bag(0);
     }
 
@@ -28,6 +29,12 @@ public class BagTest {
     public void getRemainingStudents() {
         assertEquals(5 * 5, defaultBag.getRemainingStudents());
         assertEquals(1 + 2 + 3 + 4, customBag.getRemainingStudents());
+        assertEquals(2 * 5, customBag2.getRemainingStudents());
+        defaultBag.put(new Student(180, Color.BLUE));
+        assertEquals(5 * 5 + 1, defaultBag.getRemainingStudents());
+        assertTrue(defaultBag.toString().length() != 0);
+        assertTrue(defaultBag.toString(false).length() != 0);
+        assertTrue(defaultBag.toString(true).length() != 0);
     }
 
     @Test

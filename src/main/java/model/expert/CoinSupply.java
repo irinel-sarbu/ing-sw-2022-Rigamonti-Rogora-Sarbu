@@ -1,11 +1,13 @@
 package model.expert;
 
-import exceptions.*;
+import exceptions.supplyEmptyException;
+
+import java.io.Serializable;
 
 /**
  * Represents the stash of Coins of each player and the public stash of coins.
  */
-public class CoinSupply {
+public class CoinSupply implements Serializable {
     private final int maxCoins = 20;
     private int numOfCoins;
 
@@ -59,5 +61,13 @@ public class CoinSupply {
         if (this.numOfCoins < numOfCoins) throw new supplyEmptyException();
         this.numOfCoins -= numOfCoins;
         return numOfCoins;
+    }
+
+    /**
+     * Overrides toString.
+     */
+    @Override
+    public String toString() {
+        return Integer.toString(getNumOfCoins());
     }
 }

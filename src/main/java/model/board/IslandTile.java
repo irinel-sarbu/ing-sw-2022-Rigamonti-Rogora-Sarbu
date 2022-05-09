@@ -1,13 +1,16 @@
 package model.board;
 
-import java.util.*;
+import util.Color;
+import util.TowerColor;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import exceptions.TowersIsEmptyException;
-import util.TowerColor;
-import util.Color;
-
-public class IslandTile implements Comparable<IslandTile> {
+public class IslandTile implements Comparable<IslandTile>, Serializable {
     private final List<Student> students;
     private Tower tower;
     private final int islandID;
@@ -88,20 +91,6 @@ public class IslandTile implements Comparable<IslandTile> {
     }
 
     /**
-     * Tells which color is the most frequent on the island
-     *
-     * @return a {@link Color} representing the student color most frequent on the island
-     */
-    @Deprecated
-    public Color getMostNumerous() {
-        return students.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
-                .entrySet().stream().max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey).orElse(null);
-    }
-
-    /**
      * Compare two island tiles by their ID
      *
      * @param other the other island to compare to the current
@@ -118,13 +107,13 @@ public class IslandTile implements Comparable<IslandTile> {
      */
     @Override
     public String toString() {
-        String stringID = String.format("%2s", islandID);
+        String stringID = String.format("%2s", islandID).replace(' ', '0');
         String stringContent = students.stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.groupingBy(Student::getColor, Collectors.counting()))
                 .entrySet().stream()
                 .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
                 .collect(Collectors.joining(" ", "[", "]"));
-        return "Island" + stringID + stringContent + (tower != null ? tower.toString() : "X");
+        return "Island_" + stringID + ": " + stringContent + (tower != null ? tower.toString() : "X");
     }
 }

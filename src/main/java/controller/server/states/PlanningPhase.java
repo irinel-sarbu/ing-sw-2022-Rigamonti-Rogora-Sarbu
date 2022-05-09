@@ -1,18 +1,27 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import exceptions.*;
-import model.GameModel;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.server.EPlayerChoseAssistant;
+import eventSystem.events.network.server.ServerMessage;
+import eventSystem.events.network.server.gameStateEvents.EUpdateAssistantDeck;
+import exceptions.AssistantNotInDeckException;
+import exceptions.WrongPhaseException;
+import exceptions.WrongPlayerException;
 import model.Player;
 import model.board.Assistant;
+import network.server.ClientHandler;
 import util.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class PlanningPhase {
+    private List<Assistant> playedAssistants;
+
+    public PlanningPhase() {
+        playedAssistants = new ArrayList<>();
+    }
 
     /**
      * Refill clouds with students
@@ -25,54 +34,46 @@ public class PlanningPhase {
     }
 
     /**
-     * Check if an assistant can be played by the specified player
-     *
-     * @param thisGame      game lobby
-     * @param assistantCard the card to play
-     * @return true if the card can be played by the current player, false otherwise
-     */
-    private boolean playable(GameLobby thisGame, Assistant assistantCard) {
-        List<Assistant> played = thisGame.getOrder().stream()
-                .map(Player::peekFoldDeck)
-                .filter(Objects::nonNull).collect(Collectors.toList());
-
-        return !played.contains(assistantCard) ||                                                  // unique card
-                !thisGame.getCurrentPlayer().getAssistants().stream()                               // and no other options
-                        .filter(assistant -> !assistant.equals(assistantCard)).allMatch(played::contains);
-
-    }
-
-    /**
      * Player plays a card, moving that card from own hand deck to fold deck
      *
      * @param thisGame      current lobby
      * @param actingPlayer  player performing the action
      * @param assistantCard assistant card the player wants to play
-     * @throws WrongPhaseException           the game is not in the planning phase
-     * @throws WrongPlayerException          the player doesn't have right to play at the moment
-     * @throws NotPlayableAssistantException the selected assistant cannot be played
-     * @throws AssistantNotInDeckException   the selected assistant does not exist in the player's hand deck
+     * @throws WrongPhaseException         the game is not in the planning phase
+     * @throws WrongPlayerException        the player doesn't have right to play at the moment
+     * @throws AssistantNotInDeckException the selected assistant does not exist in the player's hand deck
      */
-    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard)
-            throws WrongPhaseException, WrongPlayerException, NotPlayableAssistantException, AssistantNotInDeckException {
-        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
-        if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
-        if (!playable(thisGame, assistantCard)) throw new NotPlayableAssistantException();
+    public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientHandler client)
+            throws WrongPhaseException, WrongPlayerException, AssistantNotInDeckException {
+        if (thisGame.wrongState(GameState.PLANNING))
+            throw new WrongPhaseException();
+        if (thisGame.wrongPlayer(actingPlayer))
+            throw new WrongPlayerException();
+        if (checkIfAssistantPlayed(actingPlayer, assistantCard)) {
+            client.send(new ServerMessage(Messages.INVALID_ASSISTANT));
+            return;
+        }
 
         thisGame.getCurrentPlayer().pushFoldDeck(
                 thisGame.getCurrentPlayer().removeCard(assistantCard));
+        playedAssistants.add(assistantCard);
 
-        if (!thisGame.setNextPlayer()) computeNext(thisGame);
+        Player playing = thisGame.getCurrentPlayer();
+
+        if (!thisGame.setNextPlayer()) {
+            computeNext(thisGame);
+            playedAssistants.clear();
+        }
+        client.send(new EUpdateAssistantDeck(playing.getAssistants()));
+        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
     }
 
     /**
      * Compute next phase order and switch phase to student movement
      *
      * @param thisGame current game lobby
-     * @throws WrongPhaseException the game is not in the current phase (should never happen)
      */
-    private void computeNext(GameLobby thisGame) throws WrongPhaseException {
-        if (thisGame.wrongState(GameState.PLANNING)) throw new WrongPhaseException();
+    public void computeNext(GameLobby thisGame) {
         /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO: in case of disconnection prevent game progress
                 thisGame.getOrder().size()) throw new WrongPhaseException(); */
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
@@ -82,4 +83,14 @@ public class PlanningPhase {
         thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
+    public boolean checkIfAssistantPlayed(Player player, Assistant assistant) {
+
+        if (playedAssistants.contains(assistant)) {                                                          // check if card has already been played
+            for (Assistant playerAssistant : player.getAssistants()) {                                       // check other cards in deck
+                if ((!playerAssistant.equals(assistant)) && (!playedAssistants.contains(playerAssistant)))   // other cards has not been played
+                    return true;
+            }
+        }
+        return false;    // no conflicting cards
+    }
 }

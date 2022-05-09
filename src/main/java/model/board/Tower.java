@@ -1,11 +1,14 @@
 package model.board;
 
+import model.Player;
 import util.TowerColor;
+
+import java.io.Serializable;
 
 /**
  * Represents the Tower. The color is not Modifiable.
  */
-public class Tower {
+public class Tower implements Serializable {
     private final TowerColor color;
 
     /**

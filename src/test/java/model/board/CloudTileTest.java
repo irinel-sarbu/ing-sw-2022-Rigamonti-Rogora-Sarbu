@@ -15,7 +15,7 @@ public class CloudTileTest {
     private static CloudTile empty;
 
     @BeforeAll
-    public static void CloudTile() {
+    public static void setup() {
         full = new CloudTile(0, 4);
         try {
             full.put(
@@ -107,6 +107,7 @@ public class CloudTileTest {
 
     @Test
     public void getAndRemoveStudents() {
+        assertTrue(full.toString().length() != 0);
         assertEquals(4, full.getAndRemoveStudents().size());
         assertEquals(0, full.getStudents().size());
     }

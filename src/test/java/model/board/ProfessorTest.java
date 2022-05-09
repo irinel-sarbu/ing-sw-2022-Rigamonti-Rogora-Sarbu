@@ -5,13 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.Color;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProfessorTest {
     Professor professor1, professor2;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         professor1 = new Professor(Color.RED);
         professor2 = new Professor(Color.BLUE);
     }
@@ -20,5 +21,6 @@ public class ProfessorTest {
     public void testProfessor() {
         assertSame(professor1.getColor(), Color.RED);
         assertSame(professor2.getColor(), Color.BLUE);
+        assertTrue(professor2.toString().length() != 0);
     }
 }

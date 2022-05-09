@@ -1,19 +1,19 @@
 package model.board;
 
-import java.util.Random;
+import java.io.Serializable;
+import util.Random;
 
 /**
  * Represents Mother Nature.
  */
-public class MotherNature {
+public class MotherNature implements Serializable {
     private int position;
 
     /**
      * Constructor of {@link MotherNature}. Initializes {@link MotherNature#position}.
      */
     public MotherNature() {
-        Random rng = new Random();
-        this.position = rng.nextInt(12);
+        this.position = Random.nextInt(12);
     }
 
     /**
@@ -21,6 +21,13 @@ public class MotherNature {
      */
     public int getPosition() {
         return position;
+    }
+
+    /**
+     * Setter for the attribute {@link MotherNature#position}
+     */
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     /**

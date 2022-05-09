@@ -1,18 +1,24 @@
 package model.board;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import exceptions.*;
 import model.Player;
 import model.expert.CoinSupply;
 import util.Color;
+import util.GameMode;
+import util.Logger;
 import util.TowerColor;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Represents the School Board. Is identified by the Player where it is created on.
  */
-public class SchoolBoard {
+public class SchoolBoard implements Serializable {
     private final static int maxEntranceSize = 9;
     private final List<Professor> professors;
     private final static int maxProfessorsSize = Color.values().length;
@@ -21,7 +27,7 @@ public class SchoolBoard {
     private final List<Student> entrance;
     private final List<Stack<Student>> diningRoom;
     private final List<Tower> towers;
-    private CoinSupply coins;
+    private final CoinSupply coins;
     private final Player owner;
 
     /**
@@ -29,8 +35,13 @@ public class SchoolBoard {
      *
      * @param player Is the owner of this {@link SchoolBoard}.
      */
+    // FIXME: coins only if expert mode
     public SchoolBoard(Player player) {
-        this.coins = new CoinSupply(0);
+        if (player.getGameMode() == GameMode.EXPERT) {
+            this.coins = new CoinSupply(0);
+        } else {
+            this.coins = null;
+        }
         this.entrance = new ArrayList<>();
         this.diningRoom = new ArrayList<>();
         for (int i = 0; i < Color.values().length; i++) {
@@ -53,12 +64,19 @@ public class SchoolBoard {
     /**
      * Getter for a selected student on the {@link SchoolBoard#entrance}.
      *
-     * @param studentPosition Is the position of the {@link SchoolBoard#entrance} correspondent to the selected student.
+     * @param studentID Is the ID of the student in entrance {@link SchoolBoard#entrance} correspondent to the selected student.
      * @return The selected student.
      * @throws StudentNotFoundException If there is no Student on the given Position.
      */
-    public Student getEntranceStudent(int studentPosition) throws StudentNotFoundException {
-        Student student = entrance.get(studentPosition);
+    public Student getEntranceStudent(int studentID) throws StudentNotFoundException {
+        Student student = null;
+        for (Student value : entrance) {
+            if (value.getID() == studentID) {
+                student = value;
+                break;
+            }
+        }
+
         if (student == null) throw new StudentNotFoundException();
         return student;
     }
@@ -90,9 +108,9 @@ public class SchoolBoard {
     /**
      * Removes a selected student from the {@link SchoolBoard#entrance}.
      *
-     * @param studentID
-     * @return
-     * @throws StudentNotFoundException
+     * @param studentID ID of the student to remove
+     * @return the removed {@link Student}
+     * @throws StudentNotFoundException if the specified student is not found
      */
     public Student removeFromEntrance(int studentID) throws StudentNotFoundException {
         Student removed = null;
@@ -225,8 +243,8 @@ public class SchoolBoard {
      * @throws TowersIsEmptyException If {@link SchoolBoard#towers} is already empty.
      */
     public void removeTower() throws TowersIsEmptyException {
-        boolean success = towers.remove(0) != null;
-        if (!success) throw new TowersIsEmptyException();
+        if (towers.size() == 0) throw new TowersIsEmptyException();
+        towers.remove(0);
     }
 
     /**
@@ -235,7 +253,7 @@ public class SchoolBoard {
      * @param color           Is the color of the New towers that needs to be created.
      * @param maxNumOfPlayers Is the number of players that allows to pick the correct number of towers.
      */
-    public void setUpTowers(TowerColor color, int maxNumOfPlayers) {
+    public void setupTowers(TowerColor color, int maxNumOfPlayers) {
         int numOfTowers;
         if (maxNumOfPlayers == 2) numOfTowers = 8;
         else numOfTowers = 6;
@@ -244,7 +262,7 @@ public class SchoolBoard {
                 addTower(new Tower(color));
             }
         } catch (TowersFullException e) {
-            e.printStackTrace();
+            Logger.warning("Can't setup towers, there are already some towers");
         }
     }
 
@@ -261,12 +279,11 @@ public class SchoolBoard {
         return false;
     }
 
-    /* Unused ToString.
+    /* Unused ToString.*/
     public static String allToString(List<SchoolBoard> boards) {
         List<String[]> allBoards = boards.stream()
                 .map(SchoolBoard::toString)
-                .map(bs -> bs.split("\n"))
-                .collect(Collectors.toList());
+                .map(bs -> bs.split("\n")).toList();
         StringBuilder boardsString = new StringBuilder();
 
         for (int i = 0; i < allBoards.get(0).length; i++) {
@@ -276,7 +293,7 @@ public class SchoolBoard {
             boardsString.append("\n");
         }
         return new String(boardsString);
-    }*/
+    }
 
     /**
      * Overrides toString.
@@ -298,8 +315,13 @@ public class SchoolBoard {
             diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
         }
         //SchoolBoard will be identified by the previous print of a numbered player.
-        return "SchoolBoard of " + owner.getName() + " entr:" + entranceString + diningRoomString +
-                " Coins: " + coins +
-                "\n    " + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        if (owner.getGameMode() == GameMode.EXPERT) {
+            return "\tEntrance:" + entranceString + diningRoomString +
+                    "\n\tCoins: " + getCoinSupply() +
+                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        } else {
+            return "\tEntrance:" + entranceString + diningRoomString +
+                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+        }
     }
 }

@@ -1,10 +1,12 @@
 package model;
 
-import observer.Observable;
 import exceptions.*;
 import model.board.*;
-import model.expert.*;
+import model.expert.CharacterCard;
+import model.expert.CoinSupply;
+import model.expert.NoEntryTile;
 import util.*;
+import util.Random;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * GameModel Class represent the model. It is used to communicate with the controller.
  */
-public class GameModel extends Observable {
+public class GameModel {
     private final int maxNumOfPlayers;
     private final GameMode gameMode;
     private final Bag bag;
@@ -111,10 +113,9 @@ public class GameModel extends Observable {
      * @throws PlayerNotFoundException If there is no Player with the given ID.
      */
     public Player getPlayerByID(int id) throws PlayerNotFoundException {
-        Player ret = players.get(id);
-        if (ret == null)
+        if (id >= players.size() || id < 0)
             throw new PlayerNotFoundException();
-
+        Player ret = players.get(id);
         return ret;
     }
 
@@ -171,7 +172,7 @@ public class GameModel extends Observable {
     public void addPlayer(Player player) {
         players.add(player);
         moveFromBagToEntrance(player);
-        player.getSchoolBoard().setUpTowers(player.getColor(), maxNumOfPlayers);
+        player.getSchoolBoard().setupTowers(player.getColor(), maxNumOfPlayers);
     }
 
     /**
@@ -181,7 +182,7 @@ public class GameModel extends Observable {
      * @param name Is the unique name correspondent to the selected player that needs to be removed.
      * @return True if the operation succeeded, False otherwise.
      */
-    public boolean removePlayerByName(String name) {
+    public void removePlayerByName(String name) {
         Player player;
         try {
             player = getPlayerByName(name);
@@ -190,7 +191,7 @@ public class GameModel extends Observable {
             Logger.warning(e.getMessage());
         }
 
-        return players.remove(player);
+        players.remove(player);
     }
 
     /**
@@ -238,8 +239,9 @@ public class GameModel extends Observable {
      * @return The selected IslandGroup.
      * @throws IslandGroupNotFoundException If there is no IslandGroup with the given ID.
      */
-    public IslandGroup getIslandGroupByID(int id) throws IslandGroupNotFoundException {
-        if (islandGroups.get(id) == null) throw new IslandGroupNotFoundException();
+    public IslandGroup getIslandGroupByID(int id) /* throws IslandGroupNotFoundException */ {
+        /*if (islandGroups.get(id) == null)
+            throw new IslandGroupNotFoundException();*/
         return islandGroups.get(id);
     }
 
@@ -329,13 +331,14 @@ public class GameModel extends Observable {
         int left = (position - 1 + islandGroups.size()) % (islandGroups.size());
         //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
         //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
         try {
             islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
             islandGroups.remove(right);
             if (right < position) {
                 position = (position - 1 + islandGroups.size()) % (islandGroups.size());
                 left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-                getMotherNature().progress(-1, islandGroups.size());
+                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
             } else {
                 if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
             }
@@ -354,13 +357,15 @@ public class GameModel extends Observable {
                 position = (position - 1 + islandGroups.size()) % (islandGroups.size());
                 left = (left - 1 + islandGroups.size()) % (islandGroups.size());
                 if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
-                getMotherNature().progress(-1, islandGroups.size());
+                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
             }
             updateIslandGroupsID();
         } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
         }
         //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
         //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
+
     }
 
     /**
@@ -368,6 +373,10 @@ public class GameModel extends Observable {
      */
     private void updateIslandGroupsID() {
         for (int i = 0; i < islandGroups.size(); i++) {
+            //Updates mother nature position
+            if (islandGroups.get(i).getIslandGroupID() == motherNature.getPosition()) {
+                motherNature.setPosition(i);
+            }
             islandGroups.get(i).setIslandGroupID(i);
         }
     }
@@ -383,7 +392,8 @@ public class GameModel extends Observable {
         try {
             player.getSchoolBoard().addToEntrance(cloudTile.getAndRemoveStudents());
         } catch (EntranceFullException e) {
-            e.printStackTrace();
+            // should never happen
+            Logger.warning("The entrance is already full, can't move more students from cloud tile");
         }
     }
 
@@ -434,7 +444,7 @@ public class GameModel extends Observable {
     private CharacterCard getRandomCharacter() {
         CharacterCard character;
         do {
-            int pick = new Random().nextInt(CharacterType.values().length);
+            int pick = Random.nextInt(CharacterType.values().length);
             character = new CharacterCard(CharacterType.values()[pick]);
         } while (characters.contains(character));
         switch (character.getCharacter()) {
@@ -469,9 +479,9 @@ public class GameModel extends Observable {
      * @throws CharacterCardNotFound If there is no Character in {@link GameModel#characters} with the given ID.
      */
     public CharacterCard getCharacterById(int id) throws CharacterCardNotFound {
-        CharacterCard ret = characters.get(id);
-        if (ret == null)
+        if (id < 0 || id >= 3)
             throw new CharacterCardNotFound();
+        CharacterCard ret = characters.get(id);
         return ret;
     }
 
@@ -527,7 +537,7 @@ public class GameModel extends Observable {
                     return true;
                 }
             } catch (PlayerNotFoundException e) {
-                e.printStackTrace();
+                Logger.warning("Trying to check remaining rooks for an invalid player");
             }
         }
         return false;
@@ -537,7 +547,25 @@ public class GameModel extends Observable {
      * Calls {@link GameModel#getRemainingIslandGroups()}.
      * Returns True if the result is <=3, otherwise False.
      */
-    public boolean checkForToFewIslands() {
+    public boolean checkForTooFewIslands() {
         return getRemainingIslandGroups() <= 3;
+    }
+
+    /**
+     * Getter for {@link GameModel#islandGroups}.
+     *
+     * @return a List.
+     */
+    public List<IslandGroup> getIslandGroups() {
+        return islandGroups;
+    }
+
+    /**
+     * Getter for {@link GameModel#cloudTiles}.
+     *
+     * @return a List.
+     */
+    public List<CloudTile> getCloudTiles() {
+        return cloudTiles;
     }
 }

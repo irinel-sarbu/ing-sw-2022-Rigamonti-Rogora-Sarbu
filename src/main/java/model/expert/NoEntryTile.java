@@ -1,9 +1,11 @@
 package model.expert;
 
+import java.io.Serializable;
+
 /**
  * Represents the No Entry tile, which denies the access to an IslandGroup once.
  */
-public class NoEntryTile {
+public class NoEntryTile implements Serializable {
     private int position; //-1 when not on a tile
 
     /**

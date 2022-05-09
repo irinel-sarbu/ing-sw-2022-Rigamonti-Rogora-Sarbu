@@ -1,31 +1,35 @@
 package controller.server;
 
-import events.*;
-import events.types.Messages;
-import events.types.clientToServer.*;
-import events.types.serverToClient.Message;
-import events.types.serverToClient.EPlayerDisconnected;
+import eventSystem.EventListener;
+import eventSystem.EventManager;
+import eventSystem.Filter;
+import eventSystem.annotations.EventHandler;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.client.ClientMessage;
+import eventSystem.events.network.client.ECreateLobbyRequest;
+import eventSystem.events.network.client.EJoinLobbyRequest;
+import eventSystem.events.network.server.EPlayerDisconnected;
+import eventSystem.events.network.server.ServerMessage;
 import exceptions.LobbyNotFoundException;
-import network.server.ClientSocketConnection;
+import network.server.ClientHandler;
 import network.server.Server;
-import observer.NetworkObserver;
-import util.*;
+import util.GameMode;
+import util.Logger;
+import util.Utils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ServerController implements NetworkObserver {
+public class ServerController implements EventListener {
+    Server server;
     private final Map<String, GameLobby> games;
-    private final Server server;
 
     /**
      * Main controller class constructor
-     *
-     * @param server server instance to connect this controller to
      */
     public ServerController(Server server) {
-        this.games = new ConcurrentHashMap<>();
         this.server = server;
+        this.games = new ConcurrentHashMap<>();
     }
 
     /**
@@ -56,62 +60,23 @@ public class ServerController implements NetworkObserver {
         throw new LobbyNotFoundException("Lobby with id " + code + " not found.");
     }
 
-    /**
-     * React when an {@link Event} is raised:
-     * if the event is a network event dispatch it, otherwise pass the event to the respective {@link GameLobby}
-     * Network events comprehends:
-     * - Creating a new lobby
-     * - Joining an existing lobby
-     * - React to a ping message to detect client disconnections
-     *
-     * @param networkEvent the event to react to
-     */
-    @Override
-    public synchronized void onNetworkEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
-        EventDispatcher dp = new EventDispatcher(networkEvent);
+    @EventHandler
+    public void onMessage(ClientMessage message) {
+        String playerName = message.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
 
-        dp.dispatch(EventType.MESSAGE, (Tuple<Event, ClientSocketConnection> t) -> onMessage((Message) t.getKey(), t.getValue()));
-
-        dp.dispatch(EventType.CREATE_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onCreateLobbyRequest((ECreateLobbyRequest) t.getKey(), t.getValue()));
-        dp.dispatch(EventType.JOIN_LOBBY_REQUEST, (Tuple<Event, ClientSocketConnection> t) -> onJoinLobbyRequest((EJoinLobbyRequest) t.getKey(), t.getValue()));
-
-        // Check if event was dispatched in ServerController. If not, notify correct GameLobby
-        if (networkEvent.getKey().isHandled())
-            return;
-        Logger.debug("ServerController was unable to dispatch networkEvent " + networkEvent, "Sending event to correct GameLobby");
-
-        try {
-            GameLobby clientLobby = getLobbyByCode(networkEvent.getValue().getLobbyCode());
-            clientLobby.onNetworkEvent(networkEvent);
-            return;
-        } catch (LobbyNotFoundException e) {
-            // This should never happen
-            Logger.severe(e.getMessage());
-        }
-
-        if (networkEvent.getKey().isHandled())
-            return;
-
-        // Code should never arrive here, event was not dispatched to any lobby
-        Logger.severe("Unhandled event " + networkEvent);
-    }
-
-    // Handlers
-    private boolean onMessage(Message message, ClientSocketConnection client) {
         switch (message.getMsg()) {
             case Messages.CLIENT_DISCONNECTED -> {
                 if (!client.isInLobby())
-                    return true;
+                    return;
 
                 GameLobby lobby = games.get(client.getLobbyCode());
-                String playerName = lobby.getClientBySocket(client);
+                String disconnectedPlayer = lobby.getPlayerNameBySocket(client);
 
-                lobby.broadcastExceptOne(new EPlayerDisconnected(playerName), playerName);
-                lobby.removeClientFromLobbyByName(playerName);
+                lobby.broadcastExceptOne(new EPlayerDisconnected(disconnectedPlayer), disconnectedPlayer);
+                lobby.removeClientFromLobbyByName(disconnectedPlayer);
             }
         }
-
-        return true;
     }
 
     // Lobby creation
@@ -119,10 +84,13 @@ public class ServerController implements NetworkObserver {
     /**
      * {@link ECreateLobbyRequest} handler
      */
-    private boolean onCreateLobbyRequest(ECreateLobbyRequest event, ClientSocketConnection client) {
+    @EventHandler
+    public void onCreateLobbyRequest(ECreateLobbyRequest event) {
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
+
         GameLobby createdLobby = createLobby(event.getNumOfPlayers(), event.getGameMode());
-        createdLobby.addClientToLobby(event.getPlayerName(), client);
-        return true;
+        createdLobby.addClientToLobby(playerName, client);
     }
 
     /**
@@ -134,37 +102,44 @@ public class ServerController implements NetworkObserver {
      */
     private GameLobby createLobby(int numOfPlayers, GameMode gameMode) {
         String code = generateLobbyCode();
-        games.put(code, new GameLobby(numOfPlayers, gameMode, code));
+        GameLobby newGameLobby = new GameLobby(numOfPlayers, gameMode, code, server);
+        EventManager.register(newGameLobby, new Filter(code));
+        games.put(code, newGameLobby);
+
         return games.get(code);
     }
 
     /**
      * {@link EJoinLobbyRequest} handler
      */
-    private boolean onJoinLobbyRequest(EJoinLobbyRequest event, ClientSocketConnection client) {
-        GameLobby lobby = null;
+    @EventHandler
+    public boolean onJoinLobbyRequest(EJoinLobbyRequest event) {
+        String playerName = event.getClientNickname();
+        ClientHandler client = server.getClientByNickname(playerName);
+
+        GameLobby lobby;
         try {
             lobby = getLobbyByCode(event.getLobbyCode());
         } catch (LobbyNotFoundException e) {
             Logger.warning(e.getMessage());
-            client.asyncSend(new Message(Messages.LOBBY_NOT_FOUND));
+            client.send(new ServerMessage(Messages.LOBBY_NOT_FOUND));
             return true;
         }
 
         switch (lobby.getLobbyState()) {
             case INIT -> {
-                if (lobby.getClientByName(event.getPlayerName()) != null) {
-                    Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
-                    client.asyncSend(new Message(Messages.NAME_NOT_AVAILABLE));
+                if (lobby.getClientByName(playerName) != null) {
+                    Logger.warning("Player " + playerName + " trying to connect to lobby '" + event.getLobbyCode() + "' but there is already a player with that name connected.");
+                    client.send(new ServerMessage(Messages.NAME_NOT_AVAILABLE));
                     return true;
                 }
 
-                lobby.addClientToLobby(event.getPlayerName(), client);
+                lobby.addClientToLobby(playerName, client);
             }
 
             case PRE_GAME, IN_GAME, END -> {
-                client.asyncSend(new Message(Messages.LOBBY_FULL));
-                Logger.warning("Player " + event.getPlayerName() + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
+                client.send(new ServerMessage(Messages.LOBBY_FULL));
+                Logger.warning("Player " + playerName + " trying to connect to lobby '" + event.getLobbyCode() + "'but is full.");
             }
         }
 

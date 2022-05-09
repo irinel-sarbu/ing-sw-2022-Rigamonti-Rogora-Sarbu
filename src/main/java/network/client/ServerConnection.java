@@ -1,12 +1,12 @@
 package network.client;
 
+import eventSystem.events.Event;
+import util.Logger;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
-import events.Event;
-import util.Logger;
 
 public class ServerConnection extends Thread {
 
@@ -35,16 +35,15 @@ public class ServerConnection extends Thread {
         }
     }
 
-    private synchronized void send(Event event) {
+    public synchronized void send(Event event) {
+        Logger.debug("Sending " + event + " to server");
         try {
             out.writeObject(event);
+            out.flush();
+            out.reset();
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
-    }
-
-    public synchronized void asyncSend(Event event) {
-        new Thread(() -> send(event)).start();
     }
 
     private void closeConnection() {

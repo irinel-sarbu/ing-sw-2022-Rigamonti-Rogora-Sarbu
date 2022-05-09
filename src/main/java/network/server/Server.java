@@ -1,30 +1,36 @@
 package network.server;
 
+import eventSystem.EventManager;
+import eventSystem.events.Event;
+import util.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import events.*;
-import observer.NetworkObservable;
-import util.Logger;
-import util.Tuple;
+public class Server implements Runnable {
+    private final Map<String, ClientHandler> clientMap;
 
-public class Server extends NetworkObservable implements Runnable {
-
-    private final int PORT = 5000;
     private ServerSocket serverSocket;
-    private final LinkedBlockingQueue<Tuple<Event, ClientSocketConnection>> eventQueue;
+    private final LinkedBlockingQueue<Event> eventQueue;
 
-    public Server() {
+    private final int port;
+
+    public Server(int port) {
+        this.port = port;
+        this.clientMap = new ConcurrentHashMap<>();
+
         this.eventQueue = new LinkedBlockingQueue<>();
     }
 
     @Override
     public void run() {
         try {
-            serverSocket = new ServerSocket(PORT);
-            Logger.info("Server started on port " + PORT, "Waiting for clients...");
+            serverSocket = new ServerSocket(port);
+            Logger.info("Server started on port " + port, "Waiting for clients...");
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }
@@ -33,8 +39,8 @@ public class Server extends NetworkObservable implements Runnable {
         new Thread(() -> {
             while (!serverSocket.isClosed()) {
                 try {
-                    Tuple<Event, ClientSocketConnection> networkEvent = eventQueue.take();
-                    notifyListeners(networkEvent);
+                    Event networkEvent = eventQueue.take();
+                    EventManager.notify(networkEvent);
                 } catch (InterruptedException e) {
                     Logger.error(e.getMessage());
                 }
@@ -44,16 +50,27 @@ public class Server extends NetworkObservable implements Runnable {
         while (!serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                ClientSocketConnection clientConnection = new ClientSocketConnection(this, clientSocket);
+                ClientHandler clientConnection = new ClientHandler(this, clientSocket);
                 clientConnection.start();
-
             } catch (IOException e) {
                 Logger.error(e.getMessage());
             }
         }
     }
 
-    public synchronized void pushEvent(Tuple<Event, ClientSocketConnection> networkEvent) {
-        eventQueue.add(networkEvent);
+    public boolean checkPlayerIsRegistered(String nickname) {
+        return clientMap.get(nickname.toLowerCase()) != null;
+    }
+
+    public void register(String nickname, ClientHandler client) {
+        clientMap.put(nickname, client);
+    }
+
+    public ClientHandler getClientByNickname(String nickname) {
+        return clientMap.get(nickname.toLowerCase());
+    }
+
+    public synchronized void pushEvent(Event event) {
+        eventQueue.add(event);
     }
 }

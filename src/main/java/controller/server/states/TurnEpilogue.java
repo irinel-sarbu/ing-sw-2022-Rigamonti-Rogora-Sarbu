@@ -3,11 +3,10 @@ package controller.server.states;
 import controller.server.GameLobby;
 import exceptions.*;
 import model.Player;
+import model.board.CloudTile;
 import util.GameState;
 
 public class TurnEpilogue {
-
-    // FIXME: may be GameOver should be called at the end of the next turn, not this one if bag is empty after the full students replacement
 
     /**
      * Check if game over should be called, conditions are:
@@ -28,14 +27,12 @@ public class TurnEpilogue {
      * @param thisGame     lobby the action is referring to
      * @param actingPlayer player giving the command
      * @param cloudTilePos index of cloud tile selected to pick student from
-     * @throws WrongPhaseException   the game is not in the proper phase to performs this action
      * @throws WrongPlayerException  the acting player does not have the right to act at this moment
      * @throws NoCloudTileException  the selected cloud tile does not exist
-     * @throws EntranceFullException player's entrance is full
      */
     // TODO: when EntranceFullException is thrown, asks the player to select which students to keep in its entrance
     public void refillFromCloudTile(GameLobby thisGame, Player actingPlayer, int cloudTilePos)
-            throws WrongPhaseException, WrongPlayerException, NoCloudTileException, EntranceFullException {
+            throws WrongPlayerException, NoCloudTileException {
 
         if (thisGame.wrongPlayer(actingPlayer)) throw new WrongPlayerException();
         if (cloudTilePos >= thisGame.getModel().getNumOfCloudTiles()) throw new NoCloudTileException();
@@ -43,7 +40,7 @@ public class TurnEpilogue {
 
         thisGame.getModel().moveFromCloudTileToEntrance(thisGame.getModel().getCloudTile(cloudTilePos), thisGame.getCurrentPlayer());
 
-        /**
+        /*
          * Sets next player.
          * If there is a next player restart the action phase with STUDENT_MOVEMENT state
          * Else checks if game is over and goes in GAME_OVER state
@@ -55,8 +52,11 @@ public class TurnEpilogue {
             if (checkGameOver(thisGame)) {
                 thisGame.getGameOver().selectWinner(thisGame);
             } else {
-                thisGame.nextTurn();
+                for(int i=0; i<thisGame.getModel().getNumOfCloudTiles(); i++)
+                    thisGame.getModel().refillCloudTile(i);
+                thisGame.nextRound();
             }
         }
+
     }
 }

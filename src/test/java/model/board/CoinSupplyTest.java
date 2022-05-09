@@ -12,7 +12,7 @@ public class CoinSupplyTest {
     private CoinSupply coinSupply1, coinSupply2;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         coinSupply1 = new CoinSupply();
         coinSupply2 = new CoinSupply(30);
     }
@@ -21,6 +21,8 @@ public class CoinSupplyTest {
     public void GetCoins() {
         assertEquals(20, coinSupply1.getNumOfCoins());
         assertEquals(30, coinSupply2.getNumOfCoins());
+        assertTrue(coinSupply1.toString().length() != 0);
+        assertTrue(coinSupply2.toString().length() != 0);
     }
 
     @Test
@@ -39,5 +41,6 @@ public class CoinSupplyTest {
             fail();
         }
         assertEquals(18, coinSupply1.getNumOfCoins());
+        assertThrows(supplyEmptyException.class, () -> coinSupply1.removeCoins(200));
     }
 }

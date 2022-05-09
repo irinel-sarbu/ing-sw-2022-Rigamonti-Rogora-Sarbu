@@ -1,6 +1,7 @@
 package model.board;
 
 import exceptions.EmptyNoEntryListException;
+import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.expert.CharacterCard;
 import model.expert.NoEntryTile;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.CharacterType;
 import util.Color;
+import util.Wizard;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +17,7 @@ public class CharacterCardTest {
     private CharacterCard card1, card2, card3, card4;
 
     @BeforeEach
-    public void setUp() {
+    public void setup() {
         card1 = new CharacterCard(CharacterType.GRANNY_HERBS);
         card2 = new CharacterCard(CharacterType.MONK);
         card3 = new CharacterCard(CharacterType.JESTER);
@@ -47,11 +49,28 @@ public class CharacterCardTest {
         }
         assertEquals(1, card2.getStudents().size());
         try {
+            card2.removeStudent(2);
+        } catch (StudentNotFoundException e) {
+            fail();
+        }
+        try {
             card3.removeStudent(1);
         } catch (StudentNotFoundException e) {
             fail();
         }
         assertEquals(2, card3.getStudents().size());
+        try {
+            card3.removeStudent(3);
+        } catch (StudentNotFoundException e) {
+            fail();
+        }
+        assertThrows(StudentNotFoundException.class, () -> card3.removeStudent(999));
+        try {
+            card3.removeStudent(4);
+        } catch (StudentNotFoundException e) {
+            fail();
+        }
+        assertThrows(EmptyStudentListException.class, () -> card3.removeStudent(0));
     }
 
     @Test
@@ -61,6 +80,12 @@ public class CharacterCardTest {
         assertEquals(card1.getCost(), CharacterType.GRANNY_HERBS.getBaseCost());
         card1.setCost(card1.getCost() + 1);
         assertEquals(card1.getCost(), CharacterType.GRANNY_HERBS.getBaseCost() + 1);
+        assertTrue(card2.toString().length() != 0);
+        assertTrue(card1.toString().length() != 0);
+        assertTrue(card3.toString().length() != 0);
+        assertTrue(card4.toString().length() != 0);
+        assertEquals(card1, card1);
+        assertNotEquals(card1, null);
     }
 
     @Test
@@ -72,6 +97,13 @@ public class CharacterCardTest {
         } catch (EmptyNoEntryListException e) {
             fail();
         }
+        assertThrows(EmptyNoEntryListException.class, () -> card1.removeNoEntryTile());
         assertEquals(0, card1.getNoEntryTiles().size());
+    }
+
+    @Test
+    public void equals() {
+        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(null));
+        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(new Student(1000, Color.BLUE)));
     }
 }

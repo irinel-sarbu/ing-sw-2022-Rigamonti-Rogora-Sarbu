@@ -5,6 +5,7 @@ import model.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
@@ -18,19 +19,19 @@ public class PlayerTest {
     private static Player empty;
 
     @BeforeAll
-    public static void Player() {
+    public static void setup() {
         try {
-            alberto = new Player("alberto", Wizard.WIZARD_1, TowerColor.BLACK);
+            alberto = new Player("alberto", Wizard.WIZARD_1, TowerColor.BLACK, GameMode.EXPERT);
             alberto.pushFoldDeck(alberto.removeCard(alberto.getAssistants().get(0)));
             alberto.pushFoldDeck(alberto.removeCard(alberto.getAssistants().get(0)));
-            irinel = new Player("irinel", Wizard.WIZARD_2, TowerColor.WHITE);
+            irinel = new Player("irinel", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.EXPERT);
             irinel.pushFoldDeck(irinel.removeCard(irinel.getAssistants().get(0)));
-            matteo = new Player("matteo", Wizard.WIZARD_3, TowerColor.GRAY);
+            matteo = new Player("matteo", Wizard.WIZARD_3, TowerColor.GRAY, GameMode.EXPERT);
         } catch (AssistantNotInDeckException e) {
             System.err.println("Unexpected AssistantNotInDeckException");
             fail();
         }
-        empty = new Player("empty", Wizard.WIZARD_4, TowerColor.WHITE);
+        empty = new Player("empty", Wizard.WIZARD_4, TowerColor.WHITE, GameMode.EXPERT);
         for (int i = 0; i < 10; i++) {
             try {
                 empty.removeCard(0);
@@ -38,6 +39,11 @@ public class PlayerTest {
                 fail();
             }
         }
+    }
+
+    @Test
+    public void getGameMode() {
+        assertNotNull(alberto.getGameMode());
     }
 
     @Test
@@ -56,7 +62,6 @@ public class PlayerTest {
             assertEquals(Assistant.getWizardDeck(Wizard.WIZARD_4).stream()
                     .filter(a -> a.equals(sa)).count(), 1);
         }
-
     }
 
     @Test
@@ -76,11 +81,12 @@ public class PlayerTest {
         assertEquals("alberto", alberto.getName());
         assertEquals("irinel", irinel.getName());
         assertEquals("matteo", matteo.getName());
+        assertNotEquals(matteo, null);
     }
 
     @Test
     public void equals() {
-        assertEquals(matteo, new Player("matteo", Wizard.WIZARD_3, TowerColor.BLACK));
+        assertEquals(matteo, new Player("matteo", Wizard.WIZARD_3, TowerColor.BLACK, GameMode.EXPERT));
     }
 
     @Test
@@ -88,22 +94,24 @@ public class PlayerTest {
         assertEquals(1, alberto.compareTo(irinel));
         assertEquals(-1, irinel.compareTo(matteo));
         assertEquals(0, matteo.compareTo(empty));
+        alberto.pushFoldDeck(null);
+        assertEquals(1, alberto.compareTo(irinel));
     }
 
     @AfterEach
     public void resetPlayer() {
         try {
-            alberto = new Player("alberto", Wizard.WIZARD_1, TowerColor.BLACK);
+            alberto = new Player("alberto", Wizard.WIZARD_1, TowerColor.BLACK, GameMode.EXPERT);
             alberto.pushFoldDeck(alberto.removeCard(alberto.getAssistants().get(0)));
             alberto.pushFoldDeck(alberto.removeCard(alberto.getAssistants().get(0)));
-            irinel = new Player("irinel", Wizard.WIZARD_2, TowerColor.WHITE);
+            irinel = new Player("irinel", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.EXPERT);
             irinel.pushFoldDeck(irinel.removeCard(irinel.getAssistants().get(0)));
-            matteo = new Player("matteo", Wizard.WIZARD_3, TowerColor.GRAY);
+            matteo = new Player("matteo", Wizard.WIZARD_3, TowerColor.GRAY, GameMode.EXPERT);
         } catch (AssistantNotInDeckException e) {
             System.err.println("Unexpected AssistantNotInDeckException");
             fail();
         }
-        empty = new Player("empty", Wizard.WIZARD_4, TowerColor.WHITE);
+        empty = new Player("empty", Wizard.WIZARD_4, TowerColor.WHITE, GameMode.EXPERT);
         for (int i = 0; i < 10; i++) {
             try {
                 empty.removeCard(0);
@@ -134,6 +142,7 @@ public class PlayerTest {
     @Test
     public void removeCard() {
         Assistant removed = matteo.getAssistants().get(0);
+        final Assistant removed2;
         int deckSize = matteo.getAssistants().size();
 
         try {
@@ -147,6 +156,7 @@ public class PlayerTest {
         assertFalse(matteo.getAssistants().contains(removed));
 
         removed = alberto.getAssistants().get(0);
+        removed2 = removed;
         try {
             alberto.removeCard(0);
         } catch (AssistantNotInDeckException e) {
@@ -162,5 +172,17 @@ public class PlayerTest {
         } catch (AssistantNotInDeckException e) {
             assertEquals(deckSize, alberto.getAssistants().size());
         }
+        assertThrows(AssistantNotInDeckException.class, () -> alberto.removeCard(removed2));
+        assertThrows(AssistantNotInDeckException.class, () -> matteo.removeCard(100));
+
+    }
+
+    @Test
+
+    public void testDisconnected() {
+        alberto.setDisconnected(true);
+        assertTrue(alberto.isDisconnected());
+        alberto.setDisconnected(false);
+        assertFalse(alberto.isDisconnected());
     }
 }

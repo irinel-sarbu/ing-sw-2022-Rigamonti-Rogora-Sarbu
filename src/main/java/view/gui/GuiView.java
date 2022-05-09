@@ -1,5 +1,7 @@
 package view.gui;
 
+import model.board.Assistant;
+import network.LightModel;
 import util.Wizard;
 import view.View;
 
@@ -12,8 +14,12 @@ public class GuiView extends View {
     }
 
     @Override
-    public void askServerInfo() {
+    public void setupConnection() {
 
+    }
+
+    @Override
+    public void askNickname() {
     }
 
     @Override
@@ -33,6 +39,21 @@ public class GuiView extends View {
 
     @Override
     public void chooseWizard(List<Wizard> availableWizards) {
+
+    }
+
+    @Override
+    public void chooseAssistant(List<Assistant> deck) {
+
+    }
+
+    @Override
+    public void showMenu(LightModel model, String client) {
+
+    }
+
+    @Override
+    public void update(LightModel model) {
 
     }
 }

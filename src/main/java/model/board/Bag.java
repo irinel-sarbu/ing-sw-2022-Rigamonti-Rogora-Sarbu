@@ -3,10 +3,19 @@ package model.board;
 import exceptions.EmptyStudentListException;
 import util.Color;
 
-import java.util.*;
+import java.io.Serializable;
+
+import util.Random;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Bag {
+// TODO: test winning condition when empty
+
+public class Bag implements Serializable {
     private final List<Student> studentList;
     private int studentIdCount = 0;
 
@@ -82,20 +91,12 @@ public class Bag {
     }
 
     /**
-     * Shuffle bag content to randomize student extraction
-     */
-    private void shuffle() {
-        Collections.shuffle(studentList);
-    }
-
-    /**
      * Put given students into bag
      *
      * @param students list of students
      */
     public void put(Student... students) {
         studentList.addAll(Arrays.asList(students));
-        shuffle();
     }
 
     /**
@@ -106,8 +107,7 @@ public class Bag {
      */
     public Student pull() throws EmptyStudentListException {
         if (studentList.size() == 0) throw new EmptyStudentListException();
-        shuffle();
-        return studentList.remove(0);
+        return studentList.remove(Random.nextInt(studentList.size()));
     }
 
     /**

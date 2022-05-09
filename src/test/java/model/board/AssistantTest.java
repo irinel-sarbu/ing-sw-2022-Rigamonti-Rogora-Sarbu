@@ -15,7 +15,7 @@ public class AssistantTest {
     private static List<Assistant> deck2;
 
     @BeforeAll
-    public static void AssistantTest() {
+    public static void setup() {
         deck1 = Assistant.getWizardDeck(Wizard.WIZARD_1);
         deck2 = Assistant.getWizardDeck(Wizard.WIZARD_2);
         for (Assistant assistant : deck1) {
@@ -36,6 +36,7 @@ public class AssistantTest {
             assertEquals(i + 1, deck1.get(i).getValue());
             assertEquals(i / 2 + 1, deck1.get(i).getMovements());
         }
+        assertTrue(deck1.get(0).toString().length() != 0);
     }
 
     @Test
@@ -43,6 +44,7 @@ public class AssistantTest {
         assertEquals(deck1.get(0), deck1.get(0));
         assertEquals(deck1.get(0), deck2.get(0));
         assertNotEquals(deck1.get(0), deck2.get(1));
+        assertNotEquals(deck1.get(0), null);
     }
 
     @AfterEach

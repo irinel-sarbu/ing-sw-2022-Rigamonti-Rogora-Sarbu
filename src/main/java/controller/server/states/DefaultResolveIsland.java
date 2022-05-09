@@ -14,14 +14,16 @@ public class DefaultResolveIsland extends ResolveIsland {
      * @param tempLobby       current gameLobby
      * @param tempGame        current gameModel
      * @param tempIslandGroup island group to resolve
-     * @param computeTowers   // TODO: (should be omitted) specify if towers need to be computed
      * @return a vector of all players influence on the island group
      * @throws PlayerNotFoundException should never happens
      */
     @Override
-    protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup, boolean computeTowers) throws PlayerNotFoundException {
+    protected int[] checkMostInfluence(GameLobby tempLobby, GameModel tempGame, IslandGroup tempIslandGroup) throws PlayerNotFoundException {
         int[] islandSum = new int[tempGame.getPlayers().size()];
         for (int i = 0; i < tempGame.getPlayers().size(); i++) {
+            if (tempGame.getPlayerByID(i).getColor().equals(tempIslandGroup.getIslands().get(0).getTowerColor())) {
+                islandSum[i]++;
+            }
             for (Professor professor : tempGame.getPlayerByID(i).getSchoolBoard().getProfessors()) {
                 islandSum[i] += tempIslandGroup.getStudentsNumber(professor.getColor());
             }
