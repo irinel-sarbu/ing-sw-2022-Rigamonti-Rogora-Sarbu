@@ -316,5 +316,10 @@ public class ClientController implements EventListener {
     public void onDeclareWinner(EDeclareWinner event) {
         view.displayMessage("\n\nPlayer " + event.getPlayer() + " Won!!\n\n");
     }
+
+    @EventHandler
+    public void onCheckLastRound(ECheckLastRound event) {
+        model.setLastRound(event.lastRound);
+    }
 }
 

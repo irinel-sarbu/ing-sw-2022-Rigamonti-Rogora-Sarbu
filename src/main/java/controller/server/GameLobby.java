@@ -764,6 +764,8 @@ public class GameLobby implements EventListener {
     public boolean playerHasSelectedRefillCloud(ESelectRefillCloud event) {
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
+        broadcast(new ECheckLastRound(model.getBag().isEmpty()));
+
         try {
             epilogue.refillFromCloudTile(this, currentPlayer, event.getCloudID());
         } catch (Exception e) {

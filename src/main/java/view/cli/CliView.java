@@ -336,7 +336,7 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert which island TILE >>> ");
             choice2 = cmd.readInt(-1);
-        } while (choice2 < 0 || choice2 >= 11); //Hardcoded 12 = max number of islandtiles
+        } while (choice2 < 0 || choice2 >= 12); //Hardcoded 12 = max number of islandtiles
 
         EventManager.notify(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
     }
@@ -359,7 +359,7 @@ public class CliView extends View {
         } while (choice < 0 || choice >= 8); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new EMoveMotherNature(choice));
     }
-    //TODO: clouds.get(choice).getStudents().size() == 0 not good for when all clouds are empty and the bag is empty
+
     private void selectCloud(LightModel model, String client) {
         int choice;
         List<CloudTile> clouds = model.getCloudTiles();
@@ -367,7 +367,7 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert which cloud tile to take students from (not empty) >>> ");
             choice = cmd.readInt(-1);
-        } while (choice < 0 || choice >= clouds.size() || clouds.get(choice).getStudents().size() == 0); //Hardcoded 7 = max movement of mother nature (with postman)
+        } while (choice < 0 || choice >= clouds.size() || (clouds.get(choice).getStudents().size() == 0 && !model.isLastRound())); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new ESelectRefillCloud(choice));
     }
 
@@ -382,7 +382,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert which island TILE >>> ");
                     choice1 = cmd.readInt(-1);
-                } while (choice1 < 0 || choice1 >= 11); //Hardcoded 12 = max number of islandtiles
+                } while (choice1 < 0 || choice1 >= 12); //Hardcoded 12 = max number of islandtiles
                 List<Student> students = character.getStudents();
                 printStudents(students);
                 do {
@@ -412,7 +412,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert which island Tile to Add the No Entry Tiles to>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 11); //Hardcoded 12 = max number of islandtiles
+                } while (choice < 0 || choice >= 12); //Hardcoded 12 = max number of islandtiles
                 EventManager.notify(new EUseGrannyEffect(choice));
             }
             case JESTER -> {
@@ -464,7 +464,7 @@ public class CliView extends View {
                     do {
                         System.out.print("\rInsert color ID number " + i + " >>> ");
                         choice = cmd.readInt(-1);
-                    } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                    } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
                     diningColors.add(Color.values()[choice]);
                 }
 
@@ -490,7 +490,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert color ID >>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseFanaticEffect(Color.values()[choice]));
             }
@@ -503,7 +503,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert color ID >>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseThiefEffect(Color.values()[choice]));
             }
