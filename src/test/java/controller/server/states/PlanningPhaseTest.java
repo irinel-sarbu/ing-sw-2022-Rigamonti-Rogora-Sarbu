@@ -44,7 +44,7 @@ public class PlanningPhaseTest {
         try {
             clientSocketConnection = new ClientHandler(server, socket);
         } catch (IOException e) {
-            System.out.println("cacca");
+            System.out.println("test");
         }
 
         gameLobby = new GameLobby(3, GameMode.NORMAL, "00000", new Server(5000));

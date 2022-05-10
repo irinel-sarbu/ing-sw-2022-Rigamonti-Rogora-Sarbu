@@ -172,38 +172,10 @@ public class GameLobby implements EventListener {
             Logger.debug(getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
         }
-
-        // TODO: Resilience to disconnections
-
-//        if (model.getPlayerSize() >= maxPlayers) {
-//            client.send(new Message(Messages.LOBBY_FULL));
-//            Logger.warning("Player " + name + " trying to connect but lobby is full.");
-//        }
-//
-//        try {
-//            Player player = model.getPlayerByName(name);
-//            if (player.isDisconnected()) {
-//                clientList.put(name, client);
-//                client.joinLobby(lobbyCode);
-//                model.getPlayerByName(name).setDisconnected(false);
-//                broadcastExceptOne(new EPlayerJoined(name), name);
-//                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
-//            } else {
-//                client.send(new Message(Messages.NAME_NOT_AVAILABLE));
-//                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
-//            }
-//        } catch (PlayerNotFoundException e) {
-//            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
-//            clientList.put(name, client);
-//            client.joinLobby(lobbyCode);
-//            client.send(new ELobbyJoined(lobbyCode));
-//            broadcastExceptOne(new EPlayerJoined(name), name);
-//            client.send(new EChooseWizard(new ArrayList<>(availableWizards)));
-//        }
     }
 
     /**
-     * Remove a client from the current lobby, using it's nickname
+     * Remove a client from the current lobby, using its nickname
      *
      * @param name nickname of the player to remove
      */

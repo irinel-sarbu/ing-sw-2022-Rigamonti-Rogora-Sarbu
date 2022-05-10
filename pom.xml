@@ -22,6 +22,7 @@
             **/view/**/*,
             **/lobbyStates/**/*,
             **/controller/client/**/*,
+            **/controller/server/ServerController.class,
             **/*App.*
         </sonar.exclusions>
         <!-- Matteo Rogora: manually added -->
@@ -94,6 +95,7 @@
                         <exclude>**/view/**/*</exclude>
                         <exclude>**/lobbyStates/**/*</exclude>
                         <exclude>**/controller/client/**/*</exclude>
+                        <exclude>**/controller/server/ServerController.class</exclude>
                         <exclude>**/*App.*</exclude>
                     </excludes>
                 </configuration>
