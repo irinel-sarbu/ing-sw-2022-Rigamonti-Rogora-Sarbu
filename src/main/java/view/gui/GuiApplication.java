@@ -1,33 +1,40 @@
 package view.gui;
 
+import controller.client.ClientController;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.Logger;
+import view.View;
+
+import java.io.IOException;
 
 public class GuiApplication extends Application {
+
+    private ClientController clientController;
+    private View guiView;
+
     @Override
     public void start(Stage stage) throws Exception {
-//        Parent root = null;
-//        FXMLLoader loader = new FXMLLoader();
-//
-//        // TODO Create login.fxml
-//        loader.setLocation(getClass().getResource("/fxml/login.fxml"));
-//
-//        try {
-//            rootLayout = loader.load();
-//        } catch (IOException e) {
-//            Logger.severe(e.getMessage());
-//            System.exit(1);
-//        }
-//        Scene scene = new Scene(rootLayout);
+        this.guiView = new GuiView();
+        this.clientController = new ClientController(guiView);
 
-        // TEMP
-        Group root = new Group();
+        Parent root = null;
+        FXMLLoader loader = new FXMLLoader();
+
+        // TODO Create login.fxml
+        loader.setLocation(getClass().getResource("/fxml/login.fxml"));
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            Logger.severe(e.getMessage());
+            System.exit(1);
+        }
 
         Scene scene = new Scene(root);
-        stage.setHeight(500);
-        stage.setWidth(500);
         stage.setResizable(false);
         stage.setTitle("Eryantis Board Game");
         stage.setScene(scene);
