@@ -117,6 +117,6 @@ public class CliHelper {
     public void resetScreen() {
         System.out.print(INITIALIZE_SCREEN);
         System.out.print(CLEAN);
-        System.out.printf("Welcome to %sEryantis \uD83E\uDDDA\n\n", CliHelper.ANSI_ORANGE);
+        System.out.printf("Welcome to %sEryantis \uD83E\uDDDA", CliHelper.ANSI_ORANGE);
     }
 }
