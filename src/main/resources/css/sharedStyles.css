@@ -17,7 +17,11 @@
 }
 
 #titleLabel {
-    -fx-text-fill: #FFFDE3;
     -fx-font-family: 'Newborough';
     -fx-font-size: 48;
+}
+
+#menuLabel {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 22;
 }
