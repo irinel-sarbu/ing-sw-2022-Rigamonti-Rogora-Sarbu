@@ -6,8 +6,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
-<StackPane prefWidth="231.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11"
-           fx:controller="view.gui.controllers.LoginSceneController">
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="view.gui.controllers.LoginSceneController"
+           prefHeight="400.0" prefWidth="600.0">
     <children>
         <StackPane>
             <children>
@@ -33,7 +35,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                             </rowConstraints>
                         </GridPane>
-                        <StackPane prefHeight="-1.0" prefWidth="-1.0">
+                        <StackPane>
                             <children>
                                 <Button fx:id="loginButton" onMousePressed="#onLogin" alignment="CENTER"
                                         defaultButton="true" mnemonicParsing="false" text="Login"
