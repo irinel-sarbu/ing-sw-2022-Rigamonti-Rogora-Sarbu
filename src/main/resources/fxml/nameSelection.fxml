@@ -24,9 +24,9 @@
             </effect>
         </TextField>
         <Button fx:id="confirmNameButton" layoutX="490.0" layoutY="333.0" onMousePressed="#onNameConfirmed"
-                prefHeight="25.0" prefWidth="67.0" text="Confirm"/>
+                prefHeight="57.5" prefWidth="126.0" text="Confirm"/>
         <Label fx:id="titleLabel" prefHeight="81.0" prefWidth="650.0" alignment="CENTER" text="Welcome to Eriantys"/>
-        <Label fx:id="menuLabel" alignment="TOP_RIGHT" layoutX="20.0" layoutY="332.0" prefHeight="25.0"
+        <Label fx:id="menuLabel" alignment="CENTER_LEFT" layoutX="20.0" layoutY="332.0" prefHeight="25.0"
                prefWidth="224.0" text="Insert your name here:">
             <opaqueInsets>
                 <Insets/>
