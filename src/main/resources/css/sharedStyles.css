@@ -27,7 +27,7 @@
 }
 
 .button {
-    -fx-font-family: 'Newborough';
+    -fx-font-family: 'Unicorn Scribbles';
     -fx-font-size: 16;
     -fx-text-fill: #451616;
     -fx-background-image: url("../ui/buttons/stoneButtonInsetReady.png");
