@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'Unicorn Scribbles';
+    src: url("../fonts/Unicorn_Scribbles.ttf");
+}
+
+@font-face {
+    font-family: 'Newborough';
+    src: url("../fonts/NEWBOROU.ttf");
+}
+
+.root {
+    -fx-background-color: #111111;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+#titleLabel {
+    -fx-text-fill: #FFFDE3;
+    -fx-font-family: 'Newborough';
+    -fx-font-size: 48;
+}

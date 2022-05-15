@@ -24,8 +24,8 @@ public class GuiApplication extends Application {
         Parent root = null;
         FXMLLoader loader = new FXMLLoader();
 
-        // TODO Create login.fxml
-        loader.setLocation(getClass().getResource("/fxml/login.fxml"));
+        // TODO : change to login.fxml
+        loader.setLocation(getClass().getResource("/fxml/nameSelection.fxml"));
 
         try {
             root = loader.load();
@@ -35,6 +35,7 @@ public class GuiApplication extends Application {
         }
 
         Scene scene = new Scene(root);
+
         stage.setResizable(false);
         stage.setTitle("Eryantis Board Game");
         stage.setScene(scene);

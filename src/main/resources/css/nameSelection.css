@@ -1,0 +1,9 @@
+#titleLabel {
+    -fx-padding: 30px;
+}
+
+#menuLabel {
+    -fx-text-fill: #FFFDE3;
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 22;
+}
