@@ -28,7 +28,7 @@
 
 .button {
     -fx-font-family: 'Unicorn Scribbles';
-    -fx-font-size: 20;
+    -fx-font-size: 16;
 
     -fx-background-image: url("../ui/buttons/stoneButtonInsetReady.png");
     -fx-background-size: cover;
@@ -45,7 +45,7 @@
 
 .button:hover {
     -fx-font-family: 'Unicorn Scribbles';
-    -fx-font-size: 20;
+    -fx-font-size: 16;
 
     -fx-background-image: url("../ui/buttons/stoneButtonInsetHovered.png");
     -fx-background-size: cover;
@@ -60,11 +60,11 @@
     -fx-opacity: 1;
 }
 
-.button:disabled {
+.button:pressed {
     -fx-font-family: 'Unicorn Scribbles';
-    -fx-font-size: 20;
+    -fx-font-size: 16;
 
-    -fx-background-image: url("../ui/buttons/stoneButtonInsetDisabled.png");
+    -fx-background-image: url("../ui/buttons/stoneButtonInsetPressed.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 

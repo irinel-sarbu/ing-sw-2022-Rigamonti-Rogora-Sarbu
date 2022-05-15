@@ -4,3 +4,9 @@
     -fx-padding: 30px;
     -fx-text-alignment: center;
 }
+
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, black, 2, 0.2, 0, 0);
+    -fx-padding: 30px;
+}
