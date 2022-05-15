@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
-<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,7 +31,7 @@
                         <Image url="@../ui/Parchment.png"/>
                     </image>
                     <effect>
-                        <MotionBlur radius="1.85"/>
+                        <InnerShadow/>
                     </effect>
                 </ImageView>
                 <Label fx:id="menuLabel" alignment="CENTER" layoutX="6.0" layoutY="9.0" prefHeight="71.0"
@@ -43,8 +43,8 @@
                         <Insets right="40.0"/>
                     </padding>
                 </Label>
-                <TextField fx:id="name" layoutX="27.0" layoutY="74.0" maxWidth="-Infinity" prefHeight="0.0"
-                           prefWidth="218.0">
+                <TextField fx:id="name" focusTraversable="false" layoutX="27.0" layoutY="74.0" maxWidth="-Infinity"
+                           prefHeight="0.0" prefWidth="218.0" promptText="________">
                     <effect>
                         <Blend/>
                     </effect>
