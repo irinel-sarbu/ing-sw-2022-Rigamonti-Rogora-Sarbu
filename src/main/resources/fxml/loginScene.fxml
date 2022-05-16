@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -51,17 +52,14 @@
                 mnemonicParsing="false" onMousePressed="#onLogin" prefHeight="33.0" prefWidth="73.0" text="Login"/>
         <Label fx:id="warning" layoutX="302.0" layoutY="271.0" opacity="0.0" prefHeight="48.0" prefWidth="126.0"
                text="Warning: please insert a valid port" wrapText="true"/>
-        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="436.0" layoutY="110.0" pickOnBounds="true"
+        <ImageView fitHeight="111.0" fitWidth="154.0" layoutX="486.0" layoutY="190.0" pickOnBounds="true"
                    preserveRatio="true">
             <image>
-                <Image url="@../ui/ButterflyLeft.gif"/>
+                <Image url="@../ui/LoadingMage.gif"/>
             </image>
-        </ImageView>
-        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="480.0" layoutY="239.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <image>
-                <Image url="@../ui/ButterflyRight.gif"/>
-            </image>
+            <effect>
+                <Reflection topOffset="10.0"/>
+            </effect>
         </ImageView>
     </children>
 </AnchorPane>
