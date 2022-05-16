@@ -8,6 +8,7 @@
 #menuLabel {
     -fx-text-fill: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, black, 2, 0.2, 0, 0);
+    -fx-font-size: 22;
     -fx-padding: 30px;
 }
 

@@ -9,21 +9,17 @@
 }
 
 .root {
-    -fx-background-color: #111111;
+    -fx-background-color: black;
 }
 
 .label {
     -fx-text-fill: white;
+    -fx-font-family: 'Unicorn Scribbles';
 }
 
 #titleLabel {
     -fx-font-family: 'Newborough';
     -fx-font-size: 48;
-}
-
-#menuLabel {
-    -fx-font-family: 'Unicorn Scribbles';
-    -fx-font-size: 22;
 }
 
 .button {
