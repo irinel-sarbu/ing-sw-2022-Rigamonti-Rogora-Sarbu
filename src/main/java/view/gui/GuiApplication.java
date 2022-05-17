@@ -5,10 +5,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import util.Logger;
 import view.View;
 
+import java.io.File;
 import java.io.IOException;
 
 public class GuiApplication extends Application {
@@ -16,10 +19,12 @@ public class GuiApplication extends Application {
     private ClientController clientController;
     private View guiView;
 
+
     @Override
     public void start(Stage stage) throws Exception {
         this.guiView = new GuiView();
         this.clientController = new ClientController(guiView);
+        SceneController.setStage(stage);
 
         Parent root = null;
         FXMLLoader loader = new FXMLLoader();
@@ -39,7 +44,8 @@ public class GuiApplication extends Application {
         stage.setResizable(false);
         stage.setTitle("Eriantys");
         stage.setScene(scene);
-
+        SceneController.startMediaPlayer();
         stage.show();
+
     }
 }
