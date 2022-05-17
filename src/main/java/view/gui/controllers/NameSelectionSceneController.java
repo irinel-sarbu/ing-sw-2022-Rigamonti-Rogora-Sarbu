@@ -10,7 +10,7 @@ import util.Logger;
 
 
 
-public class NameSelectionSceneController{
+public class NameSelectionSceneController implements GenericSceneController {
     public TextField name;
 
     @FXML

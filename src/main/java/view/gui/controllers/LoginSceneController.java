@@ -10,7 +10,7 @@ import util.Logger;
 import view.gui.SceneController;
 
 
-public class LoginSceneController{
+public class LoginSceneController implements GenericSceneController {
 
     public TextField ip;
     public TextField port;

@@ -1,4 +1,4 @@
 package view.gui.controllers;
 
-public class MainMenuController {
+public class MainMenuController implements GenericSceneController {
 }
