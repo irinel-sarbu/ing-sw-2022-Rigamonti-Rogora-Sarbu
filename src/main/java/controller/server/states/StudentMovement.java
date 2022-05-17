@@ -89,7 +89,7 @@ public abstract class StudentMovement {
             try {
                 thisGame.getModel().getCoinSupply().removeCoins(1);
                 thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
-            } catch (supplyEmptyException e) {
+            } catch (SupplyEmptyException e) {
                 // Do nothing
             }
 

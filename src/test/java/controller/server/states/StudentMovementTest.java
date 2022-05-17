@@ -135,7 +135,7 @@ public class StudentMovementTest {
 
         try {
             gameModel.getCoinSupply().removeCoins(gameModel.getCoinSupply().getNumOfCoins());
-        } catch (supplyEmptyException e) {
+        } catch (SupplyEmptyException e) {
             System.err.println(e + " not expected");
             fail();
         }

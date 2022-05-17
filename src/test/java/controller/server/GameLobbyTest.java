@@ -1,7 +1,10 @@
 package controller.server;
 
 import controller.server.GameLobby;
-import controller.server.states.CharacterEffectHandler;
+import controller.server.states.*;
+import eventSystem.events.Event;
+import eventSystem.events.network.client.EUseCharacterEffect;
+import eventSystem.events.network.client.EUseFanaticEffect;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
@@ -36,7 +39,8 @@ public class GameLobbyTest {
     private static List<Player> players;
 
     @BeforeEach
-    public void CharacterEffectHandler() {
+    public void SetGameLobby() {
+        Random.setSeed(0);
         server = new Server(5000);
         socket = new Socket();
         uuid = UUID.randomUUID();
@@ -105,4 +109,90 @@ public class GameLobbyTest {
             fail();
         }
     }
+
+    private void characterActivatedTest(int seed, CharacterType type) {
+        Random.setSeed(seed);
+        setUPExpert();
+        EUseCharacterEffect someEffect = new EUseCharacterEffect(type);
+        someEffect.setClientNickname("player1");
+
+        int cardCost = gameModel.getCharacterByType(type).getCost();
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(someEffect));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(type).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void playerHasActivatedEffect() {
+
+        // wrong player
+        Random.setSeed(0);
+        setUPExpert();
+        EUseCharacterEffect wrongPlayer = new EUseCharacterEffect(CharacterType.JESTER);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+
+        // not a passive character
+        Random.setSeed(0);
+        setUPExpert();
+        EUseCharacterEffect wrongCharacter = new EUseCharacterEffect(CharacterType.JESTER);
+        wrongCharacter.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongCharacter));
+
+        // not enough coin
+        Random.setSeed(14);
+        setUPExpert();
+        EUseCharacterEffect notEnoughCoin = new EUseCharacterEffect(CharacterType.FARMER);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+
+        characterActivatedTest(14, CharacterType.FARMER);
+        assertTrue(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        characterActivatedTest(1750, CharacterType.POSTMAN);
+        assertTrue(gameLobby.getMotherNatureMovement() instanceof PostmanMotherNatureMovement);
+        characterActivatedTest(0, CharacterType.CENTAUR);
+        assertTrue(gameLobby.getResolveIsland() instanceof CentaurResolveIsland);
+        characterActivatedTest(3, CharacterType.KNIGHT);
+        assertTrue(gameLobby.getResolveIsland() instanceof KnightResolveIsland);
+    }
+
+    @Test
+    public void FanaticEffect() {
+
+        // wrong player
+        Random.setSeed(0);
+        setUPExpert();
+        EUseFanaticEffect wrongPlayer = new EUseFanaticEffect(Color.GREEN);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
+
+        // not enough coin
+        Random.setSeed(0);
+        setUPExpert();
+        EUseFanaticEffect notEnoughCoin = new EUseFanaticEffect(Color.GREEN);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
+
+        // right run
+        Random.setSeed(0);
+        setUPExpert();
+        EUseFanaticEffect rightRun = new EUseFanaticEffect(Color.GREEN);
+        rightRun.setClientNickname("player1");
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost();
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(Color.GREEN, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+
+    }
+
 }

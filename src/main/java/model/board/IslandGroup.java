@@ -206,7 +206,6 @@ public class IslandGroup implements Serializable {
         }
         return header + body;
     }
-
     public static String allToString(List<IslandGroup> islandGroups) {
         StringBuilder body = new StringBuilder();
         for(IslandGroup ig : islandGroups) {

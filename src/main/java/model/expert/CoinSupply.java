@@ -1,6 +1,6 @@
 package model.expert;
 
-import exceptions.supplyEmptyException;
+import exceptions.SupplyEmptyException;
 
 import java.io.Serializable;
 
@@ -55,10 +55,10 @@ public class CoinSupply implements Serializable {
      *
      * @param numOfCoins Is the selected number of coins.
      * @return How many coins has successfully removed.
-     * @throws supplyEmptyException If the supply is already empty or there aren't enough coins.
+     * @throws SupplyEmptyException If the supply is already empty or there aren't enough coins.
      */
-    public int removeCoins(int numOfCoins) throws supplyEmptyException {
-        if (this.numOfCoins < numOfCoins) throw new supplyEmptyException();
+    public int removeCoins(int numOfCoins) throws SupplyEmptyException {
+        if (this.numOfCoins < numOfCoins) throw new SupplyEmptyException();
         this.numOfCoins -= numOfCoins;
         return numOfCoins;
     }
