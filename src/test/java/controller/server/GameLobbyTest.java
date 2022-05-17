@@ -4,6 +4,7 @@ import controller.server.GameLobby;
 import controller.server.states.*;
 import eventSystem.events.Event;
 import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
@@ -38,7 +39,6 @@ public class GameLobbyTest {
     private static List<Player> players;
 
     private static List<Student> entranceStudents, jesterStudents, someStudents;
-
 
 
     @BeforeEach
@@ -123,7 +123,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(someEffect));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(type).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(type).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -196,7 +196,7 @@ public class GameLobbyTest {
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
         assertEquals(1, gameModel.getIslandGroupByID(0).getNoEntrySize());
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -232,7 +232,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.HERALD).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.HERALD).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -268,7 +268,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.THIEF).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.THIEF).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -304,7 +304,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MINSTREL).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.MINSTREL).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -340,7 +340,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.JESTER).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.JESTER).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -376,7 +376,7 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MONK).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.MONK).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
     }
 
@@ -412,8 +412,28 @@ public class GameLobbyTest {
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.PRINCESS).getCost());
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.PRINCESS).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void NullSocket() {
+        assertNull(gameLobby.getPlayerNameBySocket(null));
+    }
+
+    @Test
+    public void StudentToDining() {
+        Random.setSeed(0);
+        setUPNormal();
+        gameLobby.setGameState(GameState.STUDENT_MOVEMENT);
+        try {
+            gameLobby.setCurrentPlayer(gameModel.getPlayerByName("player1"));
+            EStudentMovementToDining event = new EStudentMovementToDining(gameModel.getPlayerByName("player1").getSchoolBoard().getEntranceStudents().get(0).getID());
+            event.setClientNickname("player1");
+            assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedToDining(event));
+        } catch (PlayerNotFoundException e) {
+            fail();
+        }
     }
 
     @Test
