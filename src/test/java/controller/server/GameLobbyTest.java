@@ -3,8 +3,7 @@ package controller.server;
 import controller.server.GameLobby;
 import controller.server.states.*;
 import eventSystem.events.Event;
-import eventSystem.events.network.client.EUseCharacterEffect;
-import eventSystem.events.network.client.EUseFanaticEffect;
+import eventSystem.events.network.client.*;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
@@ -37,6 +36,10 @@ public class GameLobbyTest {
     private static GameLobby gameLobby;
     private static GameModel gameModel;
     private static List<Player> players;
+
+    private static List<Student> entranceStudents, jesterStudents, someStudents;
+
+
 
     @BeforeEach
     public void SetGameLobby() {
@@ -160,39 +163,266 @@ public class GameLobbyTest {
     }
 
     @Test
-    public void FanaticEffect() {
+    public void GrannyEffect() {
+
+        // wrong player
+        Random.setSeed(3);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost();
+
+        EUseGrannyEffect wrongPlayer = new EUseGrannyEffect(0);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(0, gameModel.getIslandGroupByID(0).getNoEntrySize());
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost());
+
+        // not enough coin
+        Random.setSeed(3);
+        setUPExpert();
+        EUseGrannyEffect notEnoughCoin = new EUseGrannyEffect(0);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertEquals(0, gameModel.getIslandGroupByID(0).getNoEntrySize());
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost());
+
+        // right run
+        Random.setSeed(3);
+        setUPExpert();
+        EUseGrannyEffect rightRun = new EUseGrannyEffect(0);
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(1, gameModel.getIslandGroupByID(0).getNoEntrySize());
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.GRANNY_HERBS).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void HeraldEffect() {
+
+        // wrong player
+        Random.setSeed(14);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.HERALD).getCost();
+
+        EUseHeraldEffect wrongPlayer = new EUseHeraldEffect(0);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.HERALD).getCost());
+
+        // not enough coin
+        Random.setSeed(14);
+        setUPExpert();
+        EUseHeraldEffect notEnoughCoin = new EUseHeraldEffect(0);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.HERALD).getCost());
+
+        // right run
+        Random.setSeed(14);
+        setUPExpert();
+        EUseHeraldEffect rightRun = new EUseHeraldEffect(0);
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.HERALD).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void ThiefEffect() {
+
+        // wrong player
+        Random.setSeed(14);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.THIEF).getCost();
+
+        EUseThiefEffect wrongPlayer = new EUseThiefEffect(Color.GREEN);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.THIEF).getCost());
+
+        // not enough coin
+        Random.setSeed(14);
+        setUPExpert();
+        EUseThiefEffect notEnoughCoin = new EUseThiefEffect(Color.GREEN);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.THIEF).getCost());
+
+        // right run
+        Random.setSeed(14);
+        setUPExpert();
+        EUseThiefEffect rightRun = new EUseThiefEffect(Color.GREEN);
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.THIEF).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void MinistrelEffect() {
+
+        // wrong player
+        Random.setSeed(3);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.MINSTREL).getCost();
+
+        EUseMinstrelEffect wrongPlayer = new EUseMinstrelEffect(new ArrayList<>(), new ArrayList<>());
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MINSTREL).getCost());
+
+        // not enough coin
+        Random.setSeed(3);
+        setUPExpert();
+        EUseMinstrelEffect notEnoughCoin = new EUseMinstrelEffect(new ArrayList<>(), new ArrayList<>());
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MINSTREL).getCost());
+
+        // right run
+        Random.setSeed(3);
+        setUPExpert();
+        EUseMinstrelEffect rightRun = new EUseMinstrelEffect(new ArrayList<>(), new ArrayList<>());
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MINSTREL).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void JesterEffect() {
 
         // wrong player
         Random.setSeed(0);
         setUPExpert();
-        EUseFanaticEffect wrongPlayer = new EUseFanaticEffect(Color.GREEN);
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.JESTER).getCost();
+
+        EUseJesterEffect wrongPlayer = new EUseJesterEffect(new ArrayList<>(), new ArrayList<>());
         wrongPlayer.setClientNickname("player2");
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
-        assertNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.JESTER).getCost());
 
         // not enough coin
         Random.setSeed(0);
         setUPExpert();
-        EUseFanaticEffect notEnoughCoin = new EUseFanaticEffect(Color.GREEN);
+        EUseJesterEffect notEnoughCoin = new EUseJesterEffect(new ArrayList<>(), new ArrayList<>());
         notEnoughCoin.setClientNickname("player1");
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
         assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
-        assertNull(gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.JESTER).getCost());
 
         // right run
         Random.setSeed(0);
         setUPExpert();
-        EUseFanaticEffect rightRun = new EUseFanaticEffect(Color.GREEN);
+        EUseJesterEffect rightRun = new EUseJesterEffect(new ArrayList<>(), new ArrayList<>());
         rightRun.setClientNickname("player1");
 
-        int cardCost = gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost();
         gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
         assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
 
-        assertEquals(Color.GREEN, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getColor());
-        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost());
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.JESTER).getCost());
         assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
-
     }
 
+    @Test
+    public void MonkEffect() {
+
+        // wrong player
+        Random.setSeed(1750);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.MONK).getCost();
+
+        EUseMonkEffect wrongPlayer = new EUseMonkEffect(gameModel.getCharacterByType(CharacterType.MONK).getStudents().get(0).getID(), 0);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MONK).getCost());
+
+        // not enough coin
+        Random.setSeed(1750);
+        setUPExpert();
+        EUseMonkEffect notEnoughCoin = new EUseMonkEffect(gameModel.getCharacterByType(CharacterType.MONK).getStudents().get(0).getID(), 0);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MONK).getCost());
+
+        // right run
+        Random.setSeed(1750);
+        setUPExpert();
+        EUseMonkEffect rightRun = new EUseMonkEffect(gameModel.getCharacterByType(CharacterType.MONK).getStudents().get(0).getID(), 0);
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.MONK).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void PrincessEffect() {
+
+        // wrong player
+        Random.setSeed(1750);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.PRINCESS).getCost();
+
+        EUsePrincessEffect wrongPlayer = new EUsePrincessEffect(gameModel.getCharacterByType(CharacterType.PRINCESS).getStudents().get(0).getID());
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.PRINCESS).getCost());
+
+        // not enough coin
+        Random.setSeed(1750);
+        setUPExpert();
+        EUsePrincessEffect notEnoughCoin = new EUsePrincessEffect(gameModel.getCharacterByType(CharacterType.PRINCESS).getStudents().get(0).getID());
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.PRINCESS).getCost());
+
+        // right run
+        Random.setSeed(1750);
+        setUPExpert();
+        EUsePrincessEffect rightRun = new EUsePrincessEffect(gameModel.getCharacterByType(CharacterType.PRINCESS).getStudents().get(0).getID());
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost+1, gameModel.getCharacterByType(CharacterType.PRINCESS).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
+    public void RemoveClient() {
+        Random.setSeed(0);
+        setUPNormal();
+
+        int players = gameModel.getPlayers().size();
+        gameLobby.removeClientFromLobbyByName("player1");
+        assertEquals(players, gameModel.getPlayers().size());
+    }
 }
