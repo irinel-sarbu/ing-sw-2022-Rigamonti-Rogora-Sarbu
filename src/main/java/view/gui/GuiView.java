@@ -1,9 +1,12 @@
 package view.gui;
 
+import javafx.application.Platform;
 import model.board.Assistant;
 import network.LightModel;
+import util.Logger;
 import util.Wizard;
 import view.View;
+import view.gui.controllers.LoginSceneController;
 
 import java.util.List;
 
@@ -20,6 +23,9 @@ public class GuiView extends View {
 
     @Override
     public void askNickname() {
+        if (SceneController.getCurrentSceneController() instanceof LoginSceneController) {
+            Platform.runLater(() -> SceneController.switchSceneAndSong("nameSelection.fxml", "src/main/resources/bgMusic/MainMenuMusic.mp3"));
+        }
     }
 
     @Override

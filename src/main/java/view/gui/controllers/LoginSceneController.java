@@ -23,7 +23,6 @@ public class LoginSceneController implements GenericSceneController {
         if (portValue.matches("\\d{1,8}")) {
             EventManager.notify(new EUpdateServerInfo(ip.getText(), Integer.parseInt(portValue)));
             warning.opacityProperty().setValue(0);
-            SceneController.switchSceneAndSong("nameSelection.fxml", "src/main/resources/bgMusic/MainMenuMusic.mp3");
         } else {
             warning.opacityProperty().setValue(100);
         }

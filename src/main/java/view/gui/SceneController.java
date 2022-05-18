@@ -49,6 +49,7 @@ public class SceneController {
 
     public static void switchScene(String sceneFile) {
         try {
+            Logger.info("Switching Scene...");
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + sceneFile));
             Parent root = loader.load();
             currentSceneController = loader.getController();
@@ -56,6 +57,7 @@ public class SceneController {
             currentScene = new Scene(root);
             currentScene.setRoot(root);
             stage.setScene(currentScene);
+            Logger.info("Scene Switched");
         } catch (IOException e) {
             Logger.severe(e.getMessage());
         }
