@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0"
+            prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="view.gui.controllers.CreateOrJoinSceneController">
+    <children>
+        <ImageView fx:id="bgImage" fitHeight="389.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Graphical_Assets/eriantys.jpg"/>
+            </image>
+        </ImageView>
+        <Label fx:id="titleLabel" alignment="CENTER" layoutY="-9.0" prefHeight="78.0" prefWidth="650.0"
+               text="Welcome to Eriantys"/>
+        <Pane fx:id="menuBG" layoutX="112.0" layoutY="83.0" prefHeight="276.0" prefWidth="427.0">
+            <children>
+                <ImageView fitHeight="292.0" fitWidth="457.0" layoutX="-15.0" layoutY="14.0" opacity="0.79"
+                           pickOnBounds="true">
+                    <image>
+                        <Image url="@../ui/Parchment.png"/>
+                    </image>
+                    <effect>
+                        <InnerShadow/>
+                    </effect>
+                </ImageView>
+                <Label fx:id="menuLabel" alignment="CENTER" prefHeight="82.0" prefWidth="427.0"
+                       text="Game Creation Menu"/>
+                <Pane fx:id="createOrJoinPane" layoutX="47.0" layoutY="60.0" prefHeight="200.0" prefWidth="337.0">
+                    <children>
+                        <Button fx:id="createButton" layoutX="133.0" layoutY="63.0" mnemonicParsing="false"
+                                onMousePressed="#onCreate" prefHeight="29.0" prefWidth="71.0" text="Create"/>
+                        <Button fx:id="joinButton" layoutX="133.0" layoutY="100.0" mnemonicParsing="false"
+                                onMousePressed="#onJoin" prefHeight="29.0" prefWidth="71.0" text="Join"/>
+                    </children>
+                </Pane>
+                <Pane fx:id="createPane" layoutX="47.0" layoutY="60.0" prefHeight="200.0" prefWidth="337.0"
+                      visible="false">
+                    <children>
+                        <Pane fx:id="createPane1" prefHeight="200.0" prefWidth="337.0" visible="false">
+                            <children>
+                                <Button fx:id="normalButton" layoutX="133.0" layoutY="64.0" mnemonicParsing="false"
+                                        onMousePressed="#onNormal" prefHeight="29.0" prefWidth="71.0" text="Normal"/>
+                                <Button fx:id="expertButton" layoutX="133.0" layoutY="100.0" mnemonicParsing="false"
+                                        onMousePressed="#onExpert" prefHeight="29.0" prefWidth="71.0" text="Expert"/>
+                            </children>
+                        </Pane>
+                        <Pane fx:id="createPane2" prefHeight="200.0" prefWidth="337.0" visible="false">
+                            <children>
+                                <Button fx:id="twoPlayersButton" layoutX="126.0" layoutY="53.0" mnemonicParsing="false"
+                                        onMousePressed="#onTwoPlayers" prefHeight="40.0" prefWidth="86.0"
+                                        text="2 Players"/>
+                                <Button fx:id="threePlayersButton" layoutX="126.0" layoutY="113.0"
+                                        mnemonicParsing="false" onMousePressed="#onThreePlayers" prefHeight="40.0"
+                                        prefWidth="86.0" text="3 Players"/>
+                            </children>
+                        </Pane>
+                    </children>
+                </Pane>
+                <Pane fx:id="joinPane" layoutX="45.0" layoutY="60.0" prefHeight="200.0" prefWidth="337.0"
+                      visible="false">
+                    <children>
+                        <TextField fx:id="textField" focusTraversable="false" layoutX="94.0" layoutY="88.0"
+                                   promptText="_ _ _ _ _"/>
+                        <Label fx:id="textLabel" alignment="CENTER" layoutY="14.0" prefHeight="17.0" prefWidth="337.0"
+                               text="Insert Lobby Code:"/>
+                        <Button fx:id="confirmJoinButton" layoutX="132.0" layoutY="125.0" mnemonicParsing="false"
+                                onMousePressed="#onJoinConfirm" prefHeight="17.0" prefWidth="71.0" text="Confirm"/>
+                    </children>
+                </Pane>
+                <Button fx:id="backButton" layoutX="47.0" layoutY="213.0" mnemonicParsing="false"
+                        onMousePressed="#onBack" prefHeight="40.0" prefWidth="64.0" text="   Back" visible="false">
+                    <effect>
+                        <DropShadow/>
+                    </effect>
+                </Button>
+            </children>
+        </Pane>
+        <Pane fx:id="balloonText" layoutX="482.0" layoutY="144.0" prefHeight="139.0" prefWidth="172.0" visible="false">
+            <children>
+                <ImageView fitHeight="132.0" fitWidth="172.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../ui/BalloonText.png"/>
+                    </image>
+                    <effect>
+                        <ColorAdjust brightness="-0.05" contrast="0.07" hue="0.07" saturation="0.05">
+                            <input>
+                                <Glow level="1.0"/>
+                            </input>
+                        </ColorAdjust>
+                    </effect>
+                </ImageView>
+                <Label fx:id="errorLabel" alignment="CENTER" layoutX="24.0" layoutY="25.0" prefHeight="65.0"
+                       prefWidth="124.0" text="Invalid code format" wrapText="true"/>
+            </children>
+        </Pane>
+    </children>
+    <stylesheets>
+        <URL value="@../css/sharedStyles.css"/>
+        <URL value="@../css/createOrJoin.css"/>
+    </stylesheets>
+</AnchorPane>

@@ -7,6 +7,7 @@ import util.Logger;
 import util.Wizard;
 import view.View;
 import view.gui.controllers.LoginSceneController;
+import view.gui.controllers.NameSelectionSceneController;
 
 import java.util.List;
 
@@ -40,7 +41,9 @@ public class GuiView extends View {
 
     @Override
     public void chooseCreateOrJoin() {
-
+        if (SceneController.getCurrentSceneController() instanceof NameSelectionSceneController) {
+            Platform.runLater(() -> SceneController.switchScene("CreateOrJoin.fxml"));
+        }
     }
 
     @Override
