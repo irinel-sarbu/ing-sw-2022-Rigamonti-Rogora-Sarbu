@@ -62,4 +62,13 @@ public class GuiView extends View {
     public void update(LightModel model) {
 
     }
+
+    @Override
+    public void displayMessage(String message) {
+    }
+
+    @Override
+    public void displayError(String message) {
+        Platform.runLater(() -> SceneController.displayMessagePopUp(message));
+    }
 }

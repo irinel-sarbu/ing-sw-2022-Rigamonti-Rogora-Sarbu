@@ -8,6 +8,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import util.Logger;
 import view.gui.controllers.GenericSceneController;
+import view.gui.controllers.ErrorPopUpSceneController;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,5 +73,22 @@ public class SceneController {
         mediaPlayer = new MediaPlayer(currentMedia);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    public static void displayMessagePopUp(String message) {
+        FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/errorPopUpScene.fxml"));
+        Parent parent;
+        try {
+            parent = loader.load();
+        } catch (IOException e) {
+            Logger.severe("Couldn't Load PopUp Scene");
+            e.printStackTrace();
+            return;
+        }
+        ErrorPopUpSceneController errorPopUpSceneController = loader.getController();
+        Scene popUpScene = new Scene(parent);
+        errorPopUpSceneController.setScene(popUpScene);
+        errorPopUpSceneController.display(message);
+        errorPopUpSceneController.showWindow();
     }
 }
