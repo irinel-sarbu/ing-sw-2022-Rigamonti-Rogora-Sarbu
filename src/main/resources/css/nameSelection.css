@@ -18,3 +18,8 @@
     -fx-font-size: 16;
     -fx-alignment: center;
 }
+
+#errorLabel {
+    -fx-text-fill: red;
+    -fx-font-size: 16;
+}
