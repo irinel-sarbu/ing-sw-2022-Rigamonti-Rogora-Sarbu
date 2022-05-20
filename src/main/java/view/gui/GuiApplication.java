@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -27,6 +28,7 @@ public class GuiApplication extends Application {
         this.clientController = new ClientController(guiView);
         stage.setResizable(false);
         stage.setTitle("Eriantys");
+        stage.getIcons().add(new Image("/ui/Icon.png"));
         SceneController.setStage(stage);
         SceneController.switchScene("loginScene.fxml");
         SceneController.startMediaPlayer();
