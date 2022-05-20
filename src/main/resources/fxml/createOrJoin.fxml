@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0"
-            prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="650.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
             fx:controller="view.gui.controllers.CreateOrJoinSceneController">
     <children>
         <ImageView fx:id="bgImage" fitHeight="389.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">

@@ -19,6 +19,9 @@ public abstract class View {
         System.out.println(message);
     }
 
+    public void joinedLobbyDisplay(String code) {
+    }
+
     public void displayError(String errorMessage) {
         System.out.println(CliHelper.ANSI_RED + "ERROR " + errorMessage + CliHelper.ANSI_RESET);
     }

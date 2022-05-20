@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import util.Logger;
 import view.gui.controllers.GenericSceneController;
 import view.gui.controllers.ErrorPopUpSceneController;
+import view.gui.controllers.LobbyJoinedSceneController;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,5 +91,11 @@ public class SceneController {
         errorPopUpSceneController.setScene(popUpScene);
         errorPopUpSceneController.display(message);
         errorPopUpSceneController.showWindow();
+    }
+
+    public static void switchSceneToLobbyIdle(String sceneFile, String code) {
+        switchScene(sceneFile);
+        LobbyJoinedSceneController controller = (LobbyJoinedSceneController) currentSceneController;
+        controller.editCode(code);
     }
 }

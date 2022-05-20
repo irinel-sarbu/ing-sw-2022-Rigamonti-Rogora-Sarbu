@@ -6,6 +6,7 @@ import network.LightModel;
 import util.Logger;
 import util.Wizard;
 import view.View;
+import view.gui.controllers.CreateOrJoinSceneController;
 import view.gui.controllers.LoginSceneController;
 import view.gui.controllers.NameSelectionSceneController;
 
@@ -30,8 +31,14 @@ public class GuiView extends View {
     }
 
     @Override
-    public void createLobby() {
+    public void joinedLobbyDisplay(String code) {
+        if (SceneController.getCurrentSceneController() instanceof CreateOrJoinSceneController) {
+            Platform.runLater(() -> SceneController.switchSceneToLobbyIdle("lobbyJoined.fxml", code));
+        }
+    }
 
+    @Override
+    public void createLobby() {
     }
 
     @Override
@@ -42,7 +49,7 @@ public class GuiView extends View {
     @Override
     public void chooseCreateOrJoin() {
         if (SceneController.getCurrentSceneController() instanceof NameSelectionSceneController) {
-            Platform.runLater(() -> SceneController.switchScene("CreateOrJoin.fxml"));
+            Platform.runLater(() -> SceneController.switchScene("createOrJoin.fxml"));
         }
     }
 

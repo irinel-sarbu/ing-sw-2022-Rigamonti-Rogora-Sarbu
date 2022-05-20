@@ -151,6 +151,12 @@ public class CliView extends View {
     }
 
     @Override
+    public void joinedLobbyDisplay(String code) {
+        System.out.println("Joined lobby " + code);
+        System.out.println("Waiting for other players to connect...");
+    }
+
+    @Override
     public void chooseWizard(List<Wizard> availableWizards) {
         System.out.println("Choose your wizard:");
         for (int i = 0; i < availableWizards.size(); i++) {

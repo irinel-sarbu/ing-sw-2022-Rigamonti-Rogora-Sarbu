@@ -155,9 +155,8 @@ public class ClientController implements EventListener {
     public void onLobbyJoined(ELobbyJoined event) {
         this.lobbyCode = event.getCode();
         client.setLobbyId(lobbyCode);
-
-        view.displayMessage("Joined lobby " + event.getCode());
-        view.displayMessage("Waiting for other players to connect...");
+        //changed to work with both gui and cli
+        view.joinedLobbyDisplay(lobbyCode);
     }
 
     /**
