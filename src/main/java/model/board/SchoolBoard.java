@@ -128,7 +128,7 @@ public class SchoolBoard implements Serializable {
      * Adds a selected student to the {@link SchoolBoard#diningRoom}.
      *
      * @param student Is the selected student that needs to be added.
-     * @return True if the number of students of a certain color is 0(mod3). Player will have to pick up a coin from the stash.
+     * @return True if the number of students of a certain color is 0(mod3). Player  ll have to pick up a coin from the stash.
      * @throws DiningRoomFullException if the Dining Room is already full.
      */
     public boolean addToDiningRoom(Student student) throws DiningRoomFullException {

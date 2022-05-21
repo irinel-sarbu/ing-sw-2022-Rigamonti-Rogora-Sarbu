@@ -12,17 +12,20 @@ import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDi
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import eventSystem.events.network.server.*;
 import eventSystem.events.network.server.gameStateEvents.*;
+import exceptions.AssistantAlreadyPlayedException;
 import exceptions.IllegalMovementException;
 import exceptions.PlayerNotFoundException;
 import exceptions.SupplyEmptyException;
 import model.GameModel;
 import model.Player;
+import model.board.Assistant;
 import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import network.server.ClientHandler;
 import network.server.Server;
 import util.*;
 
+import javax.sound.midi.SysexMessage;
 import java.util.*;
 
 public class GameLobby implements EventListener {
@@ -163,15 +166,19 @@ public class GameLobby implements EventListener {
         clientList.put(name, client);
         client.joinLobby(getLobbyCode());
 
-        client.send(new ELobbyJoined(lobbyCode));
-        broadcastExceptOne(new EPlayerJoined(name), name);
+        try {
+            broadcastExceptOne(new EPlayerJoined(name), name);
+        } catch (Exception e) {
+            Logger.warning("Could not contact some client");
+        }
 
         if (clientList.size() == maxPlayers) {
-            broadcast(new ServerMessage(Messages.ALL_CLIENTS_CONNECTED));
             setLobbyState(LobbyState.PRE_GAME);
             Logger.debug(getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
+            broadcast(new ServerMessage(Messages.ALL_CLIENTS_CONNECTED));
         }
+        client.send(new ELobbyJoined(lobbyCode));
     }
 
     /**
@@ -280,20 +287,19 @@ public class GameLobby implements EventListener {
 
     private void sendChooseAssistantEvent() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
-        currentPlayerClient.send(new ServerMessage(Messages.CHOOSE_ASSISTANT));
         broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
+        currentPlayerClient.send(new ServerMessage(Messages.CHOOSE_ASSISTANT));
     }
 
     private void sendStartTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
-        currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
+        currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
     }
 
     private void sendContinueTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
-        ;
     }
 
     /**
@@ -327,11 +333,18 @@ public class GameLobby implements EventListener {
     public boolean playerHasChosenAssistant(EAssistantChosen event) {
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
-
         try {
-            planningPhase.playCard(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getAssistant(), client);
+            planningPhase.playCard(this, getModel().getPlayerByName(playerName), event.getAssistant(), client);
+        } catch (AssistantAlreadyPlayedException aape) {
+            client.send(new ServerMessage(Messages.INVALID_ASSISTANT));
         } catch (Exception others) {
             others.printStackTrace();
+        }
+        broadcastExceptOne(new EPlayerChoseAssistant(playerName, event.getAssistant()), playerName);
+        try {
+            client.send(new EUpdateAssistantDeck(getModel().getPlayerByName(playerName).getAssistants()));
+        } catch (PlayerNotFoundException e) {
+            throw new RuntimeException(e);
         }
         if (currentGameState == GameState.PLANNING) {
             sendChooseAssistantEvent();
@@ -412,6 +425,7 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    // TODO: it may be possible to move this to the passive characters' effects
     @EventHandler
     public boolean playerHasActivatedEffect(EUseFanaticEffect event) {
         String playerName = event.getClientNickname();
@@ -631,7 +645,7 @@ public class GameLobby implements EventListener {
             // TODO: my magic edit to get rid of the client when resolving player name (should be the same)
             studentMovement.moveStudentToDining(this, model.getPlayerByName(playerName /*getPlayerNameBySocket(client)*/), event.getStudentID());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.warning("Wrong phase, not moving students");
         }
         if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
@@ -647,9 +661,10 @@ public class GameLobby implements EventListener {
         ClientHandler client = server.getClientByNickname(playerName);
 
         try {
-            studentMovement.moveStudentToIsland(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID(), event.getIslandID());
+            // TODO: my magic edit to get rid of the client when resolving player name (should be the same)
+            studentMovement.moveStudentToIsland(this, model.getPlayerByName(playerName /*getPlayerNameBySocket(client)*/), event.getStudentID(), event.getIslandID());
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.warning("Wrong phase, not moving students");
         }
         if (currentGameState != GameState.STUDENT_MOVEMENT) {
             broadcast(new EUpdateGameState(getCurrentGameState()));
@@ -717,6 +732,9 @@ public class GameLobby implements EventListener {
         } else {
             sendStartTurn();
         }
+
+        // moving everything here
+
         return true;
     }
 

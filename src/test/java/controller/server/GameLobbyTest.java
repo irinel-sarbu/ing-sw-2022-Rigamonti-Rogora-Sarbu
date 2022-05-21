@@ -4,14 +4,14 @@ import controller.server.GameLobby;
 import controller.server.states.*;
 import eventSystem.events.Event;
 import eventSystem.events.network.client.*;
+import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
+import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToDining;
+import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import exceptions.*;
 import model.GameModel;
 import model.Player;
-import model.board.Bag;
-import model.board.IslandTile;
-import model.board.Professor;
-import model.board.Student;
+import model.board.*;
 import model.expert.CharacterCard;
 import network.server.ClientHandler;
 import network.server.Server;
@@ -100,14 +100,18 @@ public class GameLobbyTest {
         assertSame(gameLobby.getLobbyState(), LobbyState.INIT);
 
         try {
-            ClientHandler clientTest = new ClientHandler(server, socket);
+            ClientHandler clientTest0 = new ClientHandler(server, new Socket());
+            ClientHandler clientTest1 = new ClientHandler(server, new Socket());
 
-            assertThrows(NullPointerException.class, () -> gameLobby.addClientToLobby("client1", clientTest));
+            assertThrows(NullPointerException.class, () -> gameLobby.addClientToLobby("player0", clientTest0));
+            assertThrows(NullPointerException.class, () -> gameLobby.addClientToLobby("player1", clientTest1));
 
             //Should print null because can't test network part
-            System.out.println(gameLobby.getClientByName("client1"));
+            System.out.println(gameLobby.getClientByName("player0"));
 
-            assertEquals("client1", gameLobby.getPlayerNameBySocket(clientTest));
+            assertEquals("player0", gameLobby.getPlayerNameBySocket(clientTest0));
+            assertEquals("player1", gameLobby.getPlayerNameBySocket(clientTest1));
+
         } catch (IOException e) {
             fail();
         }
@@ -417,12 +421,48 @@ public class GameLobbyTest {
     }
 
     @Test
+    public void fanaticEffect() {
+
+        // wrong player
+        Random.setSeed(0);
+        setUPExpert();
+
+        int cardCost = gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost();
+
+        EUseFanaticEffect wrongPlayer = new EUseFanaticEffect(Color.GREEN);
+        wrongPlayer.setClientNickname("player2");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(wrongPlayer));
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost());
+
+        // not enough coin
+        Random.setSeed(0);
+        setUPExpert();
+        EUseFanaticEffect notEnoughCoin = new EUseFanaticEffect(Color.GREEN);
+        notEnoughCoin.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(notEnoughCoin));
+        assertFalse(gameLobby.getStudentMovement() instanceof FarmerStudentMovement);
+        assertEquals(cardCost, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost());
+
+        // right run
+        Random.setSeed(0);
+        setUPExpert();
+        EUseFanaticEffect rightRun = new EUseFanaticEffect(Color.GREEN);
+        rightRun.setClientNickname("player1");
+
+        gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoins(3);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasActivatedEffect(rightRun));
+
+        assertEquals(cardCost + 1, gameModel.getCharacterByType(CharacterType.MUSHROOM_FANATIC).getCost());
+        assertEquals(3 - cardCost, gameLobby.getCurrentPlayer().getSchoolBoard().getCoinSupply().getNumOfCoins());
+    }
+
+    @Test
     public void NullSocket() {
         assertNull(gameLobby.getPlayerNameBySocket(null));
     }
 
     @Test
-    public void StudentToDining() {
+    public void PlayerHasMovedToDining() {
         Random.setSeed(0);
         setUPNormal();
         gameLobby.setGameState(GameState.STUDENT_MOVEMENT);
@@ -431,18 +471,90 @@ public class GameLobbyTest {
             EStudentMovementToDining event = new EStudentMovementToDining(gameModel.getPlayerByName("player1").getSchoolBoard().getEntranceStudents().get(0).getID());
             event.setClientNickname("player1");
             assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedToDining(event));
+
+            // throwing wrong phase
+            gameLobby.setGameState(GameState.PLANNING);
+            assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedToDining(event));
         } catch (PlayerNotFoundException e) {
             fail();
         }
     }
 
     @Test
-    public void RemoveClient() {
+    public void PlayerHasMovedToIsland() {
         Random.setSeed(0);
         setUPNormal();
 
-        int players = gameModel.getPlayers().size();
-        gameLobby.removeClientFromLobbyByName("player1");
-        assertEquals(players, gameModel.getPlayers().size());
+        Student moved = gameLobby.getCurrentPlayer().getSchoolBoard().getEntranceStudents().get(0);
+        Color color = moved.getColor();
+        EStudentMovementToIsland moving = new EStudentMovementToIsland(moved.getID(), 0);
+        moving.setClientNickname("player0");
+        gameLobby.setGameState(GameState.STUDENT_MOVEMENT);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedToIsland(moving));
+        assertEquals(1, gameModel.getIslandTileByID(0).getStudentsNumber(color));
+
+        // wrong phase
+        gameLobby.setGameState(GameState.PLANNING);
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedToIsland(moving));
     }
+
+    @Test
+    public void SomeEvents() {
+        Random.setSeed(0);
+        setUPNormal();
+
+        // just testing events
+        EWizardChosen wizardChosen = new EWizardChosen(Wizard.WIZARD_4);
+        wizardChosen.setClientNickname("player5");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasChosenWizard(wizardChosen));
+
+        ESelectRefillCloud cloudSelected = new ESelectRefillCloud(0);
+        cloudSelected.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasSelectedRefillCloud(cloudSelected));
+
+        EMoveMotherNature motherNatureMoved = new EMoveMotherNature(1);
+        motherNatureMoved.setClientNickname("player1");
+        try {
+            gameModel.getPlayerByName("player1").pushFoldDeck(gameModel.getPlayerByName("player1").getAssistants().get(0));
+        } catch (PlayerNotFoundException e) {
+            fail();
+        }
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedMotherNature(motherNatureMoved));
+        EMoveMotherNature wrongMovement = new EMoveMotherNature(8);
+        wrongMovement.setClientNickname("player1");
+        assertThrows(NullPointerException.class, () -> gameLobby.playerHasMovedMotherNature(wrongMovement));
+    }
+
+    @Test
+    public void PlayerHasChosenAssistant() {
+        Random.setSeed(0);
+        setUPNormal();
+        try {
+            EAssistantChosen assistant = new EAssistantChosen(gameModel.getPlayerByName("player0").getAssistants().get(0));
+            assistant.setClientNickname("player0");
+            gameLobby.setGameState(GameState.PLANNING);
+            assertThrows(NullPointerException.class, () -> gameLobby.playerHasChosenAssistant(assistant));
+
+            EAssistantChosen played = new EAssistantChosen(gameModel.getPlayerByName("player1").getAssistants().get(0));
+            played.setClientNickname("player1");
+            gameLobby.setGameState(GameState.PLANNING);
+            gameLobby.setCurrentPlayer(gameModel.getPlayerByName("player1"));
+            assertThrows(NullPointerException.class, () -> gameLobby.playerHasChosenAssistant(played));
+        } catch (PlayerNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void RemoveClientFromLobbyByName() {
+
+        Random.setSeed(0);
+        setUPNormal();
+
+        gameLobby.removeClientFromLobbyByName("player1");
+        assertNull(gameLobby.getClientByName("player1"));
+        // this will throw an exception (catched inside the function)
+        gameLobby.removeClientFromLobbyByName("player1");
+    }
+
 }
