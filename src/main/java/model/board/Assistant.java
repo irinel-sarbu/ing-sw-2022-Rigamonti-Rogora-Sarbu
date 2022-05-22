@@ -123,12 +123,6 @@ public class Assistant implements Serializable {
     }
 
     /**
-     * Get assistant cards' back
-     * @return wizard chosen at the beginning of the game
-     */
-    public Wizard getWizard() { return wizard; }
-
-    /**
      * Compare two assistants by their {@link Assistant#name}
      *
      * @param o other object to compare

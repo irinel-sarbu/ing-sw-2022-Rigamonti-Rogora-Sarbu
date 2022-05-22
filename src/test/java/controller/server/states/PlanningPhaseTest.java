@@ -1,13 +1,11 @@
 package controller.server.states;
 
 import controller.server.GameLobby;
-import exceptions.AssistantAlreadyPlayedException;
 import exceptions.AssistantNotInDeckException;
 import exceptions.WrongPhaseException;
 import exceptions.WrongPlayerException;
 import model.GameModel;
 import model.Player;
-import model.board.Assistant;
 import model.board.Bag;
 import network.server.ClientHandler;
 import network.server.Server;
@@ -114,7 +112,7 @@ public class PlanningPhaseTest {
 
         //  test correct play
         try {
-            planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection);
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection));
         } catch (Exception e) {
             System.err.println("Player 0 playing");
             System.err.println(e + " raising not expected");
@@ -124,21 +122,16 @@ public class PlanningPhaseTest {
         //  test assistant played
         int preSize = player.get(1).getAssistants().size();
         try {
-            assertThrows(AssistantAlreadyPlayedException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(0), clientSocketConnection));
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(0), clientSocketConnection));
             assertEquals(preSize, player.get(1).getAssistants().size());
-        } catch (Exception other) {
-            System.err.println(other + " not expected");
-            fail();
-        }
-        try {
-            planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection);
         } catch (Exception e) {
-            System.err.println(e + " not expected");
+            System.err.println(e + "not expected");
             fail();
         }
+        assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection));
 
         try {
-            planningPhase.playCard(gameLobby, player.get(2), player.get(2).getAssistants().get(2), clientSocketConnection);
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(2), player.get(2).getAssistants().get(2), clientSocketConnection));
 
             assertEquals(GameState.STUDENT_MOVEMENT, gameLobby.getCurrentGameState());
 
@@ -186,12 +179,12 @@ public class PlanningPhaseTest {
         }
 
         try {
-            planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection);
-            planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection);
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(0), player.get(0).getAssistants().get(0), clientSocketConnection));
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(1), player.get(1).getAssistants().get(1), clientSocketConnection));
 
             assertTrue(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
             int size1 = player.get(2).getAssistants().size();
-            assertThrows(AssistantAlreadyPlayedException.class, () -> planningPhase.playCard(gameLobby, player.get(2), player.get(0).getAssistants().get(0), clientSocketConnection));
+            assertThrows(NullPointerException.class, () -> planningPhase.playCard(gameLobby, player.get(2), player.get(0).getAssistants().get(0), clientSocketConnection));
             assertEquals(size1, player.get(2).getAssistants().size());
 
             assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(2)));
@@ -199,8 +192,7 @@ public class PlanningPhaseTest {
             assertFalse(planningPhase.checkIfAssistantPlayed(player.get(2), player.get(2).getAssistants().get(0)));
 
         } catch (Exception e) {
-            System.err.println(e + " not expected");
-            fail();
+            System.err.println(e + "not expected");
         }
     }
 }

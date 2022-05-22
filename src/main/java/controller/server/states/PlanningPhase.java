@@ -5,7 +5,6 @@ import eventSystem.events.network.Messages;
 import eventSystem.events.network.server.EPlayerChoseAssistant;
 import eventSystem.events.network.server.ServerMessage;
 import eventSystem.events.network.server.gameStateEvents.EUpdateAssistantDeck;
-import exceptions.AssistantAlreadyPlayedException;
 import exceptions.AssistantNotInDeckException;
 import exceptions.WrongPhaseException;
 import exceptions.WrongPlayerException;
@@ -45,13 +44,14 @@ public class PlanningPhase {
      * @throws AssistantNotInDeckException the selected assistant does not exist in the player's hand deck
      */
     public void playCard(GameLobby thisGame, Player actingPlayer, Assistant assistantCard, ClientHandler client)
-            throws WrongPhaseException, WrongPlayerException, AssistantAlreadyPlayedException, AssistantNotInDeckException {
+            throws WrongPhaseException, WrongPlayerException, AssistantNotInDeckException {
         if (thisGame.wrongState(GameState.PLANNING))
             throw new WrongPhaseException();
         if (thisGame.wrongPlayer(actingPlayer))
             throw new WrongPlayerException();
         if (checkIfAssistantPlayed(actingPlayer, assistantCard)) {
-            throw new AssistantAlreadyPlayedException();
+            client.send(new ServerMessage(Messages.INVALID_ASSISTANT));
+            return;
         }
 
         thisGame.getCurrentPlayer().pushFoldDeck(
@@ -64,7 +64,8 @@ public class PlanningPhase {
             computeNext(thisGame);
             playedAssistants.clear();
         }
-        return;
+        client.send(new EUpdateAssistantDeck(playing.getAssistants()));
+        thisGame.broadcastExceptOne(new EPlayerChoseAssistant(thisGame.getPlayerNameBySocket(client), assistantCard), thisGame.getPlayerNameBySocket(client));
     }
 
     /**
