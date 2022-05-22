@@ -6,9 +6,7 @@ import network.LightModel;
 import util.Logger;
 import util.Wizard;
 import view.View;
-import view.gui.controllers.CreateOrJoinSceneController;
-import view.gui.controllers.LoginSceneController;
-import view.gui.controllers.NameSelectionSceneController;
+import view.gui.controllers.*;
 
 import java.util.List;
 
@@ -21,6 +19,11 @@ public class GuiView extends View {
     @Override
     public void setupConnection() {
 
+    }
+
+    @Override
+    public void allPlayersConnected() {
+        Platform.runLater(() -> SceneController.switchSceneSongAndStage("wizardChoiceScene.fxml", "src/main/resources/bgMusic/InGameMusic2.mp3"));
     }
 
     @Override
@@ -55,7 +58,13 @@ public class GuiView extends View {
 
     @Override
     public void chooseWizard(List<Wizard> availableWizards) {
-
+        Platform.runLater(() -> {
+            if (SceneController.getCurrentSceneController() instanceof WizardChoiceController) {
+                Logger.info("choosing wizard from " + availableWizards.toString());
+                WizardChoiceController controller = (WizardChoiceController) SceneController.getCurrentSceneController();
+                controller.chooseWizards(availableWizards);
+            }
+        });
     }
 
     @Override

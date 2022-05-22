@@ -78,7 +78,10 @@ public class ClientController implements EventListener {
                 view.chooseCreateOrJoin();
             }
 
-            case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
+            case Messages.ALL_CLIENTS_CONNECTED -> {
+                view.displayMessage("All clients connected. Starting game.");
+                view.allPlayersConnected();
+            }
 
             case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
 
@@ -86,8 +89,7 @@ public class ClientController implements EventListener {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT ->
-                    view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
 
             case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, client.getNickname());
 

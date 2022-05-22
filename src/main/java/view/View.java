@@ -22,6 +22,10 @@ public abstract class View {
     public void joinedLobbyDisplay(String code) {
     }
 
+    public void allPlayersConnected() {
+
+    }
+
     public void displayError(String errorMessage) {
         System.out.println(CliHelper.ANSI_RED + "ERROR " + errorMessage + CliHelper.ANSI_RESET);
     }

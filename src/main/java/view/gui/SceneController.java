@@ -7,12 +7,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import util.Logger;
+import util.Wizard;
 import view.gui.controllers.GenericSceneController;
 import view.gui.controllers.ErrorPopUpSceneController;
 import view.gui.controllers.LobbyJoinedSceneController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SceneController {
     private static Stage stage;
@@ -74,6 +77,12 @@ public class SceneController {
         mediaPlayer = new MediaPlayer(currentMedia);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    public static void switchSceneSongAndStage(String sceneFile, String songFile) {
+        switchSceneAndSong(sceneFile, songFile);
+        stage.setMaximized(true);
+        stage.setFullScreen(true);
     }
 
     public static void displayMessagePopUp(String message) {
