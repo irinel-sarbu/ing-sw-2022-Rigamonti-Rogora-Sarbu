@@ -69,7 +69,38 @@ public class GuiView extends View {
 
     @Override
     public void chooseAssistant(List<Assistant> deck) {
+        Platform.runLater(() -> {
+            if (SceneController.getCurrentSceneController() instanceof AssistantChoiceSceneController) {
+                Logger.info("Choose assistant from" + deck.toString());
+                AssistantChoiceSceneController controller = (AssistantChoiceSceneController) SceneController.getCurrentSceneController();
+                controller.showAssistants(deck);
+            } else {
+                SceneController.switchScene("assistantChoiceScene.fxml");
+                AssistantChoiceSceneController controller = (AssistantChoiceSceneController) SceneController.getCurrentSceneController();
+                controller.showAssistants(deck);
+            }
+        });
+    }
 
+    @Override
+    public void playerChoseAssistant(Assistant assistant) {
+        Platform.runLater(() -> {
+            if (SceneController.getCurrentSceneController() instanceof AssistantChoiceSceneController) {
+                Logger.info("Player chose assistant " + assistant.toString());
+                AssistantChoiceSceneController controller = (AssistantChoiceSceneController) SceneController.getCurrentSceneController();
+                controller.updateOtherChoices(assistant.getValue());
+            }
+        });
+    }
+
+    @Override
+    public void otherPlayerIsChoosingAssistant() {
+        Platform.runLater(() -> {
+            if (!(SceneController.getCurrentSceneController() instanceof AssistantChoiceSceneController)) {
+                SceneController.switchScene("assistantChoiceScene.fxml");
+                AssistantChoiceSceneController controller = (AssistantChoiceSceneController) SceneController.getCurrentSceneController();
+            }
+        });
     }
 
     @Override

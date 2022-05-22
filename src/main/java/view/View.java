@@ -23,7 +23,6 @@ public abstract class View {
     }
 
     public void allPlayersConnected() {
-
     }
 
     public void displayError(String errorMessage) {
@@ -59,6 +58,12 @@ public abstract class View {
     public abstract void chooseWizard(List<Wizard> availableWizards);
 
     public abstract void chooseAssistant(List<Assistant> deck);
+
+    public void playerChoseAssistant(Assistant assistant) {
+    }
+
+    public void otherPlayerIsChoosingAssistant() {
+    }
 
     public abstract void showMenu(LightModel model, String client);
 
