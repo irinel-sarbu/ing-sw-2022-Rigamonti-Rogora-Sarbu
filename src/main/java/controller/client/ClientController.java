@@ -70,11 +70,11 @@ public class ClientController implements EventListener {
             }
 
             case Messages.LOBBY_NOT_FOUND -> {
-                view.displayError("Lobby with ID " + lobbyCode + " not found!");
+                view.displayError("Lobby not found!");
                 view.chooseCreateOrJoin();
             }
             case Messages.LOBBY_FULL -> {
-                view.displayError("Lobby with ID " + lobbyCode + " is full!");
+                view.displayError("Lobby is full!");
                 view.chooseCreateOrJoin();
             }
 
