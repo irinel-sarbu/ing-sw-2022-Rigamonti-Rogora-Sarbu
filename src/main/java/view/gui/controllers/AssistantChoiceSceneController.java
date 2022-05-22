@@ -162,6 +162,7 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         assistants.setVisible(true);
     }
 
+    //IMPORTANT! DO NOT CHANGE NAME OF ASSISTANT CARDS
     public void updateOtherChoices(int assistantValue) {
         switch (otherAssistantValues.size()) {
             case 0 -> {
