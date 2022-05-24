@@ -360,7 +360,7 @@
                   </AnchorPane>
                </children>
                <GridPane.margin>
-                  <Insets top="40.0" />
+                  <Insets top="60.0" />
                </GridPane.margin>
             </AnchorPane>
             <AnchorPane fx:id="island3" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="3">
@@ -1023,7 +1023,7 @@
                   </AnchorPane>
                </children>
                <GridPane.margin>
-                  <Insets top="-40.0" />
+                  <Insets top="80.0" />
                </GridPane.margin>
             </AnchorPane>
             <AnchorPane fx:id="island9" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -1354,6 +1354,102 @@
                </children>
                <GridPane.margin>
                   <Insets left="-80.0" />
+               </GridPane.margin>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="c_skin0" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="108.4">
+                     <image>
+                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s0cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s1cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s2cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s3cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <GridPane.margin>
+                  <Insets top="-40.0" />
+               </GridPane.margin>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="c_skin1" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s0cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s1cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s2cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s3cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <GridPane.margin>
+                  <Insets top="40.0" />
+               </GridPane.margin>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <children>
+                  <ImageView fx:id="c_skin2" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="124.0" scaleX="-1.0">
+                     <image>
+                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s0cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s1cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s2cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="s3cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphical_Assets/cerchi.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <GridPane.margin>
+                  <Insets left="-20.0" top="-60.0" />
                </GridPane.margin>
             </AnchorPane>
          </children>
