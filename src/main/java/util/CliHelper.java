@@ -10,29 +10,31 @@ public class CliHelper {
     private static final String ANSI_PREFIX = "\u001b[38;5;";
     private static final String CURSOR_UP = "\u001b[%sA";
 
-    private static final String CODE_BLUE = "33";
-    private static final String CODE_LIGHT_BLUE = "75";
-    private static final String CODE_GRAY = "244";
-    private static final String CODE_GREEN = "41";
-    private static final String CODE_LIGHT_GREEN = "83";
+    private static final String CODE_RED = "196";
+    private static final String CODE_GREEN = "34";
+    private static final String CODE_YELLOW = "220";
+    private static final String CODE_GOLD = "214";
     private static final String CODE_BROWN = "130";
-    private static final String CODE_RED = "197";
+    private static final String CODE_BLUE = "39";
     private static final String CODE_PURPLE = "99";
+    private static final String CODE_PINK = "218";
+    private static final String CODE_GRAY = "244";
     private static final String CODE_ORANGE = "215";
     private static final String CODE_BLACK = "232";
     private static final String CODE_WHITE = "255";
 
     public static final String ANSI_BLUE = ANSI_PREFIX + CODE_BLUE + "m";
-    public static final String ANSI_LIGHT_BLUE = ANSI_PREFIX + CODE_LIGHT_BLUE + "m";
     public static final String ANSI_GRAY = ANSI_PREFIX + CODE_GRAY + "m";
     public static final String ANSI_GREEN = ANSI_PREFIX + CODE_GREEN + "m";
-    public static final String ANSI_LIGHT_GREEN = ANSI_PREFIX + CODE_LIGHT_GREEN + "m";
-    public static final String ANSI_BROWN = ANSI_PREFIX + CODE_BROWN + "m";
     public static final String ANSI_PURPLE = ANSI_PREFIX + CODE_PURPLE + "m";
     public static final String ANSI_RED = ANSI_PREFIX + CODE_RED + "m";
+    public static final String ANSI_YELLOW = ANSI_PREFIX + CODE_YELLOW + "m";
+    public static final String ANSI_GOLD = ANSI_PREFIX + CODE_GOLD + "m";
     public static final String ANSI_ORANGE = ANSI_PREFIX + CODE_ORANGE + "m";
+    public static final String ANSI_PINK = ANSI_PREFIX + CODE_PINK + "m";
     public static final String ANSI_BLACK = ANSI_PREFIX + CODE_BLACK + "m";
     public static final String ANSI_WHITE = ANSI_PREFIX + CODE_WHITE + "m";
+    public static final String ANSI_BROWN = ANSI_PREFIX + CODE_BROWN + "m";
 
     public static final String ANSI_RESET = "\u001b[0m";
     public static final String CLEAN = "\u001b[0J";
@@ -42,12 +44,18 @@ public class CliHelper {
     public static final char BLANK = ' ';
 
     // Board
-    protected static final char L_T_CORNER = '┌';
-    protected static final char R_T_CORNER = '┐';
-    protected static final char L_B_CORNER = '└';
-    protected static final char R_B_CORNER = '┘';
-    protected static final char H_LINE = '─';
-    protected static final char V_LINE = '│';
+    public static final char L_T_CORNER = '┌';
+    public static final char R_T_CORNER = '┐';
+    public static final char L_B_CORNER = '└';
+    public static final char R_B_CORNER = '┘';
+
+    public static final char H_LINE = '─';
+    public static final char H_T_EDGE = '┴';
+    public static final char H_B_EDGE = '┬';
+
+    public static final char V_LINE = '│';
+    public static final char V_L_EDGE = '┤';
+    public static final char V_R_EDGE = '├';
 
     public CliHelper() {
         this.consoleScanner = new Scanner(System.in);
@@ -76,7 +84,7 @@ public class CliHelper {
      * @param n how many times to repeat
      * @return <code>String</code> made of <code>c</code>, <code>n</code> times
      */
-    private String repeat(char c, int n) {
+    public static String repeat(char c, int n) {
         if (n <= 0) throw new IllegalArgumentException("n must be a positive integer");
         char[] string = new char[n];
         Arrays.fill(string, c);
@@ -118,5 +126,62 @@ public class CliHelper {
         System.out.print(INITIALIZE_SCREEN);
         System.out.print(CLEAN);
         System.out.printf("Welcome to %sEryantis \uD83E\uDDDA \n", CliHelper.ANSI_ORANGE);
+    }
+
+    public static String getStudentIcon(Color color) {
+        String studentColor;
+        switch (color) {
+            case BLUE -> studentColor = ANSI_BLUE;
+
+            case RED -> studentColor = ANSI_RED;
+
+            case GREEN -> studentColor = ANSI_GREEN;
+
+            case PINK -> studentColor = ANSI_PINK;
+
+            case YELLOW -> studentColor = ANSI_YELLOW;
+
+            default -> studentColor = ANSI_WHITE;
+        }
+
+        return studentColor + '●' + ANSI_RESET;
+    }
+
+    public static String getProfessorIcon(Color color) {
+        String professorColor;
+        switch (color) {
+            case BLUE -> professorColor = ANSI_BLUE;
+
+            case RED -> professorColor = ANSI_RED;
+
+            case GREEN -> professorColor = ANSI_GREEN;
+
+            case PINK -> professorColor = ANSI_PINK;
+
+            case YELLOW -> professorColor = ANSI_YELLOW;
+
+            default -> professorColor = ANSI_WHITE;
+        }
+
+        return professorColor + '■' + ANSI_RESET;
+    }
+
+    public static String getTowerIcon(TowerColor color) {
+        String towerColor = ANSI_WHITE;
+        switch (color) {
+            case BLACK -> towerColor = ANSI_BLACK;
+            case WHITE -> towerColor = ANSI_WHITE;
+            case GRAY -> towerColor = ANSI_GRAY;
+        }
+
+        return towerColor + '▲' + ANSI_RESET;
+    }
+
+    public static String getMotherNatureIcon() {
+        return ANSI_BROWN + '▲' + ANSI_RESET;
+    }
+
+    public static String getNoEntryIcon() {
+        return ANSI_RED + "□" + ANSI_RESET;
     }
 }

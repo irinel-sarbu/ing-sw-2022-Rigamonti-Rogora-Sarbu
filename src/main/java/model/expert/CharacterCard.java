@@ -5,12 +5,12 @@ import exceptions.EmptyStudentListException;
 import exceptions.StudentNotFoundException;
 import model.board.Student;
 import util.CharacterType;
+import util.CliHelper;
 import util.Color;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -36,8 +36,6 @@ public class CharacterCard implements Serializable {
             case GRANNY_HERBS -> noEntryTiles = new Stack<>();
             case JESTER -> students = new ArrayList<>(6);
             case MUSHROOM_FANATIC -> color = null;
-            default -> {
-            }
         }
     }
 
@@ -168,7 +166,7 @@ public class CharacterCard implements Serializable {
      */
     @Override
     public String toString() {
-        switch (getCharacter()) {
+        switch (this.character) {
             case MONK, PRINCESS, JESTER -> {
                 return getCharacter().toString() + ": cost = " + getCost() + ", students: " + getStudents().toString();
             }
@@ -179,5 +177,123 @@ public class CharacterCard implements Serializable {
                 return getCharacter().toString() + ": cost = " + getCost();
             }
         }
+    }
+
+    public static String allToString(List<CharacterCard> boards) {
+        List<String[]> splitCards = boards.stream()
+                .map(CharacterCard::toCard)
+                .map(bs -> bs.split("\n"))
+                .toList();
+
+        StringBuilder cards = new StringBuilder();
+
+        for (int y = 0; y < splitCards.get(0).length; y++) {
+            for (String[] splitCard : splitCards) {
+                cards.append(String.format("%-20s ", splitCard[y]));
+            }
+            cards.append("\n");
+        }
+
+        return cards.toString();
+    }
+
+    public String toCard() {
+        switch (this.character) {
+            case MONK, PRINCESS, JESTER -> {
+                return createStudentsCard();
+            }
+            case GRANNY_HERBS -> {
+                return createNoEntryCard();
+            }
+            default -> {
+                return createNormalCard();
+            }
+        }
+    }
+
+    private String createNormalCard() {
+        String[] nameSplit = character.getName().split("\\s+");
+        StringBuilder card = new StringBuilder();
+        card.append("┌────────────┐\n");
+        card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │\n");
+        card.append("│ ").append(String.format("%10s", "")).append(" │\n");
+        card.append("│ ").append(String.format("%10s", "")).append(" │\n");
+        card.append("│ ").append(String.format("%10s", nameSplit[0])).append(" │\n");
+        card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │\n");
+        card.append("│ ").append(String.format("%10s", "")).append(" │\n");
+        card.append("│ ").append(String.format("%10s", "")).append(" │\n");
+        card.append("└────────────┘\n");
+
+        return card.toString();
+    }
+
+    private String createStudentsCard() {
+        String[] nameSplit = character.getName().split("\\s+");
+        StringBuilder card = new StringBuilder();
+        card.append("┌────────────┬─────┐\n");
+        card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │").append(createRow(10, 10, true));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(1, 2, true));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, true));
+        card.append("│ ").append(String.format("%10s", nameSplit[0])).append(" │").append(createRow(3, 4, true));
+        card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │").append(createRow(10, 10, true));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(5, 6, true));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, true));
+        card.append("└────────────┴─────┘\n");
+
+        return card.toString();
+    }
+
+    private String createNoEntryCard() {
+        String[] nameSplit = character.getName().split("\\s+");
+        StringBuilder card = new StringBuilder();
+        card.append("┌────────────┬─────┐\n");
+        card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │").append(createRow(10, 10, false));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(1, 2, false));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, false));
+        card.append("│ ").append(String.format("%10s", nameSplit[0])).append(" │").append(createRow(3, 4, false));
+        card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │").append(createRow(10, 10, false));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(5, 6, false));
+        card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, false));
+        card.append("└────────────┴─────┘\n");
+
+        return card.toString();
+    }
+
+    private String createRow(int min, int max, boolean student) {
+        String row = "";
+        boolean placeHolder1;
+        if (student) {
+            placeHolder1 = students.size() >= min;
+        } else {
+            placeHolder1 = noEntryTiles.size() >= min;
+        }
+
+        boolean placeHolder2;
+        if (student) {
+            placeHolder2 = students.size() >= max;
+        } else {
+            placeHolder2 = noEntryTiles.size() >= max;
+        }
+
+        if (placeHolder1) {
+            if (student) {
+                row += " " + CliHelper.getStudentIcon(students.get(min - 1).getColor());
+            } else {
+                row += " " + CliHelper.getNoEntryIcon();
+            }
+            if (placeHolder2) {
+                if (student) {
+                    row += " " + CliHelper.getStudentIcon(students.get(max - 1).getColor()) + " │\n";
+                } else {
+                    row += " " + CliHelper.getNoEntryIcon() + " │\n";
+                }
+            } else {
+                row += "   │\n";
+            }
+        } else {
+            row += "     │\n";
+        }
+
+        return row;
     }
 }

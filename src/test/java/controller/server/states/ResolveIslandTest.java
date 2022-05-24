@@ -6,9 +6,7 @@ import exceptions.ProfessorFullException;
 import exceptions.StudentNotFoundException;
 import model.GameModel;
 import model.Player;
-import model.board.IslandGroup;
 import model.board.Professor;
-import model.board.SchoolBoard;
 import model.board.Student;
 import network.server.Server;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +30,7 @@ public class ResolveIslandTest {
     }
 
     private void print() {
-        System.out.println(IslandGroup.allToString(gameModel.getIslandGroups()) + "\n" + SchoolBoard.allToString(gameModel.getPlayers().stream().map(Player::getSchoolBoard).toList()));
+//        System.out.println(IslandGroup.allToString(gameModel.getIslandGroups()) + "\n" + SchoolBoard.allToString(gameModel.getPlayers().stream().map(Player::getSchoolBoard).toList()));
     }
 
     @BeforeEach

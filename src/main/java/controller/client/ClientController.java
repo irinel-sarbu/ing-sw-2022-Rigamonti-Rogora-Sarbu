@@ -38,7 +38,7 @@ public class ClientController implements EventListener {
         switch (message.getMsg()) {
             case Messages.CONNECTION_OK -> {
                 numOfConsecutiveErrors = 0;
-                view.displayMessage(CliHelper.ANSI_LIGHT_GREEN, "Connection established!");
+                view.displayMessage(CliHelper.ANSI_GREEN, "Connection established!");
                 view.askNickname();
             }
 

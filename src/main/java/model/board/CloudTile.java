@@ -78,4 +78,55 @@ public class CloudTile implements Serializable {
                 .collect(Collectors.joining(" ", "[", "]"));
         return "Cloud_" + cloudTileID + ": " + students;
     }
+
+    public static String allToString(List<CloudTile> boards) {
+        List<String[]> splitCards = boards.stream()
+                .map(CloudTile::toCard)
+                .map(bs -> bs.split("\n"))
+                .toList();
+
+        StringBuilder cards = new StringBuilder();
+
+        for (int y = 0; y < splitCards.get(0).length; y++) {
+            for (String[] splitCard : splitCards) {
+                cards.append(String.format("%-9s ", splitCard[y]));
+            }
+            cards.append("\n");
+        }
+
+        return cards.toString();
+    }
+
+    public String toCard() {
+        StringBuilder card = new StringBuilder();
+        card.append(" ┌─────┐ \n");
+        card.append("┌┘").append("  ").append(cloudTileID).append("  ").append("└┐\n");
+        card.append("│ ").append(buildRow(true)).append(" │\n");
+        card.append("└┐").append(buildRow(false)).append("┌┘\n");
+        card.append(" └─────┘ \n");
+
+        return card.toString();
+    }
+
+    private String buildRow(boolean firstRow) {
+        int students = studentList.size();
+        StringBuilder row = new StringBuilder();
+        switch (students) {
+            case 0 -> row.append("     \n");
+            case 3 -> {
+                if (firstRow)
+                    row.append(" ").append(studentList.get(0)).append(" ").append(studentList.get(1)).append(" ");
+                else
+                    row.append("  ").append(studentList.get(2)).append("  ");
+            }
+            case 4 -> {
+                if (firstRow)
+                    row.append(" ").append(studentList.get(0)).append(" ").append(studentList.get(1)).append(" ");
+                else
+                    row.append(" ").append(studentList.get(2)).append(" ").append(studentList.get(3)).append(" ");
+            }
+        }
+
+        return row.toString();
+    }
 }

@@ -352,7 +352,7 @@ public class GameLobby implements EventListener {
     // TODO fix not entering, move to per character type function
     @EventHandler
     public <T extends EUseCharacterEffect> boolean playerHasActivatedEffect(T event) {
-        Logger.severe("playerHasActivatedEffect " + event);
+        Logger.info("playerHasActivatedEffect " + event.getCharacterType());
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
 
@@ -606,6 +606,7 @@ public class GameLobby implements EventListener {
     }
 
     private void notifyActivation(ClientHandler client) {
+        // TODO: che fa sta roba? Non dovrebbe mandarlo! :(
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         broadcast(new ELightModelSetup(model.getCharacters()));

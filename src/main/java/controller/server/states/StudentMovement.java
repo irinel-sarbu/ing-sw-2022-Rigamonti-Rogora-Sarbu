@@ -8,6 +8,7 @@ import model.Player;
 import model.board.SchoolBoard;
 import model.board.Student;
 import util.Color;
+import util.GameMode;
 import util.GameState;
 
 public abstract class StudentMovement {
@@ -86,13 +87,14 @@ public abstract class StudentMovement {
 
         Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentID);
         if (thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent)) {
-            try {
-                thisGame.getModel().getCoinSupply().removeCoins(1);
-                thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
-            } catch (SupplyEmptyException e) {
-                // Do nothing
+            if (thisGame.getModel().getGameMode() == GameMode.EXPERT) {
+                try {
+                    thisGame.getModel().getCoinSupply().removeCoins(1);
+                    thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
+                } catch (SupplyEmptyException e) {
+                    // Do nothing
+                }
             }
-
         }
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 

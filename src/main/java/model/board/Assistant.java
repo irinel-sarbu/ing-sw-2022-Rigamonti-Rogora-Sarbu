@@ -136,6 +136,37 @@ public class Assistant implements Serializable {
         return Objects.equals(name, assistant.name);
     }
 
+    public static String allToString(List<Assistant> boards) {
+        List<String[]> splitCards = boards.stream()
+                .map(Assistant::toCard)
+                .map(bs -> bs.split("\n"))
+                .toList();
+
+        StringBuilder cards = new StringBuilder();
+
+        for (int y = 0; y < splitCards.get(0).length; y++) {
+            for (String[] splitCard : splitCards) {
+                cards.append(String.format("%-8s ", splitCard[y]));
+            }
+            cards.append("\n");
+        }
+
+        return cards.toString();
+    }
+
+    private String toCard() {
+        StringBuilder card = new StringBuilder();
+        card.append("┌──────────┐\n");
+        card.append("│ ").append(String.format("%-8d", value)).append(" │\n");
+        card.append("│ ").append(String.format("%8s", "")).append(" │\n");
+        card.append("│ ").append(String.format("%8s", name)).append(" │\n");
+        card.append("│ ").append(String.format("%8s", "")).append(" │\n");
+        card.append("│ ").append(String.format("%8s", String.format("%3d \uD83D\uDD03", movements))).append(" │\n");
+        card.append("└──────────┘\n");
+
+        return card.toString();
+    }
+
     /**
      * Convert to string to allow easy print
      *
