@@ -6,8 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import network.LightModel;
 import util.Logger;
 import util.Wizard;
+import view.gui.controllers.GenericMenuSceneController;
 import view.gui.controllers.GenericSceneController;
 import view.gui.controllers.ErrorPopUpSceneController;
 import view.gui.controllers.LobbyJoinedSceneController;
@@ -106,5 +108,11 @@ public class SceneController {
         switchScene(sceneFile);
         LobbyJoinedSceneController controller = (LobbyJoinedSceneController) currentSceneController;
         controller.editCode(code);
+    }
+
+    public static void switchSceneToMenu(String sceneFile, LightModel model) {
+        switchScene(sceneFile);
+        GenericMenuSceneController controller = (GenericMenuSceneController) currentSceneController;
+        controller.updateController(model);
     }
 }

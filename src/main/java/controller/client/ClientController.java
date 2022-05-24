@@ -181,7 +181,10 @@ public class ClientController implements EventListener {
     public void onPlayerChoosing(EPlayerChoosing event) {
         switch (event.getChoiceType()) {
             case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
-            case ASSISTANT -> view.displayMessage(event.getPlayerName() + " is choosing assistant.");
+            case ASSISTANT -> {
+                view.displayMessage(event.getPlayerName() + " is choosing assistant.");
+                view.otherPlayerIsChoosingAssistant();
+            }
         }
     }
 
@@ -198,6 +201,12 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onAssistantChosen(EAssistantChosen event) {
         client.sendToServer(new EAssistantChosen(event.getAssistant()));
+    }
+
+    @EventHandler
+    public void onPlayerChoseAssistant(EPlayerChoseAssistant event) {
+        view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
+        view.playerChoseAssistant(event.getAssistant());
     }
 
     @EventHandler
@@ -234,11 +243,6 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onUpdateGameState(EUpdateGameState event) {
         model.setGameState(event.getGameState());
-    }
-
-    @EventHandler
-    public void onPlayerChoseAssistant(EPlayerChoseAssistant event) {
-        view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
     }
 
     @EventHandler
