@@ -67,5 +67,8 @@ public abstract class View {
 
     public abstract void showMenu(LightModel model, String client);
 
+    public void displayIdleMenu(LightModel model, String playerName) {
+    }
+
     public abstract void update(LightModel model);
 }

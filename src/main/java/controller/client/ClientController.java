@@ -89,7 +89,7 @@ public class ClientController implements EventListener {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT -> view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT -> view.displayError("Invalid Assistant card. Please select a valid one:");
 
             case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, client.getNickname());
 
@@ -247,6 +247,7 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onPlayerTurnStarted(EPlayerTurnStarted event) {
+        view.displayIdleMenu(model, event.getPlayer());
         view.displayMessage("Player " + event.getPlayer() + " has started his turn");
     }
     // Planning phase

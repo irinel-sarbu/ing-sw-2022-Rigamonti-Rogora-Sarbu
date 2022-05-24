@@ -84,7 +84,8 @@ public class SceneController {
     public static void switchSceneSongAndStage(String sceneFile, String songFile) {
         switchSceneAndSong(sceneFile, songFile);
         stage.setMaximized(true);
-        stage.setFullScreen(true);
+        //TODO: fix fullscreen bug
+        //stage.setFullScreen(true);
     }
 
     public static void displayMessagePopUp(String message) {
@@ -113,6 +114,6 @@ public class SceneController {
     public static void switchSceneToMenu(String sceneFile, LightModel model) {
         switchScene(sceneFile);
         GenericMenuSceneController controller = (GenericMenuSceneController) currentSceneController;
-        controller.updateController(model);
+        controller.setController(model);
     }
 }

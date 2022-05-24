@@ -98,14 +98,26 @@ public class GuiView extends View {
         Platform.runLater(() -> {
             if (!(SceneController.getCurrentSceneController() instanceof AssistantChoiceSceneController)) {
                 SceneController.switchScene("assistantChoiceScene.fxml");
-                AssistantChoiceSceneController controller = (AssistantChoiceSceneController) SceneController.getCurrentSceneController();
             }
         });
     }
 
     @Override
     public void showMenu(LightModel model, String client) {
+        Platform.runLater(() -> {
+            SceneController.switchScene("genericMenuScene.fxml");
+            GenericMenuSceneController controller = (GenericMenuSceneController) SceneController.getCurrentSceneController();
+            controller.setController(model);
+        });
+    }
 
+    @Override
+    public void displayIdleMenu(LightModel model, String playerName) {
+        Platform.runLater(() -> {
+            SceneController.switchScene("genericMenuScene.fxml");
+            GenericMenuSceneController controller = (GenericMenuSceneController) SceneController.getCurrentSceneController();
+            controller.setIdle(model, playerName);
+        });
     }
 
     @Override
