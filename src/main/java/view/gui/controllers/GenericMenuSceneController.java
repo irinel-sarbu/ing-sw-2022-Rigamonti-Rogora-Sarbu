@@ -15,7 +15,7 @@ public class GenericMenuSceneController implements GenericSceneController {
     @FXML
     private Button backButton, characterEffectButton, characterEffectButton1, characterEffectButton2;
     @FXML
-    private Label notYourTurnText; // TODO: change dynamically whose turn is in each instant
+    private Label notYourTurnText;
 
     private LightModel model;
 
