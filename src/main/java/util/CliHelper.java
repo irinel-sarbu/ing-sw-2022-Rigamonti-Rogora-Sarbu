@@ -63,7 +63,7 @@ public class CliHelper {
 
     public String readString(String defaultValue) {
         String line = consoleScanner.nextLine();
-        if (line.matches("[a-zA-Z\\d]+")) {
+        if (line.matches("[a-zA-Z\\d.]+")) {
             return line;
         }
 
