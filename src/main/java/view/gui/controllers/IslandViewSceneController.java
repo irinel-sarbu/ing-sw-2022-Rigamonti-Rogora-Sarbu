@@ -7,8 +7,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.board.IslandTile;
+import model.board.Student;
 import network.LightModel;
 import util.Color;
 import util.TowerColor;
@@ -90,7 +92,7 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateTower(int island, TowerColor color) {
         ImageView towerPane = (ImageView) (((AnchorPane)islands.get(island)).getChildren().get(2));
         towerPane.setVisible(color != null);
-        towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + "png"));
+        towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + ".png"));
     }
 
     private void resetNoEntry() {
@@ -126,7 +128,7 @@ public class IslandViewSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
         for(int i=0; i<studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + ".png"));
+            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "Student.png"));
         }
     }
 
@@ -139,6 +141,7 @@ public class IslandViewSceneController implements GenericSceneController {
 
         init(model);
         resetView();
+        updateBridge();
 
         List<IslandTile> allIslands = new ArrayList<>();
         for (IslandGroup ig : model.getIslandGroups()) {
@@ -164,6 +167,10 @@ public class IslandViewSceneController implements GenericSceneController {
             for(Color c : Color.values()) {
                 updateTower(it.getIslandID(), it.getTowerColor());
             }
+        }
+
+        for(int i=0; i<model.getCloudTiles().size(); i++) {
+            updateClouds(i, model.getCloudTiles().get(i).getStudents().stream().map(Student::getColor).toList());
         }
 
         // update motherNature
