@@ -48,23 +48,23 @@
       <Pane fx:id="studentsPane" prefHeight="1080.0" prefWidth="1920.0">
          <children>
             <ImageView fx:id="student_6" fitHeight="116.0" fitWidth="116.0" layoutX="549.0" layoutY="740.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent6" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_1" fitHeight="116.0" fitWidth="116.0" layoutX="724.0" layoutY="740.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent1" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_0" fitHeight="116.0" fitWidth="116.0" layoutX="902.0" layoutY="740.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent0" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_2" fitHeight="116.0" fitWidth="116.0" layoutX="1078.0" layoutY="740.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent2" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_7" fitHeight="116.0" fitWidth="116.0" layoutX="1252.0" layoutY="740.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent7" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_8" fitHeight="116.0" fitWidth="116.0" layoutX="1252.0" layoutY="888.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent8" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_5" fitHeight="116.0" fitWidth="116.0" layoutX="1078.0" layoutY="888.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent5" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_3" fitHeight="116.0" fitWidth="116.0" layoutX="902.0" layoutY="888.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent3" pickOnBounds="true" preserveRatio="true" visible="false"/>
             <ImageView fx:id="student_4" fitHeight="116.0" fitWidth="116.0" layoutX="724.0" layoutY="888.0"
-                       pickOnBounds="true" preserveRatio="true"/>
+                       onMousePressed="#onStudent4" pickOnBounds="true" preserveRatio="true" visible="false"/>
          </children>
       </Pane>
    </children>
