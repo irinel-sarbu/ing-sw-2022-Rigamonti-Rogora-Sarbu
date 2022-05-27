@@ -293,7 +293,6 @@ public class GameLobby implements EventListener {
     private void sendContinueTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
-        ;
     }
 
     /**

@@ -20,8 +20,9 @@ public abstract class StudentMovement {
      */
     protected void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
-        Player player = thisGame.getCurrentPlayer();
-        thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        for (Player player : thisGame.getModel().getPlayers()) {
+            thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
         if (thisGame.getStudentsMoved() == thisGame.getMaxStudentsMoved()) {
             thisGame.resetStudentsMoved();
             thisGame.setGameState(GameState.MOTHERNATURE_MOVEMENT);
