@@ -1454,9 +1454,10 @@
             </AnchorPane>
          </children>
       </GridPane>
-      <Button fx:id="back_button" layoutX="61.0" layoutY="910.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="233.0" text="Button">
+      <Button fx:id="back_button" layoutX="61.0" layoutY="910.0" mnemonicParsing="false" prefHeight="105.0"
+              onMousePressed="#onBack" prefWidth="233.0" text="Button">
          <font>
-            <Font size="24.0" />
+            <Font size="24.0"/>
          </font>
       </Button>
       <AnchorPane fx:id="bridges_parent" prefHeight="945.0" prefWidth="1800.0">

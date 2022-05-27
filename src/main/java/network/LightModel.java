@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LightModel {
-    private String playerName;
+    private String playerName, currentPlayerName;
     private Map<String, SchoolBoard> schoolBoardMap;
     private List<CloudTile> cloudTiles;
     private List<IslandGroup> islandGroups;
@@ -77,6 +77,10 @@ public class LightModel {
         this.lastRound = lastRound;
     }
 
+    public void setCurrentPlayerName(String currentPlayerName) {
+        this.currentPlayerName = currentPlayerName;
+    }
+
     public Map<String, SchoolBoard> getSchoolBoardMap() {
         return schoolBoardMap;
     }
@@ -116,5 +120,13 @@ public class LightModel {
 
     public Boolean isLastRound() {
         return lastRound;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getCurrentPlayerName() {
+        return currentPlayerName;
     }
 }

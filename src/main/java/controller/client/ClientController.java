@@ -91,12 +91,14 @@ public class ClientController implements EventListener {
 
             case Messages.INVALID_ASSISTANT -> view.displayError("Invalid Assistant card. Please select a valid one:");
 
-            case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, client.getNickname());
+            case Messages.START_TURN, Messages.CONTINUE_TURN -> {
+                model.setCurrentPlayerName(client.getNickname());
+                view.showMenu(model, client.getNickname());
+            }
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
 
-            case Messages.ILLEGAL_STEPS ->
-                    view.displayMessage("Too many steps, look at your max steps from the assistant card");
+            case Messages.ILLEGAL_STEPS -> view.displayMessage("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
@@ -247,6 +249,7 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onPlayerTurnStarted(EPlayerTurnStarted event) {
+        model.setCurrentPlayerName(event.getPlayer());
         view.displayIdleMenu(model, event.getPlayer());
         view.displayMessage("Player " + event.getPlayer() + " has started his turn");
     }

@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import model.board.CloudTile;
@@ -14,6 +15,7 @@ import model.board.Student;
 import network.LightModel;
 import util.Color;
 import util.TowerColor;
+import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,17 @@ public class IslandViewSceneController implements GenericSceneController {
     private List<Node> clouds;
 
     private int numOfClouds, numOfStudents;
+
+    @FXML
+    public void onBack(MouseEvent mouseEvent) {
+        SceneController.switchScene("genericMenuScene.fxml");
+        GenericMenuSceneController controller = (GenericMenuSceneController) SceneController.getCurrentSceneController();
+        if (model.getPlayerName().equals(model.getCurrentPlayerName())) {
+            controller.setController(model, model.getPlayerName());
+        } else {
+            controller.setIdle(model, model.getCurrentPlayerName());
+        }
+    }
 
     private void init(LightModel model) {
         this.model = model;
