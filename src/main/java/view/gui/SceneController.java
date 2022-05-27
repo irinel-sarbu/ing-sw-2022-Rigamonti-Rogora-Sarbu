@@ -110,10 +110,4 @@ public class SceneController {
         LobbyJoinedSceneController controller = (LobbyJoinedSceneController) currentSceneController;
         controller.editCode(code);
     }
-
-    public static void switchSceneToMenu(String sceneFile, LightModel model) {
-        switchScene(sceneFile);
-        GenericMenuSceneController controller = (GenericMenuSceneController) currentSceneController;
-        controller.setController(model);
-    }
 }

@@ -7,17 +7,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import network.LightModel;
 import util.GameMode;
+import view.gui.SceneController;
 
 
 public class GenericMenuSceneController implements GenericSceneController {
     @FXML
     private Pane showButtonsPane, studentMovementPane, studentMovementsPane, motherNaturePane, cloudSelectionPane;
     @FXML
-    private Button backButton, characterEffectButton, characterEffectButton1, characterEffectButton2;
+    private Button backButton, characterEffectButton, characterEffectButton1, characterEffectButton2, moveToDiningButton, moveToIslandButton;
     @FXML
     private Label notYourTurnText;
 
     private LightModel model;
+    private String playerName;
 
     @FXML
     public void onMoveStudent(MouseEvent mouseEvent) {
@@ -35,8 +37,23 @@ public class GenericMenuSceneController implements GenericSceneController {
         backButton.setVisible(false);
     }
 
-    public void setController(LightModel model) {
+    @FXML
+    public void onToDining(MouseEvent mouseEvent) {
+        SceneController.switchScene("entranceScene.fxml");
+        EntranceSceneController controller = (EntranceSceneController) SceneController.getCurrentSceneController();
+        controller.setUp(model, playerName, false);
+    }
+
+    @FXML
+    public void onToIsland(MouseEvent mouseEvent) {
+        SceneController.switchScene("entranceScene.fxml");
+        EntranceSceneController controller = (EntranceSceneController) SceneController.getCurrentSceneController();
+        controller.setUp(model, playerName, true);
+    }
+
+    public void setController(LightModel model, String playerName) {
         this.model = model;
+        this.playerName = playerName;
         if (model.getGameMode() == GameMode.EXPERT) {
             characterEffectButton.setVisible(true);
             characterEffectButton1.setVisible(true);
@@ -58,6 +75,7 @@ public class GenericMenuSceneController implements GenericSceneController {
 
     public void setIdle(LightModel model, String playerName) {
         this.model = model;
+        this.playerName = playerName;
         notYourTurnText.setText(playerName + " turn started...");
         notYourTurnText.setVisible(true);
         showButtonsPane.setVisible(true);

@@ -107,7 +107,7 @@ public class GuiView extends View {
         Platform.runLater(() -> {
             SceneController.switchScene("genericMenuScene.fxml");
             GenericMenuSceneController controller = (GenericMenuSceneController) SceneController.getCurrentSceneController();
-            controller.setController(model);
+            controller.setController(model, client);
         });
     }
 
