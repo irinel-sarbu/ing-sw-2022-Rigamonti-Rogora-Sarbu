@@ -46,7 +46,8 @@
                 <Pane fx:id="showButtonsPane" prefHeight="1080.0" prefWidth="1920.0" visible="false">
                     <children>
                         <Button fx:id="showIslandsButton" layoutX="865.0" layoutY="313.0" mnemonicParsing="false"
-                                prefHeight="85.0" prefWidth="190.0" text="Show Islands"/>
+                                onMousePressed="#onShowIslands" prefHeight="85.0" prefWidth="190.0"
+                                text="Show Islands"/>
                         <Button fx:id="showSchoolBoardsButton" layoutX="865.0" layoutY="412.0" mnemonicParsing="false"
                                 prefHeight="85.0" prefWidth="190.0" text="Show School Boards"/>
                     </children>

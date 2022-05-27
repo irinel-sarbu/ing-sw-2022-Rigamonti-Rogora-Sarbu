@@ -122,7 +122,12 @@ public class GuiView extends View {
 
     @Override
     public void update(LightModel model) {
-
+        Platform.runLater(() -> {
+            if (SceneController.getCurrentSceneController() instanceof IslandViewSceneController) {
+                IslandViewSceneController controller = (IslandViewSceneController) SceneController.getCurrentSceneController();
+                controller.updateView(model);
+            }
+        });
     }
 
     @Override

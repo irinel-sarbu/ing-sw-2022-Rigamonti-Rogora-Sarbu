@@ -14,7 +14,7 @@ public class GenericMenuSceneController implements GenericSceneController {
     @FXML
     private Pane showButtonsPane, studentMovementPane, studentMovementsPane, motherNaturePane, cloudSelectionPane;
     @FXML
-    private Button backButton, characterEffectButton, characterEffectButton1, characterEffectButton2, moveToDiningButton, moveToIslandButton;
+    private Button backButton, characterEffectButton, characterEffectButton1, characterEffectButton2;
     @FXML
     private Label notYourTurnText;
 
@@ -35,6 +35,13 @@ public class GenericMenuSceneController implements GenericSceneController {
         showButtonsPane.setVisible(true);
         studentMovementPane.setVisible(true);
         backButton.setVisible(false);
+    }
+
+    @FXML
+    public void onShowIslands(MouseEvent mouseEvent) {
+        SceneController.switchScene("IslandView.fxml");
+        IslandViewSceneController controller = (IslandViewSceneController) SceneController.getCurrentSceneController();
+        controller.updateView(model);
     }
 
     @FXML

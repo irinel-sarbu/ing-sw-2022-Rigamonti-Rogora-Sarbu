@@ -113,16 +113,16 @@ public class IslandViewSceneController implements GenericSceneController {
         resetNoEntry();
     }
 
-    public void updateView() {
+    public void updateView(LightModel model) {
 
         List<IslandTile> allIslands = new ArrayList<>();
-        for(IslandGroup ig : model.getIslandGroups()) {
+        for (IslandGroup ig : model.getIslandGroups()) {
             allIslands.addAll(ig.getIslands());
         }
 
         // update students view
-        for(IslandTile it : allIslands) {
-            for(Color c : Color.values()) {
+        for (IslandTile it : allIslands) {
+            for (Color c : Color.values()) {
                 updateStudents(it.getIslandID(), c, it.getStudentsNumber(c));
             }
         }
