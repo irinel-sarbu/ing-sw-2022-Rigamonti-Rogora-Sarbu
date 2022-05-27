@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.board.Student;
 import network.LightModel;
+import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent0(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(0).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(0).getID()));
         }
@@ -34,7 +37,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent1(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(1).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(1).getID()));
         }
@@ -43,7 +48,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent2(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(2).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(2).getID()));
         }
@@ -52,7 +59,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent3(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(3).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(3).getID()));
         }
@@ -61,7 +70,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent4(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(4).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(4).getID()));
         }
@@ -70,7 +81,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent5(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(5).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(5).getID()));
         }
@@ -79,7 +92,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent6(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(6).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(6).getID()));
         }
@@ -88,7 +103,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent7(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(7).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(7).getID()));
         }
@@ -97,7 +114,9 @@ public class EntranceSceneController implements GenericSceneController {
     @FXML
     public void onStudent8(MouseEvent mouseEvent) {
         if (toIsland) {
-
+            SceneController.switchScene("islandSelection.fxml");
+            IslandSelectorSceneController controller = (IslandSelectorSceneController) SceneController.getCurrentSceneController();
+            controller.setupIslands(model, entrance.get(8).getID());
         } else {
             EventManager.notify(new EStudentMovementToDining(entrance.get(8).getID()));
         }
