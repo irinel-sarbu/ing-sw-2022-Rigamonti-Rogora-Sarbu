@@ -156,13 +156,13 @@ public class Assistant implements Serializable {
 
     private String toCard() {
         StringBuilder card = new StringBuilder();
-        card.append("┌──────────┐\n");
+        card.append("╭──────────╮\n");
         card.append("│ ").append(String.format("%-8d", value)).append(" │\n");
         card.append("│ ").append(String.format("%8s", "")).append(" │\n");
         card.append("│ ").append(String.format("%8s", name)).append(" │\n");
         card.append("│ ").append(String.format("%8s", "")).append(" │\n");
-        card.append("│ ").append(String.format("%8s", String.format("%3d \uD83D\uDD03", movements))).append(" │\n");
-        card.append("└──────────┘\n");
+        card.append("│ ").append(String.format("%8s", String.format(" %3d", movements))).append(" │\n");
+        card.append("╰──────────╯\n");
 
         return card.toString();
     }

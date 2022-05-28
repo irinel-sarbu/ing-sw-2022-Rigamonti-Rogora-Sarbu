@@ -210,23 +210,25 @@ public class IslandGroup implements Serializable {
     public static String allToString(List<IslandGroup> islandGroups, int motherNaturePosition) {
         // Row 0
         List<IslandGroup> row0 = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < islandGroups.size() && i < 6; i++) {
             row0.add(islandGroups.get(i));
         }
         List<String[]> splitCards0 = new ArrayList<>();
         for (IslandGroup ig : row0) {
             boolean hasNoEntryTile = ig.noEntry.size() > 0;
             for (IslandTile it : ig.getIslands()) {
+
                 boolean hasMotherNature = it.getIslandID() == motherNaturePosition;
-                int id_left = 12 - it.getIslandID() - 1;
                 int id = it.getIslandID();
-                int id_right = (it.getIslandID() + 1) % 12;
+                int id_left = id - 1;
+                id_left = id_left < 0 ? 12 + id_left : id_left;
+                int id_right = it.getIslandID() + 1;
+                id_right = id_right >= 12 ? id_right - 12 : id_right;
 
-                boolean bottom = id < 6 && (areInSameGroup(id, id_left, islandGroups) && id_left >= 6) || (areInSameGroup(id, id_right, islandGroups) && id_right >= 6);
-                boolean right = (areInSameGroup(id, id_right, islandGroups) && id_right < 6) || (areInSameGroup(id, id_left, islandGroups) && id_left >= 6);
-                boolean left = (areInSameGroup(id, id_left, islandGroups) && id_left < 6) || (areInSameGroup(id, id_right, islandGroups) && id_right >= 6);
-                boolean top = id >= 6 && (areInSameGroup(id, id_left, islandGroups) && id_left < 6) || (areInSameGroup(id, id_right, islandGroups) && id_right < 6);
-
+                boolean bottom = id < 6 && (areInSameGroup(id, id_left, ig) && id_left >= 6) || (areInSameGroup(id, id_right, ig) && id_right >= 6);
+                boolean right = (areInSameGroup(id, id_right, ig) && id_right < 6) || (areInSameGroup(id, id_left, ig) && id_left >= 6);
+                boolean left = (areInSameGroup(id, id_left, ig) && id_left < 6) || (areInSameGroup(id, id_right, ig) && id_right >= 6);
+                boolean top = id >= 6 && ((areInSameGroup(id, id_left, ig) && id_left < 6) || (areInSameGroup(id, id_right, ig) && id_right < 6));
                 String itString = it.toCard(hasMotherNature, hasNoEntryTile, top, right, bottom, left);
                 splitCards0.add(itString.split("\n"));
             }
@@ -234,7 +236,7 @@ public class IslandGroup implements Serializable {
 
         // Row 1
         List<IslandGroup> row1 = new ArrayList<>();
-        for (int i = 11; i > 5; i--) {
+        for (int i = islandGroups.size() - 1; i > 5; i--) {
             row1.add(islandGroups.get(i));
         }
         List<String[]> splitCards1 = new ArrayList<>();
@@ -242,21 +244,31 @@ public class IslandGroup implements Serializable {
             boolean hasNoEntryTile = ig.noEntry.size() > 0;
             for (IslandTile it : ig.getIslands()) {
                 boolean hasMotherNature = it.getIslandID() == motherNaturePosition;
-                String itString = it.toCard(hasMotherNature, hasNoEntryTile, false, false, false, false);
+                int id = it.getIslandID();
+                int id_left = id - 1;
+                id_left = id_left < 0 ? 12 + id_left : id_left;
+                int id_right = it.getIslandID() + 1;
+                id_right = id_right >= 12 ? id_right - 12 : id_right;
+
+                boolean bottom = id < 6 && (areInSameGroup(id, id_left, ig) && id_left >= 6) || (areInSameGroup(id, id_right, ig) && id_right >= 6);
+                boolean right = (areInSameGroup(id, id_right, ig) && id_right < 6) || (areInSameGroup(id, id_left, ig) && id_left >= 6);
+                boolean left = (areInSameGroup(id, id_left, ig) && id_left < 6) || (areInSameGroup(id, id_right, ig) && id_right >= 6);
+                boolean top = id >= 6 && ((areInSameGroup(id, id_left, ig) && id_left < 6) || (areInSameGroup(id, id_right, ig) && id_right < 6));
+                String itString = it.toCard(hasMotherNature, hasNoEntryTile, top, right, bottom, left);
                 splitCards1.add(itString.split("\n"));
             }
         }
 
         StringBuilder cards = new StringBuilder();
 
-        for (int y = 0; y < splitCards0.get(0).length; y++) {
+        for (int y = 0; splitCards0.size() > 0 && y < splitCards0.get(0).length; y++) {
             for (String[] splitCard : splitCards0) {
                 cards.append(String.format("%-13s ", splitCard[y]));
             }
             cards.append("\n");
         }
 
-        for (int y = 0; y < splitCards1.get(0).length; y++) {
+        for (int y = 0; splitCards1.size() > 0 && y < splitCards1.get(0).length; y++) {
             for (String[] splitCard : splitCards1) {
                 cards.append(String.format("%-13s ", splitCard[y]));
             }
@@ -266,11 +278,10 @@ public class IslandGroup implements Serializable {
         return cards.toString();
     }
 
-    private static boolean areInSameGroup(int id1, int id2, List<IslandGroup> islandGroups) {
-        for (IslandGroup ig : islandGroups) {
-            List<Integer> ids = ig.getIslandTilesID();
-            return ids.contains(id1) && ids.contains(id2);
-        }
-        return false;
+    private static boolean areInSameGroup(int id1, int id2, IslandGroup ig) {
+        boolean first = ig.getIslandTilesID().contains(id1);
+        boolean second = ig.getIslandTilesID().contains(id2);
+
+        return first && second;
     }
 }

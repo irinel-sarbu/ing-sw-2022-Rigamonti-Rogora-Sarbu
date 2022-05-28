@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import util.Color;
 import util.TowerColor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IslandGroupTest {
@@ -33,7 +36,7 @@ public class IslandGroupTest {
         temp.setTowersColor(TowerColor.BLACK);
 
         try {
-            doubleIslandGroup = temp.join(doubleIslandGroup);
+            doubleIslandGroup = doubleIslandGroup.join(temp);
         } catch (IllegalIslandGroupJoinException e) {
             System.err.println("Color error joining islands in ResetIslandGroup");
             fail();
@@ -252,5 +255,36 @@ public class IslandGroupTest {
             System.err.println("IslandNotFoundException not expected");
             fail();
         }
+    }
+
+    @Test
+    public void print() {
+        List<IslandGroup> islandGroupList = new ArrayList<>();
+        IslandGroup ig00 = new IslandGroup(0);
+        ig00.setTowersColor(TowerColor.WHITE);
+
+        IslandGroup ig11 = new IslandGroup(11);
+        ig11.setTowersColor(TowerColor.WHITE);
+
+        try {
+            ig00 = ig00.join(ig11);
+            islandGroupList.add(ig00);
+        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+            fail();
+        }
+
+        String igs = IslandGroup.allToString(islandGroupList, 0);
+        System.out.println(igs);
+    }
+
+    @Test
+    public void printMultipleRow() {
+        List<IslandGroup> islandGroupList = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            IslandGroup ig = new IslandGroup(i);
+            islandGroupList.add(ig);
+        }
+
+        System.out.println(IslandGroup.allToString(islandGroupList, 0));
     }
 }

@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static util.CliHelper.V_L_EDGE;
+import static util.CliHelper.V_R_EDGE;
+
 public class CloudTile implements Serializable {
     private final int cloudTileID;
     private final List<Student> studentList;
@@ -99,11 +102,10 @@ public class CloudTile implements Serializable {
 
     public String toCard() {
         StringBuilder card = new StringBuilder();
-        card.append(" ┌─────┐ \n");
-        card.append("┌┘").append("  ").append(cloudTileID).append("  ").append("└┐\n");
-        card.append("│ ").append(buildRow(true)).append(" │\n");
-        card.append("└┐").append(buildRow(false)).append("┌┘\n");
-        card.append(" └─────┘ \n");
+        card.append(" ╭─" + V_L_EDGE).append(String.format("%1d", cloudTileID)).append(V_R_EDGE + "─╮ \n");
+        card.append("╭╯").append(buildRow(true)).append("╰╮\n");
+        card.append("╰╮").append(buildRow(false)).append("╭╯\n");
+        card.append(" ╰─────╯ \n");
 
         return card.toString();
     }
@@ -112,7 +114,7 @@ public class CloudTile implements Serializable {
         int students = studentList.size();
         StringBuilder row = new StringBuilder();
         switch (students) {
-            case 0 -> row.append("     \n");
+            case 0 -> row.append("     ");
             case 3 -> {
                 if (firstRow)
                     row.append(" ").append(studentList.get(0)).append(" ").append(studentList.get(1)).append(" ");

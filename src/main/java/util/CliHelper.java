@@ -44,10 +44,10 @@ public class CliHelper {
     public static final char BLANK = ' ';
 
     // Board
-    public static final char L_T_CORNER = '┌';
-    public static final char R_T_CORNER = '┐';
-    public static final char L_B_CORNER = '└';
-    public static final char R_B_CORNER = '┘';
+    public static final char L_T_CORNER = '╭';
+    public static final char R_T_CORNER = '╮';
+    public static final char L_B_CORNER = '╰';
+    public static final char R_B_CORNER = '╯';
 
     public static final char H_LINE = '─';
     public static final char H_T_EDGE = '┴';

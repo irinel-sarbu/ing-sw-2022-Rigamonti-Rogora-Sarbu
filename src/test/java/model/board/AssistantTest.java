@@ -53,4 +53,9 @@ public class AssistantTest {
         deck2 = Assistant.getWizardDeck(Wizard.WIZARD_2);
 
     }
+
+    @Test
+    public void print() {
+        System.out.println(Assistant.allToString(deck1));
+    }
 }

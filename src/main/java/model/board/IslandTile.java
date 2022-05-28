@@ -119,17 +119,17 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
 
     public String toCard(boolean hasMotherNature, boolean hasNoEntryTile, boolean top, boolean right, boolean bottom, boolean left) {
         StringBuilder card = new StringBuilder();
-        card.append("┌───").append(top ? "┘   └" : "─────").append("───┐\n");
+        card.append("╭───").append(top ? "╯   ╰" : "─────").append("───╮\n");
         card.append("│ ").append(String.format("id: %2d", islandID)).append("    │\n");
         card.append("│           │\n");
         card.append("│ ").append(buildStudentRow(Color.YELLOW)).append(" │\n");
-        card.append(left ? "┘ " : "│ ").append(buildStudentRow(Color.BLUE)).append(right ? " └\n" : " │\n");
+        card.append(left ? "╯ " : "│ ").append(buildStudentRow(Color.BLUE)).append(right ? " ╰\n" : " │\n");
         card.append(left ? "  " : "│ ").append(buildStudentRow(Color.GREEN)).append(right ? "  \n" : " │\n");
-        card.append(left ? "┐ " : "│ ").append(buildStudentRow(Color.RED)).append(right ? " ┌\n" : " │\n");
+        card.append(left ? "╮ " : "│ ").append(buildStudentRow(Color.RED)).append(right ? " ╭\n" : " │\n");
         card.append("│ ").append(buildStudentRow(Color.PINK)).append(" │\n");
         card.append("│           │\n");
         card.append("│ ").append(buildLastRow(hasMotherNature, hasNoEntryTile)).append(" │\n");
-        card.append("└───").append(bottom ? "┐   ┌" : "─────").append("───┘\n");
+        card.append("╰───").append(bottom ? "╮   ╭" : "─────").append("───╯\n");
 
         return card.toString();
     }

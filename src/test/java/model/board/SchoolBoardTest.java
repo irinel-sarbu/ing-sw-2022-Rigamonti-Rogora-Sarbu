@@ -10,6 +10,9 @@ import util.GameMode;
 import util.TowerColor;
 import util.Wizard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SchoolBoardTest {
@@ -168,5 +171,34 @@ public class SchoolBoardTest {
             }
         }
         assertTrue(normalSchoolboard.toString().length() != 0);
+    }
+
+    @Test
+    public void print() {
+        List<SchoolBoard> schoolBoardList = new ArrayList<>();
+        try {
+            schoolBoard.addToDiningRoom(new Student(10, Color.YELLOW));
+            schoolBoard.addProfessor(new Professor(Color.YELLOW));
+            schoolBoard.addTower(new Tower(TowerColor.WHITE));
+            schoolBoard.addTower(new Tower(TowerColor.WHITE));
+
+        } catch (DiningRoomFullException | ProfessorFullException | TowersFullException e) {
+            fail();
+        }
+
+        schoolBoardList.add(schoolBoard);
+        System.out.println(SchoolBoard.allToString(schoolBoardList));
+        System.out.println(schoolBoard);
+    }
+
+    @Test
+    public void printNormal() {
+        marco = new Player("marco", Wizard.WIZARD_2, TowerColor.WHITE, GameMode.NORMAL);
+        normalSchoolboard = new SchoolBoard(marco);
+
+        List<SchoolBoard> normalSchoolboard = new ArrayList<>();
+        normalSchoolboard.add(schoolBoard);
+        System.out.println(SchoolBoard.allToString(normalSchoolboard));
+        System.out.println(schoolBoard);
     }
 }

@@ -214,7 +214,7 @@ public class CharacterCard implements Serializable {
     private String createNormalCard() {
         String[] nameSplit = character.getName().split("\\s+");
         StringBuilder card = new StringBuilder();
-        card.append("┌────────────┐\n");
+        card.append("╭────────────╮\n");
         card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │\n");
         card.append("│ ").append(String.format("%10s", "")).append(" │\n");
         card.append("│ ").append(String.format("%10s", "")).append(" │\n");
@@ -222,7 +222,7 @@ public class CharacterCard implements Serializable {
         card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │\n");
         card.append("│ ").append(String.format("%10s", "")).append(" │\n");
         card.append("│ ").append(String.format("%10s", "")).append(" │\n");
-        card.append("└────────────┘\n");
+        card.append("╰────────────╯\n");
 
         return card.toString();
     }
@@ -230,7 +230,7 @@ public class CharacterCard implements Serializable {
     private String createStudentsCard() {
         String[] nameSplit = character.getName().split("\\s+");
         StringBuilder card = new StringBuilder();
-        card.append("┌────────────┬─────┐\n");
+        card.append("╭────────────┬─────╮\n");
         card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │").append(createRow(10, 10, true));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(1, 2, true));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, true));
@@ -238,7 +238,7 @@ public class CharacterCard implements Serializable {
         card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │").append(createRow(10, 10, true));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(5, 6, true));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, true));
-        card.append("└────────────┴─────┘\n");
+        card.append("╰────────────┴─────╯\n");
 
         return card.toString();
     }
@@ -246,7 +246,7 @@ public class CharacterCard implements Serializable {
     private String createNoEntryCard() {
         String[] nameSplit = character.getName().split("\\s+");
         StringBuilder card = new StringBuilder();
-        card.append("┌────────────┬─────┐\n");
+        card.append("╭────────────┬─────╮\n");
         card.append("│ ").append(String.format("%10s", String.format("Cost: %-3d ", cost))).append(" │").append(createRow(10, 10, false));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(1, 2, false));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, false));
@@ -254,7 +254,7 @@ public class CharacterCard implements Serializable {
         card.append("│ ").append(String.format("%10s", nameSplit.length > 1 ? nameSplit[1] : "")).append(" │").append(createRow(10, 10, false));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(5, 6, false));
         card.append("│ ").append(String.format("%10s", "")).append(" │").append(createRow(10, 10, false));
-        card.append("└────────────┴─────┘\n");
+        card.append("╰────────────┴─────╯\n");
 
         return card.toString();
     }

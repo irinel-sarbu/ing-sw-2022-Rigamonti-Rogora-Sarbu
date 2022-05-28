@@ -9,12 +9,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.CharacterType;
 import util.Color;
-import util.Wizard;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CharacterCardTest {
-    private CharacterCard card1, card2, card3, card4;
+    private CharacterCard card1, card2, card3, card4, card5;
 
     @BeforeEach
     public void setup() {
@@ -22,6 +24,8 @@ public class CharacterCardTest {
         card2 = new CharacterCard(CharacterType.MONK);
         card3 = new CharacterCard(CharacterType.JESTER);
         card4 = new CharacterCard(CharacterType.MUSHROOM_FANATIC);
+        card5 = new CharacterCard(CharacterType.HERALD);
+
     }
 
     @Test
@@ -103,7 +107,26 @@ public class CharacterCardTest {
 
     @Test
     public void equals() {
-        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(null));
-        assertFalse(new CharacterCard(CharacterType.GRANNY_HERBS).equals(new Student(1000, Color.BLUE)));
+        assertNotEquals(null, new CharacterCard(CharacterType.GRANNY_HERBS));
+        assertNotEquals(new CharacterCard(CharacterType.GRANNY_HERBS), new Student(1000, Color.BLUE));
+    }
+
+    @Test
+    public void print() {
+        List<CharacterCard> characterCardList = new ArrayList<>();
+        card1.addNoEntryTile(new NoEntryTile());
+        card1.addNoEntryTile(new NoEntryTile());
+        card2.addStudent(new Student(0, Color.RED));
+        card2.addStudent(new Student(2, Color.YELLOW));
+        card3.addStudent(new Student(1, Color.BLUE));
+        card3.addStudent(new Student(3, Color.BLUE));
+        card3.addStudent(new Student(4, Color.GREEN));
+
+        characterCardList.add(card1);
+        characterCardList.add(card2);
+        characterCardList.add(card3);
+        characterCardList.add(card5);
+
+        System.out.println(CharacterCard.allToString(characterCardList));
     }
 }

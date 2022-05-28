@@ -301,7 +301,7 @@ public class SchoolBoard implements Serializable {
     public String toString() {
         String schoolBoard = "Schoolboard of " + String.format("%-23s", owner.getName()) + "\n";
 
-        schoolBoard += "┌────┬─────────────────────┬───┬─────┐\n";
+        schoolBoard += "╭────┬─────────────────────┬───┬─────╮\n";
         schoolBoard += buildRow(0, Color.YELLOW, false, 0, 0);
         schoolBoard += buildRow(1, Color.YELLOW, true, 1, 2);
         schoolBoard += buildRow(2, Color.BLUE, false, 0, 0);
@@ -311,7 +311,7 @@ public class SchoolBoard implements Serializable {
         schoolBoard += buildRow(6, Color.RED, false, 0, 0);
         schoolBoard += buildRow(7, Color.RED, true, 7, 8);
         schoolBoard += buildRow(8, Color.PINK, false, 0, 0);
-        schoolBoard += "└────┴─────────────────────┴───┴─────┘\n";
+        schoolBoard += "╰────┴─────────────────────┴───┴─────╯\n";
 
         if (owner.getGameMode() == GameMode.EXPERT) {
             schoolBoard += String.format("Coins: %-31d", coins.getNumOfCoins()) + "\n";
@@ -323,7 +323,7 @@ public class SchoolBoard implements Serializable {
     private String buildRow(int rowIndex, Color color, boolean studentRow, int tMin, int tMax) {
         int studentsInEntrance = entrance.size();
 
-        String entranceStudent = studentsInEntrance > rowIndex ? CliHelper.getStudentIcon(entrance.get(rowIndex).getColor()) : "○";
+        String entranceStudent = studentsInEntrance > rowIndex ? CliHelper.getStudentIcon(entrance.get(rowIndex).getColor()) : "●";
         StringBuilder row = new StringBuilder();
 
         if (studentRow) {
@@ -357,7 +357,7 @@ public class SchoolBoard implements Serializable {
                 if (x % 3 == 2) {
                     row.append(CliHelper.ANSI_GOLD + "□ " + CliHelper.ANSI_RESET);
                 } else {
-                    row.append("○ ");
+                    row.append("● ");
                 }
             }
         }
