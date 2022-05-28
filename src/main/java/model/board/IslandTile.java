@@ -1,12 +1,12 @@
 package model.board;
 
+import util.CliHelper;
 import util.Color;
 import util.TowerColor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -115,5 +115,44 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
                 .map(map -> map.getKey().toString() + ":" + String.format("%2s", map.getValue().toString()))
                 .collect(Collectors.joining(" ", "[", "]"));
         return "Island_" + stringID + ": " + stringContent + (tower != null ? tower.toString() : "X");
+    }
+
+    public String toCard(boolean hasMotherNature, boolean hasNoEntryTile, boolean top, boolean right, boolean bottom, boolean left) {
+        StringBuilder card = new StringBuilder();
+        card.append("╭───").append(top ? "╯   ╰" : "─────").append("───╮\n");
+        card.append("│ ").append(String.format("id: %2d", islandID)).append("    │\n");
+        card.append("│           │\n");
+        card.append("│ ").append(buildStudentRow(Color.YELLOW)).append(" │\n");
+        card.append(left ? "╯ " : "│ ").append(buildStudentRow(Color.BLUE)).append(right ? " ╰\n" : " │\n");
+        card.append(left ? "  " : "│ ").append(buildStudentRow(Color.GREEN)).append(right ? "  \n" : " │\n");
+        card.append(left ? "╮ " : "│ ").append(buildStudentRow(Color.RED)).append(right ? " ╭\n" : " │\n");
+        card.append("│ ").append(buildStudentRow(Color.PINK)).append(" │\n");
+        card.append("│           │\n");
+        card.append("│ ").append(buildLastRow(hasMotherNature, hasNoEntryTile)).append(" │\n");
+        card.append("╰───").append(bottom ? "╮   ╭" : "─────").append("───╯\n");
+
+        return card.toString();
+    }
+
+    private String buildStudentRow(Color color) {
+        int sum = 0;
+        for (Student student : students) {
+            if (student.getColor() == color)
+                sum++;
+        }
+
+        if (sum > 0) {
+            return CliHelper.getStudentIcon(color) + "x" + String.format(" %2d", sum) + "    ";
+        }
+        return "         ";
+    }
+
+    private String buildLastRow(boolean hasMotherNature, boolean hasNoEntryTile) {
+        StringBuilder row = new StringBuilder();
+        row.append(tower != null ? CliHelper.getTowerIcon(tower.getColor()) : " ").append("   ");
+        row.append(hasMotherNature ? CliHelper.getMotherNatureIcon() : " ").append("   ");
+        row.append(hasNoEntryTile ? CliHelper.getNoEntryIcon() : " ");
+
+        return row.toString();
     }
 }

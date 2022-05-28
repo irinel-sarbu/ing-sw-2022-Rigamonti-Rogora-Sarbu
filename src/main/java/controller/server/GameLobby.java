@@ -14,7 +14,7 @@ import eventSystem.events.network.server.*;
 import eventSystem.events.network.server.gameStateEvents.*;
 import exceptions.IllegalMovementException;
 import exceptions.PlayerNotFoundException;
-import exceptions.supplyEmptyException;
+import exceptions.SupplyEmptyException;
 import model.GameModel;
 import model.Player;
 import model.expert.CharacterCard;
@@ -172,38 +172,10 @@ public class GameLobby implements EventListener {
             Logger.debug(getLobbyCode() + " - " + "All clients connected. Switching state to " + getLobbyState());
             setupPreGame();
         }
-
-        // TODO: Resilience to disconnections
-
-//        if (model.getPlayerSize() >= maxPlayers) {
-//            client.send(new Message(Messages.LOBBY_FULL));
-//            Logger.warning("Player " + name + " trying to connect but lobby is full.");
-//        }
-//
-//        try {
-//            Player player = model.getPlayerByName(name);
-//            if (player.isDisconnected()) {
-//                clientList.put(name, client);
-//                client.joinLobby(lobbyCode);
-//                model.getPlayerByName(name).setDisconnected(false);
-//                broadcastExceptOne(new EPlayerJoined(name), name);
-//                Logger.info("Lobby " + getLobbyCode() + " - "  + "Player " + name + " reconnected");
-//            } else {
-//                client.send(new Message(Messages.NAME_NOT_AVAILABLE));
-//                Logger.warning("Lobby " + getLobbyCode() + " - "  + "Player " + name + " trying to connect but there is already a player with that name connected.");
-//            }
-//        } catch (PlayerNotFoundException e) {
-//            Logger.info("Lobby " + getLobbyCode() + " - "  + name + " joined lobby");
-//            clientList.put(name, client);
-//            client.joinLobby(lobbyCode);
-//            client.send(new ELobbyJoined(lobbyCode));
-//            broadcastExceptOne(new EPlayerJoined(name), name);
-//            client.send(new EChooseWizard(new ArrayList<>(availableWizards)));
-//        }
     }
 
     /**
-     * Remove a client from the current lobby, using it's nickname
+     * Remove a client from the current lobby, using its nickname
      *
      * @param name nickname of the player to remove
      */
@@ -321,7 +293,6 @@ public class GameLobby implements EventListener {
     private void sendContinueTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
-        ;
     }
 
     /**
@@ -380,82 +351,63 @@ public class GameLobby implements EventListener {
     // TODO fix not entering, move to per character type function
     @EventHandler
     public <T extends EUseCharacterEffect> boolean playerHasActivatedEffect(T event) {
-        Logger.severe("playerHasActivatedEffect " + event);
+        Logger.info("playerHasActivatedEffect " + event.getCharacterType());
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
 
         if (effectActivationCheck(client)) return true;
 
         CoinSupply playerCoinSupply = currentPlayer.getSchoolBoard().getCoinSupply();
+        try {
+            switch (event.getCharacterType()) {
+                case FARMER -> {
+                    CharacterCard card = model.getCharacterByType(CharacterType.FARMER);
 
-        switch (event.getCharacterType()) {
-            case FARMER -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.FARMER);
-
-                try {
                     playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
+                    model.getCoinSupply().addCoins(card.getCost());
+
+                    characterEffectHandler.farmerEffect(this);
+                    model.setActiveCharacterEffect(CharacterType.FARMER);
+                    studentMovement = new FarmerStudentMovement();
                 }
-                model.getCoinSupply().addCoins(card.getCost());
+                case POSTMAN -> {
+                    CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
 
-                characterEffectHandler.farmerEffect(this);
-                model.setActiveCharacterEffect(CharacterType.FARMER);
-                studentMovement = new FarmerStudentMovement();
-            }
-            case POSTMAN -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.POSTMAN);
-
-                try {
                     playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
+                    model.getCoinSupply().addCoins(card.getCost());
+
+                    characterEffectHandler.postmanEffect(this);
+                    model.setActiveCharacterEffect(CharacterType.POSTMAN);
+                    motherNatureMovement = new PostmanMotherNatureMovement();
                 }
-                model.getCoinSupply().addCoins(card.getCost());
+                case CENTAUR -> {
+                    CharacterCard card = model.getCharacterByType(CharacterType.CENTAUR);
 
-                characterEffectHandler.postmanEffect(this);
-                model.setActiveCharacterEffect(CharacterType.POSTMAN);
-                motherNatureMovement = new PostmanMotherNatureMovement();
-            }
-            case CENTAUR -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.CENTAUR);
-
-                try {
                     playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
+                    model.getCoinSupply().addCoins(card.getCost());
+
+                    characterEffectHandler.centaurEffect(this);
+                    model.setActiveCharacterEffect(CharacterType.CENTAUR);
+                    resolveIsland = new CentaurResolveIsland();
                 }
-                model.getCoinSupply().addCoins(card.getCost());
+                case KNIGHT -> {
+                    CharacterCard card = model.getCharacterByType(CharacterType.KNIGHT);
 
-                characterEffectHandler.centaurEffect(this);
-                model.setActiveCharacterEffect(CharacterType.CENTAUR);
-                resolveIsland = new CentaurResolveIsland();
-            }
-            case KNIGHT -> {
-                CharacterCard card = model.getCharacterByType(CharacterType.KNIGHT);
-
-                try {
                     playerCoinSupply.removeCoins(card.getCost());
-                } catch (supplyEmptyException e) {
-                    client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-                    return true;
-                }
-                model.getCoinSupply().addCoins(card.getCost());
+                    model.getCoinSupply().addCoins(card.getCost());
 
-                characterEffectHandler.knightEffect(this);
-                model.setActiveCharacterEffect(CharacterType.KNIGHT);
-                resolveIsland = new KnightResolveIsland();
+                    characterEffectHandler.knightEffect(this);
+                    model.setActiveCharacterEffect(CharacterType.KNIGHT);
+                    resolveIsland = new KnightResolveIsland();
+                }
+                default -> {
+                    Logger.warning("wrong Effect type");
+                }
             }
-            default -> {
-                Logger.warning("wrong Effect type");
-            }
+            notifyActivation(client);
+        } catch (SupplyEmptyException see) {
+            client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
         }
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -472,19 +424,15 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.mushroomFanaticEffect(this, event.getColor());
+            model.setActiveCharacterEffect(CharacterType.MUSHROOM_FANATIC);
+            resolveIsland = new MushroomFanaticResolveIsland();
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.mushroomFanaticEffect(this, event.getColor());
-        model.setActiveCharacterEffect(CharacterType.MUSHROOM_FANATIC);
-        resolveIsland = new MushroomFanaticResolveIsland();
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -501,18 +449,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.grannyHerbsEffect(this, event.getIslandID());
+            model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.grannyHerbsEffect(this, event.getIslandID());
-        model.setActiveCharacterEffect(CharacterType.GRANNY_HERBS);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -529,18 +473,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.heraldEffect(this, event.getIslandGroupID());
+            model.setActiveCharacterEffect(CharacterType.HERALD);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.heraldEffect(this, event.getIslandGroupID());
-        model.setActiveCharacterEffect(CharacterType.HERALD);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -557,18 +497,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.jesterEffect(this, event.getEntranceStudents(), event.getJesterStudents());
+            model.setActiveCharacterEffect(CharacterType.JESTER);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.jesterEffect(this, event.getEntranceStudents(), event.getJesterStudents());
-        model.setActiveCharacterEffect(CharacterType.JESTER);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -585,18 +521,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.minstrelEffect(this, event.getEntranceStudents(), event.getDiningStudents());
+            model.setActiveCharacterEffect(CharacterType.MINSTREL);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.minstrelEffect(this, event.getEntranceStudents(), event.getDiningStudents());
-        model.setActiveCharacterEffect(CharacterType.MINSTREL);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -613,18 +545,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.monkEffect(this, event.getStudentID(), event.getIslandPos());
+            model.setActiveCharacterEffect(CharacterType.MONK);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.monkEffect(this, event.getStudentID(), event.getIslandPos());
-        model.setActiveCharacterEffect(CharacterType.MONK);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -641,18 +569,14 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.princessEffect(this, event.getStudentID());
+            model.setActiveCharacterEffect(CharacterType.PRINCESS);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
-
-        characterEffectHandler.princessEffect(this, event.getStudentID());
-        model.setActiveCharacterEffect(CharacterType.PRINCESS);
-
-        client.send(new ServerMessage(Messages.EFFECT_USED));
-        broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
-        broadcast(new ELightModelSetup(model.getCharacters()));
         return true;
     }
 
@@ -669,19 +593,22 @@ public class GameLobby implements EventListener {
 
         try {
             playerCoinSupply.removeCoins(card.getCost());
-        } catch (supplyEmptyException e) {
+            model.getCoinSupply().addCoins(card.getCost());
+
+            characterEffectHandler.thiefEffect(this, event.getColor());
+            model.setActiveCharacterEffect(CharacterType.THIEF);
+            notifyActivation(client);
+        } catch (SupplyEmptyException e) {
             client.send(new ServerMessage(Messages.INSUFFICIENT_COINS));
-            return true;
         }
-        model.getCoinSupply().addCoins(card.getCost());
+        return true;
+    }
 
-        characterEffectHandler.thiefEffect(this, event.getColor());
-        model.setActiveCharacterEffect(CharacterType.THIEF);
-
+    private void notifyActivation(ClientHandler client) {
+        // TODO: che fa sta roba? Non dovrebbe mandarlo! :(
         client.send(new ServerMessage(Messages.EFFECT_USED));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         broadcast(new ELightModelSetup(model.getCharacters()));
-        return true;
     }
 
     private boolean effectActivationCheck(ClientHandler client) {
@@ -691,7 +618,6 @@ public class GameLobby implements EventListener {
         }
         if (model.getActiveCharacterEffect() != null) {
             client.send(new ServerMessage(Messages.ANOTHER_EFFECT_IS_ACTIVE));
-            return true;
         }
         return false;
     }
@@ -702,7 +628,8 @@ public class GameLobby implements EventListener {
         ClientHandler client = server.getClientByNickname(playerName);
 
         try {
-            studentMovement.moveStudentToDining(this, model.getPlayerByName(getPlayerNameBySocket(client)), event.getStudentID());
+            // TODO: my magic edit to get rid of the client when resolving player name (should be the same)
+            studentMovement.moveStudentToDining(this, model.getPlayerByName(playerName /*getPlayerNameBySocket(client)*/), event.getStudentID());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -764,28 +691,31 @@ public class GameLobby implements EventListener {
     public boolean playerHasSelectedRefillCloud(ESelectRefillCloud event) {
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
+        broadcast(new ECheckLastRound(model.getBag().isEmpty()));
+
         try {
             epilogue.refillFromCloudTile(this, currentPlayer, event.getCloudID());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (currentGameState != GameState.GAME_OVER) {
-            broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
-            for (Player player : model.getPlayers()) {
-                broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
-            }
 
-            if (currentGameState != GameState.TURN_EPILOGUE) {
-                broadcast(new EUpdateGameState(getCurrentGameState()));
-                broadcast(new ServerMessage(Messages.UPDATE_VIEW));
-            }
+        // using guard clause
+        if (currentGameState == GameState.GAME_OVER) return true;
+        broadcast(new EUpdateCloudTiles(model.getCloudTiles()));
+        for (Player player : model.getPlayers()) {
+            broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
 
-            if (currentGameState == GameState.PLANNING) {
-                sendChooseAssistantEvent();
-            } else {
-                sendStartTurn();
-            }
+        if (currentGameState != GameState.TURN_EPILOGUE) {
+            broadcast(new EUpdateGameState(getCurrentGameState()));
+            broadcast(new ServerMessage(Messages.UPDATE_VIEW));
+        }
+
+        if (currentGameState == GameState.PLANNING) {
+            sendChooseAssistantEvent();
+        } else {
+            sendStartTurn();
         }
         return true;
     }
@@ -990,6 +920,24 @@ public class GameLobby implements EventListener {
      */
     public ResolveIsland getResolveIsland() {
         return resolveIsland;
+    }
+
+    /**
+     * Get instance of student movement
+     *
+     * @return the instance of studnet movement
+     */
+    public StudentMovement getStudentMovement() {
+        return studentMovement;
+    }
+
+    /**
+     * Get instance of mother nature movement
+     *
+     * @return the instance of mother nature movement
+     */
+    public MotherNatureMovement getMotherNatureMovement() {
+        return motherNatureMovement;
     }
 
     /**

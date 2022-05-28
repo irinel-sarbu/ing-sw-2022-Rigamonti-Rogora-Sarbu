@@ -3,17 +3,12 @@ package model.board;
 import exceptions.*;
 import model.Player;
 import model.expert.CoinSupply;
-import util.Color;
-import util.GameMode;
-import util.Logger;
-import util.TowerColor;
+import util.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 /**
  * Represents the School Board. Is identified by the Player where it is created on.
@@ -30,12 +25,13 @@ public class SchoolBoard implements Serializable {
     private final CoinSupply coins;
     private final Player owner;
 
+    private TowerColor towerColor;
+
     /**
      * Constructor of {@link SchoolBoard}. Initializes all attributes. Sets the {@link SchoolBoard#owner} to the Parameter Player.
      *
      * @param player Is the owner of this {@link SchoolBoard}.
      */
-    // FIXME: coins only if expert mode
     public SchoolBoard(Player player) {
         if (player.getGameMode() == GameMode.EXPERT) {
             this.coins = new CoinSupply(0);
@@ -234,6 +230,7 @@ public class SchoolBoard implements Serializable {
      */
     public void addTower(Tower tower) throws TowersFullException {
         if (towers.size() >= maxTowersSize) throw new TowersFullException();
+        this.towerColor = tower.getColor();
         towers.add(tower);
     }
 
@@ -279,20 +276,22 @@ public class SchoolBoard implements Serializable {
         return false;
     }
 
-    /* Unused ToString.*/
     public static String allToString(List<SchoolBoard> boards) {
-        List<String[]> allBoards = boards.stream()
+        List<String[]> splitBoards = boards.stream()
                 .map(SchoolBoard::toString)
-                .map(bs -> bs.split("\n")).toList();
-        StringBuilder boardsString = new StringBuilder();
+                .map(bs -> bs.split("\n"))
+                .toList();
 
-        for (int i = 0; i < allBoards.get(0).length; i++) {
-            for (String[] allBoard : allBoards) {
-                boardsString.append(String.format("%-32s", allBoard[i]));
+        StringBuilder table = new StringBuilder();
+
+        for (int y = 0; y < splitBoards.get(0).length; y++) {
+            for (String[] board : splitBoards) {
+                table.append(String.format("%-38s ", board[y]));
             }
-            boardsString.append("\n");
+            table.append("\n");
         }
-        return new String(boardsString);
+
+        return table.toString();
     }
 
     /**
@@ -300,28 +299,79 @@ public class SchoolBoard implements Serializable {
      */
     @Override
     public String toString() {
-        String entranceString = entrance.stream()
-                .map(Student::toString)
-                .collect(Collectors.joining("", "[", "]"));
-        String towerString = String.valueOf(towers.size());
-        StringBuilder diningRoomString = new StringBuilder();
-        for (Color color : Color.values()) {
-            char[] colorStudents = new char[maxDiningSize];
-            Arrays.fill(colorStudents, '-');
-            for (int i = 2; i < maxDiningSize; i += 3) colorStudents[i] = 'o';
-            for (int i = 0; i < diningRoom.get(color.getValue()).size(); i++)
-                colorStudents[i] = color.toString().charAt(0);
-            String colorProfessor = " " + (this.hasProfessor(color) ? 'X' : ' ');
-            diningRoomString.append("\n  ").append(color).append(" ").append(new String(colorStudents)).append(colorProfessor);
-        }
-        //SchoolBoard will be identified by the previous print of a numbered player.
+        String schoolBoard = "Schoolboard of " + String.format("%-23s", owner.getName()) + "\n";
+
+        schoolBoard += "╭────┬─────────────────────┬───┬─────╮\n";
+        schoolBoard += buildRow(0, Color.YELLOW, false, 0, 0);
+        schoolBoard += buildRow(1, Color.YELLOW, true, 1, 2);
+        schoolBoard += buildRow(2, Color.BLUE, false, 0, 0);
+        schoolBoard += buildRow(3, Color.BLUE, true, 3, 4);
+        schoolBoard += buildRow(4, Color.GREEN, false, 0, 0);
+        schoolBoard += buildRow(5, Color.GREEN, true, 5, 6);
+        schoolBoard += buildRow(6, Color.RED, false, 0, 0);
+        schoolBoard += buildRow(7, Color.RED, true, 7, 8);
+        schoolBoard += buildRow(8, Color.PINK, false, 0, 0);
+        schoolBoard += "╰────┴─────────────────────┴───┴─────╯\n";
+
         if (owner.getGameMode() == GameMode.EXPERT) {
-            return "\tEntrance:" + entranceString + diningRoomString +
-                    "\n\tCoins: " + getCoinSupply() +
-                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
-        } else {
-            return "\tEntrance:" + entranceString + diningRoomString +
-                    "\n\t" + (towers.size() > 0 ? towers.get(0) + " towers:" + towerString : "No towers left");
+            schoolBoard += String.format("Coins: %-31d", coins.getNumOfCoins()) + "\n";
         }
+
+        return schoolBoard;
+    }
+
+    private String buildRow(int rowIndex, Color color, boolean studentRow, int tMin, int tMax) {
+        int studentsInEntrance = entrance.size();
+
+        String entranceStudent = studentsInEntrance > rowIndex ? CliHelper.getStudentIcon(entrance.get(rowIndex).getColor()) : "●";
+        StringBuilder row = new StringBuilder();
+
+        if (studentRow) {
+            int numOfTowers = towers.size();
+            boolean tower1 = numOfTowers >= tMin;
+            boolean tower2 = numOfTowers >= tMax;
+            row.append("│  ").append(entranceStudent).append(" │ ");
+            row.append("                    │   │ ");
+
+            if (tower1) {
+                row.append(CliHelper.getTowerIcon(this.towerColor)).append(" ");
+                if (tower2) {
+                    row.append(CliHelper.getTowerIcon(this.towerColor));
+                } else {
+                    row.append(" ");
+                }
+            } else {
+                row.append("   ");
+            }
+
+            row.append(" │");
+            return row.toString() + "\n";
+        }
+
+        row.append("│ ").append(entranceStudent).append("  │ ");
+        Stack<Student> colorStudents = diningRoom.get(color.getValue());
+        for (int x = 0; x < 10; x++) {
+            if (x < colorStudents.size()) {
+                row.append(CliHelper.getStudentIcon(color)).append(" ");
+            } else {
+                if (x % 3 == 2) {
+                    row.append(CliHelper.ANSI_GOLD + "□ " + CliHelper.ANSI_RESET);
+                } else {
+                    row.append("● ");
+                }
+            }
+        }
+        row.append("│ ");
+        boolean hasProf = false;
+        for (Professor professor : professors) {
+            if (professor.getColor() == color) {
+                hasProf = true;
+                break;
+            }
+        }
+        row.append(hasProf ? CliHelper.getProfessorIcon(color) : " ");
+        row.append(" │     │");
+
+        return row.toString() + "\n";
     }
 }

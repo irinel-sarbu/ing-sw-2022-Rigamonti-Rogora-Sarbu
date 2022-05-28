@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LightModel {
-    private String playerName;
+    private String playerName, currentPlayerName;
     private Map<String, SchoolBoard> schoolBoardMap;
     private List<CloudTile> cloudTiles;
     private List<IslandGroup> islandGroups;
@@ -27,6 +27,8 @@ public class LightModel {
     private CharacterType activeCharacterEffect;
     private GameState gameState;
 
+    private Boolean lastRound;
+
     public LightModel(String playerName) {
         this.playerName = playerName;
         this.schoolBoardMap = new HashMap<>();
@@ -36,6 +38,7 @@ public class LightModel {
         this.gameState = GameState.SETUP;
         this.characters = null;
         this.activeCharacterEffect = null;
+        this.lastRound = false;
     }
 
     public void setPlayerSchoolBoard(String playerName, SchoolBoard updatedSchoolBoard) {
@@ -68,6 +71,14 @@ public class LightModel {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public void setLastRound(Boolean lastRound) {
+        this.lastRound = lastRound;
+    }
+
+    public void setCurrentPlayerName(String currentPlayerName) {
+        this.currentPlayerName = currentPlayerName;
     }
 
     public Map<String, SchoolBoard> getSchoolBoardMap() {
@@ -105,5 +116,17 @@ public class LightModel {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public Boolean isLastRound() {
+        return lastRound;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getCurrentPlayerName() {
+        return currentPlayerName;
     }
 }

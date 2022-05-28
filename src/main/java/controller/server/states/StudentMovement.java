@@ -8,6 +8,7 @@ import model.Player;
 import model.board.SchoolBoard;
 import model.board.Student;
 import util.Color;
+import util.GameMode;
 import util.GameState;
 
 public abstract class StudentMovement {
@@ -19,8 +20,9 @@ public abstract class StudentMovement {
      */
     protected void movementEpilogue(GameLobby thisGame) {
         thisGame.addStudentsMoved();
-        Player player = thisGame.getCurrentPlayer();
-        thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        for (Player player : thisGame.getModel().getPlayers()) {
+            thisGame.broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
         if (thisGame.getStudentsMoved() == thisGame.getMaxStudentsMoved()) {
             thisGame.resetStudentsMoved();
             thisGame.setGameState(GameState.MOTHERNATURE_MOVEMENT);
@@ -86,13 +88,14 @@ public abstract class StudentMovement {
 
         Student movingStudent = thisGame.getCurrentPlayer().getSchoolBoard().getEntranceStudent(studentID);
         if (thisGame.getCurrentPlayer().getSchoolBoard().addToDiningRoom(movingStudent)) {
-            try {
-                thisGame.getModel().getCoinSupply().removeCoins(1);
-                thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
-            } catch (supplyEmptyException e) {
-                // Do nothing
+            if (thisGame.getModel().getGameMode() == GameMode.EXPERT) {
+                try {
+                    thisGame.getModel().getCoinSupply().removeCoins(1);
+                    thisGame.getCurrentPlayer().getSchoolBoard().getCoinSupply().addCoin();
+                } catch (SupplyEmptyException e) {
+                    // Do nothing
+                }
             }
-
         }
         thisGame.getCurrentPlayer().getSchoolBoard().removeFromEntrance(studentID);
 

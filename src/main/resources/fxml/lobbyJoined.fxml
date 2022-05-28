@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0"
+            prefWidth="650.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="view.gui.controllers.LobbyJoinedSceneController">
+    <children>
+        <ImageView fx:id="bgImage" fitHeight="389.0" fitWidth="650.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Graphical_Assets/eriantys.jpg"/>
+            </image>
+        </ImageView>
+        <Label fx:id="titleLabel" alignment="CENTER" layoutY="-9.0" prefHeight="78.0" prefWidth="650.0"
+               text="Welcome to Eriantys"/>
+        <Pane fx:id="menuBG" layoutX="190.0" layoutY="155.0" prefHeight="220.0" prefWidth="270.0">
+            <children>
+                <ImageView fitHeight="200.0" fitWidth="300.0" layoutX="-16.0" layoutY="-7.0" opacity="0.79"
+                           pickOnBounds="true">
+                    <image>
+                        <Image url="@../ui/Parchment.png"/>
+                    </image>
+                    <effect>
+                        <InnerShadow/>
+                    </effect>
+                </ImageView>
+                <Label fx:id="menuLabel" alignment="CENTER" layoutX="9.0" layoutY="14.0" prefHeight="44.0"
+                       prefWidth="156.0" text="Joined lobby:" wrapText="true">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets right="40.0"/>
+                    </padding>
+                </Label>
+                <ImageView fitHeight="50.0" fitWidth="75.0" layoutX="87.0" layoutY="108.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../ui/LoadingClouds.gif"/>
+                    </image>
+                </ImageView>
+                <TextField fx:id="textField" editable="false" focusTraversable="false" layoutX="135.0" layoutY="29.0"
+                           prefHeight="17.0" prefWidth="112.0" promptText="_ _ _ _ _" visible="false">
+                </TextField>
+                <Label fx:id="menuLabel1" alignment="CENTER" layoutX="17.0" layoutY="76.0" prefHeight="35.0"
+                       prefWidth="236.0" text="Waiting For People To connect..." wrapText="true">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <padding>
+                        <Insets right="40.0"/>
+                    </padding>
+                </Label>
+            </children>
+        </Pane>
+    </children>
+    <stylesheets>
+        <URL value="@../css/lobbyJoined.css"/>
+        <URL value="@../css/sharedStyles.css"/>
+    </stylesheets>
+</AnchorPane>

@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static util.CliHelper.V_L_EDGE;
+import static util.CliHelper.V_R_EDGE;
+
 public class CloudTile implements Serializable {
     private final int cloudTileID;
     private final List<Student> studentList;
@@ -77,5 +80,55 @@ public class CloudTile implements Serializable {
                 .map(Student::toString)
                 .collect(Collectors.joining(" ", "[", "]"));
         return "Cloud_" + cloudTileID + ": " + students;
+    }
+
+    public static String allToString(List<CloudTile> boards) {
+        List<String[]> splitCards = boards.stream()
+                .map(CloudTile::toCard)
+                .map(bs -> bs.split("\n"))
+                .toList();
+
+        StringBuilder cards = new StringBuilder();
+
+        for (int y = 0; y < splitCards.get(0).length; y++) {
+            for (String[] splitCard : splitCards) {
+                cards.append(String.format("%-9s ", splitCard[y]));
+            }
+            cards.append("\n");
+        }
+
+        return cards.toString();
+    }
+
+    public String toCard() {
+        StringBuilder card = new StringBuilder();
+        card.append(" ╭─" + V_L_EDGE).append(String.format("%1d", cloudTileID)).append(V_R_EDGE + "─╮ \n");
+        card.append("╭╯").append(buildRow(true)).append("╰╮\n");
+        card.append("╰╮").append(buildRow(false)).append("╭╯\n");
+        card.append(" ╰─────╯ \n");
+
+        return card.toString();
+    }
+
+    private String buildRow(boolean firstRow) {
+        int students = studentList.size();
+        StringBuilder row = new StringBuilder();
+        switch (students) {
+            case 0 -> row.append("     ");
+            case 3 -> {
+                if (firstRow)
+                    row.append(" ").append(studentList.get(0)).append(" ").append(studentList.get(1)).append(" ");
+                else
+                    row.append("  ").append(studentList.get(2)).append("  ");
+            }
+            case 4 -> {
+                if (firstRow)
+                    row.append(" ").append(studentList.get(0)).append(" ").append(studentList.get(1)).append(" ");
+                else
+                    row.append(" ").append(studentList.get(2)).append(" ").append(studentList.get(3)).append(" ");
+            }
+        }
+
+        return row.toString();
     }
 }

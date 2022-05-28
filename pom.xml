@@ -21,12 +21,15 @@
             **/util/**/*,
             **/view/**/*,
             **/lobbyStates/**/*,
+            **/controller/client/**/*,
+            **/controller/server/ServerController.class,
             **/*App.*
         </sonar.exclusions>
         <!-- Matteo Rogora: manually added -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- end -->
+        <javafx.version>11.0.2</javafx.version>
     </properties>
 
     <dependencies>
@@ -43,8 +46,41 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.13.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>mac</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>win</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
         </dependency>
     </dependencies>
 
@@ -92,6 +128,8 @@
                         <exclude>**/util/**/*</exclude>
                         <exclude>**/view/**/*</exclude>
                         <exclude>**/lobbyStates/**/*</exclude>
+                        <exclude>**/controller/client/**/*</exclude>
+                        <exclude>**/controller/server/ServerController.class</exclude>
                         <exclude>**/*App.*</exclude>
                     </excludes>
                 </configuration>

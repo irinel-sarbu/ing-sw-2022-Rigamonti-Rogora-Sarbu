@@ -1,6 +1,5 @@
 package model.board;
 
-import exceptions.EmptyStudentListException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -95,6 +94,15 @@ public class IslandTileTest {
         assertEquals(towerIslandTile.getTowerColor(), TowerColor.GRAY);
         towerIslandTile.setTowerColor(null);
         assertNull(towerIslandTile.getTowerColor());
+    }
+
+    @Test
+    public void toCard() {
+        System.out.println(emptyIslandTile.toCard(false, false, true, true, true, true));
+        System.out.println(towerIslandTile.toCard(true, false, true, true, true, true));
+        System.out.println(towerIslandTile.toCard(false, true, true, true, true, true));
+
+        System.out.println(towerIslandTile.toCard(false, false, false, false, false, false));
     }
 
 }

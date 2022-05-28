@@ -22,7 +22,6 @@ public class Server implements Runnable {
     public Server(int port) {
         this.port = port;
         this.clientMap = new ConcurrentHashMap<>();
-
         this.eventQueue = new LinkedBlockingQueue<>();
     }
 

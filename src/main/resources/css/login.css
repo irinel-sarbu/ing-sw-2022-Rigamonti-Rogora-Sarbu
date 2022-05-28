@@ -1,0 +1,34 @@
+.label {
+    -fx-text-fill: white;
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 22;
+    -fx-effect: dropshadow(gaussian, blanchedalmond, 8, 0.1, 0, 0);
+}
+
+#ip {
+
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-text-fill: white;
+    -fx-background-color: #333;
+    -fx-font-size: 16;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, navajowhite, 4, 0.3, 0, 0);
+}
+
+#port {
+
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-text-fill: white;
+    -fx-background-color: #333;
+    -fx-font-size: 16;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, navajowhite, 4, 0.3, 0, 0);
+}
+
+#warning {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-text-fill: darkred;
+    -fx-font-size: 16;
+    -fx-alignment: center;
+    -fx-effect: none;
+}

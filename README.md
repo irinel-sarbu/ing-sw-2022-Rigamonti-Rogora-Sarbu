@@ -5,5 +5,5 @@ Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/pr
 
 ## Componenti del gruppo
 - [_**Rigamonti Alberto**_](https://github.com/Alberto1Rigamonti)
-- [_**Rogora Matteo**_]()
+- [_**Rogora Matteo**_](https://github.com/teo3300)
 - [_**Sarbu Razvan Irinel**_](https://github.com/irinel-sarbu)

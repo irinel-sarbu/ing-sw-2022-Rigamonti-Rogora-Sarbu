@@ -19,6 +19,12 @@ public abstract class View {
         System.out.println(message);
     }
 
+    public void joinedLobbyDisplay(String code) {
+    }
+
+    public void allPlayersConnected() {
+    }
+
     public void displayError(String errorMessage) {
         System.out.println(CliHelper.ANSI_RED + "ERROR " + errorMessage + CliHelper.ANSI_RESET);
     }
@@ -53,7 +59,16 @@ public abstract class View {
 
     public abstract void chooseAssistant(List<Assistant> deck);
 
+    public void playerChoseAssistant(Assistant assistant) {
+    }
+
+    public void otherPlayerIsChoosingAssistant() {
+    }
+
     public abstract void showMenu(LightModel model, String client);
+
+    public void displayIdleMenu(LightModel model, String playerName) {
+    }
 
     public abstract void update(LightModel model);
 }

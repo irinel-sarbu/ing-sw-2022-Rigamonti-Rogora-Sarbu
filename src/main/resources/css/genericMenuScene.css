@@ -1,0 +1,119 @@
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 35;
+}
+
+#notYourTurnText {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 30;
+}
+
+#studentMovementLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 20;
+}
+
+.button {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/buttons/stoneButtonInsetReady.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:hover {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/buttons/stoneButtonInsetHovered.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:pressed {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/buttons/stoneButtonInsetPressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/Arrow.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton:hover {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowHover.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton:pressed {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowPressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}

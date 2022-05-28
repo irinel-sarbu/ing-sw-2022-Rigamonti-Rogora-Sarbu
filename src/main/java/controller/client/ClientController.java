@@ -38,7 +38,7 @@ public class ClientController implements EventListener {
         switch (message.getMsg()) {
             case Messages.CONNECTION_OK -> {
                 numOfConsecutiveErrors = 0;
-                view.displayMessage(CliHelper.ANSI_LIGHT_GREEN, "Connection established!");
+                view.displayMessage(CliHelper.ANSI_GREEN, "Connection established!");
                 view.askNickname();
             }
 
@@ -70,15 +70,18 @@ public class ClientController implements EventListener {
             }
 
             case Messages.LOBBY_NOT_FOUND -> {
-                view.displayError("Lobby with ID " + lobbyCode + " not found!");
+                view.displayError("Lobby not found!");
                 view.chooseCreateOrJoin();
             }
             case Messages.LOBBY_FULL -> {
-                view.displayError("Lobby with ID " + lobbyCode + " is full!");
+                view.displayError("Lobby is full!");
                 view.chooseCreateOrJoin();
             }
 
-            case Messages.ALL_CLIENTS_CONNECTED -> view.displayMessage("All clients connected. Starting game.");
+            case Messages.ALL_CLIENTS_CONNECTED -> {
+                view.displayMessage("All clients connected. Starting game.");
+                view.allPlayersConnected();
+            }
 
             case Messages.GAME_STARTED -> view.displayMessage("All players are ready. First turn starting.");
 
@@ -86,15 +89,16 @@ public class ClientController implements EventListener {
 
             case Messages.UPDATE_VIEW -> view.update(model);
 
-            case Messages.INVALID_ASSISTANT ->
-                    view.displayMessage("Invalid Assistant card. Please select a valid one:");
+            case Messages.INVALID_ASSISTANT -> view.displayError("Invalid Assistant card. Please select a valid one:");
 
-            case Messages.START_TURN, Messages.CONTINUE_TURN -> view.showMenu(model, client.getNickname());
+            case Messages.START_TURN, Messages.CONTINUE_TURN -> {
+                model.setCurrentPlayerName(client.getNickname());
+                view.showMenu(model, client.getNickname());
+            }
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
 
-            case Messages.ILLEGAL_STEPS ->
-                    view.displayMessage("Too many steps, look at your max steps from the assistant card");
+            case Messages.ILLEGAL_STEPS -> view.displayMessage("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
@@ -155,9 +159,8 @@ public class ClientController implements EventListener {
     public void onLobbyJoined(ELobbyJoined event) {
         this.lobbyCode = event.getCode();
         client.setLobbyId(lobbyCode);
-
-        view.displayMessage("Joined lobby " + event.getCode());
-        view.displayMessage("Waiting for other players to connect...");
+        //changed to work with both gui and cli
+        view.joinedLobbyDisplay(lobbyCode);
     }
 
     /**
@@ -180,7 +183,10 @@ public class ClientController implements EventListener {
     public void onPlayerChoosing(EPlayerChoosing event) {
         switch (event.getChoiceType()) {
             case WIZARD -> view.displayMessage(event.getPlayerName() + " is choosing wizard.");
-            case ASSISTANT -> view.displayMessage(event.getPlayerName() + " is choosing assistant.");
+            case ASSISTANT -> {
+                view.displayMessage(event.getPlayerName() + " is choosing assistant.");
+                view.otherPlayerIsChoosingAssistant();
+            }
         }
     }
 
@@ -197,6 +203,12 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onAssistantChosen(EAssistantChosen event) {
         client.sendToServer(new EAssistantChosen(event.getAssistant()));
+    }
+
+    @EventHandler
+    public void onPlayerChoseAssistant(EPlayerChoseAssistant event) {
+        view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
+        view.playerChoseAssistant(event.getAssistant());
     }
 
     @EventHandler
@@ -236,12 +248,9 @@ public class ClientController implements EventListener {
     }
 
     @EventHandler
-    public void onPlayerChoseAssistant(EPlayerChoseAssistant event) {
-        view.displayMessage("Player " + event.getPlayer() + " chose " + event.getAssistant());
-    }
-
-    @EventHandler
     public void onPlayerTurnStarted(EPlayerTurnStarted event) {
+        model.setCurrentPlayerName(event.getPlayer());
+        view.displayIdleMenu(model, event.getPlayer());
         view.displayMessage("Player " + event.getPlayer() + " has started his turn");
     }
     // Planning phase
@@ -315,6 +324,11 @@ public class ClientController implements EventListener {
     @EventHandler
     public void onDeclareWinner(EDeclareWinner event) {
         view.displayMessage("\n\nPlayer " + event.getPlayer() + " Won!!\n\n");
+    }
+
+    @EventHandler
+    public void onCheckLastRound(ECheckLastRound event) {
+        model.setLastRound(event.lastRound);
     }
 }
 

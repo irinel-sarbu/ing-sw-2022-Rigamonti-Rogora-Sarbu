@@ -1,5 +1,6 @@
 package model.board;
 
+import util.CliHelper;
 import util.Color;
 
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class Student implements Serializable {
     /**
      * Getter of the attribute {@link Student#color}.
      *
-     * @return
+     * @return {@link Student#color}
      */
     public Color getColor() {
         return color;
@@ -43,6 +44,6 @@ public class Student implements Serializable {
      */
     @Override
     public String toString() {
-        return color.toString() + "(" + ID + ")";
+        return CliHelper.getStudentIcon(color);
     }
 }

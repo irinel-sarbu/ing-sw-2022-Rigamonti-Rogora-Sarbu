@@ -1,8 +1,9 @@
 import controller.client.ClientController;
+import javafx.application.Application;
 import util.Logger;
 import view.View;
 import view.cli.CliView;
-import view.gui.GuiView;
+import view.gui.GuiApplication;
 
 public class ClientApp {
     static public void main(String[] args) {
@@ -25,13 +26,15 @@ public class ClientApp {
             }
         }
 
-        cliEnabled = true;
         if (run) {
-            View view = cliEnabled ? new CliView() : new GuiView();
-
-            ClientController controller = new ClientController(view);
-
-            view.run();
+            if (cliEnabled) {
+                View view = new CliView();
+                ClientController controller = new ClientController(view);
+                view.run();
+            } else {
+                Logger.setLevel(Logger.LoggerLevel.ALL);
+                Application.launch(GuiApplication.class);
+            }
         }
     }
 }

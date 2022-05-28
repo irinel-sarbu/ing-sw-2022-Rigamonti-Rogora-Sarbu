@@ -27,7 +27,7 @@ public class CliView extends View {
         this.cmd = new CliHelper();
 
         cmd.resetScreen();
-        cmd.drawBox(CliHelper.ANSI_LIGHT_BLUE, "Connection");
+        cmd.drawBox(CliHelper.ANSI_BLUE, "Connection");
         setupConnection();
     }
 
@@ -79,7 +79,7 @@ public class CliView extends View {
         Menu createLobbyNumOfPlayers = new Menu("Lobby creation", "Choose number of players");
 
         cmd.resetScreen();
-        cmd.drawBox(CliHelper.ANSI_LIGHT_BLUE, "Main menu");
+        cmd.drawBox(CliHelper.ANSI_BLUE, "Main menu");
 
         mainMenu.putAction("Create lobby", () -> {
             clearLines(mainMenu.getSize());
@@ -151,6 +151,12 @@ public class CliView extends View {
     }
 
     @Override
+    public void joinedLobbyDisplay(String code) {
+        System.out.println("Joined lobby " + code);
+        System.out.println("Waiting for other players to connect...");
+    }
+
+    @Override
     public void chooseWizard(List<Wizard> availableWizards) {
         System.out.println("Choose your wizard:");
         for (int i = 0; i < availableWizards.size(); i++) {
@@ -198,17 +204,17 @@ public class CliView extends View {
                 return true;
             });
 
-            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(0), () -> {
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(0).getCharacter() + "\n" + model.getCharacters().get(0), () -> {
                 activateEffect(model.getCharacters().get(0), model, client);
                 return true;
             });
 
-            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(1), () -> {
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(1).getCharacter() + "\n" + model.getCharacters().get(1), () -> {
                 activateEffect(model.getCharacters().get(1), model, client);
                 return true;
             });
 
-            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(2), () -> {
+            activateCharacter.putAction("Activate Character Effect of " + model.getCharacters().get(2).getCharacter() + "\n" + model.getCharacters().get(2), () -> {
                 activateEffect(model.getCharacters().get(2), model, client);
                 return true;
             });
@@ -336,7 +342,7 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert which island TILE >>> ");
             choice2 = cmd.readInt(-1);
-        } while (choice2 < 0 || choice2 >= 11); //Hardcoded 12 = max number of islandtiles
+        } while (choice2 < 0 || choice2 >= 12); //Hardcoded 12 = max number of islandtiles
 
         EventManager.notify(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
     }
@@ -359,7 +365,7 @@ public class CliView extends View {
         } while (choice < 0 || choice >= 8); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new EMoveMotherNature(choice));
     }
-    //TODO: clouds.get(choice).getStudents().size() == 0 not good for when all clouds are empty and the bag is empty
+
     private void selectCloud(LightModel model, String client) {
         int choice;
         List<CloudTile> clouds = model.getCloudTiles();
@@ -367,7 +373,7 @@ public class CliView extends View {
         do {
             System.out.print("\rInsert which cloud tile to take students from (not empty) >>> ");
             choice = cmd.readInt(-1);
-        } while (choice < 0 || choice >= clouds.size() || clouds.get(choice).getStudents().size() == 0); //Hardcoded 7 = max movement of mother nature (with postman)
+        } while (choice < 0 || choice >= clouds.size() || (clouds.get(choice).getStudents().size() == 0 && !model.isLastRound())); //Hardcoded 7 = max movement of mother nature (with postman)
         EventManager.notify(new ESelectRefillCloud(choice));
     }
 
@@ -382,7 +388,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert which island TILE >>> ");
                     choice1 = cmd.readInt(-1);
-                } while (choice1 < 0 || choice1 >= 11); //Hardcoded 12 = max number of islandtiles
+                } while (choice1 < 0 || choice1 >= 12); //Hardcoded 12 = max number of islandtiles
                 List<Student> students = character.getStudents();
                 printStudents(students);
                 do {
@@ -412,7 +418,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert which island Tile to Add the No Entry Tiles to>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 11); //Hardcoded 12 = max number of islandtiles
+                } while (choice < 0 || choice >= 12); //Hardcoded 12 = max number of islandtiles
                 EventManager.notify(new EUseGrannyEffect(choice));
             }
             case JESTER -> {
@@ -448,7 +454,7 @@ public class CliView extends View {
                 List<Color> diningColors = new ArrayList<>();
                 List<Student> entranceStudents = model.getSchoolBoardMap().get(client).getEntranceStudents();
 
-                System.out.println("Select 3 students from Entrance to switch:");
+                System.out.println("Select 2 students from Entrance to switch:");
                 for (int i = 0; i < 2; i++) {
                     printEntrance(entranceStudents);
                     do {
@@ -458,13 +464,13 @@ public class CliView extends View {
                     entranceIDs.add(entranceStudents.remove(choice).getID());
                 }
 
-                System.out.println("Select 3 students color from dining room to switch:");
+                System.out.println("Select 2 students color from dining room to switch:");
                 printDiningRoom(model.getSchoolBoardMap().get(client));
                 for (int i = 0; i < 2; i++) {
                     do {
                         System.out.print("\rInsert color ID number " + i + " >>> ");
                         choice = cmd.readInt(-1);
-                    } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                    } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
                     diningColors.add(Color.values()[choice]);
                 }
 
@@ -490,7 +496,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert color ID >>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseFanaticEffect(Color.values()[choice]));
             }
@@ -503,7 +509,7 @@ public class CliView extends View {
                 do {
                     System.out.print("\rInsert color ID >>> ");
                     choice = cmd.readInt(-1);
-                } while (choice < 0 || choice >= 4); //Hardcoded 5 = max number of colors
+                } while (choice < 0 || choice >= 5); //Hardcoded 5 = max number of colors
 
                 EventManager.notify(new EUseThiefEffect(Color.values()[choice]));
             }
@@ -538,25 +544,25 @@ public class CliView extends View {
 
     @Override
     public void update(LightModel model) {
-        // Clear screen - doesn't work in intellij terminal
-        System.out.print("\033[H\033[2J");
-
-        System.out.println("BOARD");
+        cmd.resetScreen();
+        cmd.drawBox(CliHelper.ANSI_BLUE, "Board");
 
         System.out.println("- islands:");
-        printIslands(model.getIslandGroups());
-
-        System.out.println("- mother nature position: " + model.getMotherNaturePosition());
+        System.out.println(IslandGroup.allToString(model.getIslandGroups(), model.getMotherNaturePosition()));
 
         System.out.println("- cloud tiles: ");
-        printCloudTiles(model.getCloudTiles());
+        System.out.println(CloudTile.allToString(model.getCloudTiles()));
 
+        List<SchoolBoard> schoolBoardsList = new ArrayList<>();
         for (Map.Entry<String, SchoolBoard> entry : model.getSchoolBoardMap().entrySet()) {
-            System.out.println("- schoolBoard of " + entry.getKey() + ":\n" + entry.getValue());
+            schoolBoardsList.add(entry.getValue());
         }
+        System.out.println(SchoolBoard.allToString(schoolBoardsList));
 
         if (model.getCharacters() != null) {
-            System.out.println("- extracted characters: " + model.getCharacters());
+            System.out.println("- Extracted characters:");
+            System.out.println(CharacterCard.allToString(model.getCharacters()));
+
             if (model.getActiveCharacterEffect() != null) {
                 System.out.println("- active character effect: " + model.getActiveCharacterEffect());
             } else {
@@ -564,7 +570,8 @@ public class CliView extends View {
             }
         }
 
-        System.out.println("- assistants: " + model.getDeck());
+        System.out.println("- assistants: ");
+        System.out.println(Assistant.allToString(model.getDeck()));
     }
 
     private void printIslands(List<IslandGroup> islandGroups) {

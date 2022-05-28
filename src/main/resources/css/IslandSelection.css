@@ -1,0 +1,52 @@
+.label {
+    -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
+}
+
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 40;
+    -fx-padding: 30px;
+}
+
+.button {
+    -fx-background-image: url("../ui/CircleButtons/Default.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:hover {
+    -fx-background-image: url("../ui/CircleButtons/Hover.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:pressed {
+    -fx-background-image: url("../ui/CircleButtons/Pressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}

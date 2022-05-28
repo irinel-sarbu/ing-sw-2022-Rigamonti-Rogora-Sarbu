@@ -1,0 +1,42 @@
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 30;
+    -fx-padding: 30px;
+}
+
+#assistantLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-padding: 42px;
+    -fx-font-size: 35;
+    -fx-text-alignment: center;
+}
+
+#chooseAssistantLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 35;
+    -fx-text-alignment: center;
+}
+
+#assistantChosenLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-padding: 42px;
+    -fx-font-size: 35;
+    -fx-text-alignment: center;
+}
+
+#otherChoices {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 35;
+    -fx-text-alignment: center;
+}
+
+#nothingLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 24;
+}
