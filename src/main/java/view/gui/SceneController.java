@@ -116,4 +116,28 @@ public class SceneController {
         LobbyJoinedSceneController controller = (LobbyJoinedSceneController) currentSceneController;
         controller.editCode(code);
     }
+
+    public static void switchBackToLogin() {
+        stopMediaPlayer();
+        stage.hide();
+        stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Eriantys");
+        stage.getIcons().add(new Image("/ui/Icon.png"));
+        SceneController.switchScene("loginScene.fxml");
+        SceneController.startMediaPlayer();
+        stage.show();
+    }
+
+    public static void switchBackToCreateOrJoin() {
+        stopMediaPlayer();
+        stage.hide();
+        stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Eriantys");
+        stage.getIcons().add(new Image("/ui/Icon.png"));
+        SceneController.switchScene("createOrJoin.fxml");
+        SceneController.startMediaPlayer();
+        stage.show();
+    }
 }

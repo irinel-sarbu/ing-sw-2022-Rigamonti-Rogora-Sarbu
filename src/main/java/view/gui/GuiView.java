@@ -18,7 +18,12 @@ public class GuiView extends View {
 
     @Override
     public void setupConnection(boolean connectionReset) {
-
+        Platform.runLater(() -> {
+            if (connectionReset) {
+                displayError("Connection with server closed");
+                SceneController.switchBackToLogin();
+            }
+        });
     }
 
     @Override
@@ -51,8 +56,15 @@ public class GuiView extends View {
 
     @Override
     public void chooseCreateOrJoin(boolean wasInLobby) {
-        if (SceneController.getCurrentSceneController() instanceof NameSelectionSceneController) {
-            Platform.runLater(() -> SceneController.switchScene("createOrJoin.fxml"));
+        if (wasInLobby) {
+            Platform.runLater(() -> {
+                displayError("A player disconnected, Game Aborted...");
+                SceneController.switchBackToCreateOrJoin();
+            });
+        } else {
+            if (SceneController.getCurrentSceneController() instanceof NameSelectionSceneController) {
+                Platform.runLater(() -> SceneController.switchScene("createOrJoin.fxml"));
+            }
         }
     }
 
@@ -128,6 +140,11 @@ public class GuiView extends View {
                 controller.updateView(model);
             }
         });
+    }
+
+    @Override
+    public void gameOver() {
+
     }
 
     @Override

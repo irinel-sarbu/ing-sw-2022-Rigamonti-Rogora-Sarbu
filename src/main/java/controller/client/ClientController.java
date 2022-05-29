@@ -329,6 +329,7 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onDeclareWinner(EDeclareWinner event) {
+        view.gameOver();
         view.displayMessage("\n\nPlayer " + event.getPlayer() + " Won!!\n\n");
     }
 

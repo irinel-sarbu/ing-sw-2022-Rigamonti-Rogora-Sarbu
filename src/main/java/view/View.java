@@ -70,5 +70,8 @@ public abstract class View {
     public void displayIdleMenu(LightModel model, String playerName) {
     }
 
+    public void gameOver() {
+    }
+
     public abstract void update(LightModel model);
 }
