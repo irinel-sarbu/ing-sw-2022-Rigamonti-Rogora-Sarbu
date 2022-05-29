@@ -176,7 +176,7 @@ public class ClientController implements EventListener {
      */
     @EventHandler
     public void onPlayerDisconnected(EPlayerDisconnected event) {
-        view.displayMessage(event.getPlayerName() + " left the Lobby!");
+        view.displayError(event.getPlayerName() + " left the Lobby!");
     }
 
     @EventHandler

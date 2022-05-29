@@ -78,7 +78,8 @@
                     <Pane fx:id="cloudSelectionPane" layoutY="500.0" prefHeight="580.0" prefWidth="1920.0" visible="false">
                         <children>
                             <Button fx:id="selectCloudButton" layoutX="865.0" layoutY="14.0" mnemonicParsing="false"
-                                    prefHeight="85.0" prefWidth="190.0" text="Select Cloud Tile"/>
+                                    onMousePressed="#onSelectCloud" prefHeight="85.0" prefWidth="190.0"
+                                    text="Select Cloud Tile"/>
                             <Button fx:id="characterEffectButton2" layoutX="865.0" layoutY="112.0" mnemonicParsing="false"
                                     prefHeight="85.0" prefWidth="190.0" text="Character Effect" visible="false"/>
                         </children>
