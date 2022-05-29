@@ -49,7 +49,6 @@ public abstract class StudentMovement {
             throws ProfessorFullException {
         if (thisGame.getCurrentPlayer().getSchoolBoard().hasProfessor(color))
             return; // prevent from self stealing
-        // TODO: may exists another way to check this
         try {
             thisGame.getCurrentPlayer().getSchoolBoard().addProfessor(thisGame.getModel().removeProfessor(color));
         } catch (ProfessorNotFoundException e) {    // someone else already has this professor

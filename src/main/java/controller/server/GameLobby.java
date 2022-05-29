@@ -254,8 +254,6 @@ public class GameLobby implements EventListener {
                 }
             }
 
-            // TODO: Each update is called after respective element is modified
-
             broadcast(new ServerMessage(Messages.UPDATE_VIEW));
             setGameState(GameState.PLANNING);
 
@@ -340,7 +338,6 @@ public class GameLobby implements EventListener {
      * @param event event to react to
      * @return true
      */
-    // TODO fix not entering, move to per character type function
     @EventHandler
     public <T extends EUseCharacterEffect> boolean playerHasActivatedEffect(T event) {
         Logger.info("playerHasActivatedEffect " + event.getCharacterType());
@@ -620,7 +617,6 @@ public class GameLobby implements EventListener {
         ClientHandler client = server.getClientByNickname(playerName);
 
         try {
-            // TODO: my magic edit to get rid of the client when resolving player name (should be the same)
             studentMovement.moveStudentToDining(this, model.getPlayerByName(playerName /*getPlayerNameBySocket(client)*/), event.getStudentID());
         } catch (Exception e) {
             e.printStackTrace();

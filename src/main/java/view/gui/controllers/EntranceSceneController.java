@@ -20,7 +20,6 @@ public class EntranceSceneController implements GenericSceneController {
     private List<ImageView> students = new ArrayList<>();
     private List<Student> entrance = new ArrayList<>();
     private LightModel model;
-    //TODO: add dynamic scene switch, if toIsland is true go to islandScene selector, otherwise Dining Color Scene Selector
     private boolean toIsland;
 
     @FXML

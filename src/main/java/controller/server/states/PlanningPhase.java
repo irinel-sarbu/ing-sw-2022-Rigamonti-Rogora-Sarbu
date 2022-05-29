@@ -74,8 +74,6 @@ public class PlanningPhase {
      * @param thisGame current game lobby
      */
     public void computeNext(GameLobby thisGame) {
-        /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO: in case of disconnection prevent game progress
-                thisGame.getOrder().size()) throw new WrongPhaseException(); */
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
         nextOrder.sort(Player::compareTo);
         thisGame.setOrder(nextOrder);
