@@ -67,8 +67,10 @@
                     </Pane>
                     <Pane fx:id="motherNaturePane" layoutY="500.0" prefHeight="580.0" prefWidth="1920.0" visible="false">
                         <children>
-                            <Button fx:id="moveMotherNatureButton" layoutX="865.0" layoutY="14.0" mnemonicParsing="false"
-                                    prefHeight="85.0" prefWidth="190.0" text="Move Mother Nature"/>
+                            <Button fx:id="moveMotherNatureButton" layoutX="865.0" layoutY="14.0"
+                                    mnemonicParsing="false"
+                                    onMousePressed="#onMoveMN" prefHeight="85.0" prefWidth="190.0"
+                                    text="Move Mother Nature"/>
                             <Button fx:id="characterEffectButton1" layoutX="865.0" layoutY="111.0" mnemonicParsing="false"
                                     prefHeight="85.0" prefWidth="190.0" text="Character Effect" visible="false"/>
                         </children>

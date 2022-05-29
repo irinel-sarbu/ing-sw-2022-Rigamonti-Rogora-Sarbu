@@ -22,6 +22,7 @@ public class LightModel {
     private int motherNaturePosition;
 
     private List<Assistant> deck;
+    private Assistant chosenAssistant;
 
     private List<CharacterCard> characters;
     private CharacterType activeCharacterEffect;
@@ -35,6 +36,7 @@ public class LightModel {
         this.cloudTiles = null;
         this.islandGroups = null;
         this.deck = null;
+        this.chosenAssistant = null;
         this.gameState = GameState.SETUP;
         this.characters = null;
         this.activeCharacterEffect = null;
@@ -79,6 +81,10 @@ public class LightModel {
 
     public void setCurrentPlayerName(String currentPlayerName) {
         this.currentPlayerName = currentPlayerName;
+    }
+
+    public void setChosenAssistant(Assistant chosenAssistant) {
+        this.chosenAssistant = chosenAssistant;
     }
 
     public Map<String, SchoolBoard> getSchoolBoardMap() {
@@ -128,5 +134,9 @@ public class LightModel {
 
     public String getCurrentPlayerName() {
         return currentPlayerName;
+    }
+
+    public Assistant getChosenAssistant() {
+        return chosenAssistant;
     }
 }

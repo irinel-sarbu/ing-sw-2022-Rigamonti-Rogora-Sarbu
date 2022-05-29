@@ -98,7 +98,7 @@ public class ClientController implements EventListener {
 
             case Messages.WRONG_PHASE -> view.displayMessage("You can't do that now.");
 
-            case Messages.ILLEGAL_STEPS -> view.displayMessage("Too many steps, look at your max steps from the assistant card");
+            case Messages.ILLEGAL_STEPS -> view.displayError("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
                 view.displayMessage("Not Enough Coins.");
@@ -202,6 +202,7 @@ public class ClientController implements EventListener {
 
     @EventHandler
     public void onAssistantChosen(EAssistantChosen event) {
+        model.setChosenAssistant(event.getAssistant());
         client.sendToServer(new EAssistantChosen(event.getAssistant()));
     }
 

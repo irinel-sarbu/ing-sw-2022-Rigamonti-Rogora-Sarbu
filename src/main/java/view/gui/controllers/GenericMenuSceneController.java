@@ -58,6 +58,13 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setUp(model, playerName, true);
     }
 
+    @FXML
+    public void onMoveMN(MouseEvent mouseEvent) {
+        SceneController.switchScene("motherNatureMovement.fxml");
+        MotherNatureMovementSceneController controller = (MotherNatureMovementSceneController) SceneController.getCurrentSceneController();
+        controller.setupIslands(model);
+    }
+
     public void setController(LightModel model, String playerName) {
         this.model = model;
         this.playerName = playerName;
