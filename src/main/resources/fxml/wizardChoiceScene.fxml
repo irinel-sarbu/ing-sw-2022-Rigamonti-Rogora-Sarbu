@@ -7,54 +7,58 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+<?import javafx.scene.control.ScrollPane?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
             prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
             fx:controller="view.gui.controllers.WizardChoiceController">
-   <children>
-      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphical_Assets/MainBG.jpg"/>
-         </image>
-      </ImageView>
-      <Label fx:id="wizardLabel" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
-             text="Other players are choosing their wizards, please wait...">
-      </Label>
-      <Label fx:id="wizardChosenText" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
-             text="You chose your wizard, wait for other players to chose theirs..." visible="false">
-      </Label>
-      <Pane fx:id="wizards" prefHeight="1080.0" prefWidth="1920.0" visible="false">
-         <children>
-            <ImageView fx:id="wizard0" fitHeight="661.0" fitWidth="350.0" layoutX="260.0" layoutY="306.0"
-                       onMousePressed="#onWizard0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_0@3x.png"/>
-               </image>
-            </ImageView>
-            <ImageView fx:id="wizard1" fitHeight="749.0" fitWidth="350.0" layoutX="610.0" layoutY="306.0"
-                       onMousePressed="#onWizard1" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_1@3x.png"/>
-               </image>
-            </ImageView>
-            <ImageView fx:id="wizard2" fitHeight="652.0" fitWidth="350.0" layoutX="960.0" layoutY="306.0"
-                       onMousePressed="#onWizard2" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_21@3x.png"/>
-               </image>
-            </ImageView>
-            <ImageView fx:id="wizard3" fitHeight="602.0" fitWidth="350.0" layoutX="1310.0" layoutY="306.0"
-                       onMousePressed="#onWizard3" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_31@3x.png"/>
-               </image>
-            </ImageView>
-            <Label fx:id="menuLabel" alignment="CENTER" layoutY="211.0" prefHeight="15.0" prefWidth="1920.0"
-                   text="Choose Your Wizard:"/>
-         </children>
-      </Pane>
-   </children>
+   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+               prefWidth="1920.0">
+      <children>
+         <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../Graphical_Assets/MainBG.jpg"/>
+            </image>
+         </ImageView>
+         <Label fx:id="wizardLabel" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
+                text="Other players are choosing their wizards, please wait...">
+         </Label>
+         <Label fx:id="wizardChosenText" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
+                text="You chose your wizard, wait for other players to chose theirs..." visible="false">
+         </Label>
+         <Pane fx:id="wizards" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+            <children>
+               <ImageView fx:id="wizard0" fitHeight="661.0" fitWidth="350.0" layoutX="260.0" layoutY="306.0"
+                          onMousePressed="#onWizard0" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_0@3x.png"/>
+                  </image>
+               </ImageView>
+               <ImageView fx:id="wizard1" fitHeight="749.0" fitWidth="350.0" layoutX="610.0" layoutY="306.0"
+                          onMousePressed="#onWizard1" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_1@3x.png"/>
+                  </image>
+               </ImageView>
+               <ImageView fx:id="wizard2" fitHeight="652.0" fitWidth="350.0" layoutX="960.0" layoutY="306.0"
+                          onMousePressed="#onWizard2" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_21@3x.png"/>
+                  </image>
+               </ImageView>
+               <ImageView fx:id="wizard3" fitHeight="602.0" fitWidth="350.0" layoutX="1310.0" layoutY="306.0"
+                          onMousePressed="#onWizard3" pickOnBounds="true" preserveRatio="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Assistenti/retro/CarteTOT_back_31@3x.png"/>
+                  </image>
+               </ImageView>
+               <Label fx:id="menuLabel" alignment="CENTER" layoutY="211.0" prefHeight="15.0" prefWidth="1920.0"
+                      text="Choose Your Wizard:"/>
+            </children>
+         </Pane>
+      </children>
+   </AnchorPane>
    <stylesheets>
       <URL value="@../css/sharedStyles.css"/>
       <URL value="@../css/wizardChoice.css"/>
    </stylesheets>
-</AnchorPane>
+</ScrollPane>

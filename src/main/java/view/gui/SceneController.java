@@ -3,6 +3,8 @@ package view.gui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -82,10 +84,14 @@ public class SceneController {
     }
 
     public static void switchSceneSongAndStage(String sceneFile, String songFile) {
+        stage.hide();
+        stage = new Stage();
+        stage.setResizable(true);
+        stage.setTitle("Eriantys");
+        stage.getIcons().add(new Image("/ui/Icon.png"));
         switchSceneAndSong(sceneFile, songFile);
         stage.setMaximized(true);
-        //TODO: fix fullscreen bug
-        //stage.setFullScreen(true);
+        stage.show();
     }
 
     public static void displayMessagePopUp(String message) {
