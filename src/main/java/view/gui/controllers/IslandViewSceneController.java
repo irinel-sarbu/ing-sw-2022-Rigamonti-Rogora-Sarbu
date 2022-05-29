@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.board.IslandTile;
 import model.board.Student;
@@ -19,7 +18,6 @@ import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class IslandViewSceneController implements GenericSceneController {
 
