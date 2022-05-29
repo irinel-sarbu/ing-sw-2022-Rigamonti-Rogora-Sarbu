@@ -93,7 +93,7 @@ public class EventManager {
                     listener.callbackMethod.setAccessible(true);
                     listener.callbackMethod.invoke(listener.listenerInstance, event);
                 } catch (InvocationTargetException e) {
-                    Logger.error("Could not dispatch event to handler: ", e.getMessage());
+                    Logger.error("Could not dispatch event to handler:", e.getCause().getMessage());
                     Logger.error("EventHandlers: ", List.of(listener).toString());
                 } catch (IllegalAccessException e) {
                     Logger.warning("Could not access event handler method: ", e.getMessage());

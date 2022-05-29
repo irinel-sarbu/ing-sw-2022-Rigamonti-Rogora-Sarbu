@@ -175,19 +175,11 @@ public class GameLobby implements EventListener {
     }
 
     /**
-     * Remove a client from the current lobby, using its nickname
-     *
-     * @param name nickname of the player to remove
+     * Remove all clients from the current lobby
      */
-    public void removeClientFromLobbyByName(String name) {
-        clientList.remove(name);
-
-        try {
-            Player player = model.getPlayerByName(name);
-            player.setDisconnected(true);
-        } catch (PlayerNotFoundException e) {
-            Logger.severe(e.getMessage());
-        }
+    public void endGame() {
+        Logger.warning("Closing lobby " + lobbyCode);
+        clientList.clear();
     }
 
     /**

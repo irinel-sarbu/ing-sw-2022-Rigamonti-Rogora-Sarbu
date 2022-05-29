@@ -74,7 +74,7 @@ public class CloudTile implements Serializable {
     public String toString() {
         StringBuilder sString = new StringBuilder("[ ");
         for (Student s : studentList) {
-            sString.append(s.getColor()).append(" ");
+            sString.append(s).append(" ");
         }
         sString.append("]");
         return "Cloud_" + cloudTileID + ": " + sString;
