@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+            prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="view.gui.controllers.CharacterSelectionSceneController">
+   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+               prefWidth="1920.0">
+      <children>
+         <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../Graphical_Assets/MainBG.jpg"/>
+            </image>
+         </ImageView>
+         <Pane fx:id="butterflies" prefHeight="1080.0" prefWidth="1920.0">
+            <children>
+               <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="1525.0" layoutY="390.0" pickOnBounds="true"
+                          preserveRatio="true">
+                  <image>
+                     <Image url="@../ui/Butterflies/ButterflyRightResized.gif"/>
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="361.0" layoutY="540.0" pickOnBounds="true"
+                          preserveRatio="true">
+                  <image>
+                     <Image url="@../ui/Butterflies/ButterflyLeftResized.gif"/>
+                  </image>
+               </ImageView>
+            </children>
+         </Pane>
+         <Pane fx:id="navigationMenu" prefHeight="1080.0" prefWidth="1920.0">
+            <children>
+               <ImageView fitHeight="857.0" fitWidth="782.0" layoutX="595.0" layoutY="112.0" pickOnBounds="true"
+                          preserveRatio="true">
+                  <image>
+                     <Image url="@../ui/Parchment.png"/>
+                  </image>
+               </ImageView>
+               <Label fx:id="menuLabel" alignment="CENTER" layoutY="188.0" prefWidth="1920.0"
+                      text="Character Effect Selection"/>
+               <Pane fx:id="extractedCharacters" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+                  <children>
+                     <Label fx:id="chooseLabel" layoutX="752.0" layoutY="340.0"
+                            text="Choose an effect from the three extracted:"/>
+                     <Pane fx:id="characterPane_0" layoutX="752.0" layoutY="430.0" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <ImageView fx:id="character_0" fitHeight="224.0" fitWidth="156.0" layoutX="-24.0"
+                                      layoutY="-12.0" pickOnBounds="true" preserveRatio="true"/>
+                           <Label fx:id="coins0" layoutX="-20.0" layoutY="-22.0" prefHeight="58.0" prefWidth="50.0"/>
+                           <ImageView fx:id="noEntry_0_0" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="-8.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_0_1" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="14.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_0_2" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="36.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_0_3" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="58.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="student_0_0" fitHeight="32.0" fitWidth="32.0" layoutX="-24.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_0_1" fitHeight="32.0" fitWidth="32.0" layoutX="-2.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_0_2" fitHeight="32.0" fitWidth="32.0" layoutX="22.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_0_3" fitHeight="32.0" fitWidth="32.0" layoutX="50.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_0_4" fitHeight="32.0" fitWidth="32.0" layoutX="70.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_0_5" fitHeight="32.0" fitWidth="32.0" layoutX="92.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                        </children>
+                     </Pane>
+                     <Pane fx:id="characterPane_1" layoutX="910.0" layoutY="430.0" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <ImageView fx:id="character_1" fitHeight="224.0" fitWidth="156.0" layoutX="-24.0"
+                                      layoutY="-12.0" pickOnBounds="true" preserveRatio="true"/>
+                           <Label fx:id="coins1" layoutX="-20.0" layoutY="-22.0" prefHeight="58.0" prefWidth="50.0"/>
+                           <ImageView fx:id="noEntry_1_0" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="-8.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_1_1" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="14.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_1_2" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="36.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_1_3" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="58.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="student_1_0" fitHeight="32.0" fitWidth="32.0" layoutX="-24.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_1_1" fitHeight="32.0" fitWidth="32.0" layoutX="-2.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_1_2" fitHeight="32.0" fitWidth="32.0" layoutX="22.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_1_3" fitHeight="32.0" fitWidth="32.0" layoutX="50.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_1_4" fitHeight="32.0" fitWidth="32.0" layoutX="70.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_1_5" fitHeight="32.0" fitWidth="32.0" layoutX="92.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                        </children>
+                     </Pane>
+                     <Pane fx:id="characterPane_2" layoutX="1067.0" layoutY="430.0" prefHeight="200.0"
+                           prefWidth="100.0">
+                        <children>
+                           <ImageView fx:id="character_2" fitHeight="224.0" fitWidth="156.0" layoutX="-24.0"
+                                      layoutY="-12.0" pickOnBounds="true" preserveRatio="true"/>
+                           <Label fx:id="coins2" layoutX="-20.0" layoutY="-22.0" prefHeight="58.0" prefWidth="50.0"/>
+                           <ImageView fx:id="noEntry_2_0" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="-8.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_2_1" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="14.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_2_2" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="36.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_2_3" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="58.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="student_2_0" fitHeight="32.0" fitWidth="32.0" layoutX="-24.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_2_1" fitHeight="32.0" fitWidth="32.0" layoutX="-2.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_2_2" fitHeight="32.0" fitWidth="32.0" layoutX="22.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_2_3" fitHeight="32.0" fitWidth="32.0" layoutX="50.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_2_4" fitHeight="32.0" fitWidth="32.0" layoutX="70.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_2_5" fitHeight="32.0" fitWidth="32.0" layoutX="92.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                        </children>
+                     </Pane>
+                     <Pane fx:id="buttonPane" layoutX="670.0" layoutY="130.0" prefHeight="686.0" prefWidth="585.0">
+                        <children>
+                           <Button fx:id="char0button" layoutX="60.0" layoutY="317.0" mnemonicParsing="false"
+                                   onMousePressed="#onChar0" prefHeight="150.0" prefWidth="150.0"/>
+                           <Button fx:id="char1button" layoutX="218.0" layoutY="317.0" mnemonicParsing="false"
+                                   onMousePressed="#onChar1" prefHeight="150.0" prefWidth="150.0"/>
+                           <Button fx:id="char2button" layoutX="376.0" layoutY="317.0" mnemonicParsing="false"
+                                   onMousePressed="#onChar2" prefHeight="150.0" prefWidth="150.0"/>
+                        </children>
+                     </Pane>
+                  </children>
+               </Pane>
+               <Pane fx:id="activeEffectPane" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+                  <children>
+                     <Pane fx:id="characterPane_A" layoutX="910.0" layoutY="473.0" prefHeight="200.0" prefWidth="100.0">
+                        <children>
+                           <ImageView fx:id="character_A" fitHeight="224.0" fitWidth="156.0" layoutX="-24.0"
+                                      layoutY="-12.0" pickOnBounds="true" preserveRatio="true"/>
+                           <Label fx:id="coinsA" layoutX="-20.0" layoutY="-22.0" prefHeight="58.0" prefWidth="50.0"/>
+                           <ImageView fx:id="noEntry_A_0" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="-8.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_A_1" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="14.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_A_2" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="36.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="noEntry_A_3" fitHeight="46.0" fitWidth="44.0" layoutX="78.0" layoutY="58.0"
+                                      pickOnBounds="true" preserveRatio="true" visible="false">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png"/>
+                              </image>
+                              <effect>
+                                 <DropShadow/>
+                              </effect>
+                           </ImageView>
+                           <ImageView fx:id="student_A_0" fitHeight="32.0" fitWidth="32.0" layoutX="-24.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_A_1" fitHeight="32.0" fitWidth="32.0" layoutX="-2.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_A_2" fitHeight="32.0" fitWidth="32.0" layoutX="22.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_A_3" fitHeight="32.0" fitWidth="32.0" layoutX="50.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_A_4" fitHeight="32.0" fitWidth="32.0" layoutX="70.0"
+                                      layoutY="136.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                           <ImageView fx:id="student_A_5" fitHeight="32.0" fitWidth="32.0" layoutX="92.0"
+                                      layoutY="170.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                        </children>
+                     </Pane>
+                     <Label fx:id="activeLabel" layoutX="899.0" layoutY="360.0" text="Effect Used:"/>
+                  </children>
+               </Pane>
+               <Button fx:id="backButton" layoutX="715.0" layoutY="832.0" mnemonicParsing="false"
+                       onMousePressed="#onBack" prefHeight="57.0" prefWidth="82.0" text="Back"/>
+            </children>
+         </Pane>
+      </children>
+   </AnchorPane>
+   <stylesheets>
+      <URL value="@../css/sharedStyles.css"/>
+      <URL value="@../css/characterSelection.css"/>
+   </stylesheets>
+</ScrollPane>

@@ -1,0 +1,134 @@
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 35;
+}
+
+#chooseLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 25;
+}
+
+#activeLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 25;
+}
+
+#coins0 {
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, black, 1, 1, 0, 0);
+    -fx-font-size: 20;
+}
+
+#coins1 {
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, black, 1, 1, 0, 0);
+    -fx-font-size: 20;
+}
+
+#coins2 {
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, black, 1, 1, 0, 0);
+    -fx-font-size: 20;
+}
+
+#coinsA {
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(gaussian, black, 1, 1, 0, 0);
+    -fx-font-size: 20;
+}
+
+.button {
+    -fx-background-image: url("../ui/CircleButtons/Default.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:hover {
+    -fx-background-image: url("../ui/CircleButtons/Hover.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+.button:pressed {
+    -fx-background-image: url("../ui/CircleButtons/Pressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/Arrow.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton:hover {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowHover.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#backButton:pressed {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowPressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}

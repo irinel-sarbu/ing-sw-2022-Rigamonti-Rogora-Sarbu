@@ -106,7 +106,7 @@ public class ClientController implements EventListener {
             case Messages.ILLEGAL_STEPS -> view.displayError("Too many steps, look at your max steps from the assistant card");
 
             case Messages.INSUFFICIENT_COINS -> {
-                view.displayMessage("Not Enough Coins.");
+                view.displayError("Not Enough Coins.");
                 view.showMenu(model, client.getNickname());
             }
             case Messages.EFFECT_USED -> {
