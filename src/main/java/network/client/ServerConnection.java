@@ -1,6 +1,9 @@
 package network.client;
 
+import eventSystem.EventManager;
 import eventSystem.events.Event;
+import eventSystem.events.network.Messages;
+import eventSystem.events.network.server.ServerMessage;
 import util.Logger;
 
 import java.io.IOException;
@@ -52,7 +55,8 @@ public class ServerConnection extends Thread {
             out.close();
             socket.close();
 
-            System.out.println("\rConnection with server closed...");
+            Logger.warning("Connection with server closed...");
+            EventManager.notify(new ServerMessage(Messages.CONNECTION_CLOSED));
         } catch (IOException e) {
             Logger.error(e.getMessage());
         }

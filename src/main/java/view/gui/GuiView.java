@@ -17,7 +17,7 @@ public class GuiView extends View {
     }
 
     @Override
-    public void setupConnection() {
+    public void setupConnection(boolean connectionReset) {
 
     }
 
@@ -50,7 +50,7 @@ public class GuiView extends View {
     }
 
     @Override
-    public void chooseCreateOrJoin() {
+    public void chooseCreateOrJoin(boolean wasInLobby) {
         if (SceneController.getCurrentSceneController() instanceof NameSelectionSceneController) {
             Platform.runLater(() -> SceneController.switchScene("createOrJoin.fxml"));
         }

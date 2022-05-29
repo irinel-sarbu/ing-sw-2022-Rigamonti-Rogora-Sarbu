@@ -15,6 +15,6 @@ public class EPlayerDisconnected extends Event {
 
     @Override
     public String toString() {
-        return "PlayerDisconnected { playerName: '" + playerName + " }";
+        return "PlayerDisconnected { playerName: '" + playerName + "' }";
     }
 }

@@ -63,10 +63,26 @@ public class Server implements Runnable {
 
     public void register(String nickname, ClientHandler client) {
         clientMap.put(nickname, client);
+        client.setRegistered();
+    }
+
+    public void unregister(String nickname) {
+        Logger.debug("Unregistering " + nickname);
+        clientMap.remove(nickname);
     }
 
     public ClientHandler getClientByNickname(String nickname) {
         return clientMap.get(nickname.toLowerCase());
+    }
+
+    public String getClientNickname(ClientHandler clientHandler) {
+        for (Map.Entry<String, ClientHandler> entry : clientMap.entrySet()) {
+            if (entry.getValue().equals(clientHandler)) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
     }
 
     public synchronized void pushEvent(Event event) {

@@ -45,7 +45,7 @@ public abstract class View {
         }
     }
 
-    public abstract void setupConnection();
+    public abstract void setupConnection(boolean connectionReset);
 
     public abstract void askNickname();
 
@@ -53,7 +53,7 @@ public abstract class View {
 
     public abstract void joinLobby();
 
-    public abstract void chooseCreateOrJoin();
+    public abstract void chooseCreateOrJoin(boolean wasInLobby);
 
     public abstract void chooseWizard(List<Wizard> availableWizards);
 

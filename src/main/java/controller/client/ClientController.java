@@ -49,13 +49,18 @@ public class ClientController implements EventListener {
                     view.clearLines(3);
 
                 view.displayError(Messages.CONNECTION_REFUSED);
-                view.setupConnection();
+                view.setupConnection(true);
                 numOfConsecutiveErrors++;
+            }
+
+            case Messages.CONNECTION_CLOSED -> {
+                view.setupConnection(true);
+                view.displayError(Messages.CONNECTION_CLOSED);
             }
 
             case Messages.REGISTRATION_OK -> {
                 numOfConsecutiveErrors = 0;
-                view.chooseCreateOrJoin();
+                view.chooseCreateOrJoin(false);
             }
 
             case Messages.NAME_NOT_AVAILABLE -> {
@@ -71,11 +76,11 @@ public class ClientController implements EventListener {
 
             case Messages.LOBBY_NOT_FOUND -> {
                 view.displayError("Lobby not found!");
-                view.chooseCreateOrJoin();
+                view.chooseCreateOrJoin(false);
             }
             case Messages.LOBBY_FULL -> {
                 view.displayError("Lobby is full!");
-                view.chooseCreateOrJoin();
+                view.chooseCreateOrJoin(false);
             }
 
             case Messages.ALL_CLIENTS_CONNECTED -> {
@@ -176,7 +181,7 @@ public class ClientController implements EventListener {
      */
     @EventHandler
     public void onPlayerDisconnected(EPlayerDisconnected event) {
-        view.displayMessage(event.getPlayerName() + " left the Lobby!");
+        view.chooseCreateOrJoin(true);
     }
 
     @EventHandler

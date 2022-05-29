@@ -5,7 +5,7 @@ import eventSystem.EventManager;
 import eventSystem.Filter;
 import eventSystem.annotations.EventHandler;
 import eventSystem.events.network.Messages;
-import eventSystem.events.network.client.ClientMessage;
+import eventSystem.events.network.client.EClientDisconnected;
 import eventSystem.events.network.client.ECreateLobbyRequest;
 import eventSystem.events.network.client.EJoinLobbyRequest;
 import eventSystem.events.network.server.EPlayerDisconnected;
@@ -61,22 +61,24 @@ public class ServerController implements EventListener {
     }
 
     @EventHandler
-    public void onMessage(ClientMessage message) {
-        String playerName = message.getClientNickname();
+    public void onPlayerDisconnected(EClientDisconnected event) {
+        String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
 
-        switch (message.getMsg()) {
-            case Messages.CLIENT_DISCONNECTED -> {
-                if (!client.isInLobby())
-                    return;
+        String disconnectedPlayer = server.getClientNickname(client);
+        Logger.severe(disconnectedPlayer + " disconnected.");
 
-                GameLobby lobby = games.get(client.getLobbyCode());
-                String disconnectedPlayer = lobby.getPlayerNameBySocket(client);
+        if (client.isInLobby()) {
+            String lobbyCode = client.getLobbyCode();
+            GameLobby lobby = games.get(lobbyCode);
 
-                lobby.broadcastExceptOne(new EPlayerDisconnected(disconnectedPlayer), disconnectedPlayer);
-                lobby.removeClientFromLobbyByName(disconnectedPlayer);
-            }
+            lobby.broadcastExceptOne(new EPlayerDisconnected(disconnectedPlayer), disconnectedPlayer);
+            lobby.endGame();
+
+            games.remove(lobbyCode);
         }
+
+        server.unregister(disconnectedPlayer);
     }
 
     // Lobby creation

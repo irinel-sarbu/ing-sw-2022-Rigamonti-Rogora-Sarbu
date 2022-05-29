@@ -3,6 +3,7 @@ package view.cli;
 import eventSystem.EventManager;
 import eventSystem.events.local.EUpdateNickname;
 import eventSystem.events.local.EUpdateServerInfo;
+import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
 import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
@@ -25,16 +26,20 @@ public class CliView extends View {
     @Override
     public void run() {
         this.cmd = new CliHelper();
-
-        cmd.resetScreen();
-        cmd.drawBox(CliHelper.ANSI_BLUE, "Connection");
-        setupConnection();
+        setupConnection(false);
     }
 
     @Override
-    public void setupConnection() {
+    public void setupConnection(boolean connectionReset) {
         final int defaultPort = 5000;
         final String defaultAddress = "localhost";
+
+        cmd.resetScreen();
+        cmd.drawBox(CliHelper.ANSI_BLUE, "Connection");
+
+        if (connectionReset) {
+            displayError(Messages.CONNECTION_CLOSED);
+        }
 
         String address;
         int port;
@@ -71,9 +76,11 @@ public class CliView extends View {
     }
 
     @Override
-    public void chooseCreateOrJoin() {
+    public void chooseCreateOrJoin(boolean wasInLobby) {
         final GameMode[] selectedGameMode = new GameMode[1];
-
+        if (wasInLobby) {
+            displayError("Lobby was shut down because someone disconnected!");
+        }
         Menu mainMenu = new Menu("Choose between create or join lobby");
         Menu createLobbyMode = new Menu("Lobby creation", "Choose game mode");
         Menu createLobbyNumOfPlayers = new Menu("Lobby creation", "Choose number of players");
