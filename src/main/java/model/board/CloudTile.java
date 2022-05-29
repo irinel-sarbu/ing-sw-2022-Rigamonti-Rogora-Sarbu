@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static util.CliHelper.V_L_EDGE;
-import static util.CliHelper.V_R_EDGE;
-
 public class CloudTile implements Serializable {
     private final int cloudTileID;
     private final List<Student> studentList;
@@ -103,7 +100,7 @@ public class CloudTile implements Serializable {
 
     public String toCard() {
         StringBuilder card = new StringBuilder();
-        card.append(" ╭─" + V_L_EDGE).append(String.format("%1d", cloudTileID)).append(V_R_EDGE + "─╮ \n");
+        card.append(" ╭─┤").append(String.format("%1d", cloudTileID)).append("├─╮ \n");
         card.append("╭╯").append(buildRow(true)).append("╰╮\n");
         card.append("╰╮").append(buildRow(false)).append("╭╯\n");
         card.append(" ╰─────╯ \n");
