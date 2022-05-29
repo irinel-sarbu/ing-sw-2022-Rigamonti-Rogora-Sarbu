@@ -143,8 +143,10 @@ public class GuiView extends View {
     }
 
     @Override
-    public void gameOver() {
-
+    public void gameOver(LightModel model, String winningPlayer) {
+        Platform.runLater(() -> {
+            SceneController.switchToGameEnd(model, winningPlayer);
+        });
     }
 
     @Override

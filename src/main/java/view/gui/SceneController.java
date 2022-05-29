@@ -11,10 +11,7 @@ import javafx.stage.Stage;
 import network.LightModel;
 import util.Logger;
 import util.Wizard;
-import view.gui.controllers.GenericMenuSceneController;
-import view.gui.controllers.GenericSceneController;
-import view.gui.controllers.ErrorPopUpSceneController;
-import view.gui.controllers.LobbyJoinedSceneController;
+import view.gui.controllers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -139,5 +136,11 @@ public class SceneController {
         SceneController.switchScene("createOrJoin.fxml");
         SceneController.startMediaPlayer();
         stage.show();
+    }
+
+    public static void switchToGameEnd(LightModel model, String winningPlayer) {
+        switchSceneAndSong("gameEnding.fxml", "src/main/resources/bgMusic/InGameMusic3.mp3");
+        GameEndingController controller = (GameEndingController) getCurrentSceneController();
+        controller.setUp(model, winningPlayer);
     }
 }
