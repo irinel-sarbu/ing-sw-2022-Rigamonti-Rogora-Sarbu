@@ -1,5 +1,5 @@
 # Prova Finale di Ingegneria del Software - AA 2021-2022
-![Eriantys](resources/eriantys.jpg)
+![Eriantys](src/main/resources/Graphical_Assets/eriantys.jpg)
 
 Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/).
 
