@@ -51,7 +51,7 @@ public class ClientHandler extends Thread implements IClientHandler {
                 }
             };
 
-            this.pingTimer.schedule(ping, 0, 5000);
+            this.pingTimer.schedule(ping, 0, 15000);
 
             while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
