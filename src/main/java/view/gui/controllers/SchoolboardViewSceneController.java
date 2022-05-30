@@ -11,6 +11,7 @@ import model.Player;
 import model.board.SchoolBoard;
 import network.LightModel;
 import util.Color;
+import util.GameMode;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     private AnchorPane fullScene;
 
     private List<Node> getBoard(int i) {
-        return ((AnchorPane)fullScene.getChildren().get(i + 1)).getChildren();
+        return ((AnchorPane) fullScene.getChildren().get(i + 1)).getChildren();
     }
 
     private Label getName(int i) {
@@ -45,29 +46,75 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     }
 
     private GridPane getTable(int i, Color color) {
-        return (GridPane) ((AnchorPane)getBoard(i).get(5)).getChildren().get(color.getValue());
+        return (GridPane) ((AnchorPane) getBoard(i).get(5)).getChildren().get(color.getValue());
     }
 
     private GridPane getEntrance(int i) {
         return (GridPane) getBoard(i).get(6);
     }
 
-    private void resetTower() {
-
-        for(int b=0; b<3; b++) {
+    private void resetBoards() {
+        for (int b = 0; b < 3; b++) {
+            // reset towers
             for (int i = 0; i < 8; i++) {
                 getTowers(b).getChildren().get(i).setVisible(false);
+            }
+            // reset coins
+            for (int j = 0; j < 2; j++) {
+                getCoins(b).getChildren().get(j).setVisible(false);
+            }
+            // reset professors
+            for (int j = 0; j < Color.values().length; j++) {
+                getProfessors(b).getChildren().get(j).setVisible(false);
+            }
+            // reset dining
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < 10; k++) {
+                    ((GridPane) getDining(b).getChildren().get(j)).getChildren().get(k).setVisible(false);
+                }
+            }
+            // reset entrance
+            for (int j = 0; j < 9; j++) {
+                getEntrance(b).getChildren().get(j).setVisible(false);
             }
         }
     }
 
-    private void displayTower(int sb, String name) {
+    private void displayBoard(int sb, String name) {
 
         SchoolBoard schoolBoard = model.getSchoolBoardMap().get(name);
 
-        for(int i=0; i < schoolBoard.getTowers().size(); i++) {
+        // display towers
+        for (int i = 0; i < schoolBoard.getTowers().size(); i++) {
             getTowers(sb).getChildren().get(i).setVisible(true);
-            ((ImageView)getTowers(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/Pedine/tower_" + schoolBoard.getTowers().get(0).getColor() + ".png"));
+            ((ImageView) getTowers(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/Pedine/tower_" + schoolBoard.getTowers().get(0).getColor() + ".png"));
+        }
+        // display coins
+        if (model.getGameMode().equals(GameMode.EXPERT)) {
+            if (schoolBoard.getCoinSupply().getNumOfCoins() > 0)
+                getCoins(sb).getChildren().get(0).setVisible(true);
+            if (schoolBoard.getCoinSupply().getNumOfCoins() > 1) {
+                getCoins(sb).getChildren().get(1).setVisible(true);
+                ((Label) getCoins(sb).getChildren().get(1)).setText("" + schoolBoard.getCoinSupply().getNumOfCoins());
+            }
+        }
+        // display professors
+        for (int i = 0; i < Color.values().length; i++) {
+            if (schoolBoard.hasProfessor(Color.values()[i])) {
+                getProfessors(sb).getChildren().get(i).setVisible(true);
+            }
+        }
+        // display dining
+        for (int j = 0; j < 5; j++) {
+            for (int k = 0; k < 10; k++) {
+                ((GridPane) getDining(sb).getChildren().get(j)).getChildren().get(k).setVisible(
+                        schoolBoard.getStudentsOfColor(Color.values()[j]) >= k);
+            }
+        }
+        // display entrance
+        for (int i = 0; i < schoolBoard.getEntranceStudents().size(); i++) {
+            getEntrance(sb).getChildren().get(i).setVisible(true);
+            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students" + schoolBoard.getEntranceStudents().get(i) + "Student.png"));
         }
     }
 
@@ -77,16 +124,11 @@ public class SchoolboardViewSceneController implements GenericSceneController {
 
         List<String> players = model.getSchoolBoardMap().keySet().stream().toList();
 
-        resetTower();
+        resetBoards();
 
-        // setting name
-        for(int i=0; i<players.size(); i++){
+        for (int i = 0; i < players.size(); i++) {
             getName(i).setText(players.get(i));
-        }
-
-        // displaying towers
-        for(int i=0; i<players.size(); i++) {
-            displayTower(i, players.get(i));
+            displayBoard(i, players.get(i));
         }
     }
 }
