@@ -6,9 +6,11 @@ import model.expert.CharacterCard;
 import model.expert.CoinSupply;
 import model.expert.NoEntryTile;
 import util.*;
-import util.Random;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -325,6 +327,26 @@ public class GameModel {
      * and Updates the IslandGroupID (which is their position in {@link GameModel#islandGroups}).
      *
      * @param position Is the IslandGroupID of the selected IslandGroup to apply {@link GameModel#joinAdjacent(int)} to.
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *  TODO: Parasare tutte le isole per fare una right join 0 -> ... -> 11 -> 0
+     *        Ad ogni join, check mother nature position:
+     *                 se mnp id è uguale all'id_right allora cambia con id_left
+     *                 altrimenti lascia mnp inalterato
+     *        poi updateIslandGroupsID (togliendo riga 399)
      */
     public void joinAdjacent(int position) {
         int right = (position + 1) % (islandGroups.size());

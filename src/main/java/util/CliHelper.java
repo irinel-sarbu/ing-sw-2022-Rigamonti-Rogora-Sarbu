@@ -37,8 +37,7 @@ public class CliHelper {
     public static final String ANSI_BROWN = ANSI_PREFIX + CODE_BROWN + "m";
 
     public static final String ANSI_RESET = "\u001b[0m";
-    public static final String CLEAN = "\u001b[0J";
-    public static final String INITIALIZE_SCREEN = "\033[0;0H";
+    public static final String INITIALIZE_SCREEN = "\033[H\033[2J";
 
     public static final char NEW_LINE = '\n';
     public static final char BLANK = ' ';
@@ -124,7 +123,7 @@ public class CliHelper {
      */
     public void resetScreen() {
         System.out.print(INITIALIZE_SCREEN);
-        System.out.print(CLEAN);
+        System.out.flush();
         System.out.printf("Welcome to %sEryantis \uD83E\uDDDA \n", CliHelper.ANSI_ORANGE);
     }
 

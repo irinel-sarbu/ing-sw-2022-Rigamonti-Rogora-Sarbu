@@ -14,6 +14,8 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
     private final List<Student> students;
     private Tower tower;
     private final int islandID;
+
+    private int groupID;
     private boolean hasTower;
 
     //Since at the start of the game there is only 1 tile per islandGroup, they have the same ID
@@ -27,6 +29,7 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
         students = new ArrayList<>();
         tower = null;
         this.islandID = islandID;
+        this.groupID = islandID;
         this.hasTower = false;
     }
 
@@ -90,6 +93,14 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
                 .count();
     }
 
+    public void updateIslandGroup(int islandGroupID) {
+        this.groupID = islandGroupID;
+    }
+
+    public int getGroup() {
+        return groupID;
+    }
+
     /**
      * Compare two island tiles by their ID
      *
@@ -121,13 +132,11 @@ public class IslandTile implements Comparable<IslandTile>, Serializable {
         StringBuilder card = new StringBuilder();
         card.append("╭───").append(top ? "╯   ╰" : "─────").append("───╮\n");
         card.append("│ ").append(String.format("id: %2d", islandID)).append("    │\n");
-        card.append("│           │\n");
         card.append("│ ").append(buildStudentRow(Color.YELLOW)).append(" │\n");
         card.append(left ? "╯ " : "│ ").append(buildStudentRow(Color.BLUE)).append(right ? " ╰\n" : " │\n");
         card.append(left ? "  " : "│ ").append(buildStudentRow(Color.GREEN)).append(right ? "  \n" : " │\n");
         card.append(left ? "╮ " : "│ ").append(buildStudentRow(Color.RED)).append(right ? " ╭\n" : " │\n");
         card.append("│ ").append(buildStudentRow(Color.PINK)).append(" │\n");
-        card.append("│           │\n");
         card.append("│ ").append(buildLastRow(hasMotherNature, hasNoEntryTile)).append(" │\n");
         card.append("╰───").append(bottom ? "╮   ╭" : "─────").append("───╯\n");
 

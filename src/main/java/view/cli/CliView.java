@@ -555,7 +555,7 @@ public class CliView extends View {
         cmd.drawBox(CliHelper.ANSI_BLUE, "Board");
 
         System.out.println("- islands:");
-        System.out.println(IslandGroup.allToString(model.getIslandGroups(), model.getIslandGroups().get(model.getMotherNaturePosition()).getIslands().get(0).getIslandID()));
+        System.out.println(IslandGroup.allToString(model.getIslandGroups(), model.getMotherNaturePosition()));
 
         System.out.println("- cloud tiles: ");
         System.out.println(CloudTile.allToString(model.getCloudTiles()));
