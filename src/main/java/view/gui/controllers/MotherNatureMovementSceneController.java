@@ -27,7 +27,7 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
     LightModel model;
 
     String pathPrefix = "/Graphical_Assets/";
-    String studentSuffix = "Student.png";
+    String studentSuffix = "StudentResized.png";
 
     @FXML
     private AnchorPane bridges_parent;
@@ -135,12 +135,11 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
     }
 
     private void updateMotherNature(int position) {
-        for (int i = 0; i < 12; i++) {
+        for(int i=0; i<12; i++) {
             ImageView motherNature = ((ImageView) ((AnchorPane) islands.get(i)).getChildren().get(3));
-            motherNature.setVisible(i == position);
+            motherNature.setVisible(i==model.getIslandGroups().get(groupByIslandID(position)).getIslands().get(0).getIslandID());
         }
     }
-
     private int toInt(String string) {
         return Integer.parseInt(string);
     }

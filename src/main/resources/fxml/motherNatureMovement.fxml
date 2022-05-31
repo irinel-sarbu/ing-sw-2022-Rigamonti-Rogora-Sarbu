@@ -1606,7 +1606,7 @@
                      <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png"/>
                   </image>
                </ImageView>
-               <ImageView fx:id="bridge7_8" fitHeight="62.0" fitWidth="123.0" layoutX="1090.0" layoutY="693.0"
+               <ImageView fx:id="bridge7_8" fitHeight="62.0" fitWidth="123.0" layoutX="1077.0" layoutY="748.0"
                           pickOnBounds="true" visible="false">
                   <image>
                      <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png"/>

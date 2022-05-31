@@ -62,7 +62,7 @@ public class CloudChoiceSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1, 5));
         for (int i = 0; i < studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView) students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "Student.png"));
+            ((ImageView) students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"));
         }
     }
 

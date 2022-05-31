@@ -24,7 +24,7 @@ public class IslandSelectorSceneController implements GenericSceneController {
     LightModel model;
 
     String pathPrefix = "/Graphical_Assets/";
-    String studentSuffix = "Student.png";
+    String studentSuffix = "StudentResized.png";
 
     @FXML
     private AnchorPane bridges_parent;
@@ -154,9 +154,9 @@ public class IslandSelectorSceneController implements GenericSceneController {
     }
 
     private void updateMotherNature(int position) {
-        for (int i = 0; i < 12; i++) {
+        for(int i=0; i<12; i++) {
             ImageView motherNature = ((ImageView) ((AnchorPane) islands.get(i)).getChildren().get(3));
-            motherNature.setVisible(i == position);
+            motherNature.setVisible(i==model.getIslandGroups().get(groupByIslandID(position)).getIslands().get(0).getIslandID());
         }
     }
 
