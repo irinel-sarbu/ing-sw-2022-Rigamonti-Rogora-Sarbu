@@ -76,6 +76,7 @@ public class ServerController implements EventListener {
             lobby.endGame();
 
             games.remove(lobbyCode);
+            server.closeLobby(lobbyCode);
         }
 
         server.unregister(disconnectedPlayer);

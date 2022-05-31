@@ -71,6 +71,15 @@ public class Server implements Runnable {
         clientMap.remove(nickname);
     }
 
+    public void closeLobby(String lobbyCode) {
+        for (Map.Entry<String, ClientHandler> entry : clientMap.entrySet()) {
+            ClientHandler clientHandler = entry.getValue();
+            if (clientHandler.getLobbyCode().equals(lobbyCode)) {
+                clientHandler.reset();
+            }
+        }
+    }
+
     public ClientHandler getClientByNickname(String nickname) {
         return clientMap.get(nickname.toLowerCase());
     }

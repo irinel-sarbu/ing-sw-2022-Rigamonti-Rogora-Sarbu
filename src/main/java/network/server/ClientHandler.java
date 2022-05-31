@@ -77,6 +77,12 @@ public class ClientHandler extends Thread implements IClientHandler {
         }
     }
 
+    public void reset() {
+        this.isInLobby = false;
+        this.isReady = false;
+        this.lobbyCode = null;
+    }
+
     @Override
     public boolean isReady() {
         return isReady;
