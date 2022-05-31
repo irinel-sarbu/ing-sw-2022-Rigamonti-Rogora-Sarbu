@@ -375,6 +375,7 @@ public class GameModel {
         for (int i = 0; i < islandGroups.size(); i++) {
             //Updates mother nature position
             if (islandGroups.get(i).getIslandGroupID() == motherNature.getPosition()) {
+                // set right position for mother nature
                 motherNature.setPosition(i);
             }
             islandGroups.get(i).setIslandGroupID(i);

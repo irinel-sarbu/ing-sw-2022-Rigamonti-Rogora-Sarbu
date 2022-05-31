@@ -24,7 +24,7 @@ public class MotherNature implements Serializable {
     }
 
     /**
-     * Setter for the attribute {@link MotherNature#position}
+     * Setter for the attribute {@link MotherNature#position} (indicates island group)
      */
     public void setPosition(int position) {
         this.position = position;
