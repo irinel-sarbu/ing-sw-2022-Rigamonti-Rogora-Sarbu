@@ -35,7 +35,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     }
 
     private List<Node> getBoard(int i) {
-        return ((AnchorPane) fullScene.getChildren().get(i + 1)).getChildren();
+        return ((AnchorPane) fullScene.getChildren().get(i + 3)).getChildren();
     }
 
     private Label getName(int i) {
@@ -68,7 +68,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
 
     private void resetBoards() {
         for (int b = 0; b < 3; b++) {
-            fullScene.getChildren().get(b + 1).setVisible(false);
+            fullScene.getChildren().get(b + 3).setVisible(false);
             // reset towers
             for (int i = 0; i < 8; i++) {
                 getTowers(b).getChildren().get(i).setVisible(false);
@@ -97,7 +97,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     private void displayBoard(int sb, String name) {
 
         SchoolBoard schoolBoard = model.getSchoolBoardMap().get(name);
-        fullScene.getChildren().get(sb + 1).setVisible(true);
+        fullScene.getChildren().get(sb + 3).setVisible(true);
         // display towers
         for (int i = 0; i < schoolBoard.getTowers().size(); i++) {
             getTowers(sb).getChildren().get(i).setVisible(true);
@@ -128,7 +128,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         // display entrance
         for (int i = 0; i < schoolBoard.getEntranceStudents().size(); i++) {
             getEntrance(sb).getChildren().get(i).setVisible(true);
-            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students/" + schoolBoard.getEntranceStudents().get(i).getColor() + "Student.png"));
+            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students/" + schoolBoard.getEntranceStudents().get(i).getColor() + "StudentResized.png"));
         }
     }
 

@@ -82,7 +82,7 @@ public class IslandViewSceneController implements GenericSceneController {
             ((studentPane.getChildren().get(1))).setVisible(false);
             return;
         }
-        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "students/" + color + "Student.png"));
+        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "students/" + color + "StudentResized.png"));
         if (number > 1) {
             ((studentPane.getChildren().get(1))).setVisible(true);
             ((Label)(studentPane.getChildren().get(1))).setText("" + number);
@@ -138,7 +138,7 @@ public class IslandViewSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
         for(int i=0; i<studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "Student.png"));
+            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"));
         }
     }
 

@@ -27,7 +27,7 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
     LightModel model;
 
     String pathPrefix = "/Graphical_Assets/";
-    String studentSuffix = "Student.png";
+    String studentSuffix = "StudentResized.png";
 
     @FXML
     private AnchorPane bridges_parent;
