@@ -139,6 +139,10 @@ public class GuiView extends View {
                 IslandViewSceneController controller = (IslandViewSceneController) SceneController.getCurrentSceneController();
                 controller.updateView(model);
             }
+            if (SceneController.getCurrentSceneController() instanceof SchoolboardViewSceneController) {
+                SchoolboardViewSceneController controller = (SchoolboardViewSceneController) SceneController.getCurrentSceneController();
+                controller.updateView(model);
+            }
         });
     }
 

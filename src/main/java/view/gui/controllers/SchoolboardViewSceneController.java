@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import model.Player;
@@ -12,6 +13,7 @@ import model.board.SchoolBoard;
 import network.LightModel;
 import util.Color;
 import util.GameMode;
+import view.gui.SceneController;
 
 import java.util.List;
 
@@ -19,7 +21,18 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     LightModel model;
 
     @FXML
-    private AnchorPane fullScene;
+    private AnchorPane fullScene, board2;
+
+    @FXML
+    public void onBack(MouseEvent mouseEvent){
+        SceneController.switchScene("genericMenuScene.fxml");
+        GenericMenuSceneController controller = (GenericMenuSceneController) SceneController.getCurrentSceneController();
+        if (model.getPlayerName().equals(model.getCurrentPlayerName())) {
+            controller.setController(model, model.getPlayerName());
+        } else {
+            controller.setIdle(model, model.getCurrentPlayerName());
+        }
+    }
 
     private List<Node> getBoard(int i) {
         return ((AnchorPane) fullScene.getChildren().get(i + 1)).getChildren();
@@ -55,6 +68,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
 
     private void resetBoards() {
         for (int b = 0; b < 3; b++) {
+            fullScene.getChildren().get(b + 1).setVisible(false);
             // reset towers
             for (int i = 0; i < 8; i++) {
                 getTowers(b).getChildren().get(i).setVisible(false);
@@ -83,7 +97,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     private void displayBoard(int sb, String name) {
 
         SchoolBoard schoolBoard = model.getSchoolBoardMap().get(name);
-
+        fullScene.getChildren().get(sb + 1).setVisible(true);
         // display towers
         for (int i = 0; i < schoolBoard.getTowers().size(); i++) {
             getTowers(sb).getChildren().get(i).setVisible(true);
@@ -108,17 +122,17 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         for (int j = 0; j < 5; j++) {
             for (int k = 0; k < 10; k++) {
                 ((GridPane) getDining(sb).getChildren().get(j)).getChildren().get(k).setVisible(
-                        schoolBoard.getStudentsOfColor(Color.values()[j]) >= k);
+                        schoolBoard.getStudentsOfColor(Color.values()[j]) > k);
             }
         }
         // display entrance
         for (int i = 0; i < schoolBoard.getEntranceStudents().size(); i++) {
             getEntrance(sb).getChildren().get(i).setVisible(true);
-            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students" + schoolBoard.getEntranceStudents().get(i) + "Student.png"));
+            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students/" + schoolBoard.getEntranceStudents().get(i).getColor() + "Student.png"));
         }
     }
 
-    void updateView(LightModel model) {
+    public void updateView(LightModel model) {
 
         this.model = model;
 

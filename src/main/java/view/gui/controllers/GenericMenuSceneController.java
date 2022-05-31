@@ -79,6 +79,13 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setUpCharacterChoice(model);
     }
 
+    @FXML
+    public void onSchoolBoard(MouseEvent mouseEvent) {
+        SceneController.switchScene("SchoolboardView.fxml");
+        SchoolboardViewSceneController controller = (SchoolboardViewSceneController) SceneController.getCurrentSceneController();
+        controller.updateView(model);
+    }
+
     public void setController(LightModel model, String playerName) {
         this.model = model;
         this.playerName = playerName;
