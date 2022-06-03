@@ -35,12 +35,20 @@ public class SceneController {
     public static void startMediaPlayer() {
         currentSong = new File("src/main/resources/bgMusic/ServerConnectionMusic.mp3");
         currentMedia = new Media(currentSong.toURI().toString());
-        mediaPlayer = new MediaPlayer(currentMedia);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        try {
+            mediaPlayer = new MediaPlayer(currentMedia);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        } catch (Exception e) {
+            Logger.warning("Could not create MediaPlayer, the game will start without music");
+            currentSong = null;
+            currentMedia = null;
+            mediaPlayer = null;
+        }
     }
 
     public static void stopMediaPlayer() {
+        if (mediaPlayer == null) return; 
         mediaPlayer.stop();
         mediaPlayer.dispose();
     }
@@ -71,6 +79,7 @@ public class SceneController {
 
     public static void switchSceneAndSong(String sceneFile, String songFile) {
         switchScene(sceneFile);
+        if (mediaPlayer == null) return;
         mediaPlayer.stop();
         mediaPlayer.dispose();
         currentSong = new File(songFile);
