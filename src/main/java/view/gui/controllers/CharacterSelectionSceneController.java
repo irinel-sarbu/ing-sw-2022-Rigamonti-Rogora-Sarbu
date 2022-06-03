@@ -98,6 +98,11 @@ public class CharacterSelectionSceneController implements GenericSceneController
                 MinstrelEntranceSceneController controller = (MinstrelEntranceSceneController) SceneController.getCurrentSceneController();
                 controller.setUp(model);
             }
+            case PRINCESS -> {
+                SceneController.switchScene("princessSelection.fxml");
+                PrincessSelectionSceneController controller = (PrincessSelectionSceneController) SceneController.getCurrentSceneController();
+                controller.setUpCharacterChoice(model);
+            }
         }
     }
 
