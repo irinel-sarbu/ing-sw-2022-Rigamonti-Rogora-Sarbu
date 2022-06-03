@@ -45,7 +45,7 @@
                      <Image url="@../ui/Parchment.png"/>
                   </image>
                </ImageView>
-               <Label fx:id="menuLabel" alignment="CENTER" layoutY="188.0" prefWidth="1920.0" text="Monk Effect"/>
+               <Label fx:id="menuLabel" alignment="CENTER" layoutY="188.0" prefWidth="1920.0" text="Jester Effect"/>
                <Pane fx:id="activeEffectPane" prefHeight="1080.0" prefWidth="1920.0">
                   <children>
                      <Pane fx:id="characterPane_A" layoutX="830.0" layoutY="381.0" prefHeight="357.0" prefWidth="259.0">

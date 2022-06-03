@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.control.ScrollPane?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+            prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="view.gui.controllers.characterControllers.MinstrelEntranceSceneController">
+   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+               prefWidth="1920.0">
+      <children>
+         <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../ui/SchoolboardsBG.jpg"/>
+            </image>
+         </ImageView>
+         <Pane prefHeight="1080.0" prefWidth="1920.0">
+            <children>
+               <ImageView fitHeight="1080.0" fitWidth="561.0" layoutX="730.0" layoutY="310.0" pickOnBounds="true"
+                          preserveRatio="true" rotate="270.0">
+                  <image>
+                     <Image url="@../Graphical_Assets/Entrance.png"/>
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="689.0" fitWidth="1225.0" layoutX="348.0" layoutY="-26.0" pickOnBounds="true">
+                  <image>
+                     <Image url="@../ui/Parchment.png"/>
+                  </image>
+               </ImageView>
+               <Label fx:id="menuLabel" alignment="CENTER" layoutX="1.0" layoutY="265.0" prefWidth="1920.0"
+                      text="Select 2 students from your entrance:"/>
+               <ImageView fitHeight="362.0" fitWidth="307.0" layoutX="57.0" layoutY="786.0" pickOnBounds="true"
+                          preserveRatio="true">
+                  <image>
+                     <Image url="@../ui/flowers.gif"/>
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="362.0" fitWidth="307.0" layoutX="1605.0" layoutY="786.0" pickOnBounds="true"
+                          preserveRatio="true">
+                  <image>
+                     <Image url="@../ui/flowers.gif"/>
+                  </image>
+               </ImageView>
+            </children>
+         </Pane>
+         <Pane fx:id="studentsPane" prefHeight="1080.0" prefWidth="1920.0">
+            <children>
+               <ImageView fx:id="student_6" fitHeight="116.0" fitWidth="116.0" layoutX="549.0" layoutY="740.0"
+                          onMousePressed="#onStudent6" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_1" fitHeight="116.0" fitWidth="116.0" layoutX="724.0" layoutY="740.0"
+                          onMousePressed="#onStudent1" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_0" fitHeight="116.0" fitWidth="116.0" layoutX="902.0" layoutY="740.0"
+                          onMousePressed="#onStudent0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_2" fitHeight="116.0" fitWidth="116.0" layoutX="1078.0" layoutY="740.0"
+                          onMousePressed="#onStudent2" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_7" fitHeight="116.0" fitWidth="116.0" layoutX="1252.0" layoutY="740.0"
+                          onMousePressed="#onStudent7" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_8" fitHeight="116.0" fitWidth="116.0" layoutX="1252.0" layoutY="888.0"
+                          onMousePressed="#onStudent8" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_5" fitHeight="116.0" fitWidth="116.0" layoutX="1078.0" layoutY="888.0"
+                          onMousePressed="#onStudent5" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_3" fitHeight="116.0" fitWidth="116.0" layoutX="902.0" layoutY="888.0"
+                          onMousePressed="#onStudent3" pickOnBounds="true" preserveRatio="true" visible="false"/>
+               <ImageView fx:id="student_4" fitHeight="116.0" fitWidth="116.0" layoutX="724.0" layoutY="888.0"
+                          onMousePressed="#onStudent4" pickOnBounds="true" preserveRatio="true" visible="false"/>
+            </children>
+         </Pane>
+      </children>
+   </AnchorPane>
+   <stylesheets>
+      <URL value="@../css/sharedStyles.css"/>
+      <URL value="@../css/entranceScene.css"/>
+   </stylesheets>
+</ScrollPane>

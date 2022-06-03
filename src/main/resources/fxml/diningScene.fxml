@@ -9,7 +9,8 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
-            prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+            prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="view.gui.controllers.characterControllers.DiningSelectorSceneController">
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
                 prefHeight="1080.0"
                 prefWidth="1920.0">
@@ -33,7 +34,7 @@
                         </image>
                     </ImageView>
                     <Label fx:id="menuLabel" alignment="CENTER" layoutY="205.0" prefWidth="1920.0"
-                           text="Select the dining table:"/>
+                           text="Select 2 tables to pick your students from:"/>
                     <ImageView fitHeight="305.0" fitWidth="205.0" layoutX="97.0" layoutY="829.0" pickOnBounds="true"
                                preserveRatio="true">
                         <image>
@@ -398,36 +399,36 @@
                     </ImageView>
                 </children>
             </Pane>
-            <Pane fx:id="diningPane" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+            <Pane fx:id="diningPane" prefHeight="1080.0" prefWidth="1920.0">
                 <children>
+                    <ImageView fx:id="yellowTable" fitHeight="108.0" fitWidth="807.0" layoutX="483.0" layoutY="699.0"
+                               onMousePressed="#table0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/tablesSelection/yellow.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="blueTable" fitHeight="216.0" fitWidth="807.0" layoutX="483.0" layoutY="921.0"
+                               onMousePressed="#table1" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/tablesSelection/blue.png"/>
+                        </image>
+                    </ImageView>
                     <ImageView fx:id="greenTable" fitHeight="129.0" fitWidth="807.0" layoutX="483.0" layoutY="478.0"
-                               pickOnBounds="true" preserveRatio="true" visible="false">
+                               onMousePressed="#table2" pickOnBounds="true" preserveRatio="true" visible="false">
                         <image>
                             <Image url="@../Graphical_Assets/tablesSelection/green.png"/>
                         </image>
                     </ImageView>
                     <ImageView fx:id="redTable" fitHeight="94.0" fitWidth="807.0" layoutX="483.0" layoutY="585.0"
-                               pickOnBounds="true" preserveRatio="true" visible="false">
+                               onMousePressed="#table3" pickOnBounds="true" preserveRatio="true" visible="false">
                         <image>
                             <Image url="@../Graphical_Assets/tablesSelection/red.png"/>
                         </image>
                     </ImageView>
-                    <ImageView fx:id="yellowTable" fitHeight="108.0" fitWidth="807.0" layoutX="483.0" layoutY="699.0"
-                               pickOnBounds="true" preserveRatio="true" visible="false">
-                        <image>
-                            <Image url="@../Graphical_Assets/tablesSelection/yellow.png"/>
-                        </image>
-                    </ImageView>
                     <ImageView fx:id="pinkTable" fitHeight="92.0" fitWidth="823.0" layoutX="483.0" layoutY="807.0"
-                               pickOnBounds="true" preserveRatio="true" visible="false">
+                               onMousePressed="#table4" pickOnBounds="true" preserveRatio="true" visible="false">
                         <image>
                             <Image url="@../Graphical_Assets/tablesSelection/pink.png"/>
-                        </image>
-                    </ImageView>
-                    <ImageView fx:id="blueTable" fitHeight="216.0" fitWidth="807.0" layoutX="483.0" layoutY="921.0"
-                               pickOnBounds="true" preserveRatio="true" visible="false">
-                        <image>
-                            <Image url="@../Graphical_Assets/tablesSelection/blue.png"/>
                         </image>
                     </ImageView>
                 </children>

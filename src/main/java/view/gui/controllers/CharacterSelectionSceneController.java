@@ -14,10 +14,7 @@ import model.expert.CharacterCard;
 import network.LightModel;
 import util.CharacterType;
 import view.gui.SceneController;
-import view.gui.controllers.characterControllers.GrannyIslandSelectorSceneController;
-import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
-import view.gui.controllers.characterControllers.JesterCardSelectionSceneController;
-import view.gui.controllers.characterControllers.MonkSelectionSceneController;
+import view.gui.controllers.characterControllers.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +92,11 @@ public class CharacterSelectionSceneController implements GenericSceneController
                 SceneController.switchScene("jesterCardSelection.fxml");
                 JesterCardSelectionSceneController controller = (JesterCardSelectionSceneController) SceneController.getCurrentSceneController();
                 controller.setUpCharacterChoice(model);
+            }
+            case MINSTREL -> {
+                SceneController.switchScene("minstrelEntranceScene.fxml");
+                MinstrelEntranceSceneController controller = (MinstrelEntranceSceneController) SceneController.getCurrentSceneController();
+                controller.setUp(model);
             }
         }
     }

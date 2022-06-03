@@ -1,21 +1,22 @@
 package view.gui;
 
 import controller.client.ClientController;
+import exceptions.DiningRoomFullException;
 import exceptions.PlayerNotFoundException;
+import exceptions.ProfessorFullException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.GameModel;
 import model.Player;
+import model.board.Professor;
 import model.board.SchoolBoard;
+import model.board.Student;
 import network.LightModel;
 import util.*;
 import view.View;
-import view.gui.controllers.characterControllers.GrannyIslandSelectorSceneController;
-import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
-import view.gui.controllers.characterControllers.JesterCardSelectionSceneController;
-import view.gui.controllers.characterControllers.MonkSelectionSceneController;
+import view.gui.controllers.characterControllers.*;
 
 
 public class GuiApplication extends Application {
@@ -54,21 +55,27 @@ public class GuiApplication extends Application {
         // -- 1750 = PRINCESS, POSTMAN, MONK
         LightModel model = new LightModel("player0");
 
-        Random.setSeed(0);
+        Random.setSeed(3);
         GameModel game = new GameModel(2, GameMode.EXPERT);
         for (int i = 0; i < 3; i++) {
             game.addPlayer(new Player("player" + i, Wizard.values()[i], TowerColor.values()[i], GameMode.EXPERT));
         }
         try {
             model.setPlayerSchoolBoard("player0", game.getPlayerByName("player0").getSchoolBoard());
-        } catch (PlayerNotFoundException e) {
+            game.getPlayerByName("player0").getSchoolBoard().addToDiningRoom(new Student(0, Color.RED));
+            game.getPlayerByName("player0").getSchoolBoard().addToDiningRoom(new Student(1, Color.RED));
+            game.getPlayerByName("player0").getSchoolBoard().addToDiningRoom(new Student(2, Color.RED));
+            game.getPlayerByName("player0").getSchoolBoard().addToDiningRoom(new Student(3, Color.BLUE));
+            game.getPlayerByName("player0").getSchoolBoard().addProfessor(new Professor(Color.RED));
+        } catch (PlayerNotFoundException | DiningRoomFullException | ProfessorFullException e) {
             return;
         }
 
+
         model.setCharacters(game.getCharacters());
         model.setIslandGroups(game.getIslandGroups());
-        SceneController.switchScene("jesterCardSelection.fxml");
-        JesterCardSelectionSceneController controller = (JesterCardSelectionSceneController) SceneController.getCurrentSceneController();
-        controller.setUpCharacterChoice(model);
+        SceneController.switchScene("minstrelEntranceScene.fxml");
+        MinstrelEntranceSceneController controller = (MinstrelEntranceSceneController) SceneController.getCurrentSceneController();
+        controller.setUp(model);
     }
 }
