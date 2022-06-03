@@ -36,7 +36,6 @@ public class GuiApplication extends Application {
         SceneController.switchScene("loginScene.fxml");
         SceneController.startMediaPlayer();
         stage.show();
-
         //charTester();
     }
 
@@ -55,7 +54,7 @@ public class GuiApplication extends Application {
         // -- 1750 = PRINCESS, POSTMAN, MONK
         LightModel model = new LightModel("player0");
 
-        Random.setSeed(1750);
+        Random.setSeed(14);
         GameModel game = new GameModel(2, GameMode.EXPERT);
         for (int i = 0; i < 3; i++) {
             game.addPlayer(new Player("player" + i, Wizard.values()[i], TowerColor.values()[i], GameMode.EXPERT));
@@ -74,8 +73,8 @@ public class GuiApplication extends Application {
 
         model.setCharacters(game.getCharacters());
         model.setIslandGroups(game.getIslandGroups());
-        SceneController.switchScene("princessSelection.fxml");
-        PrincessSelectionSceneController controller = (PrincessSelectionSceneController) SceneController.getCurrentSceneController();
+        SceneController.switchScene("thiefSelection.fxml");
+        ThiefSelectionSceneController controller = (ThiefSelectionSceneController) SceneController.getCurrentSceneController();
         controller.setUpCharacterChoice(model);
     }
 }

@@ -103,6 +103,16 @@ public class CharacterSelectionSceneController implements GenericSceneController
                 PrincessSelectionSceneController controller = (PrincessSelectionSceneController) SceneController.getCurrentSceneController();
                 controller.setUpCharacterChoice(model);
             }
+            case MUSHROOM_FANATIC -> {
+                SceneController.switchScene("fanaticSelection.fxml");
+                FanaticSelectionSceneController controller = (FanaticSelectionSceneController) SceneController.getCurrentSceneController();
+                controller.setUpCharacterChoice(model);
+            }
+            case THIEF -> {
+                SceneController.switchScene("thiefSelection.fxml");
+                ThiefSelectionSceneController controller = (ThiefSelectionSceneController) SceneController.getCurrentSceneController();
+                controller.setUpCharacterChoice(model);
+            }
         }
     }
 
