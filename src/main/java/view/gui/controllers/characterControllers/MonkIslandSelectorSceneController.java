@@ -1,11 +1,10 @@
-package view.gui.controllers;
+package view.gui.controllers.characterControllers;
 
 import eventSystem.EventManager;
-import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
+import eventSystem.events.network.client.EUseMonkEffect;
 import eventSystem.events.network.client.actionPhaseRelated.EStudentMovementToIsland;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,14 +15,15 @@ import javafx.scene.layout.Pane;
 import model.board.IslandGroup;
 import model.board.IslandTile;
 import network.LightModel;
-import util.CharacterType;
 import util.Color;
+import util.Logger;
 import util.TowerColor;
+import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MotherNatureMovementSceneController implements GenericSceneController {
+public class MonkIslandSelectorSceneController implements GenericSceneController {
     LightModel model;
 
     String pathPrefix = "/Graphical_Assets/";
@@ -32,56 +32,78 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
     @FXML
     private AnchorPane bridges_parent;
     @FXML
-    private Pane stepsButtons;
+    private Pane islandButtons;
     @FXML
     private GridPane realm_parent;
-    @FXML
-    private Button stepButton0, stepButton1, stepButton2, stepButton3, stepButton4, stepButton5, stepButton6;
 
     private List<Node> bridges;
     private List<Node> islands;
-    private List<Node> stepButtonsList;
+    private int chosenStudentID;
 
     @FXML
-    public void onStepButton0(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton0.getText())));
+    public void onIslandButton0(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 0));
     }
 
     @FXML
-    public void onStepButton1(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton1.getText())));
+    public void onIslandButton1(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 1));
     }
 
     @FXML
-    public void onStepButton2(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton2.getText())));
+    public void onIslandButton2(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 2));
     }
 
     @FXML
-    public void onStepButton3(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton3.getText())));
+    public void onIslandButton3(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 3));
     }
 
     @FXML
-    public void onStepButton4(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton4.getText())));
+    public void onIslandButton4(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 4));
     }
 
     @FXML
-    public void onStepButton5(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton5.getText())));
+    public void onIslandButton5(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 5));
     }
 
     @FXML
-    public void onStepButton6(MouseEvent mouseEvent) {
-        EventManager.notify(new EMoveMotherNature(toInt(stepButton6.getText())));
+    public void onIslandButton6(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 6));
+    }
+
+    @FXML
+    public void onIslandButton7(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 7));
+    }
+
+    @FXML
+    public void onIslandButton8(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 8));
+    }
+
+    @FXML
+    public void onIslandButton9(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 9));
+    }
+
+    @FXML
+    public void onIslandButton10(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 10));
+    }
+
+    @FXML
+    public void onIslandButton11(MouseEvent mouseEvent) {
+        EventManager.notify(new EUseMonkEffect(chosenStudentID, 11));
     }
 
     private void init(LightModel model) {
         this.model = model;
         bridges = new ArrayList<>(bridges_parent.getChildren());
         islands = realm_parent.getChildren().subList(0, 12);
-        stepButtonsList = new ArrayList<>(stepsButtons.getChildren());
     }
 
     private int groupByIslandID(int ID) {
@@ -135,16 +157,14 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
     }
 
     private void updateMotherNature(int position) {
-        for(int i=0; i<12; i++) {
+        for (int i = 0; i < 12; i++) {
             ImageView motherNature = ((ImageView) ((AnchorPane) islands.get(i)).getChildren().get(3));
-            motherNature.setVisible(i==model.getIslandGroups().get(groupByIslandID(position)).getIslands().get(0).getIslandID());
+            motherNature.setVisible(i == model.getIslandGroups().get(groupByIslandID(position)).getIslands().get(0).getIslandID());
         }
     }
-    private int toInt(String string) {
-        return Integer.parseInt(string);
-    }
 
-    public void setupIslands(LightModel model) {
+    public void setupIslands(LightModel model, int chosenStudentID) {
+        this.chosenStudentID = chosenStudentID;
         init(model);
         updateBridge();
 
@@ -178,19 +198,6 @@ public class MotherNatureMovementSceneController implements GenericSceneControll
         int position = model.getIslandGroups().get(model.getMotherNaturePosition()).getIslands().get(0).getIslandID();
         updateMotherNature(position);
 
-        int maxMovements;
-
-        if (model.getActiveCharacterEffect() == CharacterType.POSTMAN) {
-            maxMovements = model.getChosenAssistant().getMovements() + 2;
-        } else {
-            maxMovements = model.getChosenAssistant().getMovements();
-        }
-
-        for (int i = 0; i < maxMovements; i++) {
-            Button button = (Button) stepButtonsList.get(i);
-            button.setVisible(true);
-        }
-
-        stepsButtons.setVisible(true);
+        islandButtons.setVisible(true);
     }
 }

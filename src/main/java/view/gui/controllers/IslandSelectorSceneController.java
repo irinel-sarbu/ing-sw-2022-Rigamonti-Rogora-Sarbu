@@ -192,7 +192,8 @@ public class IslandSelectorSceneController implements GenericSceneController {
         }
 
         // update motherNature
-        updateMotherNature(model.getMotherNaturePosition());
+        int position = model.getIslandGroups().get(model.getMotherNaturePosition()).getIslands().get(0).getIslandID();
+        updateMotherNature(position);
 
         islandButtons.setVisible(true);
     }

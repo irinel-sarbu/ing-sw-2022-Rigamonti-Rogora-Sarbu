@@ -3,18 +3,15 @@ package view.gui;
 import controller.client.ClientController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
-import util.Logger;
+import model.GameModel;
+import model.Player;
+import network.LightModel;
+import util.*;
 import view.View;
+import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
-import java.io.File;
-import java.io.IOException;
 
 public class GuiApplication extends Application {
 
@@ -33,6 +30,8 @@ public class GuiApplication extends Application {
         SceneController.switchScene("loginScene.fxml");
         SceneController.startMediaPlayer();
         stage.show();
+
+        //charTester();
     }
 
     @Override
@@ -40,5 +39,26 @@ public class GuiApplication extends Application {
         SceneController.stopMediaPlayer();
         Platform.exit();
         System.exit(0);
+    }
+
+    private void charTester() {
+        //RANDOM SEEDS:
+        // -- 0 = JESTER, MUSHROOM FANATIC, CENTAUR
+        // -- 3 = GRANNY HERBS, MINSTREL, KNIGHT
+        // -- 14 = HERALD, FARMER, THIEF
+        // -- 1750 = PRINCESS, POSTMAN, MONK
+        LightModel model = new LightModel("alberto");
+
+        Random.setSeed(1750);
+        GameModel game = new GameModel(2, GameMode.EXPERT);
+        for (int i = 0; i < 3; i++) {
+            game.addPlayer(new Player("player" + i, Wizard.values()[i], TowerColor.values()[i], GameMode.EXPERT));
+        }
+
+        model.setCharacters(game.getCharacters());
+        model.setIslandGroups(game.getIslandGroups());
+        SceneController.switchScene("monkSelection.fxml");
+        MonkSelectionSceneController controller = (MonkSelectionSceneController) SceneController.getCurrentSceneController();
+        controller.setUpCharacterChoice(model);
     }
 }

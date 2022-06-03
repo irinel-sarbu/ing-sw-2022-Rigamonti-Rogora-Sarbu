@@ -174,18 +174,18 @@ public class IslandViewSceneController implements GenericSceneController {
 
         // update Towers
         for(IslandTile it : allIslands) {
-            for(Color c : Color.values()) {
+            for (Color c : Color.values()) {
                 updateTower(it.getIslandID(), it.getTowerColor());
             }
         }
 
-        for(int i=0; i<model.getCloudTiles().size(); i++) {
+        for (int i = 0; i < model.getCloudTiles().size(); i++) {
             updateClouds(i, model.getCloudTiles().get(i).getStudents().stream().map(Student::getColor).toList());
         }
 
         // update motherNature
-        updateMotherNature(model.getMotherNaturePosition());
-
+        int position = model.getIslandGroups().get(model.getMotherNaturePosition()).getIslands().get(0).getIslandID();
+        updateMotherNature(position);
     }
 
 }

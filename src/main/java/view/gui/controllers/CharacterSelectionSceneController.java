@@ -14,6 +14,7 @@ import model.expert.CharacterCard;
 import network.LightModel;
 import util.CharacterType;
 import view.gui.SceneController;
+import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,11 @@ public class CharacterSelectionSceneController implements GenericSceneController
             }
             case FARMER -> {
                 EventManager.notify(new EUseCharacterEffect(CharacterType.FARMER));
+            }
+            case MONK -> {
+                SceneController.switchScene("monkSelection.fxml");
+                MonkSelectionSceneController controller = (MonkSelectionSceneController) SceneController.getCurrentSceneController();
+                controller.setUpCharacterChoice(model);
             }
         }
     }
