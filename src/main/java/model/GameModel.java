@@ -327,79 +327,90 @@ public class GameModel {
      * and Updates the IslandGroupID (which is their position in {@link GameModel#islandGroups}).
      *
      * @param position Is the IslandGroupID of the selected IslandGroup to apply {@link GameModel#joinAdjacent(int)} to.
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *  TODO: Parasare tutte le isole per fare una right join 0 -> ... -> 11 -> 0
-     *        Ad ogni join, check mother nature position:
-     *                 se mnp id è uguale all'id_right allora cambia con id_left
-     *                 altrimenti lascia mnp inalterato
-     *        poi updateIslandGroupsID (togliendo riga 399)
+     *                                  TODO: Parasare tutte le isole per fare una right join 0 -> ... -> 11 -> 0
+     *                                        Ad ogni join, check mother nature position:
+     *                                                 se mnp id è uguale all'id_right allora cambia con id_left
+     *                                                 altrimenti lascia mnp inalterato
+     *                                        poi updateIslandGroupsID (togliendo riga 399)
      */
     public void joinAdjacent(int position) {
-        int right = (position + 1) % (islandGroups.size());
-        int left = (position - 1 + islandGroups.size()) % (islandGroups.size());
-        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
-        try {
-            islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
-            islandGroups.remove(right);
-            if (right < position) {
-                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
-                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
-            } else {
-                if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-            }
-            updateIslandGroupsID();
-        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-        }
-        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-        try {
-            islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
-            islandGroups.remove(left);
-            if (left > position) {
-                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+        int max = islandGroups.size() + 1;
+        for (int i = 0; i < max; i++) {
+            int id = i % islandGroups.size();
+            int id_right = (id + 1) % islandGroups.size();
 
-            } else {
-                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
-                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-                if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
-                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
-            }
-            updateIslandGroupsID();
-        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-        }
-        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
+            IslandGroup ig_id = islandGroups.get(id);
+            IslandGroup ig_id_right = islandGroups.get(id_right);
 
+            TowerColor tc_id = ig_id.getTowersColor();
+            TowerColor tc_id_right = ig_id_right.getTowersColor();
+
+            if (tc_id != null && tc_id == tc_id_right) {
+                try {
+                    islandGroups.set(id, ig_id.join(ig_id_right));
+                    islandGroups.remove(id_right);
+                    i = 0;
+                    max = islandGroups.size();
+                    updateIslandGroupsID(id_right);
+                } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+                    Logger.error(e.getMessage());
+                }
+            }
+        }
+//        int right = (position + 1) % (islandGroups.size());
+//        int left = (position - 1 + islandGroups.size()) % (islandGroups.size());
+//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
+//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+//        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
+//        try {
+//            islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
+//            islandGroups.remove(right);
+//            if (right < position) {
+//                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
+//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+//                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
+//            } else {
+//                if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+//            }
+//            updateIslandGroupsID();
+//        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+//        }
+//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
+//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+//        try {
+//            islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
+//            islandGroups.remove(left);
+//            if (left > position) {
+//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+//
+//            } else {
+//                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
+//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
+//                if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
+//                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
+//            }
+//            updateIslandGroupsID();
+//        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
+//        }
+//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
+//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
+//        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
     }
 
     /**
      * Updates the IslandGroupIDs to their respective position in {@link GameModel#islandGroups}.
      */
-    private void updateIslandGroupsID() {
+    private void updateIslandGroupsID(int missingId) {
+        int mnp = motherNature.getPosition();
+
+        if (missingId != 0) {
+            motherNature.setPosition(mnp >= missingId ? mnp - 1 : mnp);
+        } else {
+            motherNature.setPosition(mnp > missingId ? mnp - 1 : islandGroups.size() - 1);
+        }
+
+        // Update all indices
         for (int i = 0; i < islandGroups.size(); i++) {
-            //Updates mother nature position
-            if (islandGroups.get(i).getIslandGroupID() == motherNature.getPosition()) {
-                // set right position for mother nature
-                motherNature.setPosition(i);
-            }
             islandGroups.get(i).setIslandGroupID(i);
         }
     }

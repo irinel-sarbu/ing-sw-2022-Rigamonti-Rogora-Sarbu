@@ -594,8 +594,12 @@ public class GameLobby implements EventListener {
     }
 
     private void notifyActivation(ClientHandler client) {
-        // TODO: che fa sta roba? Non dovrebbe mandarlo! :(
         client.send(new ServerMessage(Messages.EFFECT_USED));
+
+        for (Player player : getModel().getPlayers()) {
+            broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
+        broadcast(new EUpdateIslands(model.getIslandGroups(), model.getMotherNature().getPosition()));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         broadcast(new ELightModelSetup(model.getCharacters()));
     }

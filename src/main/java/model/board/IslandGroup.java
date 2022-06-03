@@ -9,7 +9,6 @@ import util.TowerColor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -187,12 +186,9 @@ public class IslandGroup implements Serializable {
         IslandGroup newIslandGroup = new IslandGroup(this);
         newIslandGroup.islands.addAll(other.islands);
 
-
-        while (other.noEntry.size() > 0)
+        while (other.noEntry.size() > 0) {
             newIslandGroup.noEntry.push(other.noEntry.pop());
-
-        Collections.sort(newIslandGroup.islands);
-
+        }
         return newIslandGroup;
     }
 
@@ -237,14 +233,14 @@ public class IslandGroup implements Serializable {
         // 0(12) <= IslandTile.id < 6
         for (IslandTile it : row0) {
             hasMotherNature = motherNaturePosition == it.getGroup();
-            splitCards0.add(it.toCard(hasMotherNature && !motherNaturePositioned, false, false, false, false, false).split("\n"));
+            splitCards0.add(it.toCard(hasMotherNature, false, false, false, false, false).split("\n"));
             motherNaturePositioned = hasMotherNature && !motherNaturePositioned;
         }
 
         // 6 <= IslandTile.id < 12(0)
         for (IslandTile it : row1) {
             hasMotherNature = motherNaturePosition == it.getGroup();
-            splitCards1.add(it.toCard(hasMotherNature && !motherNaturePositioned, false, false, false, false, false).split("\n"));
+            splitCards1.add(it.toCard(hasMotherNature, false, false, false, false, false).split("\n"));
             motherNaturePositioned = hasMotherNature && !motherNaturePositioned;
         }
 
