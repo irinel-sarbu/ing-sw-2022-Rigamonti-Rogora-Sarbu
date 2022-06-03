@@ -12,7 +12,7 @@
 
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
             prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
-            fx:controller="view.gui.controllers.characterControllers.MonkSelectionSceneController">
+            fx:controller="view.gui.controllers.characterControllers.JesterCardSelectionSceneController">
    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
                prefWidth="1920.0">
       <children>
@@ -74,12 +74,14 @@
                                       layoutY="281.0" onMousePressed="#onStudent3" pickOnBounds="true"
                                       preserveRatio="true" visible="false"/>
                            <ImageView fx:id="student_A_4" fitHeight="65.0" fitWidth="65.0" layoutX="136.0"
-                                      layoutY="210.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                                      layoutY="210.0" onMousePressed="#onStudent4" pickOnBounds="true"
+                                      preserveRatio="true" visible="false"/>
                            <ImageView fx:id="student_A_5" fitHeight="65.0" fitWidth="65.0" layoutX="180.0"
-                                      layoutY="281.0" pickOnBounds="true" preserveRatio="true" visible="false"/>
+                                      layoutY="281.0" onMousePressed="#onStudent5" pickOnBounds="true"
+                                      preserveRatio="true" visible="false"/>
                         </children>
                      </Pane>
-                     <Label fx:id="activeLabel" layoutX="878.0" layoutY="311.0" text="Select a student:"/>
+                     <Label fx:id="activeLabel" layoutX="878.0" layoutY="311.0" text="Select 3 students:"/>
                   </children>
                </Pane>
             </children>

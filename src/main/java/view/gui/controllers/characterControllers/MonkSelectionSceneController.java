@@ -9,7 +9,6 @@ import javafx.scene.input.MouseEvent;
 import model.expert.CharacterCard;
 import network.LightModel;
 import util.CharacterType;
-import util.Logger;
 import view.gui.SceneController;
 import view.gui.controllers.GenericSceneController;
 
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class MonkSelectionSceneController implements GenericSceneController {
     @FXML
-    private ImageView character_A, noEntry_A_0, noEntry_A_1, noEntry_A_2, noEntry_A_3, student_A_0, student_A_1, student_A_2, student_A_3, student_A_4, student_A_5;
+    private ImageView character_A, student_A_0, student_A_1, student_A_2, student_A_3, student_A_4, student_A_5;
     @FXML
     private Label coinsA;
 
@@ -52,15 +51,10 @@ public class MonkSelectionSceneController implements GenericSceneController {
         controller.setupIslands(model, monk.getStudents().get(3).getID());
     }
 
-    private List<Node> noEntry_A, student_A;
+    private List<Node> student_A;
     private LightModel model;
 
     private void setCharactersUp() {
-        noEntry_A = new ArrayList<>();
-        noEntry_A.add(noEntry_A_0);
-        noEntry_A.add(noEntry_A_1);
-        noEntry_A.add(noEntry_A_2);
-        noEntry_A.add(noEntry_A_3);
         student_A = new ArrayList<>();
         student_A.add(student_A_0);
         student_A.add(student_A_1);
@@ -77,19 +71,14 @@ public class MonkSelectionSceneController implements GenericSceneController {
         for (CharacterCard character : model.getCharacters()) {
             if (character.getCharacter() == CharacterType.MONK) {
                 monk = character;
-                loadCharacterPieces(coinsA, character_A, noEntry_A, student_A);
+                loadCharacterPieces(coinsA, character_A, student_A);
             }
         }
     }
 
-    private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> noEntry_Tmp, List<Node> student_Tmp) {
+    private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(monk.getCost()));
         character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + monk.getCharacter().getNumber() + ".jpg"));
-        if (monk.getNoEntryTiles() != null) {
-            for (int i = 0; i < monk.getNoEntryTiles().size(); i++) {
-                noEntry_Tmp.get(i).setVisible(true);
-            }
-        }
         if (monk.getStudents() != null) {
             for (int i = 0; i < monk.getStudents().size(); i++) {
                 ImageView student = (ImageView) student_Tmp.get(i);

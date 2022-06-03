@@ -16,6 +16,7 @@ import util.CharacterType;
 import view.gui.SceneController;
 import view.gui.controllers.characterControllers.GrannyIslandSelectorSceneController;
 import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
+import view.gui.controllers.characterControllers.JesterCardSelectionSceneController;
 import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
 import java.util.ArrayList;
@@ -89,6 +90,11 @@ public class CharacterSelectionSceneController implements GenericSceneController
                 SceneController.switchScene("grannyIslandSelection.fxml");
                 GrannyIslandSelectorSceneController controller = (GrannyIslandSelectorSceneController) SceneController.getCurrentSceneController();
                 controller.setupIslands(model);
+            }
+            case JESTER -> {
+                SceneController.switchScene("jesterCardSelection.fxml");
+                JesterCardSelectionSceneController controller = (JesterCardSelectionSceneController) SceneController.getCurrentSceneController();
+                controller.setUpCharacterChoice(model);
             }
         }
     }

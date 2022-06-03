@@ -1,17 +1,20 @@
 package view.gui;
 
 import controller.client.ClientController;
+import exceptions.PlayerNotFoundException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.GameModel;
 import model.Player;
+import model.board.SchoolBoard;
 import network.LightModel;
 import util.*;
 import view.View;
 import view.gui.controllers.characterControllers.GrannyIslandSelectorSceneController;
 import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
+import view.gui.controllers.characterControllers.JesterCardSelectionSceneController;
 import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
 
@@ -49,18 +52,23 @@ public class GuiApplication extends Application {
         // -- 3 = GRANNY HERBS, MINSTREL, KNIGHT
         // -- 14 = HERALD, FARMER, THIEF
         // -- 1750 = PRINCESS, POSTMAN, MONK
-        LightModel model = new LightModel("alberto");
+        LightModel model = new LightModel("player0");
 
-        Random.setSeed(3);
+        Random.setSeed(0);
         GameModel game = new GameModel(2, GameMode.EXPERT);
         for (int i = 0; i < 3; i++) {
             game.addPlayer(new Player("player" + i, Wizard.values()[i], TowerColor.values()[i], GameMode.EXPERT));
         }
+        try {
+            model.setPlayerSchoolBoard("player0", game.getPlayerByName("player0").getSchoolBoard());
+        } catch (PlayerNotFoundException e) {
+            return;
+        }
 
         model.setCharacters(game.getCharacters());
         model.setIslandGroups(game.getIslandGroups());
-        SceneController.switchScene("grannyIslandSelection.fxml");
-        GrannyIslandSelectorSceneController controller = (GrannyIslandSelectorSceneController) SceneController.getCurrentSceneController();
-        controller.setupIslands(model);
+        SceneController.switchScene("jesterCardSelection.fxml");
+        JesterCardSelectionSceneController controller = (JesterCardSelectionSceneController) SceneController.getCurrentSceneController();
+        controller.setUpCharacterChoice(model);
     }
 }
