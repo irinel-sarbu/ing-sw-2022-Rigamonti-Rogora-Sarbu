@@ -14,6 +14,7 @@ import model.expert.CharacterCard;
 import network.LightModel;
 import util.CharacterType;
 import view.gui.SceneController;
+import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
 import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
 import java.util.ArrayList;
@@ -77,6 +78,11 @@ public class CharacterSelectionSceneController implements GenericSceneController
                 SceneController.switchScene("monkSelection.fxml");
                 MonkSelectionSceneController controller = (MonkSelectionSceneController) SceneController.getCurrentSceneController();
                 controller.setUpCharacterChoice(model);
+            }
+            case HERALD -> {
+                SceneController.switchScene("heraldIslandSelection.fxml");
+                HeraldIslandSelectorSceneController controller = (HeraldIslandSelectorSceneController) SceneController.getCurrentSceneController();
+                controller.setupIslands(model);
             }
         }
     }
