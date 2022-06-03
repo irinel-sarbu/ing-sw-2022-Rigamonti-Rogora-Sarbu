@@ -10,6 +10,7 @@ import model.Player;
 import network.LightModel;
 import util.*;
 import view.View;
+import view.gui.controllers.characterControllers.GrannyIslandSelectorSceneController;
 import view.gui.controllers.characterControllers.HeraldIslandSelectorSceneController;
 import view.gui.controllers.characterControllers.MonkSelectionSceneController;
 
@@ -50,7 +51,7 @@ public class GuiApplication extends Application {
         // -- 1750 = PRINCESS, POSTMAN, MONK
         LightModel model = new LightModel("alberto");
 
-        Random.setSeed(14);
+        Random.setSeed(3);
         GameModel game = new GameModel(2, GameMode.EXPERT);
         for (int i = 0; i < 3; i++) {
             game.addPlayer(new Player("player" + i, Wizard.values()[i], TowerColor.values()[i], GameMode.EXPERT));
@@ -58,8 +59,8 @@ public class GuiApplication extends Application {
 
         model.setCharacters(game.getCharacters());
         model.setIslandGroups(game.getIslandGroups());
-        SceneController.switchScene("heraldIslandSelection.fxml");
-        HeraldIslandSelectorSceneController controller = (HeraldIslandSelectorSceneController) SceneController.getCurrentSceneController();
+        SceneController.switchScene("grannyIslandSelection.fxml");
+        GrannyIslandSelectorSceneController controller = (GrannyIslandSelectorSceneController) SceneController.getCurrentSceneController();
         controller.setupIslands(model);
     }
 }
