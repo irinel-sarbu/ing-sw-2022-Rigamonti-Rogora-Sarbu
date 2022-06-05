@@ -23,6 +23,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
     private LightModel model;
     private List<Integer> entranceStudents;
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent0(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(0).getID());
@@ -34,6 +37,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent1(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(1).getID());
@@ -45,6 +51,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent2(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(2).getID());
@@ -56,6 +65,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent3(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(3).getID());
@@ -67,6 +79,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent4(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(4).getID());
@@ -78,6 +93,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent5(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(5).getID());
@@ -89,6 +107,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent6(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(6).getID());
@@ -100,6 +121,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent7(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(7).getID());
@@ -111,6 +135,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onStudent8(MouseEvent mouseEvent) {
         entranceStudents.add(entrance.get(8).getID());
@@ -122,6 +149,9 @@ public class MinstrelEntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * method called to set up the scene and initialize the components
+     */
     public void setUp(LightModel model) {
         this.model = model;
         this.entranceStudents = new ArrayList<>();

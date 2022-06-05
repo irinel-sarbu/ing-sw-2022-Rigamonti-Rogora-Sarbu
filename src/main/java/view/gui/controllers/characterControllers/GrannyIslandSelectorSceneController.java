@@ -38,72 +38,117 @@ public class GrannyIslandSelectorSceneController implements GenericSceneControll
     private List<Node> bridges;
     private List<Node> islands;
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton0(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(0));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton1(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(1));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton2(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(2));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton3(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(3));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton4(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(4));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton5(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(5));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton6(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(6));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton7(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(7));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton8(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(8));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton9(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(9));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton10(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(10));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void onIslandButton11(MouseEvent mouseEvent) {
         EventManager.notify(new EUseGrannyEffect(11));
     }
 
+    /**
+     * initializes the Lists of nodes
+     */
     private void init(LightModel model) {
         this.model = model;
         bridges = new ArrayList<>(bridges_parent.getChildren());
         islands = realm_parent.getChildren().subList(0, 12);
     }
 
+    /**
+     * Used to get the island group id in which the island tile is contained
+     *
+     * @param ID Is the id of the selected island tile
+     * @return the ID.
+     */
     private int groupByIslandID(int ID) {
         for (IslandGroup ig : model.getIslandGroups()) {
             if (ig.getIslands().stream().map(IslandTile::getIslandID).toList().contains(ID))
@@ -112,17 +157,31 @@ public class GrannyIslandSelectorSceneController implements GenericSceneControll
         return -1;
     }
 
+    /**
+     * Returns true if the two island are in the same group
+     *
+     * @param a is the id of the first island
+     * @param b is the id of the second island
+     * @return true if they are, otherwise false
+     */
     private boolean inSameGroup(int a, int b) {
         return groupByIslandID(a) == groupByIslandID(b);
     }
 
     // Display functions
+
+    /**
+     * updates Bridge visibility
+     */
     private void updateBridge() {
         for (int i = 0; i < 12; i++) {
             if (inSameGroup(i, (i + 1) % 12)) bridges.get(i).setVisible(true);
         }
     }
 
+    /**
+     * updates Students visibility
+     */
     private void updateStudents(int island, Color color, int number) {
         AnchorPane studentPane = (AnchorPane) ((AnchorPane) ((AnchorPane) islands.get(island)).getChildren().get(4)).getChildren().get(color.getValue());
         if (number == 0) {
@@ -137,6 +196,9 @@ public class GrannyIslandSelectorSceneController implements GenericSceneControll
         }
     }
 
+    /**
+     * updates No entry tiles visibility
+     */
     private void updateNoEntry(int island, int number) {
         AnchorPane noEntryPane = (AnchorPane) (((AnchorPane) islands.get(island)).getChildren().get(1));
         if (number > 0) {
@@ -148,12 +210,18 @@ public class GrannyIslandSelectorSceneController implements GenericSceneControll
         }
     }
 
+    /**
+     * updates Towers visibility
+     */
     private void updateTower(int island, TowerColor color) {
         ImageView towerPane = (ImageView) (((AnchorPane) islands.get(island)).getChildren().get(2));
         towerPane.setVisible(color != null);
         towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + ".png"));
     }
 
+    /**
+     * updates Mother nature visibility
+     */
     private void updateMotherNature(int position) {
         for (int i = 0; i < 12; i++) {
             ImageView motherNature = ((ImageView) ((AnchorPane) islands.get(i)).getChildren().get(3));
@@ -161,6 +229,9 @@ public class GrannyIslandSelectorSceneController implements GenericSceneControll
         }
     }
 
+    /**
+     * method called to set up the scene and initialize the components
+     */
     public void setupIslands(LightModel model) {
         init(model);
         updateBridge();

@@ -12,6 +12,9 @@ public class GuiApplication extends Application {
     private ClientController clientController;
     private View guiView;
 
+    /**
+     * used to start the GUI
+     */
     @Override
     public void start(Stage stage) throws Exception {
         this.guiView = new GuiView();
@@ -25,6 +28,9 @@ public class GuiApplication extends Application {
         stage.show();
     }
 
+    /**
+     * used to stop the GUI
+     */
     @Override
     public void stop() {
         SceneController.stopMediaPlayer();
