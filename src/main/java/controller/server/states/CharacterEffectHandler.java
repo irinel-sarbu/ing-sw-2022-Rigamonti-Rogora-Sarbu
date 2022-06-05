@@ -18,11 +18,9 @@ import java.util.List;
  * When the client activates a character effect, the event handler will call one of the methods Below.
  * All the information needed will be sent using the parameters.
  * After the effect is activated, effectIsUsed will become TRUE.
- * TODO: in EventDispatcher check if effect is already active
- * TODO: set & reset effect with the handler in lobby
  */
 
-//TODO : add the removal of coins
+
 public class CharacterEffectHandler {
 
     public void monkEffect(GameLobby tempLobby, int studentID, int islandPos) {

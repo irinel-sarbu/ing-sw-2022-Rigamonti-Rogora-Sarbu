@@ -30,7 +30,6 @@ public class TurnEpilogue {
      * @throws WrongPlayerException  the acting player does not have the right to act at this moment
      * @throws NoCloudTileException  the selected cloud tile does not exist
      */
-    // TODO: when EntranceFullException is thrown, asks the player to select which students to keep in its entrance
     public void refillFromCloudTile(GameLobby thisGame, Player actingPlayer, int cloudTilePos)
             throws WrongPlayerException, NoCloudTileException {
 

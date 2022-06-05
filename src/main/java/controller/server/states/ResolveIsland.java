@@ -20,7 +20,6 @@ public abstract class ResolveIsland {
      * @param islandGroupID ID of the island group to resolve
      */
     public void solveIsland(GameLobby tempLobby, int islandGroupID) {
-        // TODO: check if in correct game phase
         try {
             GameModel tempGame = tempLobby.getModel();
             int[] islandSum;

@@ -15,7 +15,6 @@ public class GameOver {
      *
      * @param tempLobby current game
      */
-    // TODO: still does not performs any action to declare the winner
     public void selectWinner(GameLobby tempLobby) {
         try {
             GameModel tempGame = tempLobby.getModel();
