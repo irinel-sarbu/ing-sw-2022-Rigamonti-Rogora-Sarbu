@@ -11,6 +11,9 @@ import util.Color;
 import util.GameMode;
 import util.GameState;
 
+/**
+ * Is the StudentMovement class
+ */
 public abstract class StudentMovement {
 
     /**

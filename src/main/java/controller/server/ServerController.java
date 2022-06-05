@@ -20,6 +20,9 @@ import util.Utils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Is the ServerController class, implements EventListener
+ */
 public class ServerController implements EventListener {
     Server server;
     private final Map<String, GameLobby> games;

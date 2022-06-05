@@ -6,6 +6,9 @@ import model.Player;
 import model.board.CloudTile;
 import util.GameState;
 
+/**
+ * Is the TurnEpilogue class
+ */
 public class TurnEpilogue {
 
     /**

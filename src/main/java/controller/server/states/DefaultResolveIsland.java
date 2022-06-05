@@ -7,6 +7,9 @@ import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
 
+/**
+ * Is the DefaultResolveIsland class, extends ResolveIsland
+ */
 public class DefaultResolveIsland extends ResolveIsland {
     /**
      * Get each player's influence on the island group in default condition

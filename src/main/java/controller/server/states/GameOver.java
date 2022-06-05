@@ -8,6 +8,9 @@ import model.GameModel;
 import model.board.SchoolBoard;
 import util.GameState;
 
+/**
+ * Is the GameOver Class
+ */
 public class GameOver {
 
     /**
