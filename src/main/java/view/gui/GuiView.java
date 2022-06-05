@@ -50,7 +50,7 @@ public class GuiView extends View {
 
     /**
      * Switch to lobby's waiting room scene
-     * @param code
+     * @param code unique lobby code
      */
     @Override
     public void joinedLobbyDisplay(String code) {
