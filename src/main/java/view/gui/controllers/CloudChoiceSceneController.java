@@ -34,21 +34,37 @@ public class CloudChoiceSceneController implements GenericSceneController {
 
     private int numOfClouds;
 
+    /**
+     * Notify cloud 0 selection
+     * @param mouseEvent
+     */
     @FXML
     public void onCloud0(MouseEvent mouseEvent) {
         EventManager.notify(new ESelectRefillCloud(0));
     }
 
+    /**
+     * Notify cloud 1 selection
+     * @param mouseEvent
+     */
     @FXML
     public void onCloud1(MouseEvent mouseEvent) {
         EventManager.notify(new ESelectRefillCloud(1));
     }
 
+    /**
+     * Notify cloud 2 selection
+     * @param mouseEvent
+     */
     @FXML
     public void onCloud2(MouseEvent mouseEvent) {
         EventManager.notify(new ESelectRefillCloud(2));
     }
 
+    /**
+     * Set initial scene value
+     * @param model
+     */
     private void init(LightModel model) {
         this.model = model;
         numOfClouds = model.getCloudTiles().size();
@@ -56,6 +72,11 @@ public class CloudChoiceSceneController implements GenericSceneController {
         cloudButtonsList = new ArrayList<>(cloudButtons.getChildren());
     }
 
+    /**
+     * Update Content of the cloud view
+     * @param cloudID ID of the cloud to update
+     * @param studentList list of students to put on the cloud
+     */
     // Display functions
     private void updateClouds(int cloudID, List<Color> studentList) {
         AnchorPane cloud = (AnchorPane) clouds.get(cloudID);
@@ -66,6 +87,9 @@ public class CloudChoiceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Reset cloud view
+     */
     private void resetClouds() {
         for (int i = 0; i < 3; i++) {
             AnchorPane cloud = (AnchorPane) clouds.get(i);
@@ -73,6 +97,10 @@ public class CloudChoiceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Set up cloud selection view and set button
+     * @param model
+     */
     public void setupClouds(LightModel model) {
         init(model);
         resetClouds();

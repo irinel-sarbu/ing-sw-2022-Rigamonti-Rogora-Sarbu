@@ -27,6 +27,9 @@ public class ErrorPopUpSceneController implements GenericSceneController {
     @FXML
     private AnchorPane anchor;
 
+    /**
+     * setup popup controller
+     */
     public ErrorPopUpSceneController() {
         stage = new Stage();
         stage.initOwner(SceneController.getCurrentScene().getWindow());
@@ -37,18 +40,32 @@ public class ErrorPopUpSceneController implements GenericSceneController {
         stage.setAlwaysOnTop(true);
     }
 
+    /**
+     * Set scene
+     * @param scene
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * set specified text
+     * @param message
+     */
     public void display(String message) {
         textLabel.setText(message);
     }
 
+    /**
+     * close stage
+     */
     public void onXButtonClicked() {
         stage.close();
     }
 
+    /**
+     * Display pop up error message
+     */
     public void showWindow() {
         Logger.info("Showing PopUp");
         stage.show();

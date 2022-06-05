@@ -36,6 +36,9 @@ public class CharacterSelectionSceneController implements GenericSceneController
     private List<Node> noEntry_0, noEntry_1, noEntry_2, noEntry_A, student_0, student_1, student_2, student_A;
     private LightModel model;
 
+    /**
+     * When presesd back button return to previous scene (generic menu)
+     */
     @FXML
     public void onBack() {
         SceneController.switchScene("genericMenuScene.fxml");
@@ -44,21 +47,37 @@ public class CharacterSelectionSceneController implements GenericSceneController
 
     }
 
+    /**
+     * Activate character 0 effect
+     * @param mouseEvent
+     */
     @FXML
     private void onChar0(MouseEvent mouseEvent) {
         activateEffect(0);
     }
 
+    /**
+     * Activate character 1 effect
+     * @param mouseEvent
+     */
     @FXML
     private void onChar1(MouseEvent mouseEvent) {
         activateEffect(1);
     }
 
+    /**
+     * Activate character 2 effect
+     * @param mouseEvent
+     */
     @FXML
     private void onChar2(MouseEvent mouseEvent) {
         activateEffect(2);
     }
 
+    /**
+     * Notify activation of the character
+     * @param charId
+     */
     private void activateEffect(int charId) {
         switch (model.getCharacters().get(charId).getCharacter()) {
             case POSTMAN -> {
@@ -167,6 +186,10 @@ public class CharacterSelectionSceneController implements GenericSceneController
         student_A.add(student_A_5);
     }
 
+    /**
+     * Compose character view
+     * @param model
+     */
     //IMPORTANT: DO NOT change character cards name
     public void setUpCharacterChoice(LightModel model) {
         this.model = model;
@@ -189,6 +212,14 @@ public class CharacterSelectionSceneController implements GenericSceneController
         }
     }
 
+    /**
+     * Compose character card
+     * @param character reference to the character
+     * @param coinsTmp current character cost
+     * @param character_Tmp character image viewer
+     * @param noEntry_Tmp list of no entries on card (for characters that use it)
+     * @param student_Tmp list of students on card (for characters that use it)
+     */
     private void loadCharacterPieces(CharacterCard character, Label coinsTmp, ImageView character_Tmp, List<Node> noEntry_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(character.getCost()));
         character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + character.getCharacter().getNumber() + ".jpg"));
