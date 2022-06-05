@@ -23,6 +23,13 @@ import java.util.List;
 
 public class CharacterEffectHandler {
 
+    /**
+     * handles the monk effect by removing a student from the monk and adding it to the island
+     *
+     * @param tempLobby is the lobby where this method is called
+     * @param studentID is the chosen student id
+     * @param islandPos is the cosend island position
+     */
     public void monkEffect(GameLobby tempLobby, int studentID, int islandPos) {
         try {
             GameModel tempGame = tempLobby.getModel();
@@ -36,12 +43,23 @@ public class CharacterEffectHandler {
         }
     }
 
+    /**
+     * handles the farmer effect and augment its cost
+     *
+     * @param tempLobby is the lobby where this method is called
+     */
     public void farmerEffect(GameLobby tempLobby) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.FARMER);
         tempCharacter.setCost(tempCharacter.getCost() + 1);
     }
 
+    /**
+     * handles the herald effect and calls a resolve on the selected island group
+     *
+     * @param tempLobby     is the lobby where this method is called
+     * @param islandGroupID is the selected island group
+     */
     public void heraldEffect(GameLobby tempLobby, int islandGroupID) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.HERALD);
@@ -53,12 +71,23 @@ public class CharacterEffectHandler {
         }
     }
 
+    /**
+     * handles the postman effect and augment its cost
+     *
+     * @param tempLobby is the lobby where this method is called
+     */
     public void postmanEffect(GameLobby tempLobby) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.POSTMAN);
         tempCharacter.setCost(tempCharacter.getCost() + 1);
     }
 
+    /**
+     * handles the granny effect and puts a no entry tile on a chosen island
+     *
+     * @param tempLobby is the lobby where this method is called
+     * @param islandID  is the chosen island
+     */
     public void grannyHerbsEffect(GameLobby tempLobby, int islandID) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.GRANNY_HERBS);
@@ -70,6 +99,11 @@ public class CharacterEffectHandler {
         }
     }
 
+    /**
+     * handles the centaur effect and augment its cost
+     *
+     * @param tempLobby is the lobby where this method is called
+     */
     public void centaurEffect(GameLobby tempLobby) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.CENTAUR);
@@ -79,6 +113,15 @@ public class CharacterEffectHandler {
     // CLIENT checks that size is at most 3
     // the arrayLists are as follows (example 2 students exchanged): eS [13][45]  jS[87][24] containing
     // student IDS, 13 is exchanged with 87 and 45 is exchanged with 24
+
+    /**
+     * Handle the jester effect by switching 3 students on the entrance with 3 students on the jester
+     *
+     * @param tempLobby        is the lobby where this method is called
+     * @param entranceStudents is a List of chosen students on the entrance
+     * @param jesterStudents   is a List of chosen students on the jester
+     * @throws LengthMismatchException If the lists have different sizes
+     */
     public void jesterEffect(GameLobby tempLobby, List<Integer> entranceStudents, List<Integer> jesterStudents) throws LengthMismatchException {
         try {
             GameModel tempGame = tempLobby.getModel();
@@ -99,6 +142,14 @@ public class CharacterEffectHandler {
     }
 
     // CLIENT checks that size is at most 2
+
+    /**
+     * handles the minstrel effect by switching 2 students on the entrance with 2 students on the dining
+     *
+     * @param tempLobby        is the lobby where this method is called
+     * @param entranceStudents is a List of chosen students on the entrance
+     * @param diningStudents   is a List of chosen students on the dining
+     */
     public void minstrelEffect(GameLobby tempLobby, List<Integer> entranceStudents, List<Color> diningStudents) {
         try {
             GameModel tempGame = tempLobby.getModel();
@@ -113,17 +164,28 @@ public class CharacterEffectHandler {
             }
             tempCharacter.setCost(tempCharacter.getCost() + 1);
         } catch (DiningRoomEmptyException | StudentNotFoundException | DiningRoomFullException |
-                 EntranceFullException e) {
+                EntranceFullException e) {
             Logger.warning("Error with minstrel exchange");
         }
     }
 
+    /**
+     * handles the effect of the knight and augment its cost
+     *
+     * @param tempLobby is the lobby where this method is called
+     */
     public void knightEffect(GameLobby tempLobby) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.KNIGHT);
         tempCharacter.setCost(tempCharacter.getCost() + 1);
     }
 
+    /**
+     * handles the effect of the princess and put a selected student on the dining
+     *
+     * @param tempLobby is the lobby where this method is called
+     * @param studentID is the selected student from the princess students
+     */
     public void princessEffect(GameLobby tempLobby, int studentID) {
         try {
             GameModel tempGame = tempLobby.getModel();
@@ -136,6 +198,12 @@ public class CharacterEffectHandler {
         }
     }
 
+    /**
+     * handles the fanatic effect by choosing a color not to count for influence
+     *
+     * @param tempLobby is the lobby where this method is called
+     * @param color     is the chosen color
+     */
     public void mushroomFanaticEffect(GameLobby tempLobby, Color color) {
         GameModel tempGame = tempLobby.getModel();
         CharacterCard tempCharacter = tempGame.getCharacterByType(CharacterType.MUSHROOM_FANATIC);
@@ -143,6 +211,12 @@ public class CharacterEffectHandler {
         tempCharacter.setColor(color);
     }
 
+    /**
+     * handles the thief effect by choosing a color and by putting in the bag all the students of said color from the dining of all players
+     *
+     * @param tempLobby is the lobby where this method is called
+     * @param color     is the chosen color
+     */
     public void thiefEffect(GameLobby tempLobby, Color color) {
         try {
             GameModel tempGame = tempLobby.getModel();

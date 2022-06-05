@@ -81,6 +81,13 @@ public class PlanningPhase {
         thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
+    /**
+     * checks if a player can't select an assistant
+     *
+     * @param player    is the player to check
+     * @param assistant is the chosen assistant
+     * @return true if it can't be played, false otherwise
+     */
     public boolean checkIfAssistantPlayed(Player player, Assistant assistant) {
 
         if (playedAssistants.contains(assistant)) {                                                          // check if card has already been played
