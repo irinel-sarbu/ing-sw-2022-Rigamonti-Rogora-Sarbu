@@ -4,6 +4,7 @@
 
 Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/).
 
+---
 ## Librerie e plugins
 
 | Libreria/Plugin | Descrizione                                                                                                    |
@@ -12,6 +13,7 @@ Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/pr
 | JUnit           | Framework di unit testing per il linguaggio di programmazione Java                                             |
 | JavaFx          | Famiglia di software applicativi, basati sulla piattaforma Java, per la creazione di rich Internet application |
 
+---
 ## Funzionalità
 
 | Funzionalità        | Stato               |
@@ -29,6 +31,50 @@ Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/pr
 | Partite multiple               | :heavy_check_mark: |
 | Persistenza                    | :x:                |
 | Resilienza alle disconnessioni | :x:                |
+
+---
+
+## Tests
+
+---
+
+## Esecuzione
+
+Questo progetto richiede una versione di Java 17.
+
+### Eriantys client
+
+Le seguenti istruzioni descrivono come eseguire il client con interfaccia CLI o GUI.
+
+### Cli
+
+Per eseguire il Client CLI digitare da terminale uno dei seguenti comandi:
+
+```
+java -jar eriantys-client.jar --cli
+```
+
+```
+java -jar eriantys-client.jar -c
+```
+
+### Gui
+
+Per eseguire il Client CLI digitare da terminale il seguente comand:
+
+```
+java -jar eriantys-client.jar
+```
+
+### Eriantys Server
+
+Per eseguire il Server digitare da terminale il seguente comando:
+
+```
+java -jar eriantys-server.jar
+```
+
+---
 
 ## Componenti del gruppo
 
