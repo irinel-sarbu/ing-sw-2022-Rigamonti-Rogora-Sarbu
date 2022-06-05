@@ -60,7 +60,7 @@ java -jar eriantys-client.jar -c
 
 ### Gui
 
-Per eseguire il Client CLI digitare da terminale il seguente comand:
+Per eseguire il Client GUI digitare da terminale il seguente comand:
 
 ```
 java -jar eriantys-client.jar
