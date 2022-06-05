@@ -7,6 +7,9 @@ import model.Player;
 import model.board.SchoolBoard;
 import util.Color;
 
+/**
+ * Is the DefaultStudentMovement class, extends StudentMovement
+ */
 public class DefaultStudentMovement extends StudentMovement {
 
     /**

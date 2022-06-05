@@ -16,6 +16,9 @@ import util.GameState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Is the PlanningPhase class
+ */
 public class PlanningPhase {
     private List<Assistant> playedAssistants;
 

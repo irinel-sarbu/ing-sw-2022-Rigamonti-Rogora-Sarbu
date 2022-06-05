@@ -9,7 +9,9 @@ import util.CharacterType;
 import util.GameMode;
 import util.GameState;
 
-
+/**
+ * Is the MotherNatureMovement class
+ */
 public abstract class MotherNatureMovement {
     /**
      * Abstract method: move mother nature by the specified number of steps

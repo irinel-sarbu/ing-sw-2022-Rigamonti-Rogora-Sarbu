@@ -3,6 +3,9 @@ package controller.server.states;
 import controller.server.GameLobby;
 import exceptions.IllegalMovementException;
 
+/**
+ * Is the DefaultMotherNatureMovement class, extends MotherNatureMovement
+ */
 public class DefaultMotherNatureMovement extends MotherNatureMovement {
     /**
      * Move mother nature of specified steps in default conditions

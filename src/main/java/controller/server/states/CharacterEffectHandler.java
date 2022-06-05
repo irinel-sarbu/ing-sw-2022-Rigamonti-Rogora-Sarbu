@@ -19,8 +19,6 @@ import java.util.List;
  * All the information needed will be sent using the parameters.
  * After the effect is activated, effectIsUsed will become TRUE.
  */
-
-
 public class CharacterEffectHandler {
 
     /**

@@ -11,6 +11,9 @@ import model.board.Tower;
 import util.Logger;
 import util.TowerColor;
 
+/**
+ * is the ResolveIsland class
+ */
 public abstract class ResolveIsland {
 
     /**
