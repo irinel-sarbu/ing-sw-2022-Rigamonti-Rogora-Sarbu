@@ -11,15 +11,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Global EventManager (singleton)
+ */
 public class EventManager {
     private final Map<Class<? extends Event>, CopyOnWriteArrayList<EventListenerRecord>> listenersMap;
 
     private static EventManager eventManagerInstance;
 
+    /**
+     * Default constructor
+     */
     private EventManager() {
         this.listenersMap = new HashMap<>();
     }
 
+    /**
+     * Singleton getter
+     *
+     * @return EventManager singleton
+     */
     private synchronized static EventManager get() {
         if (eventManagerInstance == null) {
             eventManagerInstance = new EventManager();
@@ -28,6 +39,12 @@ public class EventManager {
         return eventManagerInstance;
     }
 
+    /**
+     * Register all callbacks for listenerInstance, defined by @EventHandler
+     *
+     * @param listenerInstance EventListener
+     * @param filter           @EventHandler filter
+     */
     public static synchronized void register(EventListener listenerInstance, Filter filter) {
         Logger.info("Registering event handlers for class " + listenerInstance.getClass().getName());
         for (Method method : listenerInstance.getClass().getMethods()) {
@@ -53,6 +70,12 @@ public class EventManager {
         }
     }
 
+    /**
+     * Register callback for specific Event Type
+     *
+     * @param eventType Event.class
+     * @param listener  EventListenerRecord
+     */
     @SuppressWarnings("unchecked")
     private synchronized <T extends Event> void addListener(Class<?> eventType, EventListenerRecord listener) {
         if (!listenersMap.containsKey(eventType)) {
@@ -62,6 +85,11 @@ public class EventManager {
         listenersMap.get(eventType).add(listener);
     }
 
+    /**
+     * Unregister all callbacks for specific listener
+     *
+     * @param listener EventListener
+     */
     public static synchronized void unregisterListener(final EventListener listener) {
         for (CopyOnWriteArrayList<EventListenerRecord> listenerList : get().listenersMap.values()) {
             for (int i = 0; i < listenerList.size(); i++) {
@@ -73,14 +101,20 @@ public class EventManager {
         }
     }
 
-    public static synchronized <T extends Event> void unregisterListenersOfEvent(Class<T> eventType) {
-        get().listenersMap.get(eventType).clear();
-    }
-
+    /**
+     * Notify Event to every EventListener registered to specific event
+     *
+     * @param event event to notify
+     */
     public static void notify(final Event event) {
         get().dispatch(event);
     }
 
+    /**
+     * Notify Event to every EventListener registered to specific event
+     *
+     * @param event event to notify
+     */
     private synchronized void dispatch(final Event event) {
         CopyOnWriteArrayList<EventListenerRecord> listeners = listenersMap.get(event.getClass());
         if (listeners != null) {
@@ -102,6 +136,13 @@ public class EventManager {
         }
     }
 
+    /**
+     * Listener record
+     *
+     * @param listenerInstance
+     * @param callbackMethod
+     * @param filter
+     */
     private record EventListenerRecord(Object listenerInstance, Method callbackMethod, Filter filter) {
     }
 }

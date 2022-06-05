@@ -1,5 +1,8 @@
 package eventSystem.events.network;
 
+/**
+ * Static class that contains all messages in the game
+ */
 public class Messages {
     public static final String REGISTRATION_OK = "Registration OK";
     public static final String LOBBY_FULL = "Lobby full";
@@ -11,7 +14,6 @@ public class Messages {
 
     public static final String CLIENT_DISCONNECTED = "Client disconnected";
     public static final String ALL_CLIENTS_CONNECTED = "All clients connected";
-
 
     public static final String WRONG_PHASE = "Wrong phase";
     public static final String ANOTHER_EFFECT_IS_ACTIVE = "Another effect is already active";
