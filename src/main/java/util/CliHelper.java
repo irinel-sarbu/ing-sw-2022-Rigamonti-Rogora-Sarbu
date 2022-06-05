@@ -56,6 +56,9 @@ public class CliHelper {
     public static final char V_L_EDGE = '┤';
     public static final char V_R_EDGE = '├';
 
+    /**
+     * constructor of CliHelper
+     */
     public CliHelper() {
         this.consoleScanner = new Scanner(System.in);
     }
@@ -69,6 +72,12 @@ public class CliHelper {
         return defaultValue;
     }
 
+    /**
+     * reads an int from consoleScanner. If it can't, it will return defaultValue
+     *
+     * @param defaultValue the default value
+     * @return the int /default value
+     */
     public int readInt(int defaultValue) {
         String line = consoleScanner.nextLine();
         if (line.matches("\\d+")) {
@@ -90,6 +99,9 @@ public class CliHelper {
         return new String(string);
     }
 
+    /**
+     * draws a box
+     */
     public void drawBox(String color, String text) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(color);
@@ -127,6 +139,12 @@ public class CliHelper {
         System.out.printf("Welcome to %sEryantis \uD83E\uDDDA \n", CliHelper.ANSI_ORANGE);
     }
 
+    /**
+     * Prints the colored icon based on a student color
+     *
+     * @param color is the student color
+     * @return the ANSI colored dot
+     */
     public static String getStudentIcon(Color color) {
         String studentColor;
         switch (color) {
@@ -146,6 +164,12 @@ public class CliHelper {
         return studentColor + '●' + ANSI_RESET;
     }
 
+    /**
+     * Prints the colored icon based on a professor color
+     *
+     * @param color is the professor color
+     * @return the ANSI colored square
+     */
     public static String getProfessorIcon(Color color) {
         String professorColor;
         switch (color) {
@@ -165,6 +189,12 @@ public class CliHelper {
         return professorColor + '■' + ANSI_RESET;
     }
 
+    /**
+     * Prints the colored icon based on a tower color
+     *
+     * @param color is the tower color
+     * @return the ANSI colored triangle
+     */
     public static String getTowerIcon(TowerColor color) {
         String towerColor = ANSI_WHITE;
         switch (color) {
@@ -176,10 +206,18 @@ public class CliHelper {
         return towerColor + '▲' + ANSI_RESET;
     }
 
+    /**
+     * Prints the colored icon of mother nature
+     *
+     * @return the ANSI colored brown triangle
+     */
     public static String getMotherNatureIcon() {
         return ANSI_BROWN + '▲' + ANSI_RESET;
     }
 
+    /**
+     * Prints the icon representing the noEntryTile
+     */
     public static String getNoEntryIcon() {
         return ANSI_RED + "□" + ANSI_RESET;
     }

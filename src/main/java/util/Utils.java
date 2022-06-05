@@ -3,6 +3,9 @@ package util;
 import java.util.Random;
 
 public class Utils {
+    /**
+     * Used to create a random String
+     */
     public static String randomString(int length) {
         Random random = new Random();
 

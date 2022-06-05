@@ -15,6 +15,9 @@ public class Logger {
     private final static String TEXT_RED = "\033[0;31m";
     private final static String TEXT_RED_BOLD = "\033[1;31m";
 
+    /**
+     * contains the severity level of the log
+     */
     public enum LoggerLevel {
         ALL(0),
         DEBUG(10),
@@ -26,10 +29,16 @@ public class Logger {
 
         private final int value;
 
+        /**
+         * Constructor of the LoggerlEVEL
+         */
         LoggerLevel(int num) {
             this.value = num;
         }
 
+        /**
+         * Getter for the value of the level
+         */
         public int getValue() {
             return value;
         }
@@ -37,33 +46,54 @@ public class Logger {
 
     private LoggerLevel level;
 
+    /**
+     * Constructor of the Logger
+     */
     private Logger() {
         this.level = LoggerLevel.ALL;
     }
 
+    /**
+     * Getter for the Logger instance (Singleton)
+     */
     public static synchronized Logger get() {
         if (instance == null)
             instance = new Logger();
         return instance;
     }
 
+    /**
+     * Setter for the Logger Level
+     */
     public static void setLevel(LoggerLevel level) {
         get().level = level;
     }
 
+    /**
+     * prints the logger message into the console
+     */
     private synchronized void print(String msg) {
         System.out.println(msg);
     }
 
+    /**
+     * prints the logger message into the console Intended
+     */
     private synchronized void printIndented(String msg) {
         System.out.println("\t" + msg);
     }
 
+    /**
+     * used to know which class called it
+     */
     private static String getCallerClassName() {
         StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
         return ste.getClassName();
     }
 
+    /**
+     * Debug Logger message template
+     */
     public static void debug(String... msg) {
         if (LoggerLevel.DEBUG.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
@@ -74,6 +104,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Info Logger message template
+     */
     public static void info(String... msg) {
         if (LoggerLevel.INFO.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
@@ -84,6 +117,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Warning Logger message template
+     */
     public static void warning(String... msg) {
         if (LoggerLevel.WARNING.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
@@ -94,6 +130,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Error Logger message template
+     */
     public static void error(String... msg) {
         if (LoggerLevel.ERROR.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
@@ -104,6 +143,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Severe Logger message template
+     */
     public static void severe(String... msg) {
         if (LoggerLevel.SEVERE.getValue() >= get().level.getValue() && msg.length > 0) {
             String date = get().getDate();
@@ -114,6 +156,9 @@ public class Logger {
         }
     }
 
+    /**
+     * Getter for the date when the logger message will be print
+     */
     private String getDate() {
         return LocalDateTime.now().format(dtf);
     }
