@@ -12,6 +12,9 @@ public class Menu {
     private final Map<String, ActionHandler> actionsMap;
     private int size = 0;
 
+    /**
+     * Menu constructor
+     */
     public Menu(String name, String description) {
         this.name = name;
         this.description = description;
@@ -19,6 +22,9 @@ public class Menu {
         this.actionsMap = new LinkedHashMap<>();
     }
 
+    /**
+     * Menu constructor overload with name of the menu
+     */
     public Menu(String name) {
         this.name = name;
         this.description = null;
@@ -26,11 +32,17 @@ public class Menu {
         this.actionsMap = new LinkedHashMap<>();
     }
 
+    /**
+     * puts an action in the actionsMap
+     */
     public void putAction(String actionName, ActionHandler action) {
         actionsMap.put(actionName, action);
         size++;
     }
 
+    /**
+     * executes a chosen action
+     */
     public boolean executeAction(int actionNumber) {
         if (actionNumber < 0 || actionNumber >= actionsMap.size()) {
             printError("Invalid input");
@@ -42,6 +54,9 @@ public class Menu {
         return actions.get(actionNumber).execute();
     }
 
+    /**
+     * Cli special print of the menu
+     */
     public void show() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(name);
@@ -60,6 +75,9 @@ public class Menu {
         System.out.println(stringBuilder);
     }
 
+    /**
+     * returns the size of the menu, used by cli when clear is needed
+     */
     public int getSize() {
         int total = 0;
         total += 1; // Title and description
@@ -71,6 +89,9 @@ public class Menu {
         return total;
     }
 
+    /**
+     * prints an error message passed
+     */
     protected void printError(String message) {
         consecutiveErrors++;
         if (consecutiveErrors > 1)
@@ -82,6 +103,9 @@ public class Menu {
         System.out.print("\u001B[0m\n");  // ANSI RESET
     }
 
+    /**
+     * clears the wanted number of lines
+     */
     private void clearLines(int numOfLines) {
         if (numOfLines <= 0) return;
         for (int i = 0; i < numOfLines; i++) {
