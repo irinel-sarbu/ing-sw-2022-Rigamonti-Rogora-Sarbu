@@ -40,11 +40,15 @@ public class IslandGroup implements Serializable {
         this.islandGroupID = islandGroup.islandGroupID;
         this.islands = new ArrayList<>();
         this.islands.addAll(islandGroup.islands);
+        updateIslandTileGroupId();
+        this.noEntry = new Stack<>();
+        noEntry.addAll(islandGroup.noEntry);
+    }
+
+    public void updateIslandTileGroupId() {
         for (IslandTile it : this.islands) {
             it.updateIslandGroup(islandGroupID);
         }
-        this.noEntry = new Stack<>();
-        noEntry.addAll(islandGroup.noEntry);
     }
 
     /**
@@ -231,16 +235,32 @@ public class IslandGroup implements Serializable {
         boolean hasMotherNature = false;
 
         // 0(12) <= IslandTile.id < 6
-        for (IslandTile it : row0) {
+        for (int i = 0; i < row0.size(); i++) {
+            IslandTile it = row0.get(i);
+            IslandTile it_prev = i > 0 ? row0.get(i - 1) : row1.get(0);
+            IslandTile it_next = i < row0.size() - 1 ? row0.get(i + 1) : row1.get(row1.size() - 1);
+
+            boolean bottom = (i == 0 && (areInSameGroup(it, it_prev))) || (i == row0.size() - 1 && (areInSameGroup(it, it_next)));
+            boolean right = (i != row0.size() - 1 && areInSameGroup(it, it_next));
+            boolean left = (i != 0 && (areInSameGroup(it, it_prev)));
+
             hasMotherNature = motherNaturePosition == it.getGroup();
-            splitCards0.add(it.toCard(hasMotherNature, false, false, false, false, false).split("\n"));
+            splitCards0.add(it.toCard(hasMotherNature, false, false, right, bottom, left).split("\n"));
             motherNaturePositioned = hasMotherNature && !motherNaturePositioned;
         }
 
         // 6 <= IslandTile.id < 12(0)
-        for (IslandTile it : row1) {
+        for (int i = 0; i < row1.size(); i++) {
+            IslandTile it = row1.get(i);
+            IslandTile it_prev = i > 0 ? row1.get(i - 1) : row0.get(0);
+            IslandTile it_next = i < row1.size() - 1 ? row1.get(i + 1) : row0.get(row0.size() - 1);
+
+            boolean top = (i == 0 && (areInSameGroup(it, it_prev))) || (i == row0.size() - 1 && (areInSameGroup(it, it_next)));
+            boolean right = (i != row1.size() - 1 && areInSameGroup(it, it_next));
+            boolean left = (i != 0 && (areInSameGroup(it, it_prev)));
+
             hasMotherNature = motherNaturePosition == it.getGroup();
-            splitCards1.add(it.toCard(hasMotherNature, false, false, false, false, false).split("\n"));
+            splitCards1.add(it.toCard(hasMotherNature, false, top, right, false, left).split("\n"));
             motherNaturePositioned = hasMotherNature && !motherNaturePositioned;
         }
 

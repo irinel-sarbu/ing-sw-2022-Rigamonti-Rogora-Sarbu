@@ -347,49 +347,14 @@ public class GameModel {
                     i = 0;
                     max = islandGroups.size();
                     updateIslandGroupsID(id_right);
+                    for (IslandGroup ig : islandGroups) {
+                        ig.updateIslandTileGroupId();
+                    }
                 } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
                     Logger.error(e.getMessage());
                 }
             }
         }
-//        int right = (position + 1) % (islandGroups.size());
-//        int left = (position - 1 + islandGroups.size()) % (islandGroups.size());
-//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-//        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
-//        try {
-//            islandGroups.set(position, this.getIslandGroupByID(position).join(islandGroups.get(right)));
-//            islandGroups.remove(right);
-//            if (right < position) {
-//                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
-//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-//                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
-//            } else {
-//                if (left > position) left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-//            }
-//            updateIslandGroupsID();
-//        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-//        }
-//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-//        try {
-//            islandGroups.set(position, islandGroups.get(position).join(this.getIslandGroupByID(left)));
-//            islandGroups.remove(left);
-//            if (left > position) {
-//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-//
-//            } else {
-//                position = (position - 1 + islandGroups.size()) % (islandGroups.size());
-//                left = (left - 1 + islandGroups.size()) % (islandGroups.size());
-//                if (right > position) right = (right - 1 + islandGroups.size()) % (islandGroups.size());
-//                //getMotherNature().progress(-1, islandGroups.size()); doesn't work with herald, update moved to updateIslandGroupsID
-//            }
-//            updateIslandGroupsID();
-//        } catch (IllegalIslandGroupJoinException | NullIslandGroupException e) {
-//        }
-//        //for(int i=0; i < getRemainingIslandGroups();i++)System.out.println(getIslandGroupByID(i).toString());
-//        //System.out.println("Position" + position +" - Right" + right + " - Left" + left + "\n");
-//        //System.out.println("Mother Nature Position" + motherNature.getPosition() + "\n");
     }
 
     /**
