@@ -40,10 +40,10 @@ public class EventManager {
     }
 
     /**
-     * Register all callbacks for listenerInstance, defined by @EventHandler
+     * Register all callbacks for listenerInstance, defined by EventHandler
      *
      * @param listenerInstance EventListener
-     * @param filter           @EventHandler filter
+     * @param filter           EventHandler filter
      */
     public static synchronized void register(EventListener listenerInstance, Filter filter) {
         Logger.info("Registering event handlers for class " + listenerInstance.getClass().getName());
