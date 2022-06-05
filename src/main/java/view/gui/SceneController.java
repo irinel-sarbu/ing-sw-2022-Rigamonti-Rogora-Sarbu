@@ -26,12 +26,21 @@ public class SceneController {
 
     private static File currentSong;
     private static Media currentMedia;
-    private static MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer = null;
 
+    /**
+     * Set the stage for the current scene
+     * @param stage
+     */
     public static void setStage(Stage stage) {
         SceneController.stage = stage;
     }
 
+    /**
+     * Starts the music Media Player reproducing the ServerConnectionMusic
+     * NOTE: The class {@link MediaPlayer} depends on external libraries to reproduce music, and some systems does
+     * not provide them out of the box, so it's possible that the game will start without the music
+     */
     public static void startMediaPlayer() {
         currentSong = new File("src/main/resources/bgMusic/ServerConnectionMusic.mp3");
         currentMedia = new Media(currentSong.toURI().toString());
@@ -47,20 +56,35 @@ public class SceneController {
         }
     }
 
+    /**
+     * Stops the current song
+     */
     public static void stopMediaPlayer() {
         if (mediaPlayer == null) return; 
         mediaPlayer.stop();
         mediaPlayer.dispose();
     }
 
+    /**
+     * Get the current active scene
+     * @return a reference to the scene
+     */
     public static Scene getCurrentScene() {
         return currentScene;
     }
 
+    /**
+     * Get the instance of the current scene controller
+     * @return
+     */
     public static GenericSceneController getCurrentSceneController() {
         return currentSceneController;
     }
 
+    /**
+     * Switch scene keeping the current music
+     * @param sceneFile .fxml scene file path
+     */
     public static void switchScene(String sceneFile) {
         try {
             Logger.info("Switching Scene...");
@@ -77,6 +101,11 @@ public class SceneController {
         }
     }
 
+    /**
+     * Switch scene and change music
+     * @param sceneFile .fxml scene file path
+     * @param songFile music file path
+     */
     public static void switchSceneAndSong(String sceneFile, String songFile) {
         switchScene(sceneFile);
         if (mediaPlayer == null) return;
@@ -89,6 +118,11 @@ public class SceneController {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
+    /**
+     * Switch scene and change music, creating a new stage to display the scene
+     * @param sceneFile .fxml scene file path
+     * @param songFile music file path
+     */
     public static void switchSceneSongAndStage(String sceneFile, String songFile) {
         stage.hide();
         stage = new Stage();
@@ -100,6 +134,10 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     * Display message as a pop-up window
+     * @param message String of the message to display on the pop-up window
+     */
     public static void displayMessagePopUp(String message) {
         FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/errorPopUpScene.fxml"));
         Parent parent;
@@ -117,12 +155,20 @@ public class SceneController {
         errorPopUpSceneController.showWindow();
     }
 
+    /**
+     * Switch current scene to the waiting room of the lobby
+     * @param sceneFile .fxml scene file path
+     * @param code joined game lobby unique code
+     */
     public static void switchSceneToLobbyIdle(String sceneFile, String code) {
         switchScene(sceneFile);
         LobbyJoinedSceneController controller = (LobbyJoinedSceneController) currentSceneController;
         controller.editCode(code);
     }
 
+    /**
+     * Return to login scene
+     */
     public static void switchBackToLogin() {
         stopMediaPlayer();
         stage.hide();
@@ -135,6 +181,9 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     * Return to scene of lobby creation or joining
+     */
     public static void switchBackToCreateOrJoin() {
         stopMediaPlayer();
         stage.hide();
@@ -147,6 +196,11 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     * Switch to Game Overe scene
+     * @param model Reference to the client's light model
+     * @param winningPlayer Nickname of the player who won the game
+     */
     public static void switchToGameEnd(LightModel model, String winningPlayer) {
         switchSceneAndSong("gameEnding.fxml", "src/main/resources/bgMusic/InGameMusic3.mp3");
         GameEndingController controller = (GameEndingController) getCurrentSceneController();
