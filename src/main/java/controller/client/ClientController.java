@@ -500,7 +500,7 @@ public class ClientController implements EventListener {
      */
     @EventHandler
     public void onCheckLastRound(ECheckLastRound event) {
-        model.setLastRound(event.lastRound);
+        model.setLastRound(event.getLastRound());
     }
 }
 
