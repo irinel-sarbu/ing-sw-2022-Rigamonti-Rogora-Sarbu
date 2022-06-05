@@ -23,6 +23,10 @@ public class SchoolboardViewSceneController implements GenericSceneController {
     @FXML
     private AnchorPane fullScene, board2;
 
+    /**
+     * return to previous scene
+     * @param mouseEvent
+     */
     @FXML
     public void onBack(MouseEvent mouseEvent){
         SceneController.switchScene("genericMenuScene.fxml");
@@ -34,38 +38,82 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * get node referring to the player's board
+     * @param i ID of the player
+     * @return
+     */
     private List<Node> getBoard(int i) {
         return ((AnchorPane) fullScene.getChildren().get(i + 3)).getChildren();
     }
 
+    /**
+     * get node referring to the player's label name
+     * @param i ID of the player
+     * @return
+     */
     private Label getName(int i) {
         return (Label) getBoard(i).get(1);
     }
 
+    /**
+     * get node referring to the player's towers field
+     * @param i ID of the player
+     * @return
+     */
     private GridPane getTowers(int i) {
         return (GridPane) getBoard(i).get(2);
     }
 
+    /**
+     * get node referring to the player's coin
+     * @param i ID of the player
+     * @return
+     */
     private AnchorPane getCoins(int i) {
         return (AnchorPane) getBoard(i).get(3);
     }
 
+    /**
+     * get node referring to the player's professors
+     * @param i ID of the player
+     * @return
+     */
     private AnchorPane getProfessors(int i) {
         return (AnchorPane) getBoard(i).get(4);
     }
 
+    /**
+     * get node referring to the player's dining room
+     * @param i ID of the player
+     * @return
+     */
     private AnchorPane getDining(int i) {
         return (AnchorPane) getBoard(i).get(5);
     }
 
+    /**
+     * get node referring to the color's table of the player's dining room
+     * @param i ID of the player
+     * @param color color of the table
+     * @return
+     */
     private GridPane getTable(int i, Color color) {
         return (GridPane) ((AnchorPane) getBoard(i).get(5)).getChildren().get(color.getValue());
     }
 
+    /**
+     * get node referring to the player's dining room
+     * @param i ID of the player
+     * @return
+     */
     private GridPane getEntrance(int i) {
         return (GridPane) getBoard(i).get(6);
     }
 
+    /**
+     * Clear boards
+     */
     private void resetBoards() {
         for (int b = 0; b < 3; b++) {
             fullScene.getChildren().get(b + 3).setVisible(false);
@@ -94,6 +142,11 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Display board of the specified player
+     * @param sb player's ID
+     * @param name player's name
+     */
     private void displayBoard(int sb, String name) {
 
         SchoolBoard schoolBoard = model.getSchoolBoardMap().get(name);
@@ -132,6 +185,10 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Draw complete scene
+     * @param model
+     */
     public void updateView(LightModel model) {
 
         this.model = model;
