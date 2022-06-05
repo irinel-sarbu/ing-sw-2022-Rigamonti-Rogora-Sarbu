@@ -22,6 +22,10 @@ public class EntranceSceneController implements GenericSceneController {
     private LightModel model;
     private boolean toIsland;
 
+    /**
+     * selected student 0, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent0(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -33,6 +37,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 1, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent1(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -44,6 +52,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 2, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent2(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -55,6 +67,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 3, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent3(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -66,6 +82,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 4, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent4(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -77,6 +97,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 5, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent5(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -88,6 +112,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 6, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent6(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -99,6 +127,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 7, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent7(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -110,6 +142,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 8, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent8(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -121,6 +157,12 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * setup entrance student selection
+     * @param model reference to light model
+     * @param playerName name of the player
+     * @param toIsland {@link true} to move the student on the island, {@link false} otherwise
+     */
     public void setUp(LightModel model, String playerName, boolean toIsland) {
         this.model = model;
         this.toIsland = toIsland;

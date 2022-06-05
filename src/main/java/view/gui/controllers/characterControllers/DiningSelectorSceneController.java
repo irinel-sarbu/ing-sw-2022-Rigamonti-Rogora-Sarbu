@@ -30,6 +30,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
     private List<Color> selectedColors;
     private Map<Color, Integer> numOfStudents = new HashMap<>();
 
+    /**
+     * Button controller
+     */
     @FXML
     public void table0(MouseEvent mouseEvent) {
         selectedColors.add(Color.YELLOW);
@@ -41,6 +44,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void table1(MouseEvent mouseEvent) {
         selectedColors.add(Color.BLUE);
@@ -52,6 +58,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void table2(MouseEvent mouseEvent) {
         selectedColors.add(Color.GREEN);
@@ -63,6 +72,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void table3(MouseEvent mouseEvent) {
         selectedColors.add(Color.RED);
@@ -74,6 +86,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     public void table4(MouseEvent mouseEvent) {
         selectedColors.add(Color.PINK);
@@ -85,6 +100,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * initializes the Lists of nodes
+     */
     private void initLists() {
         gStudents = GreenStudents.getChildren();
         yStudents = YellowStudents.getChildren();
@@ -94,6 +112,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         tables = diningPane.getChildren();
     }
 
+    /**
+     * Resets the List of nodes to invisible
+     */
     private void resetStudents() {
         for (int i = 0; i < 10; i++) {
             gStudents.get(i).setVisible(false);
@@ -112,6 +133,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Shows the right amount of students for each color
+     */
     private void updateStudents() {
         resetStudents();
         for (int i = 0; i < numOfStudents.get(Color.GREEN); i++) {
@@ -142,6 +166,9 @@ public class DiningSelectorSceneController implements GenericSceneController {
             pStudents.get(10).setVisible(true);
     }
 
+    /**
+     * update the visibility of the tables buttons
+     */
     private void updateTables() {
         resetTables();
         for (Color color : Color.values()) {
@@ -150,12 +177,18 @@ public class DiningSelectorSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * reset the visibility of the table buttons
+     */
     private void resetTables() {
         for (Color color : Color.values()) {
             tables.get(color.getValue()).setVisible(false);
         }
     }
 
+    /**
+     * method called to set up the scene and initialize the components
+     */
     public void setUpDining(LightModel model, List<Integer> entranceStudents) {
         this.model = model;
         this.entranceStudents = entranceStudents;

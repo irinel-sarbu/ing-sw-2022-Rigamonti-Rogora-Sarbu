@@ -1,5 +1,8 @@
 package util;
 
+/**
+ * enum of CharacterType
+ */
 public enum CharacterType {
     HERALD(3, "Herald", 0),
     KNIGHT(2, "Knight", 1),
@@ -18,25 +21,39 @@ public enum CharacterType {
     private final String name;
     private final int number;
 
-
+    /**
+     * constructor of CharacterType
+     */
     CharacterType(int baseCost, String name, int number) {
         this.baseCost = baseCost;
         this.name = name;
         this.number = number;
     }
 
+    /**
+     * Getter for the BASE cost attribute
+     */
     public int getBaseCost() {
         return baseCost;
     }
 
+    /**
+     * Getter for the name attribute
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for the number attribute
+     */
     public int getNumber() {
         return number;
     }
 
+    /**
+     * Overrides toString
+     */
     @Override
     public String toString() {
         return name;

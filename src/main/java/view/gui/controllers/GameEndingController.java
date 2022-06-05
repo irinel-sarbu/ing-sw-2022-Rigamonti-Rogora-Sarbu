@@ -11,7 +11,11 @@ public class GameEndingController implements GenericSceneController {
     @FXML
     private ImageView winGif0, winGif1, loseGif0;
 
-
+    /**
+     * Compose GameOver scene
+     * @param model reference to light moder
+     * @param winningPlayer name of the winning player
+     */
     public void setUp(LightModel model, String winningPlayer) {
         if (model.getPlayerName().equals(winningPlayer)) {
             winGif0.setVisible(true);

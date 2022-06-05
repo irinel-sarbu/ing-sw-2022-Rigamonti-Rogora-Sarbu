@@ -21,6 +21,10 @@ public class GenericMenuSceneController implements GenericSceneController {
     private LightModel model;
     private String playerName;
 
+    /**
+     * enable student movement
+     * @param mouseEvent
+     */
     @FXML
     public void onMoveStudent(MouseEvent mouseEvent) {
         studentMovementPane.setVisible(false);
@@ -29,6 +33,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         backButton.setVisible(true);
     }
 
+    /**
+     * return to previous scene
+     * @param mouseEvent
+     */
     @FXML
     public void onBack(MouseEvent mouseEvent) {
         studentMovementsPane.setVisible(false);
@@ -37,6 +45,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         backButton.setVisible(false);
     }
 
+    /**
+     * switch to island view
+     * @param mouseEvent
+     */
     @FXML
     public void onShowIslands(MouseEvent mouseEvent) {
         SceneController.switchScene("IslandView.fxml");
@@ -44,6 +56,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.updateView(model);
     }
 
+    /**
+     * switch to entrance student selection (movement to dining)
+     * @param mouseEvent
+     */
     @FXML
     public void onToDining(MouseEvent mouseEvent) {
         SceneController.switchScene("entranceScene.fxml");
@@ -51,6 +67,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setUp(model, playerName, false);
     }
 
+    /**
+     * switch to entrance student selection (movement to island)
+     * @param mouseEvent
+     */
     @FXML
     public void onToIsland(MouseEvent mouseEvent) {
         SceneController.switchScene("entranceScene.fxml");
@@ -58,6 +78,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setUp(model, playerName, true);
     }
 
+    /**
+     * switch to mother nature movement
+     * @param mouseEvent
+     */
     @FXML
     public void onMoveMN(MouseEvent mouseEvent) {
         SceneController.switchScene("motherNatureMovement.fxml");
@@ -65,6 +89,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setupIslands(model);
     }
 
+    /**
+     * switch to cloud selection
+     * @param mouseEvent
+     */
     @FXML
     public void onSelectCloud(MouseEvent mouseEvent) {
         SceneController.switchScene("CloudChoice.fxml");
@@ -72,6 +100,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setupClouds(model);
     }
 
+    /**
+     * switch to character selection
+     * @param mouseEvent
+     */
     @FXML
     public void onCharacter(MouseEvent mouseEvent) {
         SceneController.switchScene("CharacterSelection.fxml");
@@ -79,6 +111,10 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.setUpCharacterChoice(model);
     }
 
+    /**
+     * switch to school board view
+     * @param mouseEvent
+     */
     @FXML
     public void onSchoolBoard(MouseEvent mouseEvent) {
         SceneController.switchScene("SchoolboardView.fxml");
@@ -86,6 +122,11 @@ public class GenericMenuSceneController implements GenericSceneController {
         controller.updateView(model);
     }
 
+    /**
+     * Set correct menu depending on current context
+     * @param model reference to light model
+     * @param playerName name of the acting player
+     */
     public void setController(LightModel model, String playerName) {
         this.model = model;
         this.playerName = playerName;
@@ -108,6 +149,11 @@ public class GenericMenuSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * switch to idle menu hiding buttons
+     * @param model reference to light model
+     * @param playerName current acting player
+     */
     public void setIdle(LightModel model, String playerName) {
         this.model = model;
         this.playerName = playerName;

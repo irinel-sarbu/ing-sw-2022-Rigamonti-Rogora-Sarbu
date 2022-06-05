@@ -7,10 +7,16 @@ public enum TowerColor {
 
     private final String string;
 
+    /**
+     * Constructor of TowerColor
+     */
     TowerColor(String string) {
         this.string = string;
     }
 
+    /**
+     * Overrides toString
+     */
     @Override
     public String toString() {
         return string;

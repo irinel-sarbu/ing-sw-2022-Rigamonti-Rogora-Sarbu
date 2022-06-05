@@ -23,6 +23,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
 
     private CharacterCard monk;
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent0(MouseEvent mouseEvent) {
         SceneController.switchScene("monkIslandSelection.fxml");
@@ -30,6 +33,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
         controller.setupIslands(model, monk.getStudents().get(0).getID());
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent1(MouseEvent mouseEvent) {
         SceneController.switchScene("monkIslandSelection.fxml");
@@ -37,6 +43,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
         controller.setupIslands(model, monk.getStudents().get(1).getID());
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent2(MouseEvent mouseEvent) {
         SceneController.switchScene("monkIslandSelection.fxml");
@@ -44,6 +53,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
         controller.setupIslands(model, monk.getStudents().get(2).getID());
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent3(MouseEvent mouseEvent) {
         SceneController.switchScene("monkIslandSelection.fxml");
@@ -54,6 +66,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
     private List<Node> student_A;
     private LightModel model;
 
+    /**
+     * initializes the Lists of nodes
+     */
     private void setCharactersUp() {
         student_A = new ArrayList<>();
         student_A.add(student_A_0);
@@ -64,6 +79,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
         student_A.add(student_A_5);
     }
 
+    /**
+     * method called to set up the scene and initialize the components
+     */
     public void setUpCharacterChoice(LightModel model) {
         this.model = model;
         setCharactersUp();
@@ -76,6 +94,9 @@ public class MonkSelectionSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * Loads the elements on the extracted character card
+     */
     private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(monk.getCost()));
         character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + monk.getCharacter().getNumber() + ".jpg"));

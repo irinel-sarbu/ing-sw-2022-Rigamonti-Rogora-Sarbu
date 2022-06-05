@@ -25,21 +25,33 @@ public class PrincessSelectionSceneController implements GenericSceneController 
 
     private CharacterCard princess;
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent0(MouseEvent mouseEvent) {
         EventManager.notify(new EUsePrincessEffect(princess.getStudents().get(0).getID()));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent1(MouseEvent mouseEvent) {
         EventManager.notify(new EUsePrincessEffect(princess.getStudents().get(1).getID()));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent2(MouseEvent mouseEvent) {
         EventManager.notify(new EUsePrincessEffect(princess.getStudents().get(2).getID()));
     }
 
+    /**
+     * Button controller
+     */
     @FXML
     private void onStudent3(MouseEvent mouseEvent) {
         EventManager.notify(new EUsePrincessEffect(princess.getStudents().get(3).getID()));
@@ -48,6 +60,9 @@ public class PrincessSelectionSceneController implements GenericSceneController 
     private List<Node> student_A;
     private LightModel model;
 
+    /**
+     * initializes the Lists of nodes
+     */
     private void setCharactersUp() {
         student_A = new ArrayList<>();
         student_A.add(student_A_0);
@@ -58,6 +73,9 @@ public class PrincessSelectionSceneController implements GenericSceneController 
         student_A.add(student_A_5);
     }
 
+    /**
+     * method called to set up the scene and initialize the components
+     */
     public void setUpCharacterChoice(LightModel model) {
         this.model = model;
         setCharactersUp();
@@ -70,6 +88,9 @@ public class PrincessSelectionSceneController implements GenericSceneController 
         }
     }
 
+    /**
+     * Loads the elements on the extracted character card
+     */
     private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(princess.getCost()));
         character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + princess.getCharacter().getNumber() + ".jpg"));

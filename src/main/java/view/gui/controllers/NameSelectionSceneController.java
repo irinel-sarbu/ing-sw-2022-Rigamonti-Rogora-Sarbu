@@ -18,6 +18,10 @@ public class NameSelectionSceneController implements GenericSceneController {
     public Pane balloonText;
     public Label errorLabel;
 
+    /**
+     * Check if provided name is valid and not empty, ask to register it to the server
+     * @param mouseEvent
+     */
     @FXML
     public void onNameConfirmed(MouseEvent mouseEvent) {
         if (name.getText().length() <= 0) {

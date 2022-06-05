@@ -36,6 +36,10 @@ public class IslandViewSceneController implements GenericSceneController {
 
     private int numOfClouds, numOfStudents;
 
+    /**
+     * Return to previous scene
+     * @param mouseEvent
+     */
     @FXML
     public void onBack(MouseEvent mouseEvent) {
         SceneController.switchScene("genericMenuScene.fxml");
@@ -147,6 +151,10 @@ public class IslandViewSceneController implements GenericSceneController {
         resetNoEntry();
     }
 
+    /**
+     * Update island view
+     * @param model
+     */
     public void updateView(LightModel model) {
 
         init(model);
