@@ -96,7 +96,6 @@ public class SceneController {
             FXMLLoader loader = new FXMLLoader(SceneController.class.getResource("/fxml/" + sceneFile));
             Parent root = loader.load();
             currentSceneController = loader.getController();
-
             currentScene = new Scene(root);
             currentScene.setRoot(root);
             stage.setScene(currentScene);
@@ -116,7 +115,11 @@ public class SceneController {
         if (mediaPlayer == null) return;
         mediaPlayer.stop();
         mediaPlayer.dispose();
-        currentSong = new File(songFile);
+        try {
+            currentSong = new File(Objects.requireNonNull(SceneController.class.getResource(songFile)).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         currentMedia = new Media(currentSong.toURI().toString());
         mediaPlayer = new MediaPlayer(currentMedia);
         mediaPlayer.setAutoPlay(true);
