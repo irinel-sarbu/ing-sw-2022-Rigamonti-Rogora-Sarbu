@@ -3,20 +3,21 @@ package view.gui;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import network.LightModel;
 import util.Logger;
-import util.Wizard;
-import view.gui.controllers.*;
+import view.gui.controllers.ErrorPopUpSceneController;
+import view.gui.controllers.GameEndingController;
+import view.gui.controllers.GenericSceneController;
+import view.gui.controllers.LobbyJoinedSceneController;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class SceneController {
     private static Stage stage;
@@ -42,7 +43,11 @@ public class SceneController {
      * not provide them out of the box, so it's possible that the game will start without the music
      */
     public static void startMediaPlayer() {
-        currentSong = new File("src/main/resources/bgMusic/ServerConnectionMusic.mp3");
+        try {
+            currentSong = new File(Objects.requireNonNull(SceneController.class.getResource("/bgMusic/ServerConnectionMusic.mp3")).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         currentMedia = new Media(currentSong.toURI().toString());
         try {
             mediaPlayer = new MediaPlayer(currentMedia);
@@ -128,7 +133,7 @@ public class SceneController {
         stage = new Stage();
         stage.setResizable(true);
         stage.setTitle("Eriantys");
-        stage.getIcons().add(new Image("/ui/Icon.png"));
+        stage.getIcons().add(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/ui/Icon.png"))));
         switchSceneAndSong(sceneFile, songFile);
         stage.setMaximized(true);
         stage.show();
@@ -175,7 +180,7 @@ public class SceneController {
         stage = new Stage();
         stage.setResizable(false);
         stage.setTitle("Eriantys");
-        stage.getIcons().add(new Image("/ui/Icon.png"));
+        stage.getIcons().add(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/ui/Icon.png"))));
         SceneController.switchScene("loginScene.fxml");
         SceneController.startMediaPlayer();
         stage.show();
@@ -190,7 +195,7 @@ public class SceneController {
         stage = new Stage();
         stage.setResizable(false);
         stage.setTitle("Eriantys");
-        stage.getIcons().add(new Image("/ui/Icon.png"));
+        stage.getIcons().add(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/ui/Icon.png"))));
         SceneController.switchScene("createOrJoin.fxml");
         SceneController.startMediaPlayer();
         stage.show();
@@ -202,7 +207,7 @@ public class SceneController {
      * @param winningPlayer Nickname of the player who won the game
      */
     public static void switchToGameEnd(LightModel model, String winningPlayer) {
-        switchSceneAndSong("gameEnding.fxml", "src/main/resources/bgMusic/InGameMusic3.mp3");
+        switchSceneAndSong("gameEnding.fxml", Objects.requireNonNull(SceneController.class.getClassLoader().getResource("bgMusic/InGameMusic3.mp3")).getFile());
         GameEndingController controller = (GameEndingController) getCurrentSceneController();
         controller.setUp(model, winningPlayer);
     }

@@ -11,7 +11,6 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class Assistant implements Serializable {
             // parse XML file
             DocumentBuilder db = dbf.newDocumentBuilder();
 
-            Document doc = db.parse(new File("src/main/resources/assistants.xml"));
+            Document doc = db.parse(Assistant.class.getResourceAsStream("/assistants.xml"));
 
             // get <assistant>
             NodeList list = doc.getElementsByTagName("assistant");

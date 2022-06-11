@@ -1,6 +1,5 @@
 package network;
 
-import model.GameModel;
 import model.board.Assistant;
 import model.board.CloudTile;
 import model.board.IslandGroup;
@@ -14,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Model stored on client. Updated by client controller by events coming from server.
+ */
 public class LightModel {
     private String playerName, currentPlayerName;
     private Map<String, SchoolBoard> schoolBoardMap;
@@ -30,6 +32,11 @@ public class LightModel {
 
     private Boolean lastRound;
 
+    /**
+     * Default constructor
+     *
+     * @param playerName owner
+     */
     public LightModel(String playerName) {
         this.playerName = playerName;
         this.schoolBoardMap = new HashMap<>();
