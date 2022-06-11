@@ -14,6 +14,7 @@ import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MonkSelectionSceneController implements GenericSceneController {
     @FXML
@@ -99,11 +100,11 @@ public class MonkSelectionSceneController implements GenericSceneController {
      */
     private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(monk.getCost()));
-        character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + monk.getCharacter().getNumber() + ".jpg"));
+        character_Tmp.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Personaggi/Character_" + monk.getCharacter().getNumber() + ".jpg"))));
         if (monk.getStudents() != null) {
             for (int i = 0; i < monk.getStudents().size(); i++) {
                 ImageView student = (ImageView) student_Tmp.get(i);
-                student.setImage(new Image("/Graphical_Assets/students/" + monk.getStudents().get(i).getColor().toString() + "StudentResized.png"));
+                student.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + monk.getStudents().get(i).getColor().toString() + "StudentResized.png"))));
                 student.setVisible(true);
             }
         }

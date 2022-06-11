@@ -14,6 +14,7 @@ import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JesterCardSelectionSceneController implements GenericSceneController {
     @FXML
@@ -145,11 +146,11 @@ public class JesterCardSelectionSceneController implements GenericSceneControlle
      */
     private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(jester.getCost()));
-        character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + jester.getCharacter().getNumber() + ".jpg"));
+        character_Tmp.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Personaggi/Character_" + jester.getCharacter().getNumber() + ".jpg"))));
         if (jester.getStudents() != null) {
             for (int i = 0; i < jester.getStudents().size(); i++) {
                 ImageView student = (ImageView) student_Tmp.get(i);
-                student.setImage(new Image("/Graphical_Assets/students/" + jester.getStudents().get(i).getColor().toString() + "StudentResized.png"));
+                student.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + jester.getStudents().get(i).getColor().toString() + "StudentResized.png"))));
                 student.setVisible(true);
             }
         }

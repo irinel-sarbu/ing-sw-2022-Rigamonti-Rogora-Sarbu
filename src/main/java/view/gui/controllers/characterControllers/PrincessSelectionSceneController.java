@@ -16,6 +16,7 @@ import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PrincessSelectionSceneController implements GenericSceneController {
     @FXML
@@ -93,11 +94,11 @@ public class PrincessSelectionSceneController implements GenericSceneController 
      */
     private void loadCharacterPieces(Label coinsTmp, ImageView character_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(princess.getCost()));
-        character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + princess.getCharacter().getNumber() + ".jpg"));
+        character_Tmp.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Personaggi/Character_" + princess.getCharacter().getNumber() + ".jpg"))));
         if (princess.getStudents() != null) {
             for (int i = 0; i < princess.getStudents().size(); i++) {
                 ImageView student = (ImageView) student_Tmp.get(i);
-                student.setImage(new Image("/Graphical_Assets/students/" + princess.getStudents().get(i).getColor().toString() + "StudentResized.png"));
+                student.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + princess.getStudents().get(i).getColor().toString() + "StudentResized.png"))));
                 student.setVisible(true);
             }
         }

@@ -18,6 +18,7 @@ import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class IslandViewSceneController implements GenericSceneController {
 
@@ -82,11 +83,11 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateStudents(int island, Color color, int number) {
         AnchorPane studentPane = (AnchorPane) ((AnchorPane) ((AnchorPane) islands.get(island)).getChildren().get(4)).getChildren().get(color.getValue());
         if (number == 0) {
-            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "cerchi.png"));
+            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "cerchi.png"))));
             ((studentPane.getChildren().get(1))).setVisible(false);
             return;
         }
-        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "students/" + color + "StudentResized.png"));
+        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + color + "StudentResized.png"))));
         if (number > 1) {
             ((studentPane.getChildren().get(1))).setVisible(true);
             ((Label)(studentPane.getChildren().get(1))).setText("" + number);
@@ -106,7 +107,7 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateTower(int island, TowerColor color) {
         ImageView towerPane = (ImageView) (((AnchorPane)islands.get(island)).getChildren().get(2));
         towerPane.setVisible(color != null);
-        towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + ".png"));
+        towerPane.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "Pedine/tower_" + color + ".png"))));
     }
 
     private void resetNoEntry() {
@@ -131,7 +132,7 @@ public class IslandViewSceneController implements GenericSceneController {
             List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
             for(int j=0; j<4; j++) {
                 (students.get(j)).setVisible(j<numOfStudents);
-                ((ImageView)students.get(j)).setImage(new Image(pathPrefix + "cerchi.png"));
+                ((ImageView)students.get(j)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "cerchi.png"))));
             }
             cloud.setVisible(i<numOfClouds);
         }
@@ -142,7 +143,7 @@ public class IslandViewSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
         for(int i=0; i<studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"));
+            ((ImageView)students.get(i)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"))));
         }
     }
 

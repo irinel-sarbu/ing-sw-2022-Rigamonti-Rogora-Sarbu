@@ -15,6 +15,7 @@ import view.gui.controllers.IslandSelectorSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JesterEntranceSceneController implements GenericSceneController {
     @FXML
@@ -153,7 +154,7 @@ public class JesterEntranceSceneController implements GenericSceneController {
         entrance = model.getSchoolBoardMap().get(model.getPlayerName()).getEntranceStudents();
 
         for (int i = 0; i < entrance.size(); i++) {
-            students.get(i).setImage(new Image("/Graphical_Assets/students/" + entrance.get(i).getColor().toString() + "Student.png"));
+            students.get(i).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + entrance.get(i).getColor().toString() + "Student.png"))));
             students.get(i).setVisible(true);
         }
     }

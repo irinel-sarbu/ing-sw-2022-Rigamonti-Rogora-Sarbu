@@ -16,6 +16,7 @@ import util.GameMode;
 import view.gui.SceneController;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SchoolboardViewSceneController implements GenericSceneController {
     LightModel model;
@@ -154,7 +155,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         // display towers
         for (int i = 0; i < schoolBoard.getTowers().size(); i++) {
             getTowers(sb).getChildren().get(i).setVisible(true);
-            ((ImageView) getTowers(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/Pedine/tower_" + schoolBoard.getTowers().get(0).getColor() + ".png"));
+            ((ImageView) getTowers(sb).getChildren().get(i)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Pedine/tower_" + schoolBoard.getTowers().get(0).getColor() + ".png"))));
         }
         // display coins
         if (model.getGameMode().equals(GameMode.EXPERT)) {
@@ -181,7 +182,7 @@ public class SchoolboardViewSceneController implements GenericSceneController {
         // display entrance
         for (int i = 0; i < schoolBoard.getEntranceStudents().size(); i++) {
             getEntrance(sb).getChildren().get(i).setVisible(true);
-            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image("/Graphical_Assets/students/" + schoolBoard.getEntranceStudents().get(i).getColor() + "StudentResized.png"));
+            ((ImageView) getEntrance(sb).getChildren().get(i)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + schoolBoard.getEntranceStudents().get(i).getColor() + "StudentResized.png"))));
         }
     }
 

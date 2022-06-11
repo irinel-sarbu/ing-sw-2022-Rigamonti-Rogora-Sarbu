@@ -18,6 +18,7 @@ import view.gui.controllers.characterControllers.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CharacterSelectionSceneController implements GenericSceneController {
     @FXML
@@ -222,7 +223,7 @@ public class CharacterSelectionSceneController implements GenericSceneController
      */
     private void loadCharacterPieces(CharacterCard character, Label coinsTmp, ImageView character_Tmp, List<Node> noEntry_Tmp, List<Node> student_Tmp) {
         coinsTmp.setText(String.valueOf(character.getCost()));
-        character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + character.getCharacter().getNumber() + ".jpg"));
+        character_Tmp.setImage(new Image(Objects.requireNonNull(CharacterSelectionSceneController.class.getResourceAsStream("/Graphical_Assets/Personaggi/Character_" + character.getCharacter().getNumber() + ".jpg"))));
         if (character.getNoEntryTiles() != null) {
             for (int i = 0; i < character.getNoEntryTiles().size(); i++) {
                 noEntry_Tmp.get(i).setVisible(true);
@@ -231,7 +232,7 @@ public class CharacterSelectionSceneController implements GenericSceneController
         if (character.getStudents() != null) {
             for (int i = 0; i < character.getStudents().size(); i++) {
                 ImageView student = (ImageView) student_Tmp.get(i);
-                student.setImage(new Image("/Graphical_Assets/students/" + character.getStudents().get(i).getColor().toString() + "StudentResized.png"));
+                student.setImage(new Image(Objects.requireNonNull(CharacterSelectionSceneController.class.getResourceAsStream("/Graphical_Assets/students/" + character.getStudents().get(i).getColor().toString() + "StudentResized.png"))));
                 student.setVisible(true);
             }
         }

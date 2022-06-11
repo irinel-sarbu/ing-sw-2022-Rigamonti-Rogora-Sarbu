@@ -13,10 +13,12 @@ import model.expert.CharacterCard;
 import network.LightModel;
 import util.CharacterType;
 import util.Color;
+import view.gui.SceneController;
 import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ThiefSelectionSceneController implements GenericSceneController {
     @FXML
@@ -101,6 +103,6 @@ public class ThiefSelectionSceneController implements GenericSceneController {
      */
     private void loadCharacter(Label coinsTmp, ImageView character_Tmp) {
         coinsTmp.setText(String.valueOf(thief.getCost()));
-        character_Tmp.setImage(new Image("/Graphical_Assets/Personaggi/Character_" + thief.getCharacter().getNumber() + ".jpg"));
+        character_Tmp.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Personaggi/Character_" + thief.getCharacter().getNumber() + ".jpg"))));
     }
 }

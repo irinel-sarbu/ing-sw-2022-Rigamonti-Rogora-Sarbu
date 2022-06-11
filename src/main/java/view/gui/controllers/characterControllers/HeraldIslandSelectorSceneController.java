@@ -18,10 +18,12 @@ import network.LightModel;
 import util.Color;
 import util.Logger;
 import util.TowerColor;
+import view.gui.SceneController;
 import view.gui.controllers.GenericSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HeraldIslandSelectorSceneController implements GenericSceneController {
     LightModel model;
@@ -186,11 +188,11 @@ public class HeraldIslandSelectorSceneController implements GenericSceneControll
     private void updateStudents(int island, Color color, int number) {
         AnchorPane studentPane = (AnchorPane) ((AnchorPane) ((AnchorPane) islands.get(island)).getChildren().get(4)).getChildren().get(color.getValue());
         if (number == 0) {
-            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "cerchi.png"));
+            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "cerchi.png"))));
             ((studentPane.getChildren().get(1))).setVisible(false);
             return;
         }
-        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "students/" + color + studentSuffix));
+        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + color + studentSuffix))));
         if (number > 1) {
             ((studentPane.getChildren().get(1))).setVisible(true);
             ((Label) (studentPane.getChildren().get(1))).setText("" + number);
@@ -217,7 +219,7 @@ public class HeraldIslandSelectorSceneController implements GenericSceneControll
     private void updateTower(int island, TowerColor color) {
         ImageView towerPane = (ImageView) (((AnchorPane) islands.get(island)).getChildren().get(2));
         towerPane.setVisible(color != null);
-        towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + ".png"));
+        towerPane.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "Pedine/tower_" + color + ".png"))));
     }
 
     /**

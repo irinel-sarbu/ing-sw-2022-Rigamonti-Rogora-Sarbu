@@ -14,9 +14,11 @@ import javafx.scene.layout.Pane;
 import model.board.Student;
 import network.LightModel;
 import util.Color;
+import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CloudChoiceSceneController implements GenericSceneController {
 
@@ -83,7 +85,7 @@ public class CloudChoiceSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1, 5));
         for (int i = 0; i < studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView) students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"));
+            ((ImageView) students.get(i)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"))));
         }
     }
 
