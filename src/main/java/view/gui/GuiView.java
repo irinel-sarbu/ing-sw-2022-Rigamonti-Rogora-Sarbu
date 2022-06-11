@@ -35,7 +35,7 @@ public class GuiView extends View {
      */
     @Override
     public void allPlayersConnected() {
-        Platform.runLater(() -> SceneController.switchSceneSongAndStage("wizardChoiceScene.fxml", "bgMusic/InGameMusic2.mp3"));
+        Platform.runLater(() -> SceneController.switchSceneSongAndStage("wizardChoiceScene.fxml", "/bgMusic/InGameMusic2.mp3"));
     }
 
     /**
@@ -44,7 +44,7 @@ public class GuiView extends View {
     @Override
     public void askNickname() {
         if (SceneController.getCurrentSceneController() instanceof LoginSceneController) {
-            Platform.runLater(() -> SceneController.switchSceneAndSong("nameSelection.fxml", "bgMusic/MainMenuMusic.mp3"));
+            Platform.runLater(() -> SceneController.switchSceneAndSong("nameSelection.fxml", "/bgMusic/MainMenuMusic.mp3"));
         }
     }
 
