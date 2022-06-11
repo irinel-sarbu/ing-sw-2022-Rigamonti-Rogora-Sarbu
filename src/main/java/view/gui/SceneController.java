@@ -44,11 +44,10 @@ public class SceneController {
      */
     public static void startMediaPlayer() {
         try {
-            currentSong = new File(Objects.requireNonNull(SceneController.class.getResource("/bgMusic/ServerConnectionMusic.mp3")).toURI());
+            currentMedia = new Media(Objects.requireNonNull(SceneController.class.getResource("/bgMusic/ServerConnectionMusic.mp3")).toURI().toString());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        currentMedia = new Media(currentSong.toURI().toString());
         try {
             mediaPlayer = new MediaPlayer(currentMedia);
             mediaPlayer.setAutoPlay(true);
@@ -116,11 +115,10 @@ public class SceneController {
         mediaPlayer.stop();
         mediaPlayer.dispose();
         try {
-            currentSong = new File(Objects.requireNonNull(SceneController.class.getResource(songFile)).toURI());
+            currentMedia = new Media(Objects.requireNonNull(SceneController.class.getResource(songFile)).toURI().toString());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        currentMedia = new Media(currentSong.toURI().toString());
         mediaPlayer = new MediaPlayer(currentMedia);
         mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
