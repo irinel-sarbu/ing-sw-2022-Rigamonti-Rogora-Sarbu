@@ -101,6 +101,7 @@ Al seguente link sono disponibili gli eseguibili:
 - [Server]()
 
 Oppure nella sezione release di GitHub
+- [Latest release](https://github.com/irinel-sarbu/ing-sw-2022-Rigamonti-Rogora-Sarbu/releases/latest)
 
 ## Componenti del gruppo
 
