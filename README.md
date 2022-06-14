@@ -5,6 +5,7 @@
 Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/).
 
 ---
+
 ## Librerie e plugins
 
 | Libreria/Plugin | Descrizione                                                                                                    |
@@ -14,6 +15,7 @@ Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/pr
 | JavaFx          | Famiglia di software applicativi, basati sulla piattaforma Java, per la creazione di rich Internet application |
 
 ---
+
 ## Funzionalità
 
 | Funzionalità        | Stato               |
@@ -36,6 +38,13 @@ Implementazione del gioco da tavolo [Eriantys](https://www.craniocreations.it/pr
 
 ## Tests
 
+Il seguente è il report ottenuto da Jacoco
+
+| Elemento | Percentuale |
+|----------|-------------|
+| Model    | 95%         |
+| Totale   | 86%         |
+
 ---
 
 ## Esecuzione
@@ -49,6 +58,8 @@ Le seguenti istruzioni descrivono come eseguire il client con interfaccia CLI o 
 ### Cli
 
 Per eseguire il Client CLI digitare da terminale uno dei seguenti comandi:
+
+> La versione cli è supportata solamente su Linux e MacOs. Potrebbe dare problemi su Windows
 
 ```
 java -jar eriantys-client.jar --cli
@@ -74,7 +85,22 @@ Per eseguire il Server digitare da terminale il seguente comando:
 java -jar eriantys-server.jar
 ```
 
+E' possibile usare una porta diversa da quella di default usando il seguente comando:
+
+```
+java -jar eriantys-server.jar --port=CUSTOM_PORT
+```
+
 ---
+
+## Jar
+
+Al seguente link sono disponibili gli eseguibili:
+
+- [Client]()
+- [Server]()
+
+Oppure nella sezione release di GitHub
 
 ## Componenti del gruppo
 
