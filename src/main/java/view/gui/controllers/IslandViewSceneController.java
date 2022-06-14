@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import model.board.CloudTile;
 import model.board.IslandGroup;
 import model.board.IslandTile;
 import model.board.Student;
@@ -19,14 +18,13 @@ import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class IslandViewSceneController implements GenericSceneController {
 
     LightModel model;
 
     String pathPrefix = "/Graphical_Assets/";
-    String studentSuffix = "Student.png";
 
     @FXML
     private AnchorPane bridges_parent;
@@ -39,6 +37,10 @@ public class IslandViewSceneController implements GenericSceneController {
 
     private int numOfClouds, numOfStudents;
 
+    /**
+     * Return to previous scene
+     * @param mouseEvent
+     */
     @FXML
     public void onBack(MouseEvent mouseEvent) {
         SceneController.switchScene("genericMenuScene.fxml");
@@ -81,11 +83,11 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateStudents(int island, Color color, int number) {
         AnchorPane studentPane = (AnchorPane) ((AnchorPane) ((AnchorPane) islands.get(island)).getChildren().get(4)).getChildren().get(color.getValue());
         if (number == 0) {
-            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "cerchi.png"));
+            ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "cerchi.png"))));
             ((studentPane.getChildren().get(1))).setVisible(false);
             return;
         }
-        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(pathPrefix + "students/" + color + studentSuffix));
+        ((ImageView) (studentPane.getChildren().get(0))).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + color + "StudentResized.png"))));
         if (number > 1) {
             ((studentPane.getChildren().get(1))).setVisible(true);
             ((Label)(studentPane.getChildren().get(1))).setText("" + number);
@@ -105,7 +107,7 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateTower(int island, TowerColor color) {
         ImageView towerPane = (ImageView) (((AnchorPane)islands.get(island)).getChildren().get(2));
         towerPane.setVisible(color != null);
-        towerPane.setImage(new Image(pathPrefix + "Pedine/tower_" + color + ".png"));
+        towerPane.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "Pedine/tower_" + color + ".png"))));
     }
 
     private void resetNoEntry() {
@@ -119,7 +121,7 @@ public class IslandViewSceneController implements GenericSceneController {
     private void updateMotherNature(int position) {
         for(int i=0; i<12; i++) {
             ImageView motherNature = ((ImageView) ((AnchorPane) islands.get(i)).getChildren().get(3));
-            motherNature.setVisible(i==position);
+            motherNature.setVisible(i==model.getIslandGroups().get(groupByIslandID(position)).getIslands().get(0).getIslandID());
         }
     }
 
@@ -130,7 +132,7 @@ public class IslandViewSceneController implements GenericSceneController {
             List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
             for(int j=0; j<4; j++) {
                 (students.get(j)).setVisible(j<numOfStudents);
-                ((ImageView)students.get(j)).setImage(new Image(pathPrefix + "cerchi.png"));
+                ((ImageView)students.get(j)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "cerchi.png"))));
             }
             cloud.setVisible(i<numOfClouds);
         }
@@ -141,7 +143,7 @@ public class IslandViewSceneController implements GenericSceneController {
         List<Node> students = new ArrayList<>(cloud.getChildren().subList(1,5));
         for(int i=0; i<studentList.size(); i++) {
             (students.get(i)).setVisible(true);
-            ((ImageView)students.get(i)).setImage(new Image(pathPrefix + "students/" + studentList.get(i) + "Student.png"));
+            ((ImageView)students.get(i)).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream(pathPrefix + "students/" + studentList.get(i) + "StudentResized.png"))));
         }
     }
 
@@ -150,6 +152,10 @@ public class IslandViewSceneController implements GenericSceneController {
         resetNoEntry();
     }
 
+    /**
+     * Update island view
+     * @param model
+     */
     public void updateView(LightModel model) {
 
         init(model);
@@ -177,18 +183,18 @@ public class IslandViewSceneController implements GenericSceneController {
 
         // update Towers
         for(IslandTile it : allIslands) {
-            for(Color c : Color.values()) {
+            for (Color c : Color.values()) {
                 updateTower(it.getIslandID(), it.getTowerColor());
             }
         }
 
-        for(int i=0; i<model.getCloudTiles().size(); i++) {
+        for (int i = 0; i < model.getCloudTiles().size(); i++) {
             updateClouds(i, model.getCloudTiles().get(i).getStudents().stream().map(Student::getColor).toList());
         }
 
         // update motherNature
-        updateMotherNature(model.getMotherNaturePosition());
-
+        int position = model.getIslandGroups().get(model.getMotherNaturePosition()).getIslands().get(0).getIslandID();
+        updateMotherNature(position);
     }
 
 }

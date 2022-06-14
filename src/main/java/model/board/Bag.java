@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-// TODO: test winning condition when empty
 
 public class Bag implements Serializable {
     private final List<Student> studentList;

@@ -7,6 +7,9 @@ import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
 
+/**
+ * Is the MushroomFanaticResolveIsland class, extends ResolveIsland
+ */
 public class MushroomFanaticResolveIsland extends ResolveIsland {
     /**
      * Check each player's influence of the specified island group when the mushroom fanatic's effect is active (ignore selected color)

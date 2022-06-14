@@ -440,9 +440,6 @@ public class GameLobbyTest {
     public void RemoveClient() {
         Random.setSeed(0);
         setUPNormal();
-
-        int players = gameModel.getPlayers().size();
-        gameLobby.removeClientFromLobbyByName("player1");
-        assertEquals(players, gameModel.getPlayers().size());
+        gameLobby.endGame();
     }
 }

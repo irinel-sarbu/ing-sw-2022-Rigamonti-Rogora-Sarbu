@@ -7,6 +7,9 @@ import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
 
+/**
+ * Is the KnightResolveIsland class, extends ResolveIsland
+ */
 public class KnightResolveIsland extends ResolveIsland {
     /**
      * Check each player influence on the specified island group when the knight is used (player has bonus +2 on influence)

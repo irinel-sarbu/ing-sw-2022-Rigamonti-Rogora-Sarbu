@@ -8,6 +8,10 @@ public class LobbyJoinedSceneController implements GenericSceneController {
     @FXML
     private TextField textField;
 
+    /**
+     * set lobby code
+     * @param code unique {@link String} of 5 characters representing th lobby
+     */
     public void editCode(String code) {
         textField.setText(code);
         textField.setVisible(true);

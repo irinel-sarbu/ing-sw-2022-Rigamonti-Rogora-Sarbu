@@ -10,15 +10,24 @@ public enum Color {
     private final int value;
     private final String string;
 
+    /**
+     * constructor of Color
+     */
     Color(int value, String string) {
         this.value = value;
         this.string = string;
     }
 
+    /**
+     * getter for the value attribute
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * overrides toSting
+     */
     @Override
     public String toString() {
         return string;

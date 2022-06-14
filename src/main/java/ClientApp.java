@@ -32,7 +32,7 @@ public class ClientApp {
                 ClientController controller = new ClientController(view);
                 view.run();
             } else {
-                Logger.setLevel(Logger.LoggerLevel.ALL);
+                Logger.setLevel(Logger.LoggerLevel.INFO);
                 Application.launch(GuiApplication.class);
             }
         }

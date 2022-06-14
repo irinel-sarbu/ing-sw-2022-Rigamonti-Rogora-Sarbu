@@ -12,6 +12,7 @@ import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EntranceSceneController implements GenericSceneController {
     @FXML
@@ -20,9 +21,12 @@ public class EntranceSceneController implements GenericSceneController {
     private List<ImageView> students = new ArrayList<>();
     private List<Student> entrance = new ArrayList<>();
     private LightModel model;
-    //TODO: add dynamic scene switch, if toIsland is true go to islandScene selector, otherwise Dining Color Scene Selector
     private boolean toIsland;
 
+    /**
+     * selected student 0, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent0(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -34,6 +38,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 1, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent1(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -45,6 +53,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 2, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent2(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -56,6 +68,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 3, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent3(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -67,6 +83,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 4, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent4(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -78,6 +98,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 5, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent5(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -89,6 +113,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 6, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent6(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -100,6 +128,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 7, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent7(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -111,6 +143,10 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * selected student 8, switch to scene to select island
+     * @param mouseEvent
+     */
     @FXML
     public void onStudent8(MouseEvent mouseEvent) {
         if (toIsland) {
@@ -122,6 +158,12 @@ public class EntranceSceneController implements GenericSceneController {
         }
     }
 
+    /**
+     * setup entrance student selection
+     * @param model reference to light model
+     * @param playerName name of the player
+     * @param toIsland {@link true} to move the student on the island, {@link false} otherwise
+     */
     public void setUp(LightModel model, String playerName, boolean toIsland) {
         this.model = model;
         this.toIsland = toIsland;
@@ -138,7 +180,7 @@ public class EntranceSceneController implements GenericSceneController {
         entrance = model.getSchoolBoardMap().get(playerName).getEntranceStudents();
 
         for (int i = 0; i < entrance.size(); i++) {
-            students.get(i).setImage(new Image("/Graphical_Assets/students/" + entrance.get(i).getColor().toString() + "Student.png"));
+            students.get(i).setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/students/" + entrance.get(i).getColor().toString() + "Student.png"))));
             students.get(i).setVisible(true);
         }
     }

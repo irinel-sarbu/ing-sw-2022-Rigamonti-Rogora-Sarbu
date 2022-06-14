@@ -16,6 +16,10 @@ public class LoginSceneController implements GenericSceneController {
     public TextField port;
     public Label warning;
 
+    /**
+     * notify client entering lobby
+     * @param mouseEvent
+     */
     @FXML
     public void onLogin(MouseEvent mouseEvent) {
         Logger.info("Login button Pressed");

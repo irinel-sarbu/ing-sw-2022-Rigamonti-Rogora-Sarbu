@@ -63,10 +63,35 @@ public class Server implements Runnable {
 
     public void register(String nickname, ClientHandler client) {
         clientMap.put(nickname, client);
+        client.setRegistered();
+    }
+
+    public void unregister(String nickname) {
+        Logger.debug("Unregistering " + nickname);
+        clientMap.remove(nickname);
+    }
+
+    public void closeLobby(String lobbyCode) {
+        for (Map.Entry<String, ClientHandler> entry : clientMap.entrySet()) {
+            ClientHandler clientHandler = entry.getValue();
+            if (clientHandler.getLobbyCode().equals(lobbyCode)) {
+                clientHandler.reset();
+            }
+        }
     }
 
     public ClientHandler getClientByNickname(String nickname) {
         return clientMap.get(nickname.toLowerCase());
+    }
+
+    public String getClientNickname(ClientHandler clientHandler) {
+        for (Map.Entry<String, ClientHandler> entry : clientMap.entrySet()) {
+            if (entry.getValue().equals(clientHandler)) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
     }
 
     public synchronized void pushEvent(Event event) {

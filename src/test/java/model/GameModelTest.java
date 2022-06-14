@@ -1,14 +1,10 @@
 package model;
 
 import exceptions.*;
-import model.board.Student;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import util.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -295,7 +291,7 @@ public class GameModelTest {
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
         //System.out.println("");
         assertEquals(11, game.getRemainingIslandGroups());
-        assertEquals(2, game.getIslandGroupByID(0).getIslands().size());
+        assertEquals(2, game.getIslandGroupByID(10).getIslands().size());
 
         System.out.println("------------->Special Join done successfully");
     }
@@ -322,7 +318,7 @@ public class GameModelTest {
         //for(int i=0; i < game.getRemainingIslandGroups();i++)System.out.println(game.getIslandGroupByID(i).toString());
         //System.out.println("");
         assertEquals(10, game.getRemainingIslandGroups());
-        assertEquals(3, game.getIslandGroupByID(0).getIslands().size());
+        assertEquals(3, game.getIslandGroupByID(9).getIslands().size());
 
         System.out.println("------------->Special Join done successfully");
     }

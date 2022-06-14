@@ -11,9 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import model.board.Assistant;
 import util.Logger;
+import view.gui.SceneController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AssistantChoiceSceneController implements GenericSceneController {
     @FXML
@@ -28,9 +30,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
     private List<Assistant> deck;
     private List<Integer> otherAssistantValues = new ArrayList<>();
 
+    /**
+     * Choose assistant 1 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant1(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_1.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_1.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(1)));
         } catch (AssistantNotInDeckException e) {
@@ -39,9 +45,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 2 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant2(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_2.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_2.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(2)));
         } catch (AssistantNotInDeckException e) {
@@ -50,9 +60,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 3 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant3(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_3.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_3.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(3)));
         } catch (AssistantNotInDeckException e) {
@@ -61,9 +75,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 4 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant4(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_4.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_4.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(4)));
         } catch (AssistantNotInDeckException e) {
@@ -72,9 +90,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 5 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant5(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_5.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_5.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(5)));
         } catch (AssistantNotInDeckException e) {
@@ -83,9 +105,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 6 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant6(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_6.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_6.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(6)));
         } catch (AssistantNotInDeckException e) {
@@ -94,9 +120,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 7 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant7(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_7.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_7.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(7)));
         } catch (AssistantNotInDeckException e) {
@@ -105,9 +135,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 8 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant8(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_8.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_8.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(8)));
         } catch (AssistantNotInDeckException e) {
@@ -116,9 +150,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 9 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant9(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_9.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_9.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(9)));
         } catch (AssistantNotInDeckException e) {
@@ -127,9 +165,13 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Choose assistant 10 using mouse if available
+     * @param mouseEvent
+     */
     @FXML
     public void onAssistant10(MouseEvent mouseEvent) {
-        chosenAssistantImage.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_10.png"));
+        chosenAssistantImage.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_10.png"))));
         try {
             EventManager.notify(new EAssistantChosen(findAssistant(10)));
         } catch (AssistantNotInDeckException e) {
@@ -138,6 +180,10 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         showChosenAssistant();
     }
 
+    /**
+     * Display available assistants
+     * @param deck list of assistants
+     */
     public void showAssistants(List<Assistant> deck) {
         this.deck = deck;
         assistantLabel.setVisible(false);
@@ -162,31 +208,41 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         assistants.setVisible(true);
     }
 
+    /**
+     * Display assistants selected by other players
+     * @param assistantValue
+     */
     //IMPORTANT! DO NOT CHANGE NAME OF ASSISTANT CARDS
     public void updateOtherChoices(int assistantValue) {
         switch (otherAssistantValues.size()) {
             case 0 -> {
                 nothingLabel.setVisible(false);
                 otherAssistantValues.add(assistantValue);
-                otherPlayer1.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"));
+                otherPlayer1.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"))));
             }
             case 1 -> {
                 otherAssistantValues.add(assistantValue);
-                otherPlayer2.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"));
+                otherPlayer2.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"))));
             }
             case 2 -> {
                 otherAssistantValues.add(assistantValue);
-                otherPlayer3.setImage(new Image("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"));
+                otherPlayer3.setImage(new Image(Objects.requireNonNull(SceneController.class.getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente_" + assistantValue + ".png"))));
             }
         }
     }
 
+    /**
+     * Display chosen assistant
+     */
     public void showChosenAssistant() {
         otherChoicesPane.setVisible(false);
         assistants.setVisible(false);
         assistantChosen.setVisible(true);
     }
 
+    /**
+     * Reset assistants visibility
+     */
     private void resetAssistants() {
         assistant1.setVisible(false);
         assistant2.setVisible(false);
@@ -200,6 +256,12 @@ public class AssistantChoiceSceneController implements GenericSceneController {
         assistant10.setVisible(false);
     }
 
+    /**
+     * Get assistant by value
+     * @param value to search
+     * @return Reference to the assistant
+     * @throws AssistantNotInDeckException if no assistant with the value is present inside the deck
+     */
     private Assistant findAssistant(int value) throws AssistantNotInDeckException {
         for (Assistant assistant : deck) {
             if (assistant.getValue() == value) return assistant;

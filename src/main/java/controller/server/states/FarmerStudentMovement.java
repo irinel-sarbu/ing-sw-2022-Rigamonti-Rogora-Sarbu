@@ -7,6 +7,9 @@ import model.Player;
 import model.board.SchoolBoard;
 import util.Color;
 
+/**
+ * Is the FarmerStudentMovement class, extends StudentMovement
+ */
 public class FarmerStudentMovement extends StudentMovement {
 
     /**

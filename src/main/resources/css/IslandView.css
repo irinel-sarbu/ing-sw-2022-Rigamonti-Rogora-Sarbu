@@ -1,3 +1,54 @@
 .label {
     -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
 }
+
+#back_button {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/Arrow.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#back_button:hover {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowHover.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}
+
+#back_button:pressed {
+    -fx-font-family: 'Unicorn Scribbles';
+    -fx-font-size: 20;
+
+    -fx-background-image: url("../ui/ArrowBottons/ArrowPressed.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+
+    -fx-cursor: hand;
+    -fx-opacity: 1;
+}

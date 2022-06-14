@@ -9,15 +9,24 @@ public enum Wizard {
     private final int value;
     private final String string;
 
+    /**
+     * Constructor of Wizard
+     */
     Wizard(int value, String string) {
         this.value = value;
         this.string = string;
     }
 
+    /**
+     * Getter for the Value Attribute
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * Overrides toString
+     */
     @Override
     public String toString() {
         return string;

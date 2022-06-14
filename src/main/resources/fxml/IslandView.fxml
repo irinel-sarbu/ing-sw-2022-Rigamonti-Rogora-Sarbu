@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,1524 +13,1522 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
-            prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
-            fx:controller="view.gui.controllers.IslandViewSceneController">
-   <children>
-      <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphical_Assets/MainBG.jpg"/>
-         </image>
-      </ImageView>
-      <GridPane fx:id="realm_parent" alignment="CENTER" layoutX="243.0" layoutY="75.0" prefHeight="863.0"
-                prefWidth="1473.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <AnchorPane fx:id="island0" prefHeight="234.0" prefWidth="214.0">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin0" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane0" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry0" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q0" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="1" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower0" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat0" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="40.0" top="40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island1" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="1">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin1" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane1" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry1" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q1" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower1" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat1" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="30.0" top="-40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island2" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin2" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane2" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry2" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q2" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower2" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat2" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets top="60.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island3" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="3">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin3" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane3" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry3" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q3" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower3" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat3" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="-30.0" top="-40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island4" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin4" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane4" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry4" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q4" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower4" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat4" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="-40.0" top="40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island5" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin5" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane5" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry5" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q5" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower5" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat5" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <opaqueInsets>
-                  <Insets left="100.0" />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets left="80.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island6" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin6" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane6" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry6" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q6" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower6" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat6" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="-40.0" top="-40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island7" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin7" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane7" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry7" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q7" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower7" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat7" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets top="40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island8" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin8" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane8" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry8" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q8" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower8" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat8" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets top="80.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island9" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin9" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane9" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry9" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q9" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower9" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat9" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets top="40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island10" prefHeight="295.0" prefWidth="308.0" GridPane.rowIndex="2">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin10" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane10" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry10" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q10" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower10" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat10" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="40.0" top="-40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="island11" prefHeight="295.0" prefWidth="308.0" GridPane.rowIndex="1">
-               <children>
-                  <ImageView id="island_veiwport" fx:id="skin11" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="n_e_pane11" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
-                     <children>
-                        <ImageView fx:id="noentry11" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="noentry_q11" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fx:id="tower11" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/tower_null.png"/>
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="m_nat11" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                     <image>
-                        <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
-                     <children>
-                        <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="yellow11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="yellow_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
-                           <children>
-                              <ImageView fx:id="blue11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="blue_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="green11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="green_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="red11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="red_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
-                           <children>
-                              <ImageView fx:id="pink11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../Graphical_Assets/cerchi.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="pink_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </AnchorPane>
-               </children>
-               <GridPane.margin>
-                  <Insets left="-80.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="cloud0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <ImageView fx:id="c_skin0" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="108.4">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s0cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s1cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s2cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s3cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <GridPane.margin>
-                  <Insets top="-40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="cloud1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <children>
-                  <ImageView fx:id="c_skin1" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s0cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s1cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s2cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s3cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <GridPane.margin>
-                  <Insets top="40.0" />
-               </GridPane.margin>
-            </AnchorPane>
-            <AnchorPane fx:id="cloud2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <children>
-                  <ImageView fx:id="c_skin2" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="124.0" scaleX="-1.0">
-                     <image>
-                        <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s0cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s1cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s2cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="s3cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Graphical_Assets/cerchi.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <GridPane.margin>
-                  <Insets left="-20.0" top="-60.0" />
-               </GridPane.margin>
-            </AnchorPane>
-         </children>
-      </GridPane>
-      <Button fx:id="back_button" layoutX="61.0" layoutY="910.0" mnemonicParsing="false" prefHeight="105.0"
-              onMousePressed="#onBack" prefWidth="233.0" text="Button">
-         <font>
-            <Font size="24.0"/>
-         </font>
-      </Button>
-      <AnchorPane fx:id="bridges_parent" prefHeight="945.0" prefWidth="1800.0">
-         <children>
-            <ImageView fx:id="bridge0_1" fitHeight="65.0" fitWidth="136.0" layoutX="531.0" layoutY="204.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="view.gui.controllers.IslandViewSceneController">
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0">
+        <children>
+            <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../Graphical_Assets/MainBG.jpg" />
+                </image>
             </ImageView>
-            <ImageView fx:id="bridge1_2" fitHeight="79.0" fitWidth="152.0" layoutX="814.0" layoutY="91.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge2_3" fitHeight="54.0" fitWidth="123.0" layoutX="1077.0" layoutY="206.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge3_4" fitHeight="65.0" fitWidth="136.0" layoutX="1348.0" layoutY="108.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge4_5" fitHeight="105.0" fitWidth="115.0" layoutX="1588.0" layoutY="294.0" pickOnBounds="true" scaleX="-1.0" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge5_6" fitHeight="105.0" fitWidth="109.0" layoutX="1498.0" layoutY="539.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge6_7" fitHeight="55.0" fitWidth="115.0" layoutX="1368.0" layoutY="779.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge7_8" fitHeight="62.0" fitWidth="123.0" layoutX="1090.0" layoutY="693.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge8_9" fitHeight="65.0" fitWidth="145.0" layoutX="789.0" layoutY="785.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge9_10" fitHeight="65.0" fitWidth="145.0" layoutX="523.0" layoutY="681.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge10_11" fitHeight="136.0" fitWidth="94.0" layoutX="387.0" layoutY="504.0" pickOnBounds="true" scaleX="-1.0" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="bridge11_0" fitHeight="105.0" fitWidth="101.0" layoutX="286.0" layoutY="285.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-   </children>
-   <stylesheets>
-      <URL value="@../css/sharedStyles.css" />
-      <URL value="@../css/IslandView.css" />
-   </stylesheets>
-</AnchorPane>
+            <GridPane fx:id="realm_parent" alignment="CENTER" layoutX="243.0" layoutY="75.0" prefHeight="863.0" prefWidth="1473.0">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <AnchorPane fx:id="island0" prefHeight="234.0" prefWidth="214.0">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin0" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane0" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry0" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q0" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="1" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower0" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat0" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink0" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q0" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="40.0" top="40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island1" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="1">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin1" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane1" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry1" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q1" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower1" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat1" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink1" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q1" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="30.0" top="-40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island2" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin2" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane2" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry2" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q2" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower2" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat2" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink2" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q2" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="60.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island3" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="3">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin3" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane3" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry3" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q3" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower3" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat3" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink3" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q3" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="-30.0" top="-40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island4" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin4" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane4" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry4" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q4" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower4" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat4" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink4" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q4" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="-40.0" top="40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island5" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin5" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane5" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry5" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q5" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower5" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat5" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink5" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q5" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <opaqueInsets>
+                     <Insets left="100.0" />
+                  </opaqueInsets>
+                  <GridPane.margin>
+                     <Insets left="80.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island6" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin6" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane6" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry6" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q6" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower6" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat6" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink6" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q6" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="-40.0" top="-40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island7" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin7" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane7" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry7" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q7" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower7" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat7" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink7" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q7" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island8" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin8" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane8" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry8" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q8" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower8" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat8" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink8" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q8" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="80.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island9" prefHeight="295.0" prefWidth="308.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin9" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_1.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane9" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry9" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q9" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower9" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat9" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink9" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q9" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island10" prefHeight="295.0" prefWidth="308.0" GridPane.rowIndex="2">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin10" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_2.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane10" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry10" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q10" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower10" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat10" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink10" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q10" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="40.0" top="-40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="island11" prefHeight="295.0" prefWidth="308.0" GridPane.rowIndex="1">
+                  <children>
+                     <ImageView id="island_veiwport" fx:id="skin11" fitHeight="299.0" fitWidth="296.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/reameB_1_isola_3.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane fx:id="n_e_pane11" layoutX="57.0" layoutY="60.0" prefHeight="50.0" prefWidth="56.0" visible="false">
+                        <children>
+                           <ImageView fx:id="noentry11" fitHeight="66.0" fitWidth="62.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../Graphical_Assets/Reame/PNG/no_entry_tile.png" />
+                              </image>
+                           </ImageView>
+                           <Label fx:id="noentry_q11" alignment="CENTER" prefHeight="65.0" prefWidth="62.0" text="Quantity" textAlignment="CENTER">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </AnchorPane>
+                     <ImageView fx:id="tower11" fitHeight="96.0" fitWidth="62.0" layoutX="192.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                            <Image url="@../Graphical_Assets/Pedine/tower_null.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="m_nat11" fitHeight="75.0" fitWidth="62.0" layoutX="117.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                        <image>
+                           <Image url="@../Graphical_Assets/Pedine/madre_natura.png" />
+                        </image>
+                     </ImageView>
+                     <AnchorPane layoutX="21.0" layoutY="108.0" prefHeight="124.0" prefWidth="254.0">
+                        <children>
+                           <AnchorPane layoutX="79.0" layoutY="69.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="yellow11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="yellow_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="161.0" layoutY="21.0" prefHeight="0.0" prefWidth="10.0">
+                              <children>
+                                 <ImageView fx:id="blue11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="blue_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="51.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="green11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="green_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="106.0" layoutY="21.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="red11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="red_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                           <AnchorPane layoutX="134.0" layoutY="69.0" prefHeight="0.0" prefWidth="0.0">
+                              <children>
+                                 <ImageView fx:id="pink11" fitHeight="62.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@../Graphical_Assets/cerchi.png" />
+                                    </image>
+                                 </ImageView>
+                                 <Label fx:id="pink_q11" alignment="CENTER" prefHeight="54.0" prefWidth="55.0" text="Label" textAlignment="CENTER" visible="false">
+                                    <font>
+                                       <Font size="18.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </AnchorPane>
+                        </children>
+                     </AnchorPane>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="-80.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="cloud0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <children>
+                     <ImageView fx:id="c_skin0" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="108.4">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s0cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s1cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s2cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s3cloud0" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="-40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="cloud1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <children>
+                     <ImageView fx:id="c_skin1" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s0cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s1cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s2cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s3cloud1" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                  </children>
+                  <GridPane.margin>
+                     <Insets top="40.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+               <AnchorPane fx:id="cloud2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <children>
+                     <ImageView fx:id="c_skin2" fitHeight="286.0" fitWidth="362.0" pickOnBounds="true" preserveRatio="true" rotate="124.0" scaleX="-1.0">
+                        <image>
+                           <Image url="@../Graphical_Assets/Reame/PNG/cloud.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s0cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s1cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="90.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s2cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="120.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                     <ImageView fx:id="s3cloud2" fitHeight="55.0" fitWidth="62.0" layoutX="150.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                           <Image url="@../Graphical_Assets/cerchi.png" />
+                        </image>
+                     </ImageView>
+                  </children>
+                  <GridPane.margin>
+                     <Insets left="-20.0" top="-60.0" />
+                  </GridPane.margin>
+               </AnchorPane>
+            </children>
+         </GridPane>
+            <Button fx:id="back_button" layoutX="56.0" layoutY="930.0" mnemonicParsing="false" onMousePressed="#onBack" prefHeight="116.0" prefWidth="179.0" text="Back">
+                <font>
+                    <Font size="24.0" />
+                </font>
+            </Button>
+         <AnchorPane fx:id="bridges_parent" prefHeight="945.0" prefWidth="1800.0">
+            <children>
+               <ImageView fx:id="bridge0_1" fitHeight="65.0" fitWidth="136.0" layoutX="531.0" layoutY="204.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge1_2" fitHeight="79.0" fitWidth="152.0" layoutX="814.0" layoutY="91.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge2_3" fitHeight="54.0" fitWidth="123.0" layoutX="1077.0" layoutY="206.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge3_4" fitHeight="65.0" fitWidth="136.0" layoutX="1348.0" layoutY="108.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge4_5" fitHeight="105.0" fitWidth="115.0" layoutX="1588.0" layoutY="294.0" pickOnBounds="true" scaleX="-1.0" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge5_6" fitHeight="105.0" fitWidth="109.0" layoutX="1498.0" layoutY="539.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge6_7" fitHeight="55.0" fitWidth="115.0" layoutX="1368.0" layoutY="779.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge7_8" fitHeight="62.0" fitWidth="123.0" layoutX="1077.0" layoutY="748.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge8_9" fitHeight="65.0" fitWidth="145.0" layoutX="789.0" layoutY="785.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge9_10" fitHeight="65.0" fitWidth="145.0" layoutX="523.0" layoutY="681.0" pickOnBounds="true" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_h.png" />
+                  </image>
+               </ImageView>
+               <ImageView fx:id="bridge10_11" fitHeight="136.0" fitWidth="94.0" layoutX="387.0" layoutY="504.0" pickOnBounds="true" scaleX="-1.0" visible="false">
+                  <image>
+                     <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
+                  </image>
+               </ImageView>
+                <ImageView fx:id="bridge11_0" fitHeight="105.0" fitWidth="101.0" layoutX="286.0" layoutY="285.0" pickOnBounds="true" visible="false">
+                    <image>
+                        <Image url="@../Graphical_Assets/Reame/PNG/bridge_v.png" />
+                    </image>
+                </ImageView>
+            </children>
+         </AnchorPane>
+      </children>
+   </AnchorPane>
+    <stylesheets>
+        <URL value="@../css/sharedStyles.css" />
+        <URL value="@../css/IslandView.css" />
+    </stylesheets>
+</ScrollPane>

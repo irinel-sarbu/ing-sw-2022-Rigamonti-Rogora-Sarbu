@@ -7,6 +7,9 @@ import model.board.IslandGroup;
 import model.board.Professor;
 import util.CharacterType;
 
+/**
+ * Is theCentaurResolveIsland class, extends ResolveIsland
+ */
 public class CentaurResolveIsland extends ResolveIsland {
 
     /**

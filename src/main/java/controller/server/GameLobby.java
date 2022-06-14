@@ -25,6 +25,9 @@ import util.*;
 
 import java.util.*;
 
+/**
+ * Is the GameLobby class.
+ */
 public class GameLobby implements EventListener {
     private final Server server;
 
@@ -175,19 +178,11 @@ public class GameLobby implements EventListener {
     }
 
     /**
-     * Remove a client from the current lobby, using its nickname
-     *
-     * @param name nickname of the player to remove
+     * Remove all clients from the current lobby
      */
-    public void removeClientFromLobbyByName(String name) {
-        clientList.remove(name);
-
-        try {
-            Player player = model.getPlayerByName(name);
-            player.setDisconnected(true);
-        } catch (PlayerNotFoundException e) {
-            Logger.severe(e.getMessage());
-        }
+    public void endGame() {
+        Logger.warning("Closing lobby " + lobbyCode);
+        clientList.clear();
     }
 
     /**
@@ -220,6 +215,10 @@ public class GameLobby implements EventListener {
 
     // Event Senders:
 
+    /**
+     * Checks if every client is ready to start game; if they are ready the game model is created and all the information
+     * is sent to the clients, otherwise send the event to choose the wizard to the missing players
+     */
     private void setupPreGame() {
         ClientHandler currentClient = null;
         for (ClientHandler client : clientList.values()) {
@@ -262,8 +261,6 @@ public class GameLobby implements EventListener {
                 }
             }
 
-            // TODO: Each update is called after respective element is modified
-
             broadcast(new ServerMessage(Messages.UPDATE_VIEW));
             setGameState(GameState.PLANNING);
 
@@ -278,18 +275,27 @@ public class GameLobby implements EventListener {
         broadcastExceptOne(new EPlayerChoosing(currentPlayerName, ChoiceType.WIZARD), currentPlayerName);
     }
 
+    /**
+     * sends the event to choose an assistant to the right client.
+     */
     private void sendChooseAssistantEvent() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CHOOSE_ASSISTANT));
         broadcastExceptOne(new EPlayerChoosing(currentPlayer.getName(), ChoiceType.ASSISTANT), currentPlayer.getName());
     }
 
+    /**
+     * sends the response that everything is set up to start the turn to the right client
+     */
     private void sendStartTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.START_TURN));
         broadcastExceptOne(new EPlayerTurnStarted(currentPlayer.getName()), currentPlayer.getName());
     }
 
+    /**
+     * sends the response that everything is ok to continue the turn
+     */
     private void sendContinueTurn() {
         ClientHandler currentPlayerClient = clientList.get(currentPlayer.getName());
         currentPlayerClient.send(new ServerMessage(Messages.CONTINUE_TURN));
@@ -322,6 +328,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * Sends to the other clients the assistant choice of the current client
+     *
+     * @param event contains the name of the client and his choice
+     * @return true
+     */
     @EventHandler
     public boolean playerHasChosenAssistant(EAssistantChosen event) {
         String playerName = event.getClientNickname();
@@ -348,7 +360,6 @@ public class GameLobby implements EventListener {
      * @param event event to react to
      * @return true
      */
-    // TODO fix not entering, move to per character type function
     @EventHandler
     public <T extends EUseCharacterEffect> boolean playerHasActivatedEffect(T event) {
         Logger.info("playerHasActivatedEffect " + event.getCharacterType());
@@ -411,6 +422,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the fanatic event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseFanaticEffect event) {
         String playerName = event.getClientNickname();
@@ -436,6 +453,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the granny event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseGrannyEffect event) {
         String playerName = event.getClientNickname();
@@ -460,6 +483,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the herald event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseHeraldEffect event) {
         String playerName = event.getClientNickname();
@@ -484,6 +513,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the jester event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseJesterEffect event) {
         String playerName = event.getClientNickname();
@@ -508,6 +543,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the minstrel event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseMinstrelEffect event) {
         String playerName = event.getClientNickname();
@@ -532,6 +573,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the monk event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseMonkEffect event) {
         String playerName = event.getClientNickname();
@@ -556,6 +603,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the princess event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUsePrincessEffect event) {
         String playerName = event.getClientNickname();
@@ -580,6 +633,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the thief event by checking if the player has enough coins and if there isn't another effect active.
+     *
+     * @param event contains the character choice parameters
+     * @return true
+     */
     @EventHandler
     public boolean playerHasActivatedEffect(EUseThiefEffect event) {
         String playerName = event.getClientNickname();
@@ -604,13 +663,28 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * sends all the respective confirmation events that the character effect has been used and updates
+     *
+     * @param client is the client that used the effect
+     */
     private void notifyActivation(ClientHandler client) {
-        // TODO: che fa sta roba? Non dovrebbe mandarlo! :(
         client.send(new ServerMessage(Messages.EFFECT_USED));
+
+        for (Player player : getModel().getPlayers()) {
+            broadcast(new EUpdateSchoolBoard(player.getSchoolBoard(), player.getName()));
+        }
+        broadcast(new EUpdateIslands(model.getIslandGroups(), model.getMotherNature().getPosition()));
         broadcast(new EUpdateCharacterEffect(model.getActiveCharacterEffect()));
         broadcast(new ELightModelSetup(model.getCharacters()));
     }
 
+    /**
+     * checks if the effect can be activated (if the client has enough coins and if there isn't another effect active)
+     *
+     * @param client is the client that wants to use the effect
+     * @return true
+     */
     private boolean effectActivationCheck(ClientHandler client) {
         if (currentGameState == GameState.GAME_OVER || currentGameState == GameState.PLANNING) {
             client.send(new ServerMessage(Messages.WRONG_PHASE));
@@ -622,13 +696,18 @@ public class GameLobby implements EventListener {
         return false;
     }
 
+    /**
+     * handles the event which contains information about the client moving a student to the dining room
+     *
+     * @param event is the received event containing the information needed
+     * @return true
+     */
     @EventHandler
     public boolean playerHasMovedToDining(EStudentMovementToDining event) {
         String playerName = event.getClientNickname();
         ClientHandler client = server.getClientByNickname(playerName);
 
         try {
-            // TODO: my magic edit to get rid of the client when resolving player name (should be the same)
             studentMovement.moveStudentToDining(this, model.getPlayerByName(playerName /*getPlayerNameBySocket(client)*/), event.getStudentID());
         } catch (Exception e) {
             e.printStackTrace();
@@ -641,6 +720,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the event which contains information about the client moving a student to an island
+     *
+     * @param event is the received event containing the information needed
+     * @return true
+     */
     @EventHandler
     public boolean playerHasMovedToIsland(EStudentMovementToIsland event) {
         String playerName = event.getClientNickname();
@@ -659,6 +744,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the event which contains information about the client moving mother nature
+     *
+     * @param event is the received event containing the information needed
+     * @return true
+     */
     @EventHandler
     public boolean playerHasMovedMotherNature(EMoveMotherNature event) {
         String playerName = event.getClientNickname();
@@ -687,6 +778,12 @@ public class GameLobby implements EventListener {
         return true;
     }
 
+    /**
+     * handles the event which contains information about the client selecting a cloud tile to refill from
+     *
+     * @param event is the received event containing the information needed
+     * @return true
+     */
     @EventHandler
     public boolean playerHasSelectedRefillCloud(ESelectRefillCloud event) {
         String playerName = event.getClientNickname();

@@ -6,10 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static util.CliHelper.V_L_EDGE;
-import static util.CliHelper.V_R_EDGE;
 
 public class CloudTile implements Serializable {
     private final int cloudTileID;
@@ -76,10 +72,12 @@ public class CloudTile implements Serializable {
      */
     @Override
     public String toString() {
-        String students = studentList.stream()
-                .map(Student::toString)
-                .collect(Collectors.joining(" ", "[", "]"));
-        return "Cloud_" + cloudTileID + ": " + students;
+        StringBuilder sString = new StringBuilder("[ ");
+        for (Student s : studentList) {
+            sString.append(s).append(" ");
+        }
+        sString.append("]");
+        return "Cloud_" + cloudTileID + ": " + sString;
     }
 
     public static String allToString(List<CloudTile> boards) {
@@ -102,7 +100,7 @@ public class CloudTile implements Serializable {
 
     public String toCard() {
         StringBuilder card = new StringBuilder();
-        card.append(" ╭─" + V_L_EDGE).append(String.format("%1d", cloudTileID)).append(V_R_EDGE + "─╮ \n");
+        card.append(" ╭─┤").append(String.format("%1d", cloudTileID)).append("├─╮ \n");
         card.append("╭╯").append(buildRow(true)).append("╰╮\n");
         card.append("╰╮").append(buildRow(false)).append("╭╯\n");
         card.append(" ╰─────╯ \n");

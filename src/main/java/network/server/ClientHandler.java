@@ -3,6 +3,7 @@ package network.server;
 import eventSystem.events.Event;
 import eventSystem.events.network.ERegister;
 import eventSystem.events.network.Messages;
+import eventSystem.events.network.client.EClientDisconnected;
 import eventSystem.events.network.server.Ping;
 import eventSystem.events.network.server.ServerMessage;
 import util.Logger;
@@ -15,8 +16,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ClientHandler extends Thread implements IClientHandler {
-    private boolean isInLobby;
-    private boolean isReady;
+    private boolean isInLobby = false;
+    private boolean isReady = false;
+    private boolean isRegistered = false;
 
     private String lobbyCode;
 
@@ -51,7 +53,7 @@ public class ClientHandler extends Thread implements IClientHandler {
                 }
             };
 
-            this.pingTimer.schedule(ping, 0, 5000);
+            this.pingTimer.schedule(ping, 0, 15000);
 
             while (!socket.isClosed()) {
                 Event event = (Event) in.readObject();
@@ -75,6 +77,12 @@ public class ClientHandler extends Thread implements IClientHandler {
         }
     }
 
+    public void reset() {
+        this.isInLobby = false;
+        this.isReady = false;
+        this.lobbyCode = null;
+    }
+
     @Override
     public boolean isReady() {
         return isReady;
@@ -88,6 +96,14 @@ public class ClientHandler extends Thread implements IClientHandler {
     @Override
     public boolean isInLobby() {
         return isInLobby;
+    }
+
+    public void setRegistered() {
+        isRegistered = true;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
     }
 
     @Override
@@ -110,7 +126,8 @@ public class ClientHandler extends Thread implements IClientHandler {
             out.flush();
             out.reset();
         } catch (IOException e) {
-            Logger.error(e.getMessage());
+            Logger.error("Error sending Event: " + e.getMessage());
+            closeConnection();
         }
     }
 
@@ -121,10 +138,18 @@ public class ClientHandler extends Thread implements IClientHandler {
             out.close();
             socket.close();
             pingTimer.cancel();
-            Logger.info("Connection with client " + socketToString() + " closed...");
-            server.pushEvent(new ServerMessage(Messages.CLIENT_DISCONNECTED));
+
+            Logger.warning("Connection with client " + socketToString() + " closed...");
+
+            if (isRegistered) {
+                EClientDisconnected message = new EClientDisconnected();
+                String nickname = server.getClientNickname(this);
+                message.setClientNickname(nickname);
+
+                server.pushEvent(message);
+            }
         } catch (IOException e) {
-            Logger.error(e.getMessage());
+            Logger.error("Error closing connection: " + e.getMessage());
         }
     }
 

@@ -3,6 +3,7 @@ package view.cli;
 import eventSystem.EventManager;
 import eventSystem.events.local.EUpdateNickname;
 import eventSystem.events.local.EUpdateServerInfo;
+import eventSystem.events.network.Messages;
 import eventSystem.events.network.client.*;
 import eventSystem.events.network.client.actionPhaseRelated.EMoveMotherNature;
 import eventSystem.events.network.client.actionPhaseRelated.ESelectRefillCloud;
@@ -13,6 +14,8 @@ import model.expert.CharacterCard;
 import network.LightModel;
 import util.*;
 import view.View;
+import view.gui.SceneController;
+import view.gui.controllers.LoginSceneController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +25,30 @@ public class CliView extends View {
     CliHelper cmd;
     Menu currentMenu;
 
+    /**
+     * run thread function
+     */
     @Override
     public void run() {
         this.cmd = new CliHelper();
+        setupConnection(false);
+    }
+
+    /**
+     * Return to log in scene if the parameter is true
+     * @param connectionReset
+     */
+    @Override
+    public void setupConnection(boolean connectionReset) {
+        final int defaultPort = 5000;
+        final String defaultAddress = "localhost";
 
         cmd.resetScreen();
         cmd.drawBox(CliHelper.ANSI_BLUE, "Connection");
-        setupConnection();
-    }
 
-    @Override
-    public void setupConnection() {
-        final int defaultPort = 5000;
-        final String defaultAddress = "localhost";
+        if (connectionReset) {
+            displayError(Messages.CONNECTION_CLOSED);
+        }
 
         String address;
         int port;
@@ -50,6 +64,9 @@ public class CliView extends View {
         EventManager.notify(new EUpdateServerInfo(address, port));
     }
 
+    /**
+     * Switch to the name selection scene if the {@link SceneController} is currently a {@link LoginSceneController}
+     */
     @Override
     public void askNickname() {
         final String NICKNAME_REGEX = "[a-zA-Z\\d]{1,15}";
@@ -70,10 +87,16 @@ public class CliView extends View {
         EventManager.notify(new EUpdateNickname(insertedName));
     }
 
+    /**
+     * Switch to create/join lobby scene, if the parameter is {@link true} notify disconnection from lobby
+     * @param wasInLobby The client was previously in a different lobby (a player has disconnected)
+     */
     @Override
-    public void chooseCreateOrJoin() {
+    public void chooseCreateOrJoin(boolean wasInLobby) {
         final GameMode[] selectedGameMode = new GameMode[1];
-
+        if (wasInLobby) {
+            displayError("Lobby was shut down because someone disconnected!");
+        }
         Menu mainMenu = new Menu("Choose between create or join lobby");
         Menu createLobbyMode = new Menu("Lobby creation", "Choose game mode");
         Menu createLobbyNumOfPlayers = new Menu("Lobby creation", "Choose number of players");
@@ -126,6 +149,9 @@ public class CliView extends View {
         switchMenu(mainMenu);
     }
 
+    /**
+     * displays menu to select game mode and number of players and try to create lobby
+     */
     @Override
     public void createLobby() {
         int gameMode;
@@ -143,6 +169,9 @@ public class CliView extends View {
         EventManager.notify(new ECreateLobbyRequest(gameMode == 1 ? GameMode.NORMAL : GameMode.EXPERT, numOfPlayers));
     }
 
+    /**
+     * asks for lobby code and try to connect to lobby
+     */
     @Override
     public void joinLobby() {
         System.out.print("\rInsert lobby code > ");
@@ -150,12 +179,20 @@ public class CliView extends View {
         EventManager.notify(new EJoinLobbyRequest(lobbyCode));
     }
 
+    /**
+     * Switch to lobby's waiting room scene
+     * @param code unique lobby code
+     */
     @Override
     public void joinedLobbyDisplay(String code) {
         System.out.println("Joined lobby " + code);
         System.out.println("Waiting for other players to connect...");
     }
 
+    /**
+     * Ask the player to choose a wizard from the provided list
+     * @param availableWizards list of available wizards
+     */
     @Override
     public void chooseWizard(List<Wizard> availableWizards) {
         System.out.println("Choose your wizard:");
@@ -172,6 +209,10 @@ public class CliView extends View {
         EventManager.notify(new EWizardChosen(availableWizards.get(choice)));
     }
 
+    /**
+     * Ask the player to choose an assistant from the provided list
+     * @param deck list of available assistants
+     */
     @Override
     public void chooseAssistant(List<Assistant> deck) {
         System.out.println("Choose an assistant from your deck:");
@@ -188,6 +229,11 @@ public class CliView extends View {
         EventManager.notify(new EAssistantChosen(deck.get(choice)));
     }
 
+    /**
+     * Display generic menu
+     * @param model current light model
+     * @param client client name
+     */
     @Override
     public void showMenu(LightModel model, String client) {
         Menu main = new Menu("Action phase menu");
@@ -305,6 +351,10 @@ public class CliView extends View {
         switchMenu(main);
     }
 
+    /**
+     * repeatedly ask for menu selection until a valid one is provided
+     * @param newMenu
+     */
     private void switchMenu(Menu newMenu) {
         currentMenu = newMenu;
         currentMenu.show();
@@ -317,6 +367,11 @@ public class CliView extends View {
         }
     }
 
+    /**
+     * Ask to select students to move to dining and notify when one is moved
+     * @param model reference to Light model
+     * @param client client nickname
+     */
     private void selectStudentToDining(LightModel model, String client) {
         int choice;
         List<Student> studentList = model.getSchoolBoardMap().get(client).getEntranceStudents();
@@ -328,6 +383,11 @@ public class CliView extends View {
         EventManager.notify(new EStudentMovementToDining(studentList.get(choice).getID()));
     }
 
+    /**
+     * Ask to select students to move to island and notify when one is moved
+     * @param model reference to Light model
+     * @param client client nickname
+     */
     private void selectStudentToIsland(LightModel model, String client) {
         int choice1, choice2;
         List<Student> studentList = model.getSchoolBoardMap().get(client).getEntranceStudents();
@@ -347,6 +407,10 @@ public class CliView extends View {
         EventManager.notify(new EStudentMovementToIsland(studentList.get(choice1).getID(), choice2));
     }
 
+    /**
+     * display students in the entrance
+     * @param entrance list of students to display
+     */
     private void printEntrance(List<Student> entrance) {
         System.out.println("Students in entrance:");
         for (int i = 0; i < entrance.size(); i++) {
@@ -354,6 +418,11 @@ public class CliView extends View {
         }
     }
 
+    /**
+     * ask to move mother nature until a valid value is provided
+     * @param model reference to light model
+     * @param client client nickname
+     */
     private void selectMotherNatureMovement(LightModel model, String client) {
         int choice;
         List<IslandGroup> islands = model.getIslandGroups();
@@ -366,6 +435,11 @@ public class CliView extends View {
         EventManager.notify(new EMoveMotherNature(choice));
     }
 
+    /**
+     * ask to select cloud until a valid value is provided
+     * @param model reference to light model
+     * @param client client nickname
+     */
     private void selectCloud(LightModel model, String client) {
         int choice;
         List<CloudTile> clouds = model.getCloudTiles();
@@ -377,6 +451,12 @@ public class CliView extends View {
         EventManager.notify(new ESelectRefillCloud(choice));
     }
 
+    /**
+     * activate character effect (if character has other selections calls their menu)
+     * @param character reference to activated character
+     * @param model reference to light model
+     * @param client client nickname
+     */
     private void activateEffect(CharacterCard character, LightModel model, String client) {
         int coins = model.getSchoolBoardMap().get(client).getCoinSupply().getNumOfCoins();
         System.out.println("\rYour Coins: " + coins);
@@ -520,6 +600,10 @@ public class CliView extends View {
 
     }
 
+    /**
+     * display students for selection
+     * @param students list of students to display
+     */
     private void printStudents(List<Student> students) {
         System.out.println("Select one student from:");
         for (int i = 0; i < students.size(); i++) {
@@ -527,6 +611,10 @@ public class CliView extends View {
         }
     }
 
+    /**
+     * display island groups for selection
+     * @param islandGroups list containing the island groups to print
+     */
     private void printIslandGroups(List<IslandGroup> islandGroups) {
         System.out.println("Island Groups:");
         for (int i = 0; i < islandGroups.size(); i++) {
@@ -534,6 +622,10 @@ public class CliView extends View {
         }
     }
 
+    /**
+     * display dining room
+     * @param schoolBoard reference to the school board containing the dining room
+     */
     private void printDiningRoom(SchoolBoard schoolBoard) {
         System.out.println("Select 3 colors from:");
         for (Color color : Color.values()) {
@@ -541,7 +633,10 @@ public class CliView extends View {
         }
     }
 
-
+    /**
+     * update current view, drawing the whole board with a pretty printer
+     * @param model reference to the light model
+     */
     @Override
     public void update(LightModel model) {
         cmd.resetScreen();
@@ -574,6 +669,10 @@ public class CliView extends View {
         System.out.println(Assistant.allToString(model.getDeck()));
     }
 
+    /**
+     * print all islands in an island group for selection
+     * @param islandGroups list of island groups containing the islands to print
+     */
     private void printIslands(List<IslandGroup> islandGroups) {
         for (IslandGroup group : islandGroups) {
             String islandGroupName = "IslandGroup_" + String.format("%2s", group.getIslandGroupID()).replace(' ', '0');
@@ -585,6 +684,10 @@ public class CliView extends View {
         System.out.println();
     }
 
+    /**
+     * print cloud tiles
+     * @param cloudTiles list of cloud tiles to print
+     */
     private void printCloudTiles(List<CloudTile> cloudTiles) {
         for (CloudTile cloudTile : cloudTiles) {
             System.out.println("\t" + cloudTile);

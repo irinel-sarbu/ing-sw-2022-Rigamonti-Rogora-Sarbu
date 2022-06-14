@@ -8,114 +8,119 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+<?import javafx.scene.control.ScrollPane?>
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
             prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
             fx:controller="view.gui.controllers.AssistantChoiceSceneController">
-    <children>
-        <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../Graphical_Assets/MainBG.jpg"/>
-            </image>
-        </ImageView>
-        <Label fx:id="assistantLabel" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
-               text="Wait for other players to choose their assistants..."/>
-        <Pane fx:id="assistants" prefHeight="1080.0" prefWidth="1920.0" visible="false">
-            <children>
-                <Label fx:id="chooseAssistantLabel" alignment="CENTER" layoutY="410.0" prefWidth="1920.0"
-                       text="Please Choose an Assistant"/>
-                <ImageView fx:id="assistant5" fitWidth="150.0" layoutX="810.0" layoutY="540.0"
-                           onMousePressed="#onAssistant5" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_5.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant6" fitWidth="150.0" layoutX="960.0" layoutY="540.0"
-                           onMousePressed="#onAssistant6" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_6.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant7" fitWidth="150.0" layoutX="1110.0" layoutY="540.0"
-                           onMousePressed="#onAssistant7" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_7.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant4" fitWidth="150.0" layoutX="660.0" layoutY="540.0"
-                           onMousePressed="#onAssistant4" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_4.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant8" fitWidth="150.0" layoutX="1260.0" layoutY="540.0"
-                           onMousePressed="#onAssistant8" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_8.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant10" fitWidth="150.0" layoutX="1560.0" layoutY="540.0"
-                           onMousePressed="#onAssistant10" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_10.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant9" fitWidth="150.0" layoutX="1410.0" layoutY="540.0"
-                           onMousePressed="#onAssistant9" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_9.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant3" fitWidth="150.0" layoutX="510.0" layoutY="540.0"
-                           onMousePressed="#onAssistant3" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_3.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant2" fitWidth="150.0" layoutX="360.0" layoutY="540.0"
-                           onMousePressed="#onAssistant2" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_2.png"/>
-                    </image>
-                </ImageView>
-                <ImageView fx:id="assistant1" fitWidth="150.0" layoutX="210.0" layoutY="540.0"
-                           onMousePressed="#onAssistant1" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_1.png"/>
-                    </image>
-                </ImageView>
-            </children>
-        </Pane>
-        <Pane fx:id="assistantChosen" prefHeight="1080.0" prefWidth="1920.0" visible="false">
-            <children>
-                <ImageView fx:id="chosenAssistantImage" layoutX="778.0" layoutY="407.0" pickOnBounds="true"
-                           preserveRatio="true"/>
-                <Label fx:id="assistantChosenLabel" alignment="CENTER" layoutY="282.0" prefWidth="1920.0"
-                       text="You've chosen the assistant. Please wait for other players to choose theirs..."/>
-            </children>
-        </Pane>
-        <Pane fx:id="otherChoicesPane" prefHeight="300.0" prefWidth="1920.0">
-            <children>
-                <Label fx:id="otherChoices" layoutY="22.0" prefWidth="1920.0" text="Other players choices:">
-                    <padding>
-                        <Insets left="100.0"/>
-                    </padding>
-                </Label>
-                <Label fx:id="nothingLabel" layoutY="110.0" prefWidth="1920.0" text="Nothing Chosen yet.">
-                    <padding>
-                        <Insets left="100.0"/>
-                    </padding>
-                </Label>
-                <ImageView fx:id="otherPlayer1" fitHeight="150.0" fitWidth="200.0" layoutX="40.0" layoutY="75.0"
-                           pickOnBounds="true" preserveRatio="true"/>
-                <ImageView fx:id="otherPlayer2" fitHeight="150.0" fitWidth="200.0" layoutX="240.0" layoutY="75.0"
-                           pickOnBounds="true" preserveRatio="true"/>
-                <ImageView fx:id="otherPlayer3" fitHeight="150.0" fitWidth="200.0" layoutX="440.0" layoutY="75.0"
-                           pickOnBounds="true" preserveRatio="true"/>
-            </children>
-        </Pane>
-    </children>
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                prefHeight="1080.0"
+                prefWidth="1920.0">
+        <children>
+            <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../Graphical_Assets/MainBG.jpg"/>
+                </image>
+            </ImageView>
+            <Label fx:id="assistantLabel" alignment="CENTER" layoutY="540.0" prefWidth="1920.0"
+                   text="Wait for other players to choose their assistants..."/>
+            <Pane fx:id="assistants" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+                <children>
+                    <Label fx:id="chooseAssistantLabel" alignment="CENTER" layoutY="410.0" prefWidth="1920.0"
+                           text="Please Choose an Assistant"/>
+                    <ImageView fx:id="assistant5" fitWidth="150.0" layoutX="810.0" layoutY="540.0"
+                               onMousePressed="#onAssistant5" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_5.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant6" fitWidth="150.0" layoutX="960.0" layoutY="540.0"
+                               onMousePressed="#onAssistant6" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_6.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant7" fitWidth="150.0" layoutX="1110.0" layoutY="540.0"
+                               onMousePressed="#onAssistant7" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_7.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant4" fitWidth="150.0" layoutX="660.0" layoutY="540.0"
+                               onMousePressed="#onAssistant4" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_4.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant8" fitWidth="150.0" layoutX="1260.0" layoutY="540.0"
+                               onMousePressed="#onAssistant8" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_8.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant10" fitWidth="150.0" layoutX="1560.0" layoutY="540.0"
+                               onMousePressed="#onAssistant10" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_10.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant9" fitWidth="150.0" layoutX="1410.0" layoutY="540.0"
+                               onMousePressed="#onAssistant9" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_9.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant3" fitWidth="150.0" layoutX="510.0" layoutY="540.0"
+                               onMousePressed="#onAssistant3" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_3.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant2" fitWidth="150.0" layoutX="360.0" layoutY="540.0"
+                               onMousePressed="#onAssistant2" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_2.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="assistant1" fitWidth="150.0" layoutX="210.0" layoutY="540.0"
+                               onMousePressed="#onAssistant1" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../Graphical_Assets/Assistenti/2x/Assistente_1.png"/>
+                        </image>
+                    </ImageView>
+                </children>
+            </Pane>
+            <Pane fx:id="assistantChosen" prefHeight="1080.0" prefWidth="1920.0" visible="false">
+                <children>
+                    <ImageView fx:id="chosenAssistantImage" layoutX="778.0" layoutY="407.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                    <Label fx:id="assistantChosenLabel" alignment="CENTER" layoutY="282.0" prefWidth="1920.0"
+                           text="You've chosen the assistant. Please wait for other players to choose theirs..."/>
+                </children>
+            </Pane>
+            <Pane fx:id="otherChoicesPane" prefHeight="300.0" prefWidth="1920.0">
+                <children>
+                    <Label fx:id="otherChoices" layoutY="22.0" prefWidth="1920.0" text="Other players choices:">
+                        <padding>
+                            <Insets left="100.0"/>
+                        </padding>
+                    </Label>
+                    <Label fx:id="nothingLabel" layoutY="110.0" prefWidth="1920.0" text="Nothing Chosen yet.">
+                        <padding>
+                            <Insets left="100.0"/>
+                        </padding>
+                    </Label>
+                    <ImageView fx:id="otherPlayer1" fitHeight="150.0" fitWidth="200.0" layoutX="40.0" layoutY="75.0"
+                               pickOnBounds="true" preserveRatio="true"/>
+                    <ImageView fx:id="otherPlayer2" fitHeight="150.0" fitWidth="200.0" layoutX="240.0" layoutY="75.0"
+                               pickOnBounds="true" preserveRatio="true"/>
+                    <ImageView fx:id="otherPlayer3" fitHeight="150.0" fitWidth="200.0" layoutX="440.0" layoutY="75.0"
+                               pickOnBounds="true" preserveRatio="true"/>
+                </children>
+            </Pane>
+        </children>
+    </AnchorPane>
     <stylesheets>
         <URL value="@../css/sharedStyles.css"/>
         <URL value="@../css/assistantChoice.css"/>
     </stylesheets>
-</AnchorPane>
+</ScrollPane>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+            prefWidth="1920.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="view.gui.controllers.GameEndingController">
+   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
+               prefWidth="1920.0">
+      <children>
+         <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../Graphical_Assets/MainBG.jpg"/>
+            </image>
+         </ImageView>
+         <Label fx:id="gameEndText" alignment="CENTER" layoutY="319.0" prefWidth="1920.0">
+         </Label>
+         <Label fx:id="winnerText" alignment="CENTER" layoutY="417.0" prefWidth="1920.0">
+         </Label>
+         <ImageView fx:id="winGif0" fitHeight="424.0" fitWidth="526.0" layoutX="14.0" layoutY="620.0"
+                    pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+               <Image url="@../ui/wonGif.gif"/>
+            </image>
+         </ImageView>
+         <ImageView fx:id="winGif1" fitHeight="424.0" fitWidth="526.0" layoutX="1482.0" layoutY="620.0"
+                    pickOnBounds="true" preserveRatio="true" scaleX="-1.0" visible="false">
+            <image>
+               <Image url="@../ui/wonGif.gif"/>
+            </image>
+         </ImageView>
+         <ImageView fx:id="loseGif0" fitHeight="273.0" fitWidth="377.0" layoutX="824.0" layoutY="807.0"
+                    pickOnBounds="true" preserveRatio="true" visible="false">
+            <image>
+               <Image url="@../ui/LostGif.gif"/>
+            </image>
+         </ImageView>
+      </children>
+   </AnchorPane>
+   <stylesheets>
+      <URL value="@../css/sharedStyles.css"/>
+      <URL value="@../css/gameEnding.css"/>
+   </stylesheets>
+</ScrollPane>

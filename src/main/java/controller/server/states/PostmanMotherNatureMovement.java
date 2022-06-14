@@ -3,6 +3,9 @@ package controller.server.states;
 import controller.server.GameLobby;
 import exceptions.IllegalMovementException;
 
+/**
+ * Is the PostmanMotherNatureMovement class, extends MotherNatureMovement
+ */
 public class PostmanMotherNatureMovement extends MotherNatureMovement {
     /**
      * Move mother nature when postman has been used (2 more steps)

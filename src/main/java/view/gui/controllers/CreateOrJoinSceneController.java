@@ -24,6 +24,10 @@ public class CreateOrJoinSceneController implements GenericSceneController {
     private String code;
 
 
+    /**
+     * setup create lobby view
+     * @param mouseEvent
+     */
     @FXML
     public void onCreate(MouseEvent mouseEvent) {
         createOrJoinPane.setVisible(false);
@@ -32,6 +36,10 @@ public class CreateOrJoinSceneController implements GenericSceneController {
         createPane1.setVisible(true);
     }
 
+    /**
+     * setup join lobby view
+     * @param mouseEvent
+     */
     @FXML
     public void onJoin(MouseEvent mouseEvent) {
         createOrJoinPane.setVisible(false);
@@ -39,6 +47,10 @@ public class CreateOrJoinSceneController implements GenericSceneController {
         backButton.setVisible(true);
     }
 
+    /**
+     * return to previous scene
+     * @param mouseEvent
+     */
     @FXML
     public void onBack(MouseEvent mouseEvent) {
         textField.setText("");
@@ -51,6 +63,10 @@ public class CreateOrJoinSceneController implements GenericSceneController {
         createOrJoinPane.setVisible(true);
     }
 
+    /**
+     * selected normal mode
+     * @param mouseEvent
+     */
     @FXML
     public void onNormal(MouseEvent mouseEvent) {
         createPane1.setVisible(false);
@@ -58,6 +74,10 @@ public class CreateOrJoinSceneController implements GenericSceneController {
         gameMode = GameMode.NORMAL;
     }
 
+    /**
+     * selected expert mode
+     * @param mouseEvent
+     */
     @FXML
     public void onExpert(MouseEvent mouseEvent) {
         createPane1.setVisible(false);
@@ -65,18 +85,30 @@ public class CreateOrJoinSceneController implements GenericSceneController {
         gameMode = GameMode.EXPERT;
     }
 
+    /**
+     * selected 2 players
+     * @param mouseEvent
+     */
     @FXML
     public void onTwoPlayers(MouseEvent mouseEvent) {
         players = 2;
         EventManager.notify(new ECreateLobbyRequest(gameMode, players));
     }
 
+    /**
+     * selected 3 players
+     * @param mouseEvent
+     */
     @FXML
     public void onThreePlayers(MouseEvent mouseEvent) {
         players = 3;
         EventManager.notify(new ECreateLobbyRequest(gameMode, players));
     }
 
+    /**
+     * join lobby by code inserted
+     * @param mouseEvent
+     */
     @FXML
     public void onJoinConfirm(MouseEvent mouseEvent) {
         if (textField.getText().length() != 5) {

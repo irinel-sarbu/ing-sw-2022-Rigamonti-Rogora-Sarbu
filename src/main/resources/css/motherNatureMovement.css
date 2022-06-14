@@ -1,0 +1,28 @@
+.label {
+    -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
+}
+
+#menuLabel {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, midnightblue, 2, 0.2, 0, 0);
+    -fx-font-size: 40;
+    -fx-padding: 30px;
+}
+
+.button {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
+    -fx-font-size: 30;
+}
+
+.button:hover {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
+    -fx-font-size: 30;
+}
+
+.button:pressed {
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, black, 3, 0.6, 0, 0);
+    -fx-font-size: 30;
+}

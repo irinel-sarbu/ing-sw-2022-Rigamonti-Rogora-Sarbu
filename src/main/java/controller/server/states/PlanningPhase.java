@@ -16,6 +16,9 @@ import util.GameState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Is the PlanningPhase class
+ */
 public class PlanningPhase {
     private List<Assistant> playedAssistants;
 
@@ -74,8 +77,6 @@ public class PlanningPhase {
      * @param thisGame current game lobby
      */
     public void computeNext(GameLobby thisGame) {
-        /* if (thisGame.getOrder().stream().map(Player::peekFoldDeck).filter(Objects::nonNull).count() != // TODO: in case of disconnection prevent game progress
-                thisGame.getOrder().size()) throw new WrongPhaseException(); */
         List<Player> nextOrder = new ArrayList<>(thisGame.getOrder());
         nextOrder.sort(Player::compareTo);
         thisGame.setOrder(nextOrder);
@@ -83,6 +84,13 @@ public class PlanningPhase {
         thisGame.setGameState(GameState.STUDENT_MOVEMENT);
     }
 
+    /**
+     * checks if a player can't select an assistant
+     *
+     * @param player    is the player to check
+     * @param assistant is the chosen assistant
+     * @return true if it can't be played, false otherwise
+     */
     public boolean checkIfAssistantPlayed(Player player, Assistant assistant) {
 
         if (playedAssistants.contains(assistant)) {                                                          // check if card has already been played

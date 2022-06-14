@@ -1,6 +1,5 @@
 package network;
 
-import model.GameModel;
 import model.board.Assistant;
 import model.board.CloudTile;
 import model.board.IslandGroup;
@@ -14,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Model stored on client. Updated by client controller by events coming from server.
+ */
 public class LightModel {
     private String playerName, currentPlayerName;
     private Map<String, SchoolBoard> schoolBoardMap;
@@ -22,6 +24,7 @@ public class LightModel {
     private int motherNaturePosition;
 
     private List<Assistant> deck;
+    private Assistant chosenAssistant;
 
     private List<CharacterCard> characters;
     private CharacterType activeCharacterEffect;
@@ -29,12 +32,18 @@ public class LightModel {
 
     private Boolean lastRound;
 
+    /**
+     * Default constructor
+     *
+     * @param playerName owner
+     */
     public LightModel(String playerName) {
         this.playerName = playerName;
         this.schoolBoardMap = new HashMap<>();
         this.cloudTiles = null;
         this.islandGroups = null;
         this.deck = null;
+        this.chosenAssistant = null;
         this.gameState = GameState.SETUP;
         this.characters = null;
         this.activeCharacterEffect = null;
@@ -79,6 +88,10 @@ public class LightModel {
 
     public void setCurrentPlayerName(String currentPlayerName) {
         this.currentPlayerName = currentPlayerName;
+    }
+
+    public void setChosenAssistant(Assistant chosenAssistant) {
+        this.chosenAssistant = chosenAssistant;
     }
 
     public Map<String, SchoolBoard> getSchoolBoardMap() {
@@ -128,5 +141,9 @@ public class LightModel {
 
     public String getCurrentPlayerName() {
         return currentPlayerName;
+    }
+
+    public Assistant getChosenAssistant() {
+        return chosenAssistant;
     }
 }
