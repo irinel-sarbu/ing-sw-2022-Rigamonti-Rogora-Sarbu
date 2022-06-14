@@ -67,8 +67,6 @@ public abstract class View {
             System.out.printf("\033[%dA", 1);
             // Clear line
             System.out.print("\033[2K");
-
-            System.out.print("Cleared " + numOfLines);
         }
     }
 
