@@ -47,6 +47,16 @@ Il seguente è il report ottenuto da Jacoco
 
 ---
 
+## OS Support
+
+| OS      | x86_64             | Arm                |
+|---------|--------------------|--------------------|
+| Windows | :heavy_check_mark: | :x:                |
+| Linux   | :heavy_check_mark: | :x:                |
+| MacOS   | :x:                | :heavy_check_mark: |
+
+---
+
 ## Esecuzione
 
 Questo progetto richiede una versione di Java 17.
@@ -62,11 +72,11 @@ Per eseguire il Client CLI digitare da terminale uno dei seguenti comandi:
 > La versione cli è supportata solamente su Linux e MacOs. Potrebbe dare problemi su Windows
 
 ```
-java -jar eriantys-client.jar --cli
+java -jar eriantys-{OS}.jar --cli
 ```
 
 ```
-java -jar eriantys-client.jar -c
+java -jar eriantys-{OS}.jar -c
 ```
 
 ### Gui
@@ -74,7 +84,7 @@ java -jar eriantys-client.jar -c
 Per eseguire il Client GUI digitare da terminale il seguente comando:
 
 ```
-java -jar eriantys-client.jar
+java -jar eriantys-{OS}.jar
 ```
 
 ### Eriantys Server
@@ -82,13 +92,21 @@ java -jar eriantys-client.jar
 Per eseguire il Server digitare da terminale il seguente comando:
 
 ```
-java -jar eriantys-server.jar
+java -jar eriantys-{OS}.jar --server
+```
+
+```
+java -jar eriantys-{OS}.jar -s
 ```
 
 E' possibile usare una porta diversa da quella di default usando il seguente comando:
 
 ```
-java -jar eriantys-server.jar --port=CUSTOM_PORT
+java -jar eriantys-{OS}.jar --server --port=CUSTOM_PORT
+```
+
+```
+java -jar eriantys-{OS}.jar -s --port=CUSTOM_PORT
 ```
 
 ---
@@ -97,10 +115,6 @@ java -jar eriantys-server.jar --port=CUSTOM_PORT
 
 Al seguente link sono disponibili gli eseguibili:
 
-- [Client]()
-- [Server]()
-
-Oppure nella sezione release di GitHub
 - [Latest release](https://github.com/irinel-sarbu/ing-sw-2022-Rigamonti-Rogora-Sarbu/releases/latest)
 
 ## Componenti del gruppo
