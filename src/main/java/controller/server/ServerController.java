@@ -69,7 +69,7 @@ public class ServerController implements EventListener {
         ClientHandler client = server.getClientByNickname(playerName);
 
         String disconnectedPlayer = server.getClientNickname(client);
-        Logger.severe(disconnectedPlayer + " disconnected.");
+        Logger.warning(disconnectedPlayer + " disconnected.");
 
         if (client.isInLobby()) {
             String lobbyCode = client.getLobbyCode();
@@ -80,6 +80,7 @@ public class ServerController implements EventListener {
 
             games.remove(lobbyCode);
             server.closeLobby(lobbyCode);
+            EventManager.unregisterListener(this);
         }
 
         server.unregister(disconnectedPlayer);
